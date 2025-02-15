@@ -21,8 +21,22 @@ public class Tile : MonoBehaviour
     public bool HasWater => waterVolume > 0f;
 
     // Optionally, store references to neighbors for quick lookup
-    public Tile[] neighbors;
-
+    public Tile[] neighbors = new Tile[3];
+    /*
+    public void addWater(float  water)
+    {
+        waterVolume += water;
+        if (waterVolume >= 5f)
+        {
+            isOverflowing = true;
+            foreach (var neighbor in neighbors)
+            {
+                addWater(waterVolume - 5f);
+            }
+            waterVolume = 5f;
+        }
+    }   
+    */
     // You could add methods here to apply water modifications,
     // update visuals, etc.
 }
