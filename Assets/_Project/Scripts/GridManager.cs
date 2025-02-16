@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
 {
+    public List<WaterObststacle> obststacles = new List<WaterObststacle>();
     public int gridWidth = 10;
     public int gridHeight = 10;
     public GameObject tilePrefab;  // Prefab with the Tile script attached
@@ -172,30 +173,39 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + 0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-            Tile l = tileObj.GetComponent<Tile>();
+            if (obststacles[0].transform.position != position)
+            {
+                GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                Tile l = tileObj.GetComponent<Tile>();
 
-            l.gridX = tile.gridX;
-            l.gridY = tile.gridY + 1;
-            tile.neighbors[0] = l;
-            l.neighbors[2] = tile;
-            tilesToAdd.Add(l);
+                l.gridX = tile.gridX;
+                l.gridY = tile.gridY + 1;
+                tile.neighbors[0] = l;
+                l.neighbors[2] = tile;
+                tilesToAdd.Add(l);
+            }
+
         }
         if (missingR)
         {
+
             // Isometric conversion formula
             float isoX = (tile.transform.position.x + 1.5f);
             float isoY = (tile.transform.position.y + -0.8f);
 
-            Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-            Tile l = tileObj.GetComponent<Tile>();
+            Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric
+            if (obststacles[0].transform.position != position)
+            {
+                GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                Tile l = tileObj.GetComponent<Tile>();
 
-            l.gridX = tile.gridX + 1;
-            l.gridY = tile.gridY;
-            tile.neighbors[1] = l;
-            l.neighbors[3] = tile;
-            tilesToAdd.Add(l);
+                l.gridX = tile.gridX + 1;
+                l.gridY = tile.gridY;
+                tile.neighbors[1] = l;
+                l.neighbors[3] = tile;
+                tilesToAdd.Add(l);
+            }
+
         }
 
         if (missingD)
@@ -205,14 +215,18 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + -0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-            Tile l = tileObj.GetComponent<Tile>();
+            if (obststacles[0].transform.position != position)
+            {
+                GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                Tile l = tileObj.GetComponent<Tile>();
 
-            l.gridX = tile.gridX;
-            l.gridY = tile.gridY - 1;
-            tile.neighbors[2] = l;
-            l.neighbors[0] = tile;
-            tilesToAdd.Add(l);
+                l.gridX = tile.gridX;
+                l.gridY = tile.gridY - 1;
+                tile.neighbors[2] = l;
+                l.neighbors[0] = tile;
+                tilesToAdd.Add(l);
+            }
+
         }
         if (missingL)
         {
@@ -221,15 +235,19 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + 0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-            Tile l = tileObj.GetComponent<Tile>();
+            if (obststacles[0].transform.position != position)
+            {
+                GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                Tile l = tileObj.GetComponent<Tile>();
 
-            l.gridX = tile.gridX - 1;
-            l.gridY = tile.gridY;
-            tile.neighbors[3] = l;
-            l.neighbors[1] = tile;
-            //tiles[l.gridX, l.gridY] = l;
-            tilesToAdd.Add(l);
+                l.gridX = tile.gridX - 1;
+                l.gridY = tile.gridY;
+                tile.neighbors[3] = l;
+                l.neighbors[1] = tile;
+                //tiles[l.gridX, l.gridY] = l;
+                tilesToAdd.Add(l);
+            }
+
         }
 
     }

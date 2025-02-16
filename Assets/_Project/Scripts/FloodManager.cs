@@ -31,7 +31,6 @@ public class FloodSimulationManager : MonoBehaviour
         {
             yield return new WaitForSeconds(updateInterval);
             RunFloodUpdate();
-            yield return new WaitForSeconds(1f);
             gridManager.resolveConflicts();
         }
     }
