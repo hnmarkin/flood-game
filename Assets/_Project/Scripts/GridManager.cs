@@ -36,7 +36,7 @@ public class GridManager : MonoBehaviour
         Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
         GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
         Tile tile = tileObj.GetComponent<Tile>();
-
+        //tile.upgradeWater();
         tile.gridX = x;
         tile.gridY = y;
         tiles[x, y] = tile;
@@ -102,14 +102,22 @@ public class GridManager : MonoBehaviour
             return tiles[x, y];
         return null;
     }
-    public void DoWaterTick()
+    public void DoWaterTick(Tile source)
     {
+        source.addWater(10f);
         Debug.Log(allWater.Count);
        // Debug.Log(0 < allWater.Count);
         for (int i = 0; i < allWater.Count; i++)
         {
-            Tile t = allWater[i];
-            AddNeighbors(t);
+            if (allWater[i].isOverflowing && allWater[i].spread == true)
+            {
+                AddNeighbors(allWater[i]);
+                allWater[i].spread = false;
+            }
+            else
+            {
+                allWater[i].upgradeWater();
+            }
         }
         for (int i = 0; i < tilesToAdd.Count; i++)
         {
@@ -173,7 +181,7 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + 0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            if (obststacles[0].transform.position != position)
+            if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
             {
                 GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                 Tile l = tileObj.GetComponent<Tile>();
@@ -183,6 +191,10 @@ public class GridManager : MonoBehaviour
                 tile.neighbors[0] = l;
                 l.neighbors[2] = tile;
                 tilesToAdd.Add(l);
+            }
+            else
+            {
+                obststacles[0].tick();
             }
 
         }
@@ -194,7 +206,7 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + -0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric
-            if (obststacles[0].transform.position != position)
+            if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
             {
                 GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                 Tile l = tileObj.GetComponent<Tile>();
@@ -205,7 +217,10 @@ public class GridManager : MonoBehaviour
                 l.neighbors[3] = tile;
                 tilesToAdd.Add(l);
             }
-
+            else
+            {
+                obststacles[0].tick();
+            }
         }
 
         if (missingD)
@@ -215,7 +230,7 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + -0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            if (obststacles[0].transform.position != position)
+            if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
             {
                 GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                 Tile l = tileObj.GetComponent<Tile>();
@@ -226,7 +241,10 @@ public class GridManager : MonoBehaviour
                 l.neighbors[0] = tile;
                 tilesToAdd.Add(l);
             }
-
+            else
+            {
+                obststacles[0].tick();
+            }
         }
         if (missingL)
         {
@@ -235,7 +253,7 @@ public class GridManager : MonoBehaviour
             float isoY = (tile.transform.position.y + 0.8f);
 
             Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            if (obststacles[0].transform.position != position)
+            if (obststacles[0].transform.position != position && obststacles[0].ticks <=4)
             {
                 GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                 Tile l = tileObj.GetComponent<Tile>();
@@ -247,7 +265,10 @@ public class GridManager : MonoBehaviour
                 //tiles[l.gridX, l.gridY] = l;
                 tilesToAdd.Add(l);
             }
-
+            else
+            {
+                obststacles[0].tick();
+            }
         }
 
     }

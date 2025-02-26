@@ -38,7 +38,7 @@ public class FloodSimulationManager : MonoBehaviour
     void RunFloodUpdate()
     {
 
-        gridManager.DoWaterTick();
+        gridManager.DoWaterTick(t);
         // Fire the pre-update event for subscribers.
         OnPreFloodUpdate?.Invoke();
 
