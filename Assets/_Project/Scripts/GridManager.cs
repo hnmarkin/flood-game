@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
@@ -13,14 +14,34 @@ public class GridManager : MonoBehaviour
     public GameObject tilePrefab;  // Prefab with the Tile script attached
     List<Tile> allWater = new List<Tile>();
     List<Tile> tilesToAdd = new List<Tile>();
+    [SerializeField] Tilemap tilemap;
 
 
     private Tile[,] tiles;
-
+    private void Start()
+    {
+        //tilemap = GetComponent<Tilemap>();
+    }
     void Awake()
     {
         //GenerateGrid();
         //GenerateDemo();
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            var tpos = tilemap.WorldToCell(worldPoint);
+
+            // Try to get a tile from cell position
+            var tile = tilemap.GetTile(tpos);
+            //Debug.Log(tile);
+            Debug.Log(tpos);
+            //Debug.Log(worldPoint);
+
+        }
     }
     public Tile GenerateDemo()
     {
