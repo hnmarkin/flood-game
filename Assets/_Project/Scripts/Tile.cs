@@ -27,7 +27,8 @@ public class Tile : MonoBehaviour
 
     // Optionally, store references to neighbors for quick lookup
     public Tile[] neighbors = new Tile[3];
-    SpriteRenderer rend;
+    
+    public SpriteRenderer rend;
     private void Start()
     {
         rend = GetComponent<SpriteRenderer>();
@@ -56,6 +57,7 @@ public class Tile : MonoBehaviour
             waterVolume = 3f;
         }
     }   
+    
     
     // You could add methods here to apply water modifications,
     // update visuals, etc.
