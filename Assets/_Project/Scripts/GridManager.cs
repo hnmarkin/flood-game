@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -14,7 +15,7 @@ public class GridManager : MonoBehaviour
     public GameObject waterPrefab;  // Prefab with the waterBlock script attached
     public List<WaterBlock> connectedWater = new List<WaterBlock>();
     //List<Tile> tilesToAdd = new List<Tile>();
-   // [SerializeField] Tilemap tilemap;
+    [SerializeField] Tilemap tileMap;
     //[SerializeField] Tilemap water;
     //WaterTile waterTile;
     [SerializeField] float tileWidth = 3f; 
@@ -282,6 +283,33 @@ public class GridManager : MonoBehaviour
         {
             tickTimer -= tickTimerMax;
             StartCoroutine(tick());
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 worldPoint;
+            worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            var tpos = tileMap.WorldToCell(worldPoint);
+
+            // Try to get a tile from cell position
+            //var tile = tileMap.GetTile(tpos);
+            tpos.x += 4;
+            tpos.y += 13;
+            Debug.Log(tpos);
+            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+            {
+                if (waterGrid[tpos.x, tpos.y] != null)
+                {
+                    if (waterGrid[tpos.x, tpos.y].ground && waterGrid[tpos.x, tpos.y].height <= 1)
+                    {
+                        AddWallBlk(tpos.x, tpos.y, 100);
+                    }
+                }
+                else
+                {
+                    AddWallBlk(tpos.x, tpos.y, 100);
+                }
+            }
         }
     }
     IEnumerator tick()

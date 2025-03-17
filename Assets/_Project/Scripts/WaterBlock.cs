@@ -13,6 +13,7 @@ public class WaterBlock : MonoBehaviour
     public int height;
     public bool ground;
     public Sprite[] pic;
+    public Sprite blok;
     //[SerializeField] GridManager grid;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,6 +21,7 @@ public class WaterBlock : MonoBehaviour
     {
         rend = GetComponent<SpriteRenderer>();
         if (ground) { rend.sprite = null; }
+        if (ground && height == 100) { rend.sprite = blok; }
         //if (ground) { rend.color = Color.black; }
         //GridManager.Instance.connectedWater.Add(this);
     }
