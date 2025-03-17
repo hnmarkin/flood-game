@@ -53,6 +53,12 @@ public class GridManager : MonoBehaviour
         AddWaterBlk(1, 1);
         AddWaterBlk(0, 0, 10);
         AddWallBlk(3, 3);
+        AddWallBlk(3, 2);
+        AddWallBlk(2, 3);
+        AddWallBlk(1, 3);
+        AddWallBlk(3, 1);
+        AddWallBlk(0, 3);
+        AddWallBlk(3, 0);
     }
     private void Awake()
     {
@@ -70,7 +76,7 @@ public class GridManager : MonoBehaviour
         tile.xloc = x;
         tile.yloc = y;
         tile.ground = true;
-        tile.height = 2000;
+        tile.height = 3;
         if (waterGrid[x, y] != null) { Debug.Log("Tried to make wall on top of existing water!"); }
         waterGrid[x, y] = tile;
         //tile.rend.color = Color.black;

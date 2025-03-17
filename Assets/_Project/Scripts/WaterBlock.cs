@@ -33,9 +33,9 @@ public class WaterBlock : MonoBehaviour
             {
                 return true;
             }
-            else if ((GridManager.waterGrid[xloc + 1, yloc].ground && GridManager.waterGrid[xloc + 1, yloc].height >= GridManager.Instance.waterlevel))
+            else if ((GridManager.waterGrid[xloc + 1, yloc].ground && GridManager.waterGrid[xloc + 1, yloc].height < GridManager.Instance.waterlevel))
             {
-                return false;
+                return true;
             }
             return false;
         }
@@ -49,9 +49,9 @@ public class WaterBlock : MonoBehaviour
             {
                 return true;
             }
-            if (GridManager.waterGrid[xloc, yloc + 1].ground && GridManager.waterGrid[xloc, yloc + 1].height >= GridManager.Instance.waterlevel)
+            if (GridManager.waterGrid[xloc, yloc + 1].ground && GridManager.waterGrid[xloc, yloc + 1].height < GridManager.Instance.waterlevel)
             {
-                return false;
+                return true;
             }
             return false;
         }
@@ -65,9 +65,9 @@ public class WaterBlock : MonoBehaviour
             {
                 return true;
             }
-            else if (GridManager.waterGrid[xloc, yloc - 1].ground && GridManager.waterGrid[xloc, yloc - 1].height >= GridManager.Instance.waterlevel)
+            else if (GridManager.waterGrid[xloc, yloc - 1].ground && GridManager.waterGrid[xloc, yloc - 1].height < GridManager.Instance.waterlevel)
             {
-                return false;
+                return true;
             }
             return false;
         }
@@ -81,9 +81,9 @@ public class WaterBlock : MonoBehaviour
             {
                 return true;
             }
-            else if (GridManager.waterGrid[xloc - 1, yloc].ground && GridManager.waterGrid[xloc - 1, yloc].height >= GridManager.Instance.waterlevel)
+            else if (GridManager.waterGrid[xloc - 1, yloc].ground && GridManager.waterGrid[xloc - 1, yloc].height < GridManager.Instance.waterlevel)
             {
-                return false;
+                return true;
             }
             return false;
 
