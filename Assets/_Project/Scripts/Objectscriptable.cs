@@ -3,7 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/FloodData", order = 1)]
 public class FloodData : ScriptableObject
 {
-    public int ruinedbuildings;
-    public float amountFlooded;
-    public string[] madCorpos;
+    public int homesFloodedPercent;
+    public int casualties;
+    public int utilityDowntimeHours;
+
+    public int businessesAffectedPercent;
+    public int economicLosses;
+    public int infrastructureDamagePercent;
 }
