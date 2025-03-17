@@ -4085,8 +4085,11 @@ MonoBehaviour:
   gridWidth: 15
   gridHeight: 15
   waterPrefab: {fileID: 2566369097866776460, guid: 87ce010ca1704884fa5d6c36d45cf0cd, type: 3}
+  connectedWater: []
   tileWidth: 3
   tileHeight: 1.5
+  waterlevel: 0
+  tickTimerMax: 1
 --- !u!4 &1821909119
 Transform:
   m_ObjectHideFlags: 0

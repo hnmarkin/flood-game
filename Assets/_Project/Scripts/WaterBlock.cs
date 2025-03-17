@@ -1,90 +1,148 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class WaterBlock : MonoBehaviour
 {
-    SpriteRenderer rend;
+    public SpriteRenderer rend;
     public int xloc;
     public int yloc;
     public bool src = false;
     public bool output = false;
     public int amt;
     public bool border = false;
+    public int height;
+    public bool ground;
+    //[SerializeField] GridManager grid;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
-        
+        if (ground) { rend.color = Color.black; }
+        //GridManager.Instance.connectedWater.Add(this);
+    }
+    bool CheckSides(int d, bool invert)
+    {
+        if (d == 0)
+        {
+            if (xloc+1 >= GridManager.Instance.gridWidth)
+            {
+                return false;
+            }
+            else if (GridManager.waterGrid[xloc + 1, yloc] == null)
+            {
+                return true;
+            }
+            else if ((GridManager.waterGrid[xloc + 1, yloc].ground && GridManager.waterGrid[xloc + 1, yloc].height >= GridManager.Instance.waterlevel))
+            {
+                return false;
+            }
+            return false;
+        }
+        if (d == 1)
+        {
+            if (yloc + 1 >= GridManager.Instance.gridHeight)
+            {
+                return false;
+            }
+            if (GridManager.waterGrid[xloc, yloc + 1] == null)
+            {
+                return true;
+            }
+            if (GridManager.waterGrid[xloc, yloc + 1].ground && GridManager.waterGrid[xloc, yloc + 1].height >= GridManager.Instance.waterlevel)
+            {
+                return false;
+            }
+            return false;
+        }
+        if (d == 2)
+        {
+            if (yloc == 0)
+            {
+                return false;
+            }
+            else if (GridManager.waterGrid[xloc, yloc - 1] == null)
+            {
+                return true;
+            }
+            else if (GridManager.waterGrid[xloc, yloc - 1].ground && GridManager.waterGrid[xloc, yloc - 1].height >= GridManager.Instance.waterlevel)
+            {
+                return false;
+            }
+            return false;
+        }
+        if (d == 3)
+        {
+            if (xloc == 0)
+            {
+                return false;
+            }
+            else if (GridManager.waterGrid[xloc - 1, yloc] == null)
+            {
+                return true;
+            }
+            else if (GridManager.waterGrid[xloc - 1, yloc].ground && GridManager.waterGrid[xloc - 1, yloc].height >= GridManager.Instance.waterlevel)
+            {
+                return false;
+            }
+            return false;
+
+        }
+        return false;
     }
     public void checkBorder()
     {
-        if (src)
-        {
-            border = false;
-            GridManager.Instance.connectedWater.Add(this);
-            return;
-        }
-        if (GridManager.waterGrid[xloc+1, yloc] != null)
+        //Debug.Log("Border " + border);
+
+        if (CheckSides(0, true))
         {
             border = true;
             return;
         }
-        else if (GridManager.waterGrid[xloc, yloc + 1] != null)
+        else if (CheckSides(1, true))
         {
             border = true;
             return;
         }
-        if (xloc > 0)
+        else if(CheckSides(2, true))
         {
-            if (GridManager.waterGrid[xloc - 1, yloc] != null)
-            {
-                border = true;
-                return;
-            }
+            border = true;
+            return;
         }
-        if (yloc > 0)
+        else if(CheckSides(3, true))
         {
-            if (GridManager.waterGrid[xloc, yloc - 1] != null)
-            {
-                border = true;
-                return;
-            }
+            border = true;
+            return;
         }
+
         border = false;
-        GridManager.Instance.connectedWater.Add(this);
+        //GridManager.Instance.connectedWater.Add(this);
     }
     public void spread()
     {
-        if (GridManager.waterGrid[xloc + 1, yloc] != null)
+        if (CheckSides(0, false))
         {
             GridManager.Instance.AddWaterBlk(xloc + 1, yloc);
-            return;
+            //return;
         }
-        else if (GridManager.waterGrid[xloc, yloc + 1] != null)
+        else if (CheckSides(1, false))
         {
-            GridManager.Instance.AddWaterBlk(xloc, yloc+1);
-            return;
+            GridManager.Instance.AddWaterBlk(xloc, yloc + 1);
+            //return;
         }
-        if (xloc > 0)
+        else if (CheckSides(2, false))
         {
-            if (GridManager.waterGrid[xloc - 1, yloc] != null)
-            {
-                GridManager.Instance.AddWaterBlk(xloc -1, yloc);
-                return;
-            }
+            GridManager.Instance.AddWaterBlk(xloc, yloc - 1);
+            //return;
         }
-        if (yloc > 0)
+        else if (CheckSides(3, false))
         {
-            if (GridManager.waterGrid[xloc, yloc - 1] != null)
-            {
-                GridManager.Instance.AddWaterBlk(xloc, yloc - 1);
-                return;
-            }
+            GridManager.Instance.AddWaterBlk(xloc - 1, yloc);
+            //return;
         }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
+        else
+        {
+            //Debug.Log("Couldn't spread");
+        }
     }
 }

@@ -20,12 +20,15 @@ public class GridManager : MonoBehaviour
     [SerializeField] float tileWidth = 3f; 
     [SerializeField] float tileHeight = 1.5f;
     public int waterlevel;
+    public int waterAmt;
     [SerializeField] public static WaterBlock[,] waterGrid;
-    public static GridManager Instance { get { return Instance; } }
+    public static GridManager Instance;
+    [SerializeField] float tickTimerMax = 1f;
 
 
     private void Start()
     {
+        Instance = this;
         waterGrid = new WaterBlock[gridWidth, gridHeight]; //init empty grid
         /*
         for (int x = 0; x < gridWidth; x++)
@@ -48,7 +51,29 @@ public class GridManager : MonoBehaviour
         AddWaterBlk(0, 1);
         AddWaterBlk(1, 0);
         AddWaterBlk(1, 1);
-        AddWaterBlk(0, 0, 1);
+        AddWaterBlk(0, 0, 10);
+        AddWallBlk(3, 3);
+    }
+    private void Awake()
+    {
+        
+    }
+    public void AddWallBlk(int x, int y)
+    {
+        // Isometric conversion formula
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+
+        Vector3 position = new Vector3(isoX, isoY, 0); //spawn water
+        GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
+        WaterBlock tile = tileObj.GetComponent<WaterBlock>();
+        tile.xloc = x;
+        tile.yloc = y;
+        tile.ground = true;
+        tile.height = 2000;
+        if (waterGrid[x, y] != null) { Debug.Log("Tried to make wall on top of existing water!"); }
+        waterGrid[x, y] = tile;
+        //tile.rend.color = Color.black;
     }
     public void AddWaterBlk(int x, int y)
     {
@@ -59,7 +84,9 @@ public class GridManager : MonoBehaviour
         Vector3 position = new Vector3(isoX, isoY, 0); //spawn water
         GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
         WaterBlock tile = tileObj.GetComponent<WaterBlock>();
-
+        connectedWater.Add(tile);
+        tile.xloc = x;
+        tile.yloc = y;
         if (waterGrid[x,y] != null) { Debug.Log("Tried to make water on top of existing water!"); }
         waterGrid[x, y] = tile;
     }
@@ -72,20 +99,29 @@ public class GridManager : MonoBehaviour
         Vector3 position = new Vector3(isoX, isoY, 0); //spawn water
         GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
         WaterBlock tile = tileObj.GetComponent<WaterBlock>();
-
-        if (waterGrid[x, y] != null) { Debug.Log("Tried to make water on top of existing water!"); }
+        connectedWater.Add(tile);
+        tile.xloc = x;
+        tile.yloc = y;
+        if (waterGrid[x, y] != null) 
+        {
+            Debug.Log("Tried to make water on top of existing water!"); 
+        }
         waterGrid[x, y] = tile;
         tile.src = true;
         tile.amt = amt;
     }
     void WorldTick()
     {
-        connectedWater.Clear();
+ 
         for (int x = 0; x < gridWidth; x++) //calc borders
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                waterGrid[x, y].checkBorder();//this also adds the connected water to the list
+               // Debug.Log(waterGrid[x, y]);
+                if (waterGrid[x, y] != null)
+                {
+                    waterGrid[x, y].checkBorder();//this also adds the connected water to the list
+                }
             }
         }
         ///FIXME: calculate barriers
@@ -93,44 +129,89 @@ public class GridManager : MonoBehaviour
     }
     void SpreadTick()
     {
-        //FIXME: calc water mass change
+        //Calc water mass changes
         foreach (WaterBlock tile in connectedWater)
         {
             if (tile.src == true)
             {
-                waterlevel += tile.amt;
+                waterAmt += tile.amt;
             }
         }
         //FIXME: calc level
-        connectedWater.Clear();
-        for (int x = 0; x < gridWidth; x++) //calc borders
+        if (connectedWater.Count < waterAmt)
         {
-            for (int y = 0; y < gridHeight; y++)
+            for (int x = 0; x < gridWidth; x++) //calc borders
             {
-                waterGrid[x, y].checkBorder();
-            }
-        }
-        //FIXME: Spread boarders
-        for (int x = 0; x < gridWidth; x++) 
-        {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                if (waterGrid[x, y].border && waterlevel > connectedWater.Count)
+                for (int y = 0; y < gridHeight; y++)
                 {
-                    waterGrid[x, y].spread();
+                    if (waterGrid[x, y] != null)
+                    {
+                        waterGrid[x, y].checkBorder();
+                    }
                 }
             }
+
+            for (int x = 0; x < gridWidth; x++) //Spread boarders
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    if (waterGrid[x, y] != null)
+                    {
+                        if (waterGrid[x, y].border && connectedWater.Count < waterAmt && !waterGrid[x, y].ground)
+                        {
+                            waterGrid[x, y].spread();
+                        }
+                    }
+
+                }
+            }
+            for (int x = 0; x < gridWidth; x++) //calc borders
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    if (waterGrid[x, y] != null)
+                    {
+                        waterGrid[x, y].checkBorder();
+                    }
+                }
+            }
+            //if no more spread
+            if (waterAmt > connectedWater.Count)
+            {
+                foreach (WaterBlock tile in connectedWater)
+                {
+                    if(tile.border)
+                    {
+                        return;
+                    }
+                }
+                waterlevel++;
+                waterAmt -= connectedWater.Count;
+            }
+
         }
+
     }
+    float tickTimer = 0f;
     private void Update()
     {
-        StartCoroutine(tick());
+
+        tickTimer += Time.deltaTime;
+        //Debug.Log(tickTimer);
+        while (tickTimer >= tickTimerMax)
+        {
+            tickTimer -= tickTimerMax;
+            StartCoroutine(tick());
+        }
     }
     IEnumerator tick()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         WorldTick();
         SpreadTick();
+        Debug.Log("Water "+waterAmt);
+        Debug.Log("Connected "+connectedWater.Count);
+        Debug.Log("Level " + waterlevel);
     }
     /*
     private void Start()
