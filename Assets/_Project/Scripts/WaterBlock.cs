@@ -12,13 +12,15 @@ public class WaterBlock : MonoBehaviour
     public bool border = false;
     public int height;
     public bool ground;
+    public Sprite[] pic;
     //[SerializeField] GridManager grid;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
-        if (ground) { rend.color = Color.black; }
+        if (ground) { rend.sprite = null; }
+        //if (ground) { rend.color = Color.black; }
         //GridManager.Instance.connectedWater.Add(this);
     }
     bool CheckSides(int d, bool invert)
@@ -93,7 +95,7 @@ public class WaterBlock : MonoBehaviour
     public void checkBorder()
     {
         //Debug.Log("Border " + border);
-
+        rend.sprite = pic[GridManager.Instance.waterlevel];
         if (CheckSides(0, true))
         {
             border = true;
@@ -120,9 +122,10 @@ public class WaterBlock : MonoBehaviour
     }
     public void spread()
     {
-        if (CheckSides(0, false))
+        
+        if (CheckSides(3, false))
         {
-            GridManager.Instance.AddWaterBlk(xloc + 1, yloc);
+            GridManager.Instance.AddWaterBlk(xloc - 1, yloc);
             //return;
         }
         else if (CheckSides(1, false))
@@ -135,9 +138,9 @@ public class WaterBlock : MonoBehaviour
             GridManager.Instance.AddWaterBlk(xloc, yloc - 1);
             //return;
         }
-        else if (CheckSides(3, false))
+        else if (CheckSides(0, false))
         {
-            GridManager.Instance.AddWaterBlk(xloc - 1, yloc);
+            GridManager.Instance.AddWaterBlk(xloc + 1, yloc);
             //return;
         }
         else
