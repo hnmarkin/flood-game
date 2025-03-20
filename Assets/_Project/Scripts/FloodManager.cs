@@ -3,6 +3,7 @@ using System.Collections;
 
 public class FloodSimulationManager : MonoBehaviour
 {
+    /*
     public GridManager gridManager;
     public float updateInterval = 30f;
     [Range(0f, 1f)]
@@ -12,7 +13,8 @@ public class FloodSimulationManager : MonoBehaviour
     public delegate void FloodEventHandler();
     public static event FloodEventHandler OnPreFloodUpdate;
     public static event FloodEventHandler OnPostFloodUpdate;
-
+    public Tile t;
+    
     void Start()
     {
         if (gridManager == null)
@@ -21,17 +23,24 @@ public class FloodSimulationManager : MonoBehaviour
         StartCoroutine(FloodRoutine());
     }
 
+    private void Awake()
+    {
+        t = gridManager.GenerateDemo();
+    }
     IEnumerator FloodRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(updateInterval);
             RunFloodUpdate();
+            gridManager.resolveConflicts();
         }
     }
 
     void RunFloodUpdate()
     {
+
+        gridManager.DoWaterTick(t);
         // Fire the pre-update event for subscribers.
         OnPreFloodUpdate?.Invoke();
 
@@ -40,6 +49,7 @@ public class FloodSimulationManager : MonoBehaviour
         float[,] waterDelta = new float[width, height];
 
         // First pass: calculate water transfers.
+        
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -62,8 +72,9 @@ public class FloodSimulationManager : MonoBehaviour
                     }
                 }
             }
+        
         }
-
+        
         // Second pass: apply water delta and update flags.
         for (int x = 0; x < width; x++)
         {
@@ -74,8 +85,8 @@ public class FloodSimulationManager : MonoBehaviour
                 current.isOverflowing = current.WaterHeight > (current.terrainHeight + 1f); // Example threshold.
             }
         }
-
+        */
         // Fire the post-update event for subscribers.
-        OnPostFloodUpdate?.Invoke();
-    }
+        //OnPostFloodUpdate?.Invoke();
+    //}
 }
