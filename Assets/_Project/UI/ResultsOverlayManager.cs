@@ -15,7 +15,9 @@ public class ResultsOverlayManager : MonoBehaviour
 
     [SerializeField] LLMController _LLMController;
 
-    [SerializeField] private Image[] starImages;
+    [SerializeField] private Image[] residentialStarImages;
+    [SerializeField] private Image[] corporateStarImages;
+    [SerializeField] private Image[] politicalStarImages;
     [SerializeField] private GameObject hiddenStarObject;
 
     //Text Boxes
@@ -27,9 +29,13 @@ public class ResultsOverlayManager : MonoBehaviour
     {
         try
         {
-            (int stars, string response) = await _LLMController.EvaluateResidentialStars();
-            ShowOverlay(stars);
-            residentialScoreTextBox.text = response;
+            (int r_Stars, string r_response) = await _LLMController.EvaluateResidentialStars();
+            (int c_stars, string c_response) = await _LLMController.EvaluateCorporateStars();
+            (int p_stars, string p_response) = await _LLMController.EvaluatePoliticalStars();
+            ShowOverlay(r_Stars, c_stars, p_stars);
+            residentialScoreTextBox.text = r_response;
+            corporateScoreTextBox.text = c_response;
+            politicalScoreTextBox.text = p_response;
         }
         catch (Exception ex)
         {
@@ -38,14 +44,22 @@ public class ResultsOverlayManager : MonoBehaviour
         }
     }
 
-    public async void ShowOverlay(int stars)
+    public async void ShowOverlay(int r_stars, int c_stars, int p_stars)
     {
         overlayPanel.SetActive(true);
 
         // Update stars display
-        for (int i = 0; i < starImages.Length; i++)
+        for (int i = 0; i < residentialStarImages.Length; i++)
         {
-            starImages[i].enabled = i < stars;
+            residentialStarImages[i].enabled = i < r_stars;
+        }
+        for (int i = 0; i < corporateStarImages.Length; i++)
+        {
+            corporateStarImages[i].enabled = i < c_stars;
+        }
+        for (int i = 0; i < politicalStarImages.Length; i++)
+        {
+            politicalStarImages[i].enabled = i < p_stars;
         }
 
         // Show/hide hidden star bonus

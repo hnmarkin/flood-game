@@ -1,12 +1,18 @@
 using UnityEngine;
 
 using System.Collections.Generic;
-//using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class PolicyUIManager : MonoBehaviour
 {
+    public FloodData scriptableObject;
+    [SerializeField] private Slider homesFloodedSlider;
+    [SerializeField] private Slider casualtiesSlider;
+    [SerializeField] private Slider businessesAffectedSlider;
+    [SerializeField] private Slider economicLossesSlider;
+    [SerializeField] private Slider infrastructureDamageSlider;
+
     [System.Serializable]
     public struct Policy
     {
@@ -58,6 +64,36 @@ public class PolicyUIManager : MonoBehaviour
         }
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(policyListContainer.GetComponent<RectTransform>());
+    }
+
+    public void UpdateHomesFlooded(float newValue)
+    {
+        scriptableObject.homesFloodedPercent = newValue*100;
+    }
+
+    public void UpdateCasualties(float newValue)
+    {
+        scriptableObject.casualties = newValue*100;
+    }
+
+    public void UpdateBusinessesAffected(float newValue)
+    {
+        scriptableObject.businessesAffectedPercent = newValue*100;
+    }
+
+    public void UpdateEconomicLosses(float newValue)
+    {
+        scriptableObject.economicLosses = newValue*100;
+    }
+
+    public void UpdateInfrastructureDamage(float newValue)
+    {
+        scriptableObject.infrastructureDamagePercent = newValue*100;
+    }
+
+    public void UpdateUtilityDowntime(float newValue)
+    {
+        scriptableObject.utilityDowntimeHours = newValue;
     }
 }
 

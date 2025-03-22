@@ -29,6 +29,7 @@ public class LLMController : MonoBehaviour
     {
         // 1. Build the prompt from the ScoringPromptController.
         string prompt = _scoringPromptController.BuildResidentPrompt();
+        Debug.Log($"{prompt}");
 
         // 2. Send the prompt to the LLM and get the response.
         string residentResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
@@ -46,6 +47,54 @@ public class LLMController : MonoBehaviour
         Debug.Log($"LLM response: {residentResponse}");
         
         return (stars, residentResponse);
+    }
+
+    public async Task<(int stars, string response)> EvaluateCorporateStars()
+    {
+        // 1. Build the prompt from the ScoringPromptController.
+        string prompt = _scoringPromptController.BuildCorporatePrompt();
+        Debug.Log($"{prompt}");
+
+        // 2. Send the prompt to the LLM and get the response.
+        string corporateResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        if (corporateResponse == null)
+        {
+            Debug.LogWarning("LLM response was null or timed out.");
+            return(0, "LLM response was null or timed out.");
+        }
+
+        // 3. Parse the star ratings (and hidden star) from the LLM’s response.
+        int stars = ParseCorporateStars(corporateResponse);
+        // bool hasHiddenStar = ParseResidentialHiddenStar(llmResponse);
+
+        Debug.Log($"Corporate faction stars: {stars}");
+        Debug.Log($"LLM response: {corporateResponse}");
+        
+        return (stars, corporateResponse);
+    }
+
+    public async Task<(int stars, string response)> EvaluatePoliticalStars()
+    {
+        // 1. Build the prompt from the ScoringPromptController.
+        string prompt = _scoringPromptController.BuildPoliticalPrompt();
+        Debug.Log($"{prompt}");
+
+        // 2. Send the prompt to the LLM and get the response.
+        string politicalResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        if (politicalResponse == null)
+        {
+            Debug.LogWarning("LLM response was null or timed out.");
+            return(0, "LLM response was null or timed out.");
+        }
+
+        // 3. Parse the star ratings (and hidden star) from the LLM’s response.
+        int stars = ParsePoliticalStars(politicalResponse);
+        // bool hasHiddenStar = ParseResidentialHiddenStar(llmResponse);
+
+        Debug.Log($"Political faction stars: {stars}");
+        Debug.Log($"LLM response: {politicalResponse}");
+        
+        return (stars, politicalResponse);
     }
 
     private async Task<string> GetLLMResponseAsync(string prompt)
@@ -94,15 +143,6 @@ public class LLMController : MonoBehaviour
         _cts?.Cancel();
         _cts.Dispose();
     }
-    /// <summary>
-    /// Placeholder for your real LLM call.
-    /// </summary>
-    private string MockLLMResponse(string prompt)
-    {
-        // In practice, you'd send 'prompt' to your LLM API and get a response string back.
-        // This is just an example format you might see in the returned text:
-        return "Residents: 4 stars awarded. Hidden Star: YES\n";
-    }
 
     /// <summary>
     /// Extract the number of stars awarded to Residents using a simple Regex.
@@ -113,6 +153,36 @@ public class LLMController : MonoBehaviour
         // Looks for something like: "Residents: 4" or "Residents: 4 stars"
         Regex residentsRegex = new Regex(@"Residents:\s*(\d)");
         Match match = residentsRegex.Match(llmText);
+
+        if (match.Success && int.TryParse(match.Groups[1].Value, out int stars))
+        {
+            return stars;
+        }
+        
+        // Default to 0 if we can't parse
+        return 0;
+    }
+
+    private int ParseCorporateStars(string llmText)
+    {
+        // Looks for something like: "Corporate: 4" or "Corporate: 4 stars"
+        Regex corporateRegex = new Regex(@"Corporate:\s*(\d)");
+        Match match = corporateRegex.Match(llmText);
+
+        if (match.Success && int.TryParse(match.Groups[1].Value, out int stars))
+        {
+            return stars;
+        }
+        
+        // Default to 0 if we can't parse
+        return 0;
+    }
+
+    private int ParsePoliticalStars(string llmText)
+    {
+        // Looks for something like: "Political: 4" or "Political: 4 stars"
+        Regex politicalRegex = new Regex(@"Political:\s*(\d)");
+        Match match = politicalRegex.Match(llmText);
 
         if (match.Success && int.TryParse(match.Groups[1].Value, out int stars))
         {

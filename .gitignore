@@ -72,4 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 "Assets/_Project/Scripts/Scoring/LLMService.cs" 
-"Assets/_Project/Scripts/Scoring/LLMService.cs" 
+
+# API Keys
+API_Key.env
+*.env

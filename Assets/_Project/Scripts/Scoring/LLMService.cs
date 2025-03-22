@@ -28,8 +28,8 @@ public static class UnityWebRequestExtensions
 public class LLMService : MonoBehaviour
 {
     [SerializeField] private LLMConfig config;
-    
-    private string apiKey = "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";
+
+    private string apiKey = System.Environment.GetEnvironmentVariable("MY_API_KEY");
     private DateTime lastRequestTime;
     
     // Serializable classes for JSON handling

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d51f68cbc04fba4789cf89e69cfab53, type: 3}
   m_Name: LLMConfig
   m_EditorClassIdentifier: 
-  model: gpt-3.5-turbo
+  model: gpt-4o-mini
   temperature: 1
   apiEndpoint: https://api.openai.com/v1/chat/completions
   minRequestInterval: 1
