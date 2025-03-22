@@ -22,6 +22,7 @@ namespace UnityEngine.Tilemaps
 
         public bool isOverflowing = false;
         public bool spread = true;
+        public bool isFlooded = false;
 
         public bool ishalf = true;
         // Derived property: water height = terrain + (waterVolume / tileArea)
@@ -38,7 +39,33 @@ namespace UnityEngine.Tilemaps
         [SerializeField]
         public Sprite[] m_Sprites;
 
+        public void AddWater(int amount)
+        {
 
+            absorption += amount;
+            if (absorption > 0f)
+            {
+                waterVolume += absorption;
+                absorption = 0f;
+                isFlooded = true;
+            }
+        }
+        public void AddWater(int amount, float Height)
+        {
+            if (Height < WaterHeight)
+            {
+                return;
+            }
+            absorption += amount;
+            if (absorption > 0f)
+            {
+                waterVolume += absorption;
+                absorption = 0f;
+                isFlooded = true;
+
+            }
+        }
+        /*
         /// <summary>
         /// This method is called when the tile is refreshed. The PipelineExampleTile will refresh all neighboring tiles to update their rendering data if they are the same tile.
         /// </summary>
@@ -155,13 +182,13 @@ namespace UnityEngine.Tilemaps
             return Matrix4x4.identity;
         }
     }
-    /*
+    */
 #if UNITY_EDITOR
     /// <summary>
     /// Custom Editor for a PipelineExampleTile. This is shown in the Inspector window when a PipelineExampleTile asset is selected.
     /// </summary>
     [CustomEditor(typeof(WaterTile))]
-    public class PipelineExampleTileEditor : Editor
+    public class WaterTileEditor : Editor
     {
         private WaterTile tile { get { return (target as WaterTile); } }
 
@@ -182,6 +209,7 @@ namespace UnityEngine.Tilemaps
             EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
+                //tile.isFlooded = EditorGUILayout.Toggle(true, null);
             tile.m_Sprites[0] = (Sprite)EditorGUILayout.ObjectField("None", tile.m_Sprites[0], typeof(Sprite), false, null);
             tile.m_Sprites[2] = (Sprite)EditorGUILayout.ObjectField("One", tile.m_Sprites[2], typeof(Sprite), false, null);
             tile.m_Sprites[1] = (Sprite)EditorGUILayout.ObjectField("Two", tile.m_Sprites[1], typeof(Sprite), false, null);
@@ -205,6 +233,7 @@ namespace UnityEngine.Tilemaps
         }
     }
 #endif
-    */
+    
+    }
 }
 
