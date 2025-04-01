@@ -400,6 +400,38 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Vector2 worldPoint;
+            worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            var tpos = tileMap.WorldToCell(worldPoint);
+            tpos.x += 4;
+            tpos.y += 13;
+            Debug.Log(tpos);
+            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+            {
+                if (waterGrid[tpos.x, tpos.y] != null)
+                {
+                    switch(waterGrid[tpos.x, tpos.y].type)
+                    {
+                        case TileType.Wall:
+                            Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
+                            break;
+                        case TileType.Water:
+                            Debug.Log("Water Level: " + waterlevel);
+                            break;
+                        case TileType.Home:
+                            Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost);
+                            break;
+                        case TileType.Biz:
+                            Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost);
+                            break;
+                    }
+                }
+
+            }
+        }
     }
     IEnumerator tick()
     {
