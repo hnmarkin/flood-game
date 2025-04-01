@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
+using static WaterBlock;
 
 public class GridManager : MonoBehaviour
 {
@@ -25,29 +28,19 @@ public class GridManager : MonoBehaviour
     [SerializeField] public static WaterBlock[,] waterGrid;
     public static GridManager Instance;
     [SerializeField] float tickTimerMax = 1f;
-
+    [SerializeField] public FloodData floodData;
+    [SerializeField] int maxTicks = 20;
+    int totalHomes = 0;
+    int totalBiz = 0;
+    public int hurtBiz = 0;
+    public int hurtHome = 0;
+    public int totalDeathes;
+    public int totalCost;
 
     private void Start()
     {
         Instance = this;
         waterGrid = new WaterBlock[gridWidth, gridHeight]; //init empty grid
-        /*
-        for (int x = 0; x < gridWidth; x++)
-        {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                // Isometric conversion formula
-                float isoX = (x - y) * tileWidth * 0.5f;
-                float isoY = (x + y) * tileHeight * 0.5f;
-
-                Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-                GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
-                WaterBlock tile = tileObj.GetComponent<WaterBlock>();
-
-                waterGrid[x, y] = tile;
-            }
-        }
-        */
         
         AddWaterBlk(0, 0, 1);
         AddWaterBlk(1, 0, 1);
@@ -114,7 +107,10 @@ public class GridManager : MonoBehaviour
         AddWallBlk(6, 3, 1);
         AddWallBlk(6, 2, 1);
 
-
+        AddBizBlk(4, 6, 10);
+        AddBizBlk(4, 2, 10);
+        AddBizBlk(4, 3, 10);
+        AddHomeBlk(4, 4, 10);
         AddWallBlk(14, 11, 2);
         AddWallBlk(11, 14, 2);
         AddWallBlk(13, 11, 2);
@@ -130,8 +126,46 @@ public class GridManager : MonoBehaviour
     }
     private void Awake()
     {
-        
+        floodData.businessesAffectedPercent = 0;
+        floodData.homesFloodedPercent = 0;
+        floodData.infrastructureDamagePercent = 0;
+        floodData.utilityDowntimeHours = 0;
+        floodData.economicLosses = 0;
+        floodData.casualties = 0;
     }
+    public void OvertakeWater(int x, int y)
+    {
+        if(waterGrid[x, y] == null)
+        {
+            AddWaterBlk(x, y);
+        }
+        else if (waterGrid[x, y].type == TileType.Home)
+        {
+            hurtHome++;
+            totalCost += waterGrid[x, y].cost;
+            AddWaterBlk(x, y);
+        }
+        else if (waterGrid[x, y].type == TileType.Water)
+        {
+            return;
+        }
+        else if (waterGrid[x, y].type == TileType.Biz)
+        {
+            hurtBiz++;
+            totalCost += waterGrid[x, y].cost;
+            AddWaterBlk(x, y);
+        }
+        else if (waterGrid[x, y].type == TileType.Wall)
+        {
+            AddWaterBlk(x, y);
+        }
+        else
+        {
+            Debug.Log("Anomally occured when spreading water");
+            AddWaterBlk(x, y);
+        }
+    }
+    //FIXME: /fill helper function
     public void AddWallBlk(int x, int y, int h)
     {
         // Isometric conversion formula
@@ -143,11 +177,45 @@ public class GridManager : MonoBehaviour
         WaterBlock tile = tileObj.GetComponent<WaterBlock>();
         tile.xloc = x;
         tile.yloc = y;
-        tile.ground = true;
         tile.height = h;
         if (waterGrid[x, y] != null) { Debug.Log("Tried to make wall on top of existing water!"); }
         waterGrid[x, y] = tile;
+        tile.type = TileType.Wall;
         //tile.rend.color = Color.black;
+    }
+    public void AddBizBlk(int x, int y, int cost)
+    {
+        // Isometric conversion formula
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+
+        Vector3 position = new Vector3(isoX, isoY, 0); //spawn water
+        GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
+        WaterBlock tile = tileObj.GetComponent<WaterBlock>();
+        tile.xloc = x;
+        tile.yloc = y;
+        if (waterGrid[x, y] != null) { Debug.Log("Tried to make water on top of existing water!"); }
+        waterGrid[x, y] = tile;
+        tile.type = TileType.Biz;
+        tile.cost = cost;
+        totalBiz++;
+    }
+    public void AddHomeBlk(int x, int y, int cost)
+    {
+        // Isometric conversion formula
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+
+        Vector3 position = new Vector3(isoX, isoY, 0); //spawn water
+        GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
+        WaterBlock tile = tileObj.GetComponent<WaterBlock>();
+        tile.xloc = x;
+        tile.yloc = y;
+        if (waterGrid[x, y] != null) { Debug.Log("Tried to make water on top of existing water!"); }
+        waterGrid[x, y] = tile;
+        tile.type = TileType.Home;
+        tile.cost = cost;
+        totalHomes++;
     }
     public void AddWaterBlk(int x, int y)
     {
@@ -163,6 +231,7 @@ public class GridManager : MonoBehaviour
         tile.yloc = y;
         if (waterGrid[x,y] != null) { Debug.Log("Tried to make water on top of existing water!"); }
         waterGrid[x, y] = tile;
+        tile.type = TileType.Water;
     }
     private void AddWaterBlk(int x, int y, int amt)
     {
@@ -183,7 +252,10 @@ public class GridManager : MonoBehaviour
         waterGrid[x, y] = tile;
         tile.src = true;
         tile.amt = amt;
+        tile.type = TileType.Water;
     }
+
+    /*
     void WorldTick()
     {
  
@@ -201,9 +273,10 @@ public class GridManager : MonoBehaviour
         ///FIXME: calculate barriers
 
     }
-    void SpreadTick()
+    */
+    void SpreadTick() // FIXME: BRUH WE GOTTA FIX THIS MESS
     {
-        //Calc water mass changes
+        //FIXME: Calc water mass changes
         foreach (WaterBlock tile in connectedWater)
         {
             if (tile.src == true)
@@ -211,7 +284,7 @@ public class GridManager : MonoBehaviour
                 waterAmt += tile.amt;
             }
         }
-        //FIXME: calc level
+
         if (connectedWater.Count < waterAmt)
         {
             for (int x = 0; x < gridWidth; x++) //calc borders
@@ -220,7 +293,7 @@ public class GridManager : MonoBehaviour
                 {
                     if (waterGrid[x, y] != null)
                     {
-                        if (!waterGrid[x, y].ground)
+                        if (waterGrid[x, y].type == TileType.Water)
                         {
                             waterGrid[x, y].checkBorder();
                         }
@@ -235,8 +308,11 @@ public class GridManager : MonoBehaviour
                 {
                     if (waterGrid[x, y] != null)
                     {
-                        if (waterGrid[x, y].border && connectedWater.Count < waterAmt && !waterGrid[x, y].ground)
+                        //Debug.Log(waterGrid[x, y].border);
+                        //Debug.Log(waterGrid[x, y].type);
+                        if (waterGrid[x, y].border && connectedWater.Count < waterAmt && waterGrid[x, y].type == TileType.Water)
                         {
+
                             waterGrid[x, y].spread();
                         }
                     }
@@ -249,14 +325,14 @@ public class GridManager : MonoBehaviour
                 {
                     if (waterGrid[x, y] != null)
                     {
-                        if (!waterGrid[x, y].ground)
+                        if (waterGrid[x, y].type != TileType.Wall)
                         {
                             waterGrid[x, y].checkBorder();
                         }
                     }
                 }
             }
-            //if no more spread
+            //if no more spread raise level
             if (waterAmt > connectedWater.Count)
             {
                 foreach (WaterBlock tile in connectedWater)
@@ -274,25 +350,38 @@ public class GridManager : MonoBehaviour
 
     }
     float tickTimer = 0f;
+    int count = 0;
+    void setScore()
+    {
+        floodData.businessesAffectedPercent = (hurtBiz / totalBiz)*100;
+        floodData.homesFloodedPercent = (hurtHome / totalHomes)*100;
+        floodData.casualties = totalDeathes;
+        floodData.economicLosses = totalCost;
+    }
     private void Update()
     {
 
         tickTimer += Time.deltaTime;
         //Debug.Log(tickTimer);
-        while (tickTimer >= tickTimerMax)
+        if (tickTimer >= tickTimerMax && count < 20)
         {
             tickTimer -= tickTimerMax;
             StartCoroutine(tick());
+            count++;
         }
+        else if(tickTimer >= tickTimerMax && count >= 20)
+        {
+            setScore();
+            SceneManager.LoadScene("ScoringScene");
+            SceneManager.UnloadScene("WaterTest");
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 worldPoint;
             worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             var tpos = tileMap.WorldToCell(worldPoint);
-
-            // Try to get a tile from cell position
-            //var tile = tileMap.GetTile(tpos);
             tpos.x += 4;
             tpos.y += 13;
             Debug.Log(tpos);
@@ -300,7 +389,7 @@ public class GridManager : MonoBehaviour
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
-                    if (waterGrid[tpos.x, tpos.y].ground && waterGrid[tpos.x, tpos.y].height <= 1)
+                    if (waterGrid[tpos.x, tpos.y].type == TileType.Wall && waterGrid[tpos.x, tpos.y].height <= 1)
                     {
                         AddWallBlk(tpos.x, tpos.y, 100);
                     }
@@ -321,294 +410,5 @@ public class GridManager : MonoBehaviour
         Debug.Log("Connected "+connectedWater.Count);
         Debug.Log("Level " + waterlevel);
     }
-    /*
-    private void Start()
-    {
-    }
-    void Awake()
-    {
-        //GenerateGrid();
-        //GenerateDemo();
-    }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            var tpos = tilemap.WorldToCell(worldPoint);
-
-            // Try to get a tile from cell position
-            var tile = tilemap.GetTile(tpos);
-            //Debug.Log(tile);
-            Debug.Log(tpos);
-            //Debug.Log(worldPoint);
-
-        }
-    }
-    public Tile GenerateDemo()
-    {/*
-        WaterTile tile = new WaterTile();
-        //Vector3Int zero = new Vector3Int(0, 0, -1);
-        water.SetTile(new Vector3Int(0, 0, -1), tile);
-        */
-        /*
-
-            int x = 2;
-            int y = 2;
-            float tileWidth = 3f;  // Adjust based on your tile's actual width
-            float tileHeight = 1.5f; // Adjust for isometric spacing
-
-            float isoX = (x - y) * tileWidth * 0.5f;
-            float isoY = (x + y) * tileHeight * 0.5f;
-            tiles = new Tile[gridWidth, gridHeight];
-
-            Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-            Tile tile = tileObj.GetComponent<Tile>();
-            tile.upgradeWater();
-            /*
-            tile.gridX = x;
-            tile.gridY = y;
-            tiles[x, y] = tile;
-            *//*
-            tilesToAdd.Add(tile);
-
-            return tile;
-
-
-        }
-        void GenerateGrid()
-        {
-            float tileWidth = 3f;  // Adjust based on your tile's actual width
-            float tileHeight = 1.5f; // Adjust for isometric spacing
-
-            tiles = new Tile[gridWidth, gridHeight];
-
-            for (int x = 0; x < gridWidth; x++)
-            {
-                for (int y = 0; y < gridHeight; y++)
-                {
-                    // Isometric conversion formula
-                    float isoX = (x - y) * tileWidth * 0.5f;
-                    float isoY = (x + y) * tileHeight * 0.5f;
-
-                    Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-                    GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    Tile tile = tileObj.GetComponent<Tile>();
-
-                    tile.gridX = x;
-                    tile.gridY = y;
-                    tiles[x, y] = tile;
-                }
-            }
-
-            // After instantiation, assign neighbor references to each tile
-            AssignNeighbors();
-        }
-
-
-        void AssignNeighbors()
-        {
-            // For simplicity, assume 4-neighbor connectivity (N, S, E, W)
-            for (int x = 0; x < gridWidth; x++)
-            {
-                for (int y = 0; y < gridHeight; y++)
-                {
-                    Tile current = tiles[x, y];
-                    // Create a list (or fixed-size array) for neighbors
-                    var neighborList = new System.Collections.Generic.List<Tile>();
-
-                    if (x > 0) neighborList.Add(tiles[x - 1, y]);       // West
-                    if (x < gridWidth - 1) neighborList.Add(tiles[x + 1, y]); // East
-                    if (y > 0) neighborList.Add(tiles[x, y - 1]);       // South
-                    if (y < gridHeight - 1) neighborList.Add(tiles[x, y + 1]); // North
-
-                    current.neighbors = neighborList.ToArray();
-                }
-            }
-        }
-
-        // Optional: Provide helper methods to fetch tiles or perform spatial queries.
-        public Tile GetTileAt(int x, int y)
-        {
-            if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight)
-                return tiles[x, y];
-            return null;
-        }
-
-        public void DoWaterTick(Tile source)
-        {
-            source.addWater(10f);
-            Debug.Log(allWater.Count);
-           // Debug.Log(0 < allWater.Count);
-            for (int i = 0; i < allWater.Count; i++)
-            {
-                if (allWater[i].isOverflowing && allWater[i].spread == true)
-                {
-                    AddNeighbors(allWater[i]);
-                    allWater[i].spread = false;
-                }
-                else
-                {
-                    allWater[i].upgradeWater();
-                }
-            }
-            Debug.Log(tilesToAdd.Count);
-            for (int i = 0; i < tilesToAdd.Count; i++)
-            {
-                allWater.Add(tilesToAdd[i]);
-            }
-            tilesToAdd.Clear();
-        }
-
-        public void resolveConflicts()
-        {
-            for (int i = 0; i < allWater.Count; i++)
-            {
-                for (int j = 0; j < allWater.Count;j++)
-                {
-                    if (allWater[i].transform.position == allWater[j].transform.position && allWater[i] != allWater[j])
-                    {
-                        for(int k = 0; k < allWater[i].neighbors.Length; k++)
-                        {
-                            for (int t = 0; t < allWater[j].neighbors.Length; t++)
-                            {
-                                if (allWater[j].neighbors[t] != allWater[i].neighbors[k])
-                                {
-                                    allWater[i].neighbors[k] = allWater[j].neighbors[t];
-                                }
-                            }
-                        }
-                        Destroy(allWater[j]);
-                        allWater.RemoveAt(j);
-                    }
-
-                }
-            }
-        }
-        public void AddNeighbors(Tile tile)
-        {
-            Debug.Log(tile.neighbors);
-
-            bool missingL = true;
-            bool missingR = true;
-            bool missingU = true;
-            bool missingD = true;
-
-            //if (tile.neighbors.Length == 4) return;
-            foreach(Tile n in tile.neighbors)
-            {
-                /*
-                Debug.Log(missingD);
-                Debug.Log(missingU);
-                Debug.Log(missingL);
-                Debug.Log(missingR);
-                *//*
-                if(n == null) { continue; }
-                if (tile.neighbors[0] != null) { missingU = false; }
-                if (tile.neighbors[1] != null) { missingR = false; }
-                if (tile.neighbors[2] != null) { missingD = false; }
-                if (tile.neighbors[3] != null) { missingL = false; }
-            }
-            if (missingU)
-            {
-                // Isometric conversion formula
-                float isoX = (tile.transform.position.x + 1.5f);
-                float isoY = (tile.transform.position.y + 0.8f);
-
-                Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-                if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
-                {
-                    GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    Tile l = tileObj.GetComponent<Tile>();
-
-                    l.gridX = tile.gridX;
-                    l.gridY = tile.gridY + 1;
-                    tile.neighbors[0] = l;
-                    l.neighbors[2] = tile;
-                    tilesToAdd.Add(l);
-                }
-                else
-                {
-                    obststacles[0].tick();
-                }
-
-            }
-            if (missingR)
-            {
-
-                // Isometric conversion formula
-                float isoX = (tile.transform.position.x + 1.5f);
-                float isoY = (tile.transform.position.y + -0.8f);
-
-                Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric
-                if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
-                {
-                    GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    Tile l = tileObj.GetComponent<Tile>();
-
-                    l.gridX = tile.gridX + 1;
-                    l.gridY = tile.gridY;
-                    tile.neighbors[1] = l;
-                    l.neighbors[3] = tile;
-                    tilesToAdd.Add(l);
-                }
-                else
-                {
-                    obststacles[0].tick();
-                }
-            }
-
-            if (missingD)
-            {
-                // Isometric conversion formula
-                float isoX = (tile.transform.position.x + -1.5f);
-                float isoY = (tile.transform.position.y + -0.8f);
-
-                Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-                if (obststacles[0].transform.position != position && obststacles[0].ticks <= 4)
-                {
-                    GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    Tile l = tileObj.GetComponent<Tile>();
-
-                    l.gridX = tile.gridX;
-                    l.gridY = tile.gridY - 1;
-                    tile.neighbors[2] = l;
-                    l.neighbors[0] = tile;
-                    tilesToAdd.Add(l);
-                }
-                else
-                {
-                    obststacles[0].tick();
-                }
-            }
-            if (missingL)
-            {
-                // Isometric conversion formula
-                float isoX = (tile.transform.position.x + -1.5f);
-                float isoY = (tile.transform.position.y + 0.8f);
-
-                Vector3 position = new Vector3(isoX, isoY, 0); // Adjust based on your isometric view
-                if (obststacles[0].transform.position != position && obststacles[0].ticks <=4)
-                {
-                    GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    Tile l = tileObj.GetComponent<Tile>();
-
-                    l.gridX = tile.gridX - 1;
-                    l.gridY = tile.gridY;
-                    tile.neighbors[3] = l;
-                    l.neighbors[1] = tile;
-                    //tiles[l.gridX, l.gridY] = l;
-                    tilesToAdd.Add(l);
-                }
-                else
-                {
-                    obststacles[0].tick();
-                }
-            }
-
-        }
-        */
-
-    }
+}
