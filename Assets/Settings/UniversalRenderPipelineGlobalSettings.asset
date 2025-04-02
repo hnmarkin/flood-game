@@ -625,6 +625,238 @@ MonoBehaviour:
       - rid: 4374347662759297413
       - rid: 4374347662759297414
       - rid: 4374347662759297415
+      - rid: 4374347662759297416
+      - rid: 4374347662759297417
+      - rid: 4374347662759297418
+      - rid: 4374347662759297419
+      - rid: 4374347662759297420
+      - rid: 4374347662759297421
+      - rid: 4374347662759297422
+      - rid: 4374347662759297423
+      - rid: 4374347662759297424
+      - rid: 4374347662759297425
+      - rid: 4374347662759297426
+      - rid: 4374347662759297427
+      - rid: 4374347662759297428
+      - rid: 4374347662759297429
+      - rid: 4374347662759297430
+      - rid: 4374347662759297431
+      - rid: 4374347662759297432
+      - rid: 4374347662759297433
+      - rid: 4374347662759297434
+      - rid: 4374347662759297435
+      - rid: 4374347662759297436
+      - rid: 4374347662759297437
+      - rid: 4374347662759297438
+      - rid: 4374347662759297439
+      - rid: 4374347662759297440
+      - rid: 4374347662759297441
+      - rid: 4374347662759297442
+      - rid: 4374347662759297443
+      - rid: 4374347662759297444
+      - rid: 4374347662759297445
+      - rid: 4374347662759297446
+      - rid: 4374347662759297447
+      - rid: 4374347662759297448
+      - rid: 4374347662759297449
+      - rid: 4374347662759297450
+      - rid: 4374347662759297451
+      - rid: 4374347662759297452
+      - rid: 4374347662759297453
+      - rid: 4374347662759297454
+      - rid: 4374347662759297455
+      - rid: 4374347662759297456
+      - rid: 4374347662759297457
+      - rid: 4374347662759297458
+      - rid: 4374347662759297459
+      - rid: 4374347662759297460
+      - rid: 4374347662759297461
+      - rid: 4374347662759297462
+      - rid: 4374347662759297463
+      - rid: 4374347662759297464
+      - rid: 4374347662759297465
+      - rid: 4374347662759297466
+      - rid: 4374347662759297467
+      - rid: 4374347662759297468
+      - rid: 4374347662759297469
+      - rid: 4374347662759297470
+      - rid: 4374347662759297471
+      - rid: 4374347662759297472
+      - rid: 4374347662759297473
+      - rid: 4374347662759297474
+      - rid: 4374347662759297475
+      - rid: 4374347662759297476
+      - rid: 4374347662759297477
+      - rid: 4374347662759297478
+      - rid: 4374347662759297479
+      - rid: 4374347662759297480
+      - rid: 4374347662759297481
+      - rid: 4374347662759297482
+      - rid: 4374347662759297483
+      - rid: 4374347662759297484
+      - rid: 4374347662759297485
+      - rid: 4374347662759297486
+      - rid: 4374347662759297487
+      - rid: 4374347662759297488
+      - rid: 4374347662759297489
+      - rid: 4374347662759297490
+      - rid: 4374347662759297491
+      - rid: 4374347662759297492
+      - rid: 4374347662759297493
+      - rid: 4374347662759297494
+      - rid: 4374347662759297495
+      - rid: 4374347662759297496
+      - rid: 4374347662759297497
+      - rid: 4374347662759297498
+      - rid: 4374347662759297499
+      - rid: 4374347662759297500
+      - rid: 4374347662759297501
+      - rid: 4374347662759297502
+      - rid: 4374347662759297503
+      - rid: 4374347662759297504
+      - rid: 4374347662759297505
+      - rid: 4374347662759297506
+      - rid: 4374347662759297507
+      - rid: 4374347662759297508
+      - rid: 4374347662759297509
+      - rid: 4374347662759297510
+      - rid: 4374347662759297511
+      - rid: 4374347662759297512
+      - rid: 4374347662759297513
+      - rid: 4374347662759297514
+      - rid: 4374347662759297515
+      - rid: 4374347662759297516
+      - rid: 4374347662759297517
+      - rid: 4374347662759297518
+      - rid: 4374347662759297519
+      - rid: 4374347662759297520
+      - rid: 4374347662759297521
+      - rid: 4374347662759297522
+      - rid: 4374347662759297523
+      - rid: 4374347662759297524
+      - rid: 4374347662759297525
+      - rid: 4374347662759297526
+      - rid: 4374347662759297527
+      - rid: 4374347662759297528
+      - rid: 4374347662759297529
+      - rid: 4374347662759297530
+      - rid: 4374347662759297531
+      - rid: 4374347662759297532
+      - rid: 4374347662759297533
+      - rid: 4374347662759297534
+      - rid: 4374347662759297535
+      - rid: 4374347662759297536
+      - rid: 4374347662759297537
+      - rid: 4374347662759297538
+      - rid: 4374347662759297539
+      - rid: 4374347662759297540
+      - rid: 4374347662759297541
+      - rid: 4374347662759297542
+      - rid: 4374347662759297543
+      - rid: 4374347662759297544
+      - rid: 4374347662759297545
+      - rid: 4374347662759297546
+      - rid: 4374347662759297547
+      - rid: 4374347662759297548
+      - rid: 4374347662759297549
+      - rid: 4374347662759297550
+      - rid: 4374347662759297551
+      - rid: 4374347662759297552
+      - rid: 4374347662759297553
+      - rid: 4374347662759297554
+      - rid: 4374347662759297555
+      - rid: 4374347662759297556
+      - rid: 4374347662759297557
+      - rid: 4374347662759297558
+      - rid: 4374347662759297559
+      - rid: 4374347662759297560
+      - rid: 4374347662759297561
+      - rid: 4374347662759297562
+      - rid: 4374347662759297563
+      - rid: 4374347662759297564
+      - rid: 4374347662759297565
+      - rid: 4374347662759297566
+      - rid: 4374347662759297567
+      - rid: 4374347662759297568
+      - rid: 4374347662759297569
+      - rid: 4374347662759297570
+      - rid: 4374347662759297571
+      - rid: 4374347662759297572
+      - rid: 4374347662759297573
+      - rid: 4374347662759297574
+      - rid: 4374347662759297575
+      - rid: 4374347662759297576
+      - rid: 4374347662759297577
+      - rid: 4374347662759297578
+      - rid: 4374347662759297579
+      - rid: 4374347662759297580
+      - rid: 4374347662759297581
+      - rid: 4374347662759297582
+      - rid: 4374347662759297583
+      - rid: 4374347662759297584
+      - rid: 4374347662759297585
+      - rid: 4374347662759297586
+      - rid: 4374347662759297587
+      - rid: 4374347662759297588
+      - rid: 4374347662759297589
+      - rid: 4374347662759297590
+      - rid: 4374347662759297591
+      - rid: 4374347662759297592
+      - rid: 4374347662759297593
+      - rid: 4374347662759297594
+      - rid: 4374347662759297595
+      - rid: 4374347662759297596
+      - rid: 4374347662759297597
+      - rid: 4374347662759297598
+      - rid: 4374347662759297599
+      - rid: 4374347662759297600
+      - rid: 4374347662759297601
+      - rid: 4374347662759297602
+      - rid: 4374347662759297603
+      - rid: 4374347662759297604
+      - rid: 4374347662759297605
+      - rid: 4374347662759297606
+      - rid: 4374347662759297607
+      - rid: 4374347662759297608
+      - rid: 4374347662759297609
+      - rid: 4374347662759297610
+      - rid: 4374347662759297611
+      - rid: 4374347662759297612
+      - rid: 4374347662759297613
+      - rid: 4374347662759297614
+      - rid: 4374347662759297615
+      - rid: 4374347662759297616
+      - rid: 4374347662759297617
+      - rid: 4374347662759297618
+      - rid: 4374347662759297619
+      - rid: 4374347662759297620
+      - rid: 4374347662759297621
+      - rid: 4374347662759297622
+      - rid: 4374347662759297623
+      - rid: 4374347662759297624
+      - rid: 4374347662759297625
+      - rid: 4374347662759297626
+      - rid: 4374347662759297627
+      - rid: 4374347662759297628
+      - rid: 4374347662759297629
+      - rid: 4374347662759297630
+      - rid: 4374347662759297631
+      - rid: 4374347662759297632
+      - rid: 4374347662759297633
+      - rid: 4374347662759297634
+      - rid: 4374347662759297635
+      - rid: 4374347662759297636
+      - rid: 4374347662759297637
+      - rid: 4374347662759297638
+      - rid: 4374347662759297639
+      - rid: 4374347662759297640
+      - rid: 4374347662759297641
+      - rid: 4374347662759297642
+      - rid: 4374347662759297643
+      - rid: 4374347662759297644
+      - rid: 4374347662759297645
+      - rid: 4374347662759297646
+      - rid: 4374347662759297647
     m_RuntimeSettings:
       m_List: []
   m_AssetVersion: 8
@@ -5247,6 +5479,1891 @@ MonoBehaviour:
         m_Version: 1
         m_ProbeVolumeDisableStreamingAssets: 0
     - rid: 4374347662759297415
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297416
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297417
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297418
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297419
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297420
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297421
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297422
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297423
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297424
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297425
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297426
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297427
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297428
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297429
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297430
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297431
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297432
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297433
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297434
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297435
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297436
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297437
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297438
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297439
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297440
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297441
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297442
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297443
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297444
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297445
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297446
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297447
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297448
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297449
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297450
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297451
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297452
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297453
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297454
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297455
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297456
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297457
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297458
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297459
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297460
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297461
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297462
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297463
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297464
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297465
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297466
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297467
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297468
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297469
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297470
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297471
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297472
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297473
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297474
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297475
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297476
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297477
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297478
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297479
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297480
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297481
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297482
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297483
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297484
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297485
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297486
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297487
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297488
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297489
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297490
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297491
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297492
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297493
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297494
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297495
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297496
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297497
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297498
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297499
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297500
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297501
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297502
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297503
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297504
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297505
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297506
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297507
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297508
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297509
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297510
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297511
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297512
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297513
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297514
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297515
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297516
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297517
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297518
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297519
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297520
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297521
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297522
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297523
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297524
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297525
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297526
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297527
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297528
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297529
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297530
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297531
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297532
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297533
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297534
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297535
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297536
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297537
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297538
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297539
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297540
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297541
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297542
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297543
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297544
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297545
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297546
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297547
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297548
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297549
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297550
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297551
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297552
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297553
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297554
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297555
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297556
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297557
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297558
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297559
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297560
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297561
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297562
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297563
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297564
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297565
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297566
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297567
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297568
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297569
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297570
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297571
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297572
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297573
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297574
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297575
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297576
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297577
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297578
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297579
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297580
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297581
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297582
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297583
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297584
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297585
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297586
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297587
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297588
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297589
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297590
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297591
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297592
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297593
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297594
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297595
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297596
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297597
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297598
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297599
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297600
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297601
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297602
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297603
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297604
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297605
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297606
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297607
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297608
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297609
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297610
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297611
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297612
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297613
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297614
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297615
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297616
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297617
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297618
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297619
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297620
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297621
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297622
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297623
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297624
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297625
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297626
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297627
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297628
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297629
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297630
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297631
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297632
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297633
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297634
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297635
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297636
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297637
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297638
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297639
+      type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
+        m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
+        m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 4374347662759297640
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}
+    - rid: 4374347662759297641
+      type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
+      data:
+        m_Version: 0
+        m_InstanceDataBufferCopyKernels: {fileID: 7200000, guid: f984aeb540ded8b4fbb8a2047ab5b2e2, type: 3}
+        m_InstanceDataBufferUploadKernels: {fileID: 7200000, guid: 53864816eb00f2343b60e1a2c5a262ef, type: 3}
+        m_TransformUpdaterKernels: {fileID: 7200000, guid: 2a567b9b2733f8d47a700c3c85bed75b, type: 3}
+        m_WindDataUpdaterKernels: {fileID: 7200000, guid: fde76746e4fd0ed418c224f6b4084114, type: 3}
+        m_OccluderDepthPyramidKernels: {fileID: 7200000, guid: 08b2b5fb307b0d249860612774a987da, type: 3}
+        m_InstanceOcclusionCullingKernels: {fileID: 7200000, guid: f6d223acabc2f974795a5a7864b50e6c, type: 3}
+        m_OcclusionCullingDebugKernels: {fileID: 7200000, guid: b23e766bcf50ca4438ef186b174557df, type: 3}
+        m_DebugOcclusionTestPS: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+        m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    - rid: 4374347662759297642
+      type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeBlendStatesCS: {fileID: 7200000, guid: a3f7b8c99de28a94684cb1daebeccf5d, type: 3}
+        probeVolumeUploadDataCS: {fileID: 7200000, guid: 0951de5992461754fa73650732c4954c, type: 3}
+        probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931, type: 3}
+    - rid: 4374347662759297643
+      type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
+        m_IncludeReferencedInScenes: 0
+        m_IncludeAssetsByLabel: 0
+        m_LabelToInclude: 
+    - rid: 4374347662759297644
+      type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        dilationShader: {fileID: 7200000, guid: 6bb382f7de370af41b775f54182e491d, type: 3}
+        subdivideSceneCS: {fileID: 7200000, guid: bb86f1f0af829fd45b2ebddda1245c22, type: 3}
+        voxelizeSceneShader: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+        traceVirtualOffsetCS: {fileID: -6772857160820960102, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        traceVirtualOffsetRT: {fileID: -5126288278712620388, guid: ff2cbab5da58bf04d82c5f34037ed123, type: 3}
+        skyOcclusionCS: {fileID: -6772857160820960102, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        skyOcclusionRT: {fileID: -5126288278712620388, guid: 5a2a534753fbdb44e96c3c78b5a6999d, type: 3}
+        renderingLayerCS: {fileID: -6772857160820960102, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+        renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9, type: 3}
+    - rid: 4374347662759297645
+      type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        probeVolumeDebugShader: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+        probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+        probeVolumeSamplingDebugShader: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+        probeVolumeOffsetDebugShader: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+        probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 20be25aac4e22ee49a7db76fb3df6de2, type: 3}
+        numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a, type: 3}
+    - rid: 4374347662759297646
+      type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_Version: 1
+        m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 4374347662759297647
       type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}

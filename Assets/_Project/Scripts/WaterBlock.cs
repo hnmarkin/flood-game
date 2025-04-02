@@ -17,6 +17,7 @@ public class WaterBlock : MonoBehaviour
     public enum TileType { Water, Wall, Biz, Home};
     public TileType type;
     public int cost;
+    public int population;
 
     void Start()
     {
