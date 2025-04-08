@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class TypewriterEffect : MonoBehaviour
+public class TypewriterEffect2 : MonoBehaviour
 {
     [SerializeField] private float typewriterSpeed = 50f;
 
