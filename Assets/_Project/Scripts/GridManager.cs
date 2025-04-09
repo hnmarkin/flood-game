@@ -263,7 +263,7 @@ public class GridManager : MonoBehaviour
 
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
-
+                    Destroy(highlight);
                     highlight = PlaceHighlight(tpos.x, tpos.y);
                     switch(waterGrid[tpos.x, tpos.y].type)
                     {
