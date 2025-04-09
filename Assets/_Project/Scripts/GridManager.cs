@@ -3,41 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 using UnityEngine.UIElements;
 using UnityEngine.XR;
 using static WaterBlock;
 
 public class GridManager : MonoBehaviour
 {
-    //public List<WaterObststacle> obststacles = new List<WaterObststacle>();
+    [SerializeField] InspectorController ic;
+    GameObject highlight;
     public int gridWidth = 15;
     public int gridHeight = 15;
     public GameObject waterPrefab;  // Prefab with the waterBlock script attached
     public List<WaterBlock> connectedWater = new List<WaterBlock>();
-    //List<Tile> tilesToAdd = new List<Tile>();
     [SerializeField] Tilemap tileMap;
-    //[SerializeField] Tilemap water;
-    //WaterTile waterTile;
-    [SerializeField] float tileWidth = 3f; 
-    [SerializeField] float tileHeight = 1.5f;
+    float tileWidth = 3f; 
+    float tileHeight = 1.5f;
     public int waterlevel;
-    public int waterAmt;
+    int waterAmt;
     [SerializeField] public static WaterBlock[,] waterGrid;
     public static GridManager Instance;
-    [SerializeField] float tickTimerMax = 1f;
+    float tickTimerMax = 1f;
     [SerializeField] public FloodData floodData;
-    [SerializeField] int maxTicks = 20;
+    [SerializeField] GameObject redness;
+
 
     int totalHomes = 0;
     int totalBiz = 0;
-    public int hurtBiz = 0;
-    public int hurtHome = 0;
-    public int totalDeathes;
-    public int totalCost;
+    int hurtBiz = 0;
+    int hurtHome = 0;
+    int totalDeathes;
+    int totalCost;
 
     private void Start()
     {
@@ -255,28 +256,46 @@ public class GridManager : MonoBehaviour
             var tpos = tileMap.WorldToCell(worldPoint);
             tpos.x += 4;
             tpos.y += 13;
-            //Debug.Log(tpos);
-            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+
+
+            if (tpos.x > -1 && tpos.y > -1 && tpos.x <= 14 && tpos.y <= 14)
             {
+
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
+
+                    highlight = PlaceHighlight(tpos.x, tpos.y);
                     switch(waterGrid[tpos.x, tpos.y].type)
                     {
                         case TileType.Wall:
+                            ic.setInspector("Wall:", "Height: " + waterGrid[tpos.x, tpos.y].height, TileType.Wall);
                             Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
                             break;
                         case TileType.Water:
+                            ic.setInspector("Water:", "Water Level: " + waterlevel, TileType.Water);
                             Debug.Log("Water Level: " + waterlevel);
                             break;
                         case TileType.Home:
+                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n'+" Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
                             Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
                         case TileType.Biz:
+                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + " Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
                             Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
                     }
                 }
+                else
+                {
+                    ic.GoAwayUI();
+                    Destroy(highlight);
+                }
 
+            }
+            else
+            {
+                ic.GoAwayUI();
+                Destroy(highlight);
             }
         }
     }
@@ -462,5 +481,14 @@ public class GridManager : MonoBehaviour
         tile.src = true;
         tile.amt = amt;
         tile.type = TileType.Water;
+    }
+   GameObject PlaceHighlight(int x, int y)
+    {
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+        Vector3 position = new Vector3(isoX, isoY, 0);
+        GameObject tileObj = Instantiate(redness, position, Quaternion.identity);
+        tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
+        return tileObj;
     }
 }
