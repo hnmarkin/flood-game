@@ -11,7 +11,7 @@ public class WaterBlock : MonoBehaviour
     public int amt;
     public bool border = false;
     public int height;
-    //public bool ground;
+    public bool wall;
     public Sprite[] pic;
     public Sprite blok;
     public enum TileType { Water, Wall, Biz, Home};
@@ -23,7 +23,7 @@ public class WaterBlock : MonoBehaviour
     {
         rend = GetComponent<SpriteRenderer>();
         if (type == TileType.Wall) { rend.sprite = null; }
-        if (type == TileType.Wall && height == 100) { rend.sprite = blok; }
+        if (type == TileType.Wall && wall) { rend.sprite = blok; rend.color = Color.red; }
     }
     bool CheckSides(int d)
     {

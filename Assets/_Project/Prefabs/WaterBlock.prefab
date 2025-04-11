@@ -108,11 +108,13 @@ MonoBehaviour:
   amt: 0
   border: 0
   height: 0
-  ground: 0
   pic:
   - {fileID: 21300000, guid: 2b3795b8632e5334d82cd489f524395c, type: 3}
   - {fileID: 21300000, guid: 1f70692065fe33a47a0d8e539bcb5fd0, type: 3}
   - {fileID: 21300000, guid: 1f70692065fe33a47a0d8e539bcb5fd0, type: 3}
   - {fileID: 21300000, guid: 1f70692065fe33a47a0d8e539bcb5fd0, type: 3}
   - {fileID: 21300000, guid: 1f70692065fe33a47a0d8e539bcb5fd0, type: 3}
-  blok: {fileID: 21300000, guid: 6e2303c68ffe0a345bc5bea5d7e29b4a, type: 3}
+  blok: {fileID: 21300000, guid: 341cb6702958d4e4f9e9bc08260129f2, type: 3}
+  type: 0
+  cost: 0
+  population: 0

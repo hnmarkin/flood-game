@@ -30,7 +30,15 @@ public class GridManager : MonoBehaviour
     public static GridManager Instance;
     [SerializeField] float tickTimerMax = 1f;
     [SerializeField] public FloodData floodData;
+<<<<<<< Updated upstream
     [SerializeField] int maxTicks = 20;
+=======
+    [SerializeField] GameObject redness;
+    public int wallnum;
+    public int budget = 10;
+    public int population;
+
+>>>>>>> Stashed changes
 
     int totalHomes = 0;
     int totalBiz = 0;
@@ -47,19 +55,19 @@ public class GridManager : MonoBehaviour
         SlashFillWater(0, 0, 14, 0, 1);
         //AddWaterBlk(15, 0, 1);
         
-        AddWallBlk(6, 1, 1);
-        AddWallBlk(5, 1, 1);
-        AddWallBlk(4, 1, 1);
-        AddWallBlk(3, 1, 1);
-        AddWallBlk(2, 1, 1);
-        AddWallBlk(1, 1, 1);
+        AddGroundBlk(6, 1, 1);
+        AddGroundBlk(5, 1, 1);
+        AddGroundBlk(4, 1, 1);
+        AddGroundBlk(3, 1, 1);
+        AddGroundBlk(2, 1, 1);
+        AddGroundBlk(1, 1, 1);
 
 
         SlashFillWall(0, 5, 6, 5, 1);
         SlashFillWall(7, 1, 14, 1, 1);
         SlashFillWall(7, 7, 7, 14, 1);
         SlashFillWall(6, 2, 6, 6, 1);
-        AddWallBlk(0, 1, 0);
+        AddGroundBlk(0, 1, 0);
         
         //SlashFillHome()
         AddBizBlk(4, 6, 10);
@@ -232,21 +240,26 @@ public class GridManager : MonoBehaviour
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
-                    if (waterGrid[tpos.x, tpos.y].type == TileType.Wall && waterGrid[tpos.x, tpos.y].height <= 1)
+                    if (waterGrid[tpos.x, tpos.y].type == TileType.Wall && waterGrid[tpos.x, tpos.y].height <= 1 && wallnum > 0)
                     {
-                        AddWallBlk(tpos.x, tpos.y, 100);
+                        AddWallBlk(tpos.x, tpos.y, waterGrid[tpos.x, tpos.y].height+1);
+                        wallnum--;
+                        UpdateStats();
                     }
+                }
+                else if(wallnum > 0)
+                {
+                    AddWallBlk(tpos.x, tpos.y, 100);
+                    wallnum--;
+                    UpdateStats();
                 }
                 else
                 {
-                    AddWallBlk(tpos.x, tpos.y, 100);
+                    Debug.Log(wallnum > 0);
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            floodStart = true;
-        }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             Vector2 worldPoint;
@@ -263,6 +276,7 @@ public class GridManager : MonoBehaviour
                     switch(waterGrid[tpos.x, tpos.y].type)
                     {
                         case TileType.Wall:
+<<<<<<< Updated upstream
                             Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
                             break;
                         case TileType.Water:
@@ -273,6 +287,22 @@ public class GridManager : MonoBehaviour
                             break;
                         case TileType.Biz:
                             Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
+=======
+                            ic.setInspector("Wall:", "Height: " + waterGrid[tpos.x, tpos.y].height, TileType.Wall);
+                            //Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
+                            break;
+                        case TileType.Water:
+                            ic.setInspector("Water:", "Water Level: " + waterlevel, TileType.Water);
+                            //Debug.Log("Water Level: " + waterlevel);
+                            break;
+                        case TileType.Home:
+                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n'+"Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
+                            //Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+                            break;
+                        case TileType.Biz:
+                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
+                           // Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+>>>>>>> Stashed changes
                             break;
                     }
                 }
@@ -287,6 +317,7 @@ public class GridManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
             //WorldTick();
             SpreadTick();
+            UpdateStats();
             Debug.Log("Water " + waterAmt);
             Debug.Log("Connected " + connectedWater.Count);
             Debug.Log("Level " + waterlevel);
@@ -297,7 +328,37 @@ public class GridManager : MonoBehaviour
         }
 
     }
+    public void BuyWalls()
+    {
+        if (budget >= 1)
+        {
+            budget--;
+            wallnum++;
+        }
+        UpdateStats();
+    }
+    public void riskCheck()
+    {
 
+    }   
+    public void buyLevee()
+    {
+
+    }
+    public void UpdateStats()
+    {
+        ic.waterlevel.text = "Water Level: " + waterlevel.ToString();
+        ic.walls.text = "Walls: " + wallnum.ToString();
+        ic.pop.text = "Population: " + population.ToString();
+        ic.budget.text = "Budget: " + budget.ToString() + 'k';
+    }
+    public void FloodBegin()
+    {
+
+        floodStart = true;
+        ic.GoAwayShop();
+  
+    }
     void SlashFillWater(int xstart, int ystart, int xend, int yend)
     {
         int x = xstart;
@@ -337,7 +398,7 @@ public class GridManager : MonoBehaviour
             int y = ystart;
             while (y <= yend)
             {
-                AddWallBlk(x, y, h);
+                AddGroundBlk(x, y, h);
                 y++;
             }
             x++;
@@ -373,7 +434,24 @@ public class GridManager : MonoBehaviour
             x++;
         }
     }
-    //FIXME: /fill helper function
+    public void AddGroundBlk(int x, int y, int h)
+    {
+        // Isometric conversion formula
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+        //spawn wall
+        Vector3 position = new Vector3(isoX, isoY, 0);
+        GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
+        WaterBlock tile = tileObj.GetComponent<WaterBlock>();
+        //Set stats
+        tile.xloc = x;
+        tile.yloc = y;
+        tile.height = h;
+        waterGrid[x, y] = tile;
+        tile.type = TileType.Wall;
+        //debug
+        //tile.rend.color = Color.black;
+    }
     public void AddWallBlk(int x, int y, int h)
     {
         // Isometric conversion formula
@@ -389,6 +467,7 @@ public class GridManager : MonoBehaviour
         tile.height = h;
         waterGrid[x, y] = tile;
         tile.type = TileType.Wall;
+        tile.wall = true;
         //debug
         //tile.rend.color = Color.black;
     }
@@ -409,6 +488,8 @@ public class GridManager : MonoBehaviour
         tile.cost = cost;
         totalBiz++;
         tile.population = 100;
+        population += 100;
+        UpdateStats();
     }
     public void AddHomeBlk(int x, int y, int cost)
     {
@@ -426,7 +507,9 @@ public class GridManager : MonoBehaviour
         tile.type = TileType.Home;
         tile.cost = cost;
         totalHomes++;
-        tile.population = 10;   
+        tile.population = 10;
+        population += 10;
+        UpdateStats();
     }
     public void AddWaterBlk(int x, int y)
     {
