@@ -30,16 +30,12 @@ public class GridManager : MonoBehaviour
     public static GridManager Instance;
     [SerializeField] float tickTimerMax = 1f;
     [SerializeField] public FloodData floodData;
-<<<<<<< Updated upstream
     [SerializeField] int maxTicks = 20;
-=======
     [SerializeField] GameObject redness;
     public int wallnum;
     public int budget = 10;
     public int population;
-
->>>>>>> Stashed changes
-
+    [SerializeField] InspectorController ic;
     int totalHomes = 0;
     int totalBiz = 0;
     public int hurtBiz = 0;
@@ -273,21 +269,9 @@ public class GridManager : MonoBehaviour
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
-                    switch(waterGrid[tpos.x, tpos.y].type)
+                    switch (waterGrid[tpos.x, tpos.y].type)
                     {
                         case TileType.Wall:
-<<<<<<< Updated upstream
-                            Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
-                            break;
-                        case TileType.Water:
-                            Debug.Log("Water Level: " + waterlevel);
-                            break;
-                        case TileType.Home:
-                            Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
-                            break;
-                        case TileType.Biz:
-                            Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
-=======
                             ic.setInspector("Wall:", "Height: " + waterGrid[tpos.x, tpos.y].height, TileType.Wall);
                             //Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
                             break;
@@ -296,14 +280,14 @@ public class GridManager : MonoBehaviour
                             //Debug.Log("Water Level: " + waterlevel);
                             break;
                         case TileType.Home:
-                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n'+"Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
+                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
                             //Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
                         case TileType.Biz:
                             ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
-                           // Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
->>>>>>> Stashed changes
+                            // Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
+                        
                     }
                 }
 

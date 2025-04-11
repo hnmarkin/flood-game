@@ -119,8 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &218424492
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +269,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360223706}
   m_CullTransparentMesh: 1
->>>>>>> Stashed changes
 --- !u!1 &365104485
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,8 +390,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
-<<<<<<< Updated upstream
-=======
 --- !u!1 &376597976
 GameObject:
   m_ObjectHideFlags: 0
@@ -23209,7 +23204,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671361340}
   m_CullTransparentMesh: 1
->>>>>>> Stashed changes
 --- !u!1 &713434021
 GameObject:
   m_ObjectHideFlags: 0
@@ -24164,8 +24158,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
-<<<<<<< Updated upstream
-=======
 --- !u!1 &866435313
 GameObject:
   m_ObjectHideFlags: 0
@@ -24710,7 +24702,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091295945}
   m_CullTransparentMesh: 1
->>>>>>> Stashed changes
 --- !u!1 &1169011327
 GameObject:
   m_ObjectHideFlags: 0
@@ -29310,8 +29301,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
-<<<<<<< Updated upstream
-=======
 --- !u!1 &1656777823
 GameObject:
   m_ObjectHideFlags: 0
@@ -29448,7 +29437,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656777823}
   m_CullTransparentMesh: 1
->>>>>>> Stashed changes
 --- !u!1 &1718481556
 GameObject:
   m_ObjectHideFlags: 0
@@ -29755,27 +29743,21 @@ MonoBehaviour:
   gridHeight: 15
   waterPrefab: {fileID: 2566369097866776460, guid: 87ce010ca1704884fa5d6c36d45cf0cd, type: 3}
   connectedWater: []
-<<<<<<< Updated upstream
   tileMap: {fileID: 764542843}
   tileWidth: 3
   tileHeight: 1.5
-=======
   tileMap: {fileID: 658205898}
->>>>>>> Stashed changes
   waterlevel: 0
   waterAmt: 0
   tickTimerMax: 1
   floodData: {fileID: 11400000, guid: 67ee35236e0ad7646a5c571bb43e471a, type: 2}
-<<<<<<< Updated upstream
   maxTicks: 0
   hurtBiz: 0
   hurtHome: 0
-=======
   redness: {fileID: 8613630409403160390, guid: 443a7552b5d3e9e49885c897f549a2ae, type: 3}
   wallnum: 0
   budget: 10
   population: 0
->>>>>>> Stashed changes
 --- !u!4 &1821909119
 Transform:
   m_ObjectHideFlags: 0
@@ -30503,8 +30485,6 @@ Transform:
   - {fileID: 865769204}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &2041809317
 GameObject:
   m_ObjectHideFlags: 0
@@ -30889,7 +30869,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075740431}
   m_CullTransparentMesh: 1
->>>>>>> Stashed changes
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -30898,8 +30877,5 @@ SceneRoots:
   - {fileID: 365104487}
   - {fileID: 1821909119}
   - {fileID: 1971649919}
-<<<<<<< Updated upstream
-=======
   - {fileID: 2070258748}
   - {fileID: 1564469179}
->>>>>>> Stashed changes

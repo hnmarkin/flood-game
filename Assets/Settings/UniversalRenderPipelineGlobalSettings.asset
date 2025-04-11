@@ -857,8 +857,6 @@ MonoBehaviour:
       - rid: 4374347662759297645
       - rid: 4374347662759297646
       - rid: 4374347662759297647
-<<<<<<< Updated upstream
-=======
       - rid: 75692662797893632
       - rid: 75692662797893633
       - rid: 75692662797893634
@@ -4643,7 +4641,6 @@ MonoBehaviour:
       - rid: 4374347882825253845
       - rid: 4374347882825253846
       - rid: 4374347882825253847
->>>>>>> Stashed changes
     m_RuntimeSettings:
       m_List: []
   m_AssetVersion: 8
@@ -11156,8 +11153,6 @@ MonoBehaviour:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
         m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
         m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
-<<<<<<< Updated upstream
-=======
     - rid: 4374347838365892616
       type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -25068,7 +25063,6 @@ MonoBehaviour:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
         m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
         m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
->>>>>>> Stashed changes
     - rid: 4399645895362871296
       type: {class: UniversalRenderPipelineRuntimeXRResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
