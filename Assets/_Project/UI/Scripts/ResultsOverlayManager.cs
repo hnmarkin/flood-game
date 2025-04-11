@@ -25,13 +25,21 @@ public class ResultsOverlayManager : MonoBehaviour
 
     //Text Boxes
     [SerializeField] private TMP_Text residentialScoreTextBox;
+    [SerializeField] private TMP_Text corporateScoreTextBox;
+    [SerializeField] private TMP_Text politicalScoreTextBox;
+
     [SerializeField] private GameObject residentialContainer;
     [SerializeField] private GameObject residentialStarContainer;
     [SerializeField] private GameObject residentialAvatar;
     [SerializeField] private GameObject residentialStarPrefab;
     [SerializeField] private GameObject residentialStarHolder;
-    [SerializeField] private TMP_Text corporateScoreTextBox;
-    [SerializeField] private TMP_Text politicalScoreTextBox;
+
+    [SerializeField] private GameObject corporateContainer;
+    [SerializeField] private GameObject corporateStarContainer;
+    [SerializeField] private GameObject corporateAvatar;
+    [SerializeField] private GameObject corporateStarPrefab;
+    [SerializeField] private GameObject corporateStarHolder;
+
 
     //Temporary Switch
     [SerializeField] private bool APIEnabled = true; // Set to false to use local evaluation
@@ -44,9 +52,10 @@ public class ResultsOverlayManager : MonoBehaviour
     private int r_stars, c_stars, p_stars;
     private string r_response, c_response, p_response;
 
-    private bool clickable = false;
+    public int clickable = 0;
 
     [SerializeField] private GameObject RESIDENTS;
+    [SerializeField] private GameObject CORPORATE;
 
     public async void OnEvaluateButtonClicked()
     {
@@ -82,49 +91,92 @@ public class ResultsOverlayManager : MonoBehaviour
 
     public async void ShowOverlay(int r_stars, int c_stars, int p_stars)
     {
-        ExpandOverlay();
+        ExpandOverlayR();
     }
 
-    public void HideOverlay()
+    public void HideOverlayR()
     {
         LeanTween.sequence()
-            .append(() => CollapseAnimation(residentialContainer, 0.5f))
+            .append(() => CollapseAnimationR(residentialContainer, 0.5f))
             .append(() => SimpleCollapseAnimation(residentialStarContainer, 0.5f))
             .append(0.25f)
-            .append(() => MoveStars(0.75f))
+            .append(() => MoveStars("residential", 0.75f))
             .append(0.75f) // Wait for MoveStars to complete
             .append(() => ExpandAnimation(RESIDENTS, 0.75f));
     }
 
+    public void HideOverlayC() {
+        LeanTween.sequence()
+            .append(() => CollapseAnimationC(corporateContainer, 0.5f))
+            .append(() => SimpleCollapseAnimation(corporateStarContainer, 0.5f))
+            .append(0.25f)
+            .append(() => MoveStars("corporate", 0.75f))
+            .append(0.75f) // Wait for MoveStars to complete
+            .append(() => ExpandAnimation(CORPORATE, 0.75f));
+    }
+
     //Animations
-    public void ExpandOverlay()
+    public void ExpandOverlayR()
     {
         overlayPanel.SetActive(true);
         overlayPanel.transform.localScale = Vector2.zero;
 
-        LeanTween.cancel(overlayPanel); // Cancel any existing tweens
-        LeanTween.scale(overlayPanel, Vector2.one, 0.5f).setEaseOutBack().setOnComplete(() =>
-        {
-            ExpandAnimation(residentialContainer, 1f);
-            ExpandAnimation(residentialStarContainer, 1f);
-        });
+        LeanTween.sequence()
+            .append(() => LeanTween.cancel(overlayPanel)) // Cancel any existing tweens
+            .append(() => LeanTween.scale(overlayPanel, Vector2.one, 0.5f).setEaseOutBack().setOnComplete(() =>
+            {
+                ExpandAnimation(residentialContainer, 1f);
+                ExpandAnimation(residentialStarContainer, 1f);
+                var typewriterEffect = GetComponent<TypewriterEffect>();
+                if (typewriterEffect != null)
+                {
+                    typewriterEffect.Run(r_response, residentialScoreTextBox, () =>
+                    {
+                        clickable = 1;
+                        // Star animation
+                        // First, clear out any existing stars
+                        foreach (Transform child in residentialStarHolder.transform)
+                        {
+                            Destroy(child.gameObject);
+                        }
 
-        var typewriterEffect = GetComponent<TypewriterEffect>();
+                        // Instantiate the number of stars earned
+                        for (int i = 0; i < r_stars; i++)
+                        {
+                            var star = Instantiate(residentialStarPrefab, residentialStarHolder.transform);
+                            ExpandAnimation(star, 0.5f);
+                        }
+                    });
+                }
+                else
+                {
+                    Debug.LogError("TypewriterEffect component is missing.");
+                }
+            }));
+    }
+
+    public void ExpandOverlayC() {
+        LeanTween.sequence()
+            .append(2f)
+            .append(() => ExpandAnimation(corporateContainer, 1f))
+            .append(() => ExpandAnimation(corporateStarContainer, 1f))
+            .append(() => {var typewriterEffect = GetComponent<TypewriterEffect>();
             if (typewriterEffect != null)
             {
-                typewriterEffect.Run(r_response, residentialScoreTextBox, () =>
+                typewriterEffect.Run(c_response, corporateScoreTextBox, () =>
                 {
+                    clickable = 3;
                     // Star animation
                     // First, clear out any existing stars
-                    foreach (Transform child in residentialStarHolder.transform)
+                    foreach (Transform child in corporateStarHolder.transform)
                     {
                         Destroy(child.gameObject);
                     }
 
                     // Instantiate the number of stars earned
-                    for (int i = 0; i < r_stars; i++)
+                    for (int i = 0; i < c_stars; i++)
                     {
-                        var star = Instantiate(residentialStarPrefab, residentialStarHolder.transform);
+                        var star = Instantiate(corporateStarPrefab, corporateStarHolder.transform);
                         ExpandAnimation(star, 0.5f);
                     }
                 });
@@ -132,10 +184,8 @@ public class ResultsOverlayManager : MonoBehaviour
             else
             {
                 Debug.LogError("TypewriterEffect component is missing.");
-            }
-            clickable = true;
+            }});
     }
-
     public void ExpandAnimation(GameObject target, float speed)
     {
         target.SetActive(true);
@@ -143,7 +193,7 @@ public class ResultsOverlayManager : MonoBehaviour
         LeanTween.scale(target, Vector2.one, speed).setEaseOutBack();
     }
 
-    public void CollapseAnimation(GameObject target, float speed)
+    public void CollapseAnimationR(GameObject target, float speed)
     {        
         RectTransform rectTransform = target.GetComponent<RectTransform>();
         if (rectTransform == null)
@@ -180,7 +230,56 @@ public class ResultsOverlayManager : MonoBehaviour
             // Step 2: Collapse height and move up simultaneously
             .append(() => {
                 // Move up
-                LeanTween.moveLocalY(target, target.transform.localPosition.y + verticalMovement, speed)
+                LeanTween.moveLocalY(target, target.transform.localPosition.y + 100, speed)
+                    .setEaseInBack();
+                
+                // Collapse height
+                LeanTween.value(target.gameObject, originalHeight, originalHeight * 0.5f, speed)
+                    .setEaseInBack()
+                    .setOnUpdate((float value) => {
+                        UpdateHeight(value, target.transform);
+                    });
+            });
+    }
+
+    public void CollapseAnimationC(GameObject target, float speed)
+    {
+        RectTransform rectTransform = target.GetComponent<RectTransform>();
+        if (rectTransform == null)
+        {
+            Debug.LogError($"No RectTransform found on {target.name}");
+            return;
+        }
+
+        // Store initial height
+        float originalHeight = rectTransform.sizeDelta.y;
+
+        // Create sequence
+        LeanTween.sequence()
+            // Step 1: Fade out all text and avatar
+            .append(() => {
+                // Fade text components
+                TextMeshProUGUI[] textComponents = target.GetComponentsInChildren<TextMeshProUGUI>();
+                foreach (TextMeshProUGUI text in textComponents)
+                {
+                    CanvasGroup canvasGroup = text.GetComponent<CanvasGroup>();
+                    if (canvasGroup == null)
+                    {
+                        canvasGroup = text.gameObject.AddComponent<CanvasGroup>();
+                    }
+                    canvasGroup.alpha = 1f;
+                    LeanTween.alphaCanvas(canvasGroup, 0f, speed).setEaseInBack();
+                }
+
+                // Shrink avatar GameObject
+                LeanTween.scale(corporateAvatar, Vector3.zero, speed).setEaseInBack();
+            })
+            // Wait for fades to complete
+            .append(speed)
+            // Step 2: Collapse height and move up simultaneously
+            .append(() => {
+                // Move up
+                LeanTween.moveLocalY(target, target.transform.localPosition.y + -75, speed)
                     .setEaseInBack();
                 
                 // Collapse height
@@ -201,21 +300,41 @@ public class ResultsOverlayManager : MonoBehaviour
         });
     }
     
-    public void MoveStars(float speed)
+    public void MoveStars(string starType, float speed)
     {
-        LeanTween.moveLocalX(residentialStarHolder, residentialStarHolder.transform.localPosition.x + starHorizontal, speed).setEaseInBack();
-        LeanTween.moveLocalY(residentialStarHolder, residentialStarHolder.transform.localPosition.y + starVertical, speed).setEaseInBack();
+        switch (starType) {
+            case "residential":
+                LeanTween.moveLocalX(residentialStarHolder, residentialStarHolder.transform.localPosition.x + 130, speed).setEaseInBack();
+                LeanTween.moveLocalY(residentialStarHolder, residentialStarHolder.transform.localPosition.y + 325, speed).setEaseInBack();
+                break;
+            case "corporate":
+                LeanTween.moveLocalX(corporateStarHolder, corporateStarHolder.transform.localPosition.x + 130, speed).setEaseInBack();
+                LeanTween.moveLocalY(corporateStarHolder, corporateStarHolder.transform.localPosition.y + 150, speed).setEaseInBack();
+                break;
+            case "political":
+                LeanTween.moveLocalX(hiddenStarObject, hiddenStarObject.transform.localPosition.x + starHorizontal, speed).setEaseInBack();
+                LeanTween.moveLocalY(hiddenStarObject, hiddenStarObject.transform.localPosition.y + starVertical, speed).setEaseInBack();
+                break;
+        }
+        
+        
     }
 
     // On Click event
     public void OnClick()
     {
-        Debug.Log("Overlay clicked!");
+        //Debug.Log("Overlay clicked!");
         // Hide the overlay when clicked
-        if (clickable)
+        if (clickable == 1)
         {
-            HideOverlay();
-            clickable = false;
+            HideOverlayR();
+            clickable = 2;
+            ExpandOverlayC();
+        }
+        else if (clickable == 3)
+        {
+            HideOverlayC();
+            clickable = 4;
         }
     }
 

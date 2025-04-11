@@ -27,6 +27,12 @@ public class TypewriterEffect : MonoBehaviour
 
             textLabel.text = textToType.Substring(0, charIndex);
 
+            //Check for mouse click
+            if (Input.GetMouseButtonDown(0)) {
+                // If the user clicks, show the full text immediately
+                textLabel.text = textToType;
+                break; // Exit the loop
+            }
             yield return null;
         }
 
