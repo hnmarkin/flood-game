@@ -7,6 +7,9 @@ using System.Collections.Generic;
 public class TypewriterEffect : MonoBehaviour
 {
     [SerializeField] private float typingSpeed = 50f; // Speed of the typewriter effect
+    public AudioSource audioSource;
+    [SerializeField] private AudioClip typeSFX;
+    [SerializeField] private bool sfx;
 
     public void Run(string textToType, TMP_Text textLabel, Action onComplete)
     {
@@ -26,6 +29,11 @@ public class TypewriterEffect : MonoBehaviour
             charIndex = Mathf.Clamp(charIndex, 0, textToType.Length);
 
             textLabel.text = textToType.Substring(0, charIndex);
+
+            if (sfx)// if bool in inspector is true play sfx while text is typed
+            {
+                audioSource.PlayOneShot(typeSFX);
+            }
 
             //Check for mouse click
             if (Input.GetMouseButtonDown(0)) {
