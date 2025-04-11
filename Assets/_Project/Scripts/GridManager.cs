@@ -314,6 +314,7 @@ public class GridManager : MonoBehaviour
     }
     public void BuyWalls()
     {
+        Debug.Log("cick");
         if (budget >= 1)
         {
             budget--;
