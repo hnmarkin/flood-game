@@ -49,34 +49,32 @@ public class GridManager : MonoBehaviour
         Instance = this;
         waterGrid = new WaterBlock[gridWidth, gridHeight]; //init empty grid
 
-        SlashFillWater(0, 0, 14, 0, 1);
-        //AddWaterBlk(15, 0, 1);
-        
-        AddGroundBlk(6, 1, 1);
+        SlashFillWater(0, 0, 14, 0, 1); // river
+
+
+        AddGroundBlk(6, 1, 1); //river wall bot
         AddGroundBlk(5, 1, 1);
         AddGroundBlk(4, 1, 1);
         AddGroundBlk(3, 1, 1);
         AddGroundBlk(2, 1, 1);
         AddGroundBlk(1, 1, 1);
-
-
-        SlashFillWall(0, 5, 6, 5, 1);
-        SlashFillWall(7, 1, 14, 1, 1);
-        SlashFillWall(7, 7, 7, 14, 1);
-        SlashFillWall(6, 2, 6, 6, 1);
         AddGroundBlk(0, 1, 0);
-        
-        //SlashFillHome()
-        AddBizBlk(4, 6, 10);
-        AddBizBlk(4, 2, 10);
-        AddBizBlk(4, 3, 10);
-        AddHomeBlk(4, 4, 10);
 
-        SlashFillWall(11, 11, 14, 14, 2);
+        SlashFillWall(0, 5, 6, 5, 1); //bot to low border
+        SlashFillHome(0, 2, 6, 4, 100); // low homes
 
-       // AddWallBlk(7, 7, 2);
-        // AddWallBlk(1, 0);
-        // AddWallBlk(3, 0);
+        SlashFillWall(7, 1, 7, 14, 2); // low to mid border
+        SlashFillBiz(0, 6, 6, 14, 10000); // low biz
+
+        SlashFillWall(7, 1, 14, 1, 2); //river wall mid
+
+        SlashFillHome(12, 2, 14, 10, 1000); // mid homes
+        SlashFillBiz(8, 2, 11, 10, 10000); // mid biz
+        SlashFillBiz(8, 2, 10, 14, 10000); // mid biz back slit
+
+        SlashFillWall(11, 11, 14, 14, 3);// top border
+        SlashFillHome(12, 12, 14, 14, 10000);// top homes
+
 
 
     }
@@ -233,7 +231,7 @@ public class GridManager : MonoBehaviour
             tpos.x += 4;
             tpos.y += 13;
             //Debug.Log(tpos);
-            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+            if (tpos.x > -1 && tpos.y > -1 && tpos.x <= 14 && tpos.y <= 14)
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
@@ -485,8 +483,9 @@ public class GridManager : MonoBehaviour
         tile.type = TileType.Biz;
         tile.cost = cost;
         totalBiz++;
-        tile.population = 100;
-        population += 100;
+        tile.population = 1000;
+        population += 1000;
+        tile.rend.sprite = null;
         UpdateStats();
     }
     public void AddHomeBlk(int x, int y, int cost)
@@ -505,8 +504,9 @@ public class GridManager : MonoBehaviour
         tile.type = TileType.Home;
         tile.cost = cost;
         totalHomes++;
-        tile.population = 10;
-        population += 10;
+        tile.population = 100;
+        population += 100;
+        tile.rend.sprite = null;
         UpdateStats();
     }
     public void AddWaterBlk(int x, int y)
@@ -550,7 +550,7 @@ public class GridManager : MonoBehaviour
         float isoY = (x + y) * tileHeight * 0.5f;
         Vector3 position = new Vector3(isoX, isoY, 0);
         GameObject tileObj = Instantiate(redness, position, Quaternion.identity);
-        tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
+        //tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
         return tileObj;
     }
 }
