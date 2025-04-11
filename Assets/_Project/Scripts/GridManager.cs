@@ -3,32 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using UnityEngine.U2D;
 using UnityEngine.UIElements;
 using UnityEngine.XR;
 using static WaterBlock;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] InspectorController ic;
-    GameObject highlight;
+    //public List<WaterObststacle> obststacles = new List<WaterObststacle>();
     public int gridWidth = 15;
     public int gridHeight = 15;
     public GameObject waterPrefab;  // Prefab with the waterBlock script attached
     public List<WaterBlock> connectedWater = new List<WaterBlock>();
+    //List<Tile> tilesToAdd = new List<Tile>();
     [SerializeField] Tilemap tileMap;
-    float tileWidth = 3f; 
-    float tileHeight = 1.5f;
+    //[SerializeField] Tilemap water;
+    [SerializeField] GameObject urdone;
+    //WaterTile waterTile;
+    [SerializeField] float tileWidth = 3f; 
+    [SerializeField] float tileHeight = 1.5f;
     public int waterlevel;
-    int waterAmt;
+    public int waterAmt;
     [SerializeField] public static WaterBlock[,] waterGrid;
     public static GridManager Instance;
-    float tickTimerMax = 1f;
+    [SerializeField] float tickTimerMax = 1f;
     [SerializeField] public FloodData floodData;
     [SerializeField] int maxTicks = 20;
     [SerializeField] GameObject redness;
@@ -36,46 +36,45 @@ public class GridManager : MonoBehaviour
     public int budget = 10;
     public int population;
     [SerializeField] InspectorController ic;
-    int totalHomes = 0;
-    int totalBiz = 0;
-    int hurtBiz = 0;
-    int hurtHome = 0;
-    int totalDeathes;
-    int totalCost;
+    float totalHomes = 0;
+    float totalBiz = 0;
+    public float hurtBiz = 0;
+    public float hurtHome = 0;
+    public int totalDeathes;
+    public int totalCost;
+    GameObject highlight;
 
     private void Start()
     {
         Instance = this;
         waterGrid = new WaterBlock[gridWidth, gridHeight]; //init empty grid
 
-        SlashFillWater(0, 0, 14, 0, 1);
-        //AddWaterBlk(15, 0, 1);
-        
-        AddGroundBlk(6, 1, 1);
+        SlashFillWater(0, 0, 14, 0, 1); // river
+
+
+        AddGroundBlk(6, 1, 1); //river wall bot
         AddGroundBlk(5, 1, 1);
         AddGroundBlk(4, 1, 1);
         AddGroundBlk(3, 1, 1);
         AddGroundBlk(2, 1, 1);
         AddGroundBlk(1, 1, 1);
-
-
-        SlashFillWall(0, 5, 6, 5, 1);
-        SlashFillWall(7, 1, 14, 1, 1);
-        SlashFillWall(7, 7, 7, 14, 1);
-        SlashFillWall(6, 2, 6, 6, 1);
         AddGroundBlk(0, 1, 0);
-        
-        //SlashFillHome()
-        AddBizBlk(4, 6, 10);
-        AddBizBlk(4, 2, 10);
-        AddBizBlk(4, 3, 10);
-        AddHomeBlk(4, 4, 10);
 
-        SlashFillWall(11, 11, 14, 14, 2);
+        SlashFillWall(0, 5, 6, 5, 1); //bot to low border
+        SlashFillHome(0, 2, 6, 4, 100); // low homes
 
-       // AddWallBlk(7, 7, 2);
-        // AddWallBlk(1, 0);
-        // AddWallBlk(3, 0);
+        SlashFillWall(7, 1, 7, 14, 2); // low to mid border
+        SlashFillBiz(0, 6, 6, 14, 10000); // low biz
+
+        SlashFillWall(7, 1, 14, 1, 2); //river wall mid
+
+        SlashFillHome(12, 2, 14, 10, 1000); // mid homes
+        SlashFillBiz(8, 2, 11, 10, 10000); // mid biz
+        SlashFillBiz(8, 2, 10, 14, 10000); // mid biz back slit
+
+        SlashFillWall(11, 11, 14, 14, 3);// top border
+        SlashFillHome(12, 12, 14, 14, 10000);// top homes
+
 
 
     }
@@ -90,6 +89,7 @@ public class GridManager : MonoBehaviour
     }
     public void OvertakeWater(int x, int y)
     {
+        //Debug.Log(waterGrid[x, y].type);
         if(waterGrid[x, y] == null)
         {
             AddWaterBlk(x, y);
@@ -196,10 +196,21 @@ public class GridManager : MonoBehaviour
 
     void setScore()
     {
+
         floodData.businessesAffectedPercent = (hurtBiz / totalBiz)*100;
         floodData.homesFloodedPercent = (hurtHome / totalHomes)*100;
         floodData.casualties = totalDeathes;
         floodData.economicLosses = totalCost;
+    }
+    IEnumerator EndFlood()
+    {
+        setScore();
+        floodStart = false;
+        yield return new WaitForSeconds(2f);
+        LeanTween.moveLocalX(urdone, 0, 0.7f).setEaseOutBack();
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("ScoringScene");
+        SceneManager.UnloadScene("WaterTest");
     }
     float tickTimer = 0f;
     int count = 0;
@@ -210,17 +221,15 @@ public class GridManager : MonoBehaviour
         tickTimer += Time.deltaTime;
         if (!floodStart ) tickTimer = 0f;
         //Debug.Log(tickTimer);
-        if (tickTimer >= tickTimerMax && count < 20 && floodStart)
+        if (tickTimer >= tickTimerMax && count < 24 && floodStart)
         {
             tickTimer -= tickTimerMax;
             StartCoroutine(tick());
             count++;
         }
-        else if(tickTimer >= tickTimerMax && count >= 20 && floodStart)
+        else if(tickTimer >= tickTimerMax && count >= 24 && floodStart)
         {
-            setScore();
-            SceneManager.LoadScene("ScoringScene");
-            SceneManager.UnloadScene("WaterTest");
+            StartCoroutine(EndFlood());
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -232,7 +241,7 @@ public class GridManager : MonoBehaviour
             tpos.x += 4;
             tpos.y += 13;
             //Debug.Log(tpos);
-            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+            if (tpos.x > -1 && tpos.y > -1 && tpos.x <= 14 && tpos.y <= 14)
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
@@ -271,25 +280,26 @@ public class GridManager : MonoBehaviour
 
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
+                    Destroy(highlight);
+                    highlight = PlaceHighlight(tpos.x, tpos.y);
                     switch (waterGrid[tpos.x, tpos.y].type)
                     {
                         case TileType.Wall:
                             ic.setInspector("Wall:", "Height: " + waterGrid[tpos.x, tpos.y].height, TileType.Wall);
-                            //Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
+                            Debug.Log("Height: " + waterGrid[tpos.x, tpos.y].height);
                             break;
                         case TileType.Water:
                             ic.setInspector("Water:", "Water Level: " + waterlevel, TileType.Water);
-                            //Debug.Log("Water Level: " + waterlevel);
+                            Debug.Log("Water Level: " + waterlevel);
                             break;
                         case TileType.Home:
-                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
-                            //Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + " Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
+                            Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
                         case TileType.Biz:
-                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
-                            // Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + " Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
+                            Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
-                        
                     }
                 }
                 else
@@ -314,9 +324,9 @@ public class GridManager : MonoBehaviour
             //WorldTick();
             SpreadTick();
             UpdateStats();
-            Debug.Log("Water " + waterAmt);
-            Debug.Log("Connected " + connectedWater.Count);
-            Debug.Log("Level " + waterlevel);
+           // Debug.Log("Water " + waterAmt);
+           // Debug.Log("Connected " + connectedWater.Count);
+           // Debug.Log("Level " + waterlevel);
         }
         else
         {
@@ -483,8 +493,9 @@ public class GridManager : MonoBehaviour
         tile.type = TileType.Biz;
         tile.cost = cost;
         totalBiz++;
-        tile.population = 100;
-        population += 100;
+        tile.population = 1000;
+        population += 1000;
+        tile.rend.sprite = null;
         UpdateStats();
     }
     public void AddHomeBlk(int x, int y, int cost)
@@ -503,8 +514,9 @@ public class GridManager : MonoBehaviour
         tile.type = TileType.Home;
         tile.cost = cost;
         totalHomes++;
-        tile.population = 10;
-        population += 10;
+        tile.population = 100;
+        population += 100;
+        tile.rend.sprite = null;
         UpdateStats();
     }
     public void AddWaterBlk(int x, int y)
@@ -542,13 +554,13 @@ public class GridManager : MonoBehaviour
         tile.amt = amt;
         tile.type = TileType.Water;
     }
-   GameObject PlaceHighlight(int x, int y)
+    GameObject PlaceHighlight(int x, int y)
     {
         float isoX = (x - y) * tileWidth * 0.5f;
         float isoY = (x + y) * tileHeight * 0.5f;
         Vector3 position = new Vector3(isoX, isoY, 0);
         GameObject tileObj = Instantiate(redness, position, Quaternion.identity);
-        tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
+        //tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
         return tileObj;
     }
 }

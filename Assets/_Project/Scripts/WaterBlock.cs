@@ -106,8 +106,8 @@ public class WaterBlock : MonoBehaviour
     }
     public void checkBorder()
     {
-        rend.sprite = pic[GridManager.Instance.waterlevel];
-        rend.sortingOrder = GridManager.Instance.waterlevel;
+        //rend.sprite = pic[0];
+        rend.sortingOrder = GridManager.Instance.waterlevel * 2;
         if (CheckSides(0))
         {
             border = true;

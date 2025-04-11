@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 
 public class ResultsOverlayManager : MonoBehaviour
@@ -22,7 +23,9 @@ public class ResultsOverlayManager : MonoBehaviour
     [SerializeField] private Image[] corporateStarImages;
     [SerializeField] private Image[] politicalStarImages;
     //[SerializeField] private GameObject hiddenStarObject;
-
+    //load screen
+    [SerializeField] private TMP_Text loading; 
+    [SerializeField] private TMP_Text loadingshadow;
     //Text Boxes
     [SerializeField] private TMP_Text residentialScoreTextBox;
     [SerializeField] private TMP_Text corporateScoreTextBox;
@@ -63,7 +66,39 @@ public class ResultsOverlayManager : MonoBehaviour
     [SerializeField] private GameObject RESIDENTS;
     [SerializeField] private GameObject CORPORATE;
     [SerializeField] private GameObject POLITICAL;
-
+    private void Awake()
+    {
+        OnEvaluateButtonClicked();
+    }
+    float tickTimer;
+    float tickTimerMax = 0.5f;
+    int count;
+    private void Update()
+    {
+        tickTimer += Time.deltaTime;
+        //Debug.Log(tickTimer);    
+        if (tickTimer >= tickTimerMax && count == 0)
+        {
+            tickTimer -= tickTimerMax;
+            count = 1;
+            loading.text = "Loading.";
+            loadingshadow.text = "Loading.";
+        }
+        else if (tickTimer >= tickTimerMax && count == 1)
+        {
+            tickTimer -= tickTimerMax;
+            count = 2;
+            loading.text = "Loading..";
+            loadingshadow.text = "Loading..";
+        }
+        else if (tickTimer >= tickTimerMax && count == 2)
+        {
+            tickTimer -= tickTimerMax;
+            count = 0;
+            loading.text = "Loading...";
+            loadingshadow.text = "Loading...";
+        }
+    }
     public async void OnEvaluateButtonClicked()
     {
         try

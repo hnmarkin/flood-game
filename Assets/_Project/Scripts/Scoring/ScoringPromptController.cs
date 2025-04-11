@@ -32,7 +32,7 @@ public class ScoringPromptController : MonoBehaviour
         promptBuilder.AppendLine("Here is the aftermath of the flood:");
         promptBuilder.AppendLine($"- Homes flooded: {scoringData.homesFloodedPercent}%");
         promptBuilder.AppendLine($"- Casualties: {scoringData.casualties}");
-        promptBuilder.AppendLine($"- Utility downtime: {scoringData.utilityDowntimeHours} hours");
+        //promptBuilder.AppendLine($"- Utility downtime: {scoringData.utilityDowntimeHours} hours");
         // etc. for any relevant data points…
 
         // Finally, prompt the LLM to produce a star rating breakdown:
@@ -59,7 +59,7 @@ public class ScoringPromptController : MonoBehaviour
         promptBuilder.AppendLine("Here is the aftermath of the flood:");
         promptBuilder.AppendLine($"- Businesses affected: {scoringData.businessesAffectedPercent}%");
         promptBuilder.AppendLine($"- Economic losses: {scoringData.economicLosses}");
-        promptBuilder.AppendLine($"- Infrastructure damage: {scoringData.infrastructureDamagePercent}%");
+        //promptBuilder.AppendLine($"- Infrastructure damage: {scoringData.infrastructureDamagePercent}%");
         //etc. for any relevant data points…
 
         // Finally, prompt the LLM to produce a star rating breakdown:
@@ -86,10 +86,10 @@ public class ScoringPromptController : MonoBehaviour
         promptBuilder.AppendLine("Here is the aftermath of the flood:");
         promptBuilder.AppendLine($"- Homes flooded: {scoringData.homesFloodedPercent}%");
         promptBuilder.AppendLine($"- Casualties: {scoringData.casualties}");
-        promptBuilder.AppendLine($"- Utility downtime: {scoringData.utilityDowntimeHours} hours");
+        //promptBuilder.AppendLine($"- Utility downtime: {scoringData.utilityDowntimeHours} hours");
         promptBuilder.AppendLine($"- Businesses affected: {scoringData.businessesAffectedPercent}%");
         promptBuilder.AppendLine($"- Economic losses: {scoringData.economicLosses}");
-        promptBuilder.AppendLine($"- Infrastructure damage: {scoringData.infrastructureDamagePercent}%");
+        //promptBuilder.AppendLine($"- Infrastructure damage: {scoringData.infrastructureDamagePercent}%");
         
         // etc. for any relevant data points…
 
