@@ -42,6 +42,7 @@ public class GridManager : MonoBehaviour
     public int hurtHome = 0;
     public int totalDeathes;
     public int totalCost;
+    GameObject highlight;
 
     private void Start()
     {
@@ -264,33 +265,46 @@ public class GridManager : MonoBehaviour
             var tpos = tileMap.WorldToCell(worldPoint);
             tpos.x += 4;
             tpos.y += 13;
-            //Debug.Log(tpos);
-            if (tpos.x > 0 && tpos.y > 0 && tpos.x <= 14 && tpos.y <= 14)
+
+
+            if (tpos.x > -1 && tpos.y > -1 && tpos.x <= 14 && tpos.y <= 14)
             {
+
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
+                    Destroy(highlight);
+                    highlight = PlaceHighlight(tpos.x, tpos.y);
                     switch (waterGrid[tpos.x, tpos.y].type)
                     {
                         case TileType.Wall:
                             ic.setInspector("Wall:", "Height: " + waterGrid[tpos.x, tpos.y].height, TileType.Wall);
-                            //Debug.Log("Height: "+waterGrid[tpos.x, tpos.y].height);
+                            Debug.Log("Height: " + waterGrid[tpos.x, tpos.y].height);
                             break;
                         case TileType.Water:
                             ic.setInspector("Water:", "Water Level: " + waterlevel, TileType.Water);
-                            //Debug.Log("Water Level: " + waterlevel);
+                            Debug.Log("Water Level: " + waterlevel);
                             break;
                         case TileType.Home:
-                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
-                            //Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+                            ic.setInspector("Home:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + " Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Home);
+                            Debug.Log("Home: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
                         case TileType.Biz:
-                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + "Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
-                            // Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + "Population: " + waterGrid[tpos.x, tpos.y].population);
+                            ic.setInspector("Biz:", "Cost: " + waterGrid[tpos.x, tpos.y].cost + '\n' + " Population: " + waterGrid[tpos.x, tpos.y].population, TileType.Biz);
+                            Debug.Log("Biz: Cost: " + waterGrid[tpos.x, tpos.y].cost + " Population: " + waterGrid[tpos.x, tpos.y].population);
                             break;
-                        
                     }
                 }
+                else
+                {
+                    ic.GoAwayUI();
+                    Destroy(highlight);
+                }
 
+            }
+            else
+            {
+                ic.GoAwayUI();
+                Destroy(highlight);
             }
         }
     }
@@ -314,7 +328,6 @@ public class GridManager : MonoBehaviour
     }
     public void BuyWalls()
     {
-        Debug.Log("cick");
         if (budget >= 1)
         {
             budget--;
@@ -530,5 +543,14 @@ public class GridManager : MonoBehaviour
         tile.src = true;
         tile.amt = amt;
         tile.type = TileType.Water;
+    }
+    GameObject PlaceHighlight(int x, int y)
+    {
+        float isoX = (x - y) * tileWidth * 0.5f;
+        float isoY = (x + y) * tileHeight * 0.5f;
+        Vector3 position = new Vector3(isoX, isoY, 0);
+        GameObject tileObj = Instantiate(redness, position, Quaternion.identity);
+        tileObj.GetComponent<SpriteRenderer>().sortingOrder = waterGrid[x, y].rend.sortingOrder;
+        return tileObj;
     }
 }
