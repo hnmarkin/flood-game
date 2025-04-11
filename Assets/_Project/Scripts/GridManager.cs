@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
-<<<<<<< HEAD
-//using UnityEditor.SearchService;
-=======
 using UnityEditor;
 using UnityEditor.SearchService;
->>>>>>> 875c40a1cd95ff6cf7542c2ba28969f40c2a1a89
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
