@@ -304,8 +304,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287364994
-  m_fontColor: {r: 0.5113207, g: 1, b: 0.54533166, a: 1}
+    rgba: 4294955906
+  m_fontColor: {r: 0.50980395, g: 0.8285662, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1703,7 +1703,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 750, y: 600}
+  m_SizeDelta: {x: 750, y: 625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &153576130
 MonoBehaviour:
@@ -2064,7 +2064,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 750, y: 600}
+  m_SizeDelta: {x: 750, y: 625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &204542666
 MonoBehaviour:
@@ -3453,8 +3453,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287364994
-  m_fontColor: {r: 0.5113207, g: 1, b: 0.54533166, a: 1}
+    rgba: 4294935212
+  m_fontColor: {r: 0.6732941, g: 0.50980395, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3589,8 +3589,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287364994
-  m_fontColor: {r: 0.5113207, g: 1, b: 0.54533166, a: 1}
+    rgba: 4294935212
+  m_fontColor: {r: 0.6745098, g: 0.50980395, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4939,8 +4939,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287364994
-  m_fontColor: {r: 0.5113207, g: 1, b: 0.54533166, a: 1}
+    rgba: 4294955906
+  m_fontColor: {r: 0.5113207, g: 0.827451, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5194,7 +5194,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 20, y: -17}
-  m_SizeDelta: {x: 750, y: 600}
+  m_SizeDelta: {x: 750, y: 625}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &886821676
 MonoBehaviour:
@@ -6257,7 +6257,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -158.60675, y: -75}
+  m_AnchoredPosition: {x: -158.60675, y: -250}
   m_SizeDelta: {x: 245.8016, y: 124.6622}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &998976793
@@ -6280,7 +6280,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Corporate
+  m_text: Political
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -7551,7 +7551,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035, y: -0.000049591064}
+  m_AnchoredPosition: {x: -0.000017632, y: -0.0000061883}
   m_SizeDelta: {x: 750, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1159149254
@@ -7963,7 +7963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5647059, b: 0.72156864, a: 1}
+  m_Color: {r: 0.48235297, g: 0.2627451, b: 0.7254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8117,7 +8117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.6150943, b: 0.09559697, a: 0.392}
+  m_Color: {r: 0.48235297, g: 0.2627451, b: 0.7254902, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9278,10 +9278,9 @@ MonoBehaviour:
   residentialStarImages: []
   corporateStarImages: []
   politicalStarImages: []
-  hiddenStarObject: {fileID: 0}
   residentialScoreTextBox: {fileID: 1314664067}
   corporateScoreTextBox: {fileID: 14719330}
-  politicalScoreTextBox: {fileID: 0}
+  politicalScoreTextBox: {fileID: 550697342}
   residentialContainer: {fileID: 943274395}
   residentialStarContainer: {fileID: 1002632431}
   residentialAvatar: {fileID: 1191889958}
@@ -9292,6 +9291,11 @@ MonoBehaviour:
   corporateAvatar: {fileID: 1907927720}
   corporateStarPrefab: {fileID: 9036146401848074184, guid: ebb9ec332a3d9e04eae370086e1e6d87, type: 3}
   corporateStarHolder: {fileID: 909375335}
+  politicalContainer: {fileID: 1994147106}
+  politicalStarContainer: {fileID: 1059287080}
+  politicalAvatar: {fileID: 1213639873}
+  politicalStarPrefab: {fileID: 9036146401848074184, guid: 84432bcacf9912443bbb8ed01b771b8a, type: 3}
+  politicalStarHolder: {fileID: 1550348480}
   APIEnabled: 0
   verticalMovement: 100
   starVertical: 325
@@ -9299,6 +9303,7 @@ MonoBehaviour:
   clickable: 0
   RESIDENTS: {fileID: 949646720}
   CORPORATE: {fileID: 2139840871}
+  POLITICAL: {fileID: 998976791}
 --- !u!114 &1369703202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9311,10 +9316,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae5e512ae06c004e86a6dd86fc8ec8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typingSpeed: 1000
+  typingSpeed: 50
   audioSource: {fileID: 1079416193}
   typeSFX: {fileID: 8300000, guid: 1e6f9207ef6b0a94290b93ba5b0c17f8, type: 3}
-  sfx: 1
+  sfx: 0
 --- !u!4 &1369703203
 Transform:
   m_ObjectHideFlags: 0
@@ -10563,7 +10568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.45098042, b: 0.7411765, a: 1}
+  m_Color: {r: 0.34901962, g: 0.1137255, b: 0.69803923, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10715,7 +10720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.44622892, b: 0.84313726, a: 1}
+  m_Color: {r: 0.3369877, g: 0.11530785, b: 0.7735849, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12411,7 +12416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5822497, b: 0.8113208, a: 1}
+  m_Color: {r: 0.4875567, g: 0.26420075, b: 0.81886786, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
