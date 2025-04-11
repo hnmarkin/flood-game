@@ -685,8 +685,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Buy Wall
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
-  m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23127,8 +23127,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Walls: 99'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23523,8 +23523,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Flood Risk
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
-  m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -24550,8 +24550,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: test info pannel where I type a lot of stuff and see how it looks
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25360,8 +25360,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Water Level: 99'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -26275,8 +26275,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Begin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
-  m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29360,8 +29360,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: test
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29633,8 +29633,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Population: 99999'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29739,21 +29739,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6efc9ce2d09cc43998c399fc02ab8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ic: {fileID: 0}
   gridWidth: 15
   gridHeight: 15
   waterPrefab: {fileID: 2566369097866776460, guid: 87ce010ca1704884fa5d6c36d45cf0cd, type: 3}
   connectedWater: []
-  tileMap: {fileID: 764542843}
-  tileWidth: 3
-  tileHeight: 1.5
-  tileMap: {fileID: 658205898}
+  tileMap: {fileID: 0}
   waterlevel: 0
-  waterAmt: 0
-  tickTimerMax: 1
   floodData: {fileID: 11400000, guid: 67ee35236e0ad7646a5c571bb43e471a, type: 2}
-  maxTicks: 0
-  hurtBiz: 0
-  hurtHome: 0
   redness: {fileID: 8613630409403160390, guid: 443a7552b5d3e9e49885c897f549a2ae, type: 3}
   wallnum: 0
   budget: 10
@@ -30544,8 +30537,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Budget: $999k'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7db79115909ff4241a820035736f148f, type: 2}
-  m_sharedMaterial: {fileID: 21897208875868722, guid: 7db79115909ff4241a820035736f148f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -30811,7 +30804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2075740432
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30844,7 +30837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4039216, g: 0.42352945, b: 0.6313726, a: 1}
+  m_Color: {r: 0.3748451, g: 0.39490563, b: 0.6075471, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -30878,4 +30871,3 @@ SceneRoots:
   - {fileID: 1821909119}
   - {fileID: 1971649919}
   - {fileID: 2070258748}
-  - {fileID: 1564469179}
