@@ -295,7 +295,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farmer Bobby
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -2116,7 +2116,7 @@ GameObject:
   - component: {fileID: 224727888}
   - component: {fileID: 224727887}
   m_Layer: 5
-  m_Name: Residents Stars Outline
+  m_Name: Corporate Stars Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3444,7 +3444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farmer Bobby
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -3580,7 +3580,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farmer Bobby
+  m_text: Secretary Vlad
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -4151,7 +4151,7 @@ GameObject:
   - component: {fileID: 692177890}
   - component: {fileID: 692177889}
   m_Layer: 5
-  m_Name: Residents Stars Image
+  m_Name: Corporate Stars Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4930,7 +4930,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farmer Bobby
+  m_text: CEO Carrie
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -8395,7 +8395,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 466c3a64f4c516d4785eb0a9de62e8a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d7c93f247df5f624f99c0f4663971f17, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8901,7 +8901,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farmer Bobby
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
   m_sharedMaterial: {fileID: -6825374640256641245, guid: 4aad9cb17f68e0643ba82fa5f02fd130, type: 2}
@@ -9296,7 +9296,7 @@ MonoBehaviour:
   politicalAvatar: {fileID: 1213639873}
   politicalStarPrefab: {fileID: 9036146401848074184, guid: 84432bcacf9912443bbb8ed01b771b8a, type: 3}
   politicalStarHolder: {fileID: 1550348480}
-  APIEnabled: 0
+  APIEnabled: 1
   verticalMovement: 100
   starVertical: 325
   starHorizontal: 130
@@ -11324,7 +11324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 466c3a64f4c516d4785eb0a9de62e8a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4bb5b0433b9dbe4b8fd44ca027bcfd3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
