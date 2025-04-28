@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -21,6 +20,7 @@ public class GridManager : MonoBehaviour
     //List<Tile> tilesToAdd = new List<Tile>();
     [SerializeField] Tilemap tileMap;
     //[SerializeField] Tilemap water;
+    [SerializeField] GameObject urdone;
     //WaterTile waterTile;
     [SerializeField] float tileWidth = 3f; 
     [SerializeField] float tileHeight = 1.5f;
@@ -36,10 +36,10 @@ public class GridManager : MonoBehaviour
     public int budget = 10;
     public int population;
     [SerializeField] InspectorController ic;
-    int totalHomes = 0;
-    int totalBiz = 0;
-    public int hurtBiz = 0;
-    public int hurtHome = 0;
+    float totalHomes = 0;
+    float totalBiz = 0;
+    public float hurtBiz = 0;
+    public float hurtHome = 0;
     public int totalDeathes;
     public int totalCost;
     GameObject highlight;
@@ -89,6 +89,7 @@ public class GridManager : MonoBehaviour
     }
     public void OvertakeWater(int x, int y)
     {
+        //Debug.Log(waterGrid[x, y].type);
         if(waterGrid[x, y] == null)
         {
             AddWaterBlk(x, y);
@@ -195,10 +196,21 @@ public class GridManager : MonoBehaviour
 
     void setScore()
     {
+
         floodData.businessesAffectedPercent = (hurtBiz / totalBiz)*100;
         floodData.homesFloodedPercent = (hurtHome / totalHomes)*100;
         floodData.casualties = totalDeathes;
         floodData.economicLosses = totalCost;
+    }
+    IEnumerator EndFlood()
+    {
+        setScore();
+        floodStart = false;
+        yield return new WaitForSeconds(2f);
+        LeanTween.moveLocalX(urdone, 0, 0.7f).setEaseOutBack();
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("ScoringScene");
+        SceneManager.UnloadScene("WaterTest");
     }
     float tickTimer = 0f;
     int count = 0;
@@ -209,17 +221,15 @@ public class GridManager : MonoBehaviour
         tickTimer += Time.deltaTime;
         if (!floodStart ) tickTimer = 0f;
         //Debug.Log(tickTimer);
-        if (tickTimer >= tickTimerMax && count < 20 && floodStart)
+        if (tickTimer >= tickTimerMax && count < 24 && floodStart)
         {
             tickTimer -= tickTimerMax;
             StartCoroutine(tick());
             count++;
         }
-        else if(tickTimer >= tickTimerMax && count >= 20 && floodStart)
+        else if(tickTimer >= tickTimerMax && count >= 24 && floodStart)
         {
-            setScore();
-            SceneManager.LoadScene("ScoringScene");
-            SceneManager.UnloadScene("WaterTest");
+            StartCoroutine(EndFlood());
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -314,9 +324,9 @@ public class GridManager : MonoBehaviour
             //WorldTick();
             SpreadTick();
             UpdateStats();
-            Debug.Log("Water " + waterAmt);
-            Debug.Log("Connected " + connectedWater.Count);
-            Debug.Log("Level " + waterlevel);
+           // Debug.Log("Water " + waterAmt);
+           // Debug.Log("Connected " + connectedWater.Count);
+           // Debug.Log("Level " + waterlevel);
         }
         else
         {
