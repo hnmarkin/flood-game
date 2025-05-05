@@ -6,13 +6,17 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading;
+using LLMUnity;
 
 public class LLMController : MonoBehaviour
 {
     [SerializeField]
     private ScoringPromptController _scoringPromptController;
     [SerializeField] private LLMService _llmService;
+    [SerializeField] private LLMCharacter residentCharacter;
     private CancellationTokenSource _cts;
+
+    protected string residentResponse, corporateResponse, politicalResponse;
 
     private void Awake()
     {
@@ -31,22 +35,45 @@ public class LLMController : MonoBehaviour
         string prompt = _scoringPromptController.BuildResidentPrompt();
         Debug.Log($"{prompt}");
 
-        // 2. Send the prompt to the LLM and get the response.
-        string residentResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
-        if (residentResponse == null)
-        {
-            Debug.LogWarning("LLM response was null or timed out.");
-            return(0, "LLM response was null or timed out.");
+        try {
+            // Create a TaskCompletionSource to convert callback to Task
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            
+            // Set up the callback to complete the task
+            void HandleResponse(string reply) {
+                tcs.TrySetResult(reply);
+            }
+            
+            // Start the chat with our callback
+            residentCharacter.Chat(prompt, HandleResponse);
+            
+            // Wait for the response with a timeout
+            Task timeoutTask = Task.Delay(3000000); // 30 second timeout
+            Task<string> responseTask = tcs.Task;
+            
+            // Wait for either the response or timeout
+            Task completedTask = await Task.WhenAny(responseTask, timeoutTask);
+            
+            if (completedTask == timeoutTask) {
+                // Timeout occurred
+                Debug.LogWarning("LLM request timed out after 30 seconds.");
+                return (0, "The LLM response timed out. Please try again.");
+            }
+            
+            // Get the actual response
+            residentResponse = await responseTask;
+            
+            // Continue with processing
+            int stars = ParseResidentialStars(residentResponse);
+            Debug.Log($"Residential faction stars: {stars}");
+            Debug.Log($"LLM response: {residentResponse}");
+            
+            return (stars, residentResponse);
         }
-
-        // 3. Parse the star ratings (and hidden star) from the LLM’s response.
-        int stars = ParseResidentialStars(residentResponse);
-        // bool hasHiddenStar = ParseResidentialHiddenStar(llmResponse);
-
-        Debug.Log($"Residential faction stars: {stars}");
-        Debug.Log($"LLM response: {residentResponse}");
-        
-        return (stars, residentResponse);
+        catch (Exception ex) {
+            Debug.LogError($"Error in EvaluateResidentialStars: {ex.Message}");
+            return (0, $"Error: {ex.Message}");
+        }
     }
 
     public async Task<(int stars, string response)> EvaluateCorporateStars()
@@ -56,7 +83,7 @@ public class LLMController : MonoBehaviour
         Debug.Log($"{prompt}");
 
         // 2. Send the prompt to the LLM and get the response.
-        string corporateResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        //string corporateResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
         if (corporateResponse == null)
         {
             Debug.LogWarning("LLM response was null or timed out.");

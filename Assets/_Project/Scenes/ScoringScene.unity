@@ -4664,6 +4664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scoringPromptController: {fileID: 799014972}
   _llmService: {fileID: 799014973}
+  residentCharacter: {fileID: 2122145965}
 --- !u!114 &799014972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12642,6 +12643,150 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2122145964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2122145967}
+  - component: {fileID: 2122145966}
+  - component: {fileID: 2122145965}
+  m_Layer: 0
+  m_Name: LocalLLM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2122145965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122145964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6c87a428fd5d0be9bbc686bdc8c3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedOptions: 0
+  remote: 0
+  _llm: {fileID: 2122145966}
+  APIKey: 
+  host: localhost
+  port: 13333
+  numRetries: 10
+  save: 
+  saveCache: 0
+  debugPrompt: 0
+  numPredict: -1
+  slot: -1
+  grammar: 
+  cachePrompt: 1
+  seed: 0
+  temperature: 0.2
+  topK: 40
+  topP: 0.9
+  minP: 0.05
+  repeatPenalty: 1.1
+  presencePenalty: 0
+  frequencyPenalty: 0
+  typicalP: 1
+  repeatLastN: 64
+  penalizeNl: 1
+  penaltyPrompt: 
+  mirostat: 0
+  mirostatTau: 5
+  mirostatEta: 0.1
+  nProbs: 0
+  ignoreEos: 0
+  nKeep: -1
+  stop: []
+  stream: 1
+  playerName: user
+  AIName: assistant
+  prompt: "You are a homeowner of a flood-prone community that has a family that
+    you love. Your priority is the well-being of residents and their families, including
+    safety, housing stability, and overall recovery efforts. Consider whether people
+    received timely assistance, whether displacement was minimized, and if essential
+    needs were met. In less than 100 words, rate the response from 0 to 4 stars based
+    on how effectively these concerns were addressed. Be genuine, sincere, and emotional.
+    Do not use highly academic vocabulary--speak like a normal person. Stay under
+    425 characters.\r\n\r\nHomes Flooded Guidelines: <10% = exceptional; 11-25% =
+    ok; 26-40% = bad; 41+% = catastrophic\r\nCasualties Guideline: <0.5% = good;
+    0.6-1% = ok; 1-2% = bad; 2+% = catastrophic\r\n\r\nBad Result Example: \"Residents:
+    1. This flood hit us hard. Over a third of our neighbors ended up with water
+    in their homes, and many were caught off guard. Only 18% of us had flood insurance
+    \u2014 that\u2019s devastating for working families. On top of that, three lives
+    were lost, and help didn\u2019t come for three days. That\u2019s just too long
+    when you're watching your home wash away. The $10 million in relief funding helped
+    a bit, but it\u2019s not enough to rebuild trust or homes. We\u2019re grateful
+    for what we got, but next time, we need better preparation, faster action, and
+    more support.\"\r\n\r\nGood Result Example: \"Residents: 4. This time, we were
+    ready. Thanks to great preparation, only a small part of our community was affected
+    \u2014 and almost everyone had insurance to cover their losses. Nearly everyone
+    evacuated safely, and most importantly, no lives were lost. Help arrived within
+    hours, and the $25 million in funding is making recovery fast and fair for everyone.
+    People feel safe, respected, and hopeful for the future. This is what real resilience
+    looks like!\""
+  setNKeepToPrompt: 1
+  chat: []
+  grammarString: 
+--- !u!114 &2122145966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122145964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a50e3140c3ecaaf1c848dbf141cc2074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advancedOptions: 0
+  remote: 0
+  port: 13333
+  numThreads: -1
+  numGPULayers: 0
+  debug: 0
+  parallelPrompts: -1
+  dontDestroyOnLoad: 1
+  contextSize: 8192
+  batchSize: 512
+  model: gemma-2-9b-it-Q4_K_M.gguf
+  chatTemplate: gemma
+  lora: 
+  loraWeights: 
+  flashAttention: 0
+  APIKey: 
+  SSLCert: 
+  SSLCertPath: 
+  SSLKey: 
+  SSLKeyPath: 
+  minContextLength: 0
+  maxContextLength: 8192
+  embeddingsOnly: 0
+  embeddingLength: 3584
+--- !u!4 &2122145967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122145964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1124.9745, y: 591.3448, z: 1.7753184}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2138617262
 GameObject:
   m_ObjectHideFlags: 0
@@ -13195,3 +13340,4 @@ SceneRoots:
   - {fileID: 1369703203}
   - {fileID: 799014970}
   - {fileID: 1847320851}
+  - {fileID: 2122145967}
