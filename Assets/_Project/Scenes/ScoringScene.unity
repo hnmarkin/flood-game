@@ -12682,7 +12682,7 @@ MonoBehaviour:
   numRetries: 10
   save: 
   saveCache: 0
-  debugPrompt: 0
+  debugPrompt: 1
   numPredict: -1
   slot: -1
   grammar: 
