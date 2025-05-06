@@ -70,20 +70,28 @@ public class LLMController : MonoBehaviour
 
         // 2. Send the prompt to the LLM and get the response.
         //string corporateResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        
+        _ = await residentCharacter.Chat(prompt, HandleCReply);
+
         if (corporateResponse == null)
         {
             Debug.LogWarning("LLM response was null or timed out.");
             return(0, "LLM response was null or timed out.");
         }
 
-        // 3. Parse the star ratings (and hidden star) from the LLM’s response.
+        // 3. Parse the star ratings from the LLM's response.
         int stars = ParseCorporateStars(corporateResponse);
-        // bool hasHiddenStar = ParseResidentialHiddenStar(llmResponse);
 
         Debug.Log($"Corporate faction stars: {stars}");
         Debug.Log($"LLM response: {corporateResponse}");
         
         return (stars, corporateResponse);
+    }
+
+    void HandleCReply(string reply)
+    {
+        corporateResponse = reply;
+        Debug.Log($"Corporate Handle Reply: {corporateResponse}");
     }
 
     public async Task<(int stars, string response)> EvaluatePoliticalStars()
@@ -93,21 +101,29 @@ public class LLMController : MonoBehaviour
         Debug.Log($"{prompt}");
 
         // 2. Send the prompt to the LLM and get the response.
-        string politicalResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        //string politicalResponse = await GetLLMResponseWithTimeoutAsync(prompt, 5000);
+        
+        _ = await residentCharacter.Chat(prompt, HandlePReply);
+
         if (politicalResponse == null)
         {
             Debug.LogWarning("LLM response was null or timed out.");
             return(0, "LLM response was null or timed out.");
         }
 
-        // 3. Parse the star ratings (and hidden star) from the LLM’s response.
+        // 3. Parse the star ratings from the LLM's response.
         int stars = ParsePoliticalStars(politicalResponse);
-        // bool hasHiddenStar = ParseResidentialHiddenStar(llmResponse);
 
         Debug.Log($"Political faction stars: {stars}");
         Debug.Log($"LLM response: {politicalResponse}");
         
         return (stars, politicalResponse);
+    }
+
+    void HandlePReply(string reply)
+    {
+        politicalResponse = reply;
+        Debug.Log($"Political Handle Reply: {politicalResponse}");
     }
 
     private async Task<string> GetLLMResponseAsync(string prompt)

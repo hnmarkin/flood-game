@@ -12682,7 +12682,7 @@ MonoBehaviour:
   numRetries: 10
   save: 
   saveCache: 0
-  debugPrompt: 1
+  debugPrompt: 0
   numPredict: -1
   slot: -1
   grammar: 
@@ -12708,7 +12708,7 @@ MonoBehaviour:
   stop: []
   stream: 1
   playerName: user
-  AIName: assistant
+  AIName: Residents
   prompt: "You are a homeowner of a flood-prone community that has a family that
     you love. Your priority is the well-being of residents and their families, including
     safety, housing stability, and overall recovery efforts. Consider whether people
@@ -12716,23 +12716,7 @@ MonoBehaviour:
     needs were met. In less than 100 words, rate the response from 0 to 4 stars based
     on how effectively these concerns were addressed. Be genuine, sincere, and emotional.
     Do not use highly academic vocabulary--speak like a normal person. Stay under
-    425 characters.\r\n\r\nHomes Flooded Guidelines: <10% = exceptional; 11-25% =
-    ok; 26-40% = bad; 41+% = catastrophic\r\nCasualties Guideline: <0.5% = good;
-    0.6-1% = ok; 1-2% = bad; 2+% = catastrophic\r\n\r\nBad Result Example: \"Residents:
-    1. This flood hit us hard. Over a third of our neighbors ended up with water
-    in their homes, and many were caught off guard. Only 18% of us had flood insurance
-    \u2014 that\u2019s devastating for working families. On top of that, three lives
-    were lost, and help didn\u2019t come for three days. That\u2019s just too long
-    when you're watching your home wash away. The $10 million in relief funding helped
-    a bit, but it\u2019s not enough to rebuild trust or homes. We\u2019re grateful
-    for what we got, but next time, we need better preparation, faster action, and
-    more support.\"\r\n\r\nGood Result Example: \"Residents: 4. This time, we were
-    ready. Thanks to great preparation, only a small part of our community was affected
-    \u2014 and almost everyone had insurance to cover their losses. Nearly everyone
-    evacuated safely, and most importantly, no lives were lost. Help arrived within
-    hours, and the $25 million in funding is making recovery fast and fair for everyone.
-    People feel safe, respected, and hopeful for the future. This is what real resilience
-    looks like!\""
+    425 characters.\r\n\r\r\n"
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -12752,7 +12736,7 @@ MonoBehaviour:
   remote: 0
   port: 13333
   numThreads: -1
-  numGPULayers: 0
+  numGPULayers: 64
   debug: 0
   parallelPrompts: -1
   dontDestroyOnLoad: 1

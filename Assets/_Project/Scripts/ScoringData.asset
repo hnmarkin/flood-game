@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca9a32600297fb4d80e295f8df0237f, type: 3}
   m_Name: ScoringData
   m_EditorClassIdentifier: 
-  homesFloodedPercent: 100
-  casualties: 100
+  homesFloodedPercent: 5
+  casualties: 0.1
   utilityDowntimeHours: 96
-  businessesAffectedPercent: 100
-  economicLosses: 100
-  infrastructureDamagePercent: 100
+  businessesAffectedPercent: 10
+  economicLosses: 5
+  infrastructureDamagePercent: 12
