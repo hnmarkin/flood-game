@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
+using UnityEngine.WSA;
 using UnityEngine.XR;
 using static WaterBlock;
 
@@ -150,20 +151,22 @@ public class GridManager : MonoBehaviour
                 }
             }
             //FIXME: spead multiplue times per tick
-            for (int x = 0; x < gridWidth; x++) //Spread boarders
-            {
-                for (int y = 0; y < gridHeight; y++)
-                {
-                    if (waterGrid[x, y] != null)
-                    {
-                        if (waterGrid[x, y].border && connectedWater.Count < waterAmt && waterGrid[x, y].type == TileType.Water)
-                        {
-                            waterGrid[x, y].spread();
-                        }
-                    }
 
+                for (int x = 0; x < gridWidth; x++) //Spread boarders
+                {
+                    for (int y = 0; y < gridHeight; y++)
+                    {
+                        if (waterGrid[x, y] != null)
+                        {
+                            if (waterGrid[x, y].border && connectedWater.Count < waterAmt && waterGrid[x, y].type == TileType.Water)
+                            {
+                                waterGrid[x, y].spread();
+                            }
+                        }
+
+                    }
                 }
-            }
+            
             for (int x = 0; x < gridWidth; x++) //calc borders
             {
                 for (int y = 0; y < gridHeight; y++)
@@ -189,6 +192,23 @@ public class GridManager : MonoBehaviour
                 waterlevel++;
                 waterAmt -= connectedWater.Count;
             }
+
+
+                for (int x = 0; x < gridWidth; x++) //Spread boarders
+                {
+                    for (int y = 0; y < gridHeight; y++)
+                    {
+                        if (waterGrid[x, y] != null)
+                        {
+                            if (waterGrid[x, y].border && connectedWater.Count < waterAmt && waterGrid[x, y].type == TileType.Water)
+                            {
+                                waterGrid[x, y].spread();
+                            }
+                        }
+
+                    }
+                }
+            
 
         }
 
@@ -217,7 +237,7 @@ public class GridManager : MonoBehaviour
     bool floodStart = false;
     private void Update()
     {
-
+        //ticking system
         tickTimer += Time.deltaTime;
         if (!floodStart ) tickTimer = 0f;
         //Debug.Log(tickTimer);
@@ -232,7 +252,7 @@ public class GridManager : MonoBehaviour
             StartCoroutine(EndFlood());
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) //Place barrier
         {
             Vector2 worldPoint;
             worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -245,9 +265,9 @@ public class GridManager : MonoBehaviour
             {
                 if (waterGrid[tpos.x, tpos.y] != null)
                 {
-                    if (waterGrid[tpos.x, tpos.y].type == TileType.Wall && waterGrid[tpos.x, tpos.y].height <= 1 && wallnum > 0)
+                    if (waterGrid[tpos.x, tpos.y].type != TileType.Water && waterGrid[tpos.x, tpos.y].height <= 1 && wallnum > 0)
                     {
-                        AddWallBlk(tpos.x, tpos.y, waterGrid[tpos.x, tpos.y].height+1);
+                        AddWallBlk(tpos.x, tpos.y, waterGrid[tpos.x, tpos.y].height+10);
                         wallnum--;
                         UpdateStats();
                     }
@@ -324,9 +344,9 @@ public class GridManager : MonoBehaviour
             //WorldTick();
             SpreadTick();
             UpdateStats();
-           // Debug.Log("Water " + waterAmt);
-           // Debug.Log("Connected " + connectedWater.Count);
-           // Debug.Log("Level " + waterlevel);
+            Debug.Log("Water " + waterAmt);
+            Debug.Log("Connected " + connectedWater.Count);
+            Debug.Log("Level " + waterlevel);
         }
         else
         {
@@ -460,20 +480,30 @@ public class GridManager : MonoBehaviour
     }
     public void AddWallBlk(int x, int y, int h)
     {
-        // Isometric conversion formula
-        float isoX = (x - y) * tileWidth * 0.5f;
-        float isoY = (x + y) * tileHeight * 0.5f;
-        //spawn wall
-        Vector3 position = new Vector3(isoX, isoY, 0);
-        GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
-        WaterBlock tile = tileObj.GetComponent<WaterBlock>();
-        //Set stats
-        tile.xloc = x;
-        tile.yloc = y;
-        tile.height = h;
-        waterGrid[x, y] = tile;
-        tile.type = TileType.Wall;
-        tile.wall = true;
+
+        if(waterGrid[x, y].type == TileType.Biz || waterGrid[x, y].type == TileType.Home)
+        {
+            waterGrid[x, y].WalledInfastructure();
+            waterGrid[x, y].height = h;
+        }
+        else
+        {
+            // Isometric conversion formula
+            float isoX = (x - y) * tileWidth * 0.5f;
+            float isoY = (x + y) * tileHeight * 0.5f;
+            //spawn wall
+            Vector3 position = new Vector3(isoX, isoY, 0);
+            GameObject tileObj = Instantiate(waterPrefab, position, Quaternion.identity, transform);
+            WaterBlock tile = tileObj.GetComponent<WaterBlock>();
+            //Set stats
+            tile.xloc = x;
+            tile.yloc = y;
+            tile.height = h;
+            tile.type = TileType.Wall;
+            waterGrid[x, y] = tile;
+            tile.wall = true;
+        }
+
         //debug
         //tile.rend.color = Color.black;
     }

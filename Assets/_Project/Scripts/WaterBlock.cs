@@ -25,6 +25,10 @@ public class WaterBlock : MonoBehaviour
         if (type == TileType.Wall) { rend.sprite = null; }
         if (type == TileType.Wall && wall) { rend.sprite = blok; rend.color = Color.red; }
     }
+    public void WalledInfastructure()
+    {
+        rend.sprite = blok; rend.color = Color.red;
+    }
     bool CheckSides(int d)
     {
         //Debug.Log("Sides");
@@ -138,15 +142,15 @@ public class WaterBlock : MonoBehaviour
         {
             GridManager.Instance.OvertakeWater(xloc - 1, yloc);
         }
-        else if (CheckSides(1))
+        if (CheckSides(1))
         {
             GridManager.Instance.OvertakeWater(xloc, yloc + 1);
         }
-        else if (CheckSides(2))
+        if (CheckSides(2))
         {
             GridManager.Instance.OvertakeWater(xloc, yloc - 1);
         }
-        else if (CheckSides(0))
+        if (CheckSides(0))
         {
             GridManager.Instance.OvertakeWater(xloc + 1, yloc);
         }
