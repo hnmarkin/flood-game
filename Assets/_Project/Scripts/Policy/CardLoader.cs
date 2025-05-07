@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 public class CardLoader : MonoBehaviour
@@ -7,8 +9,9 @@ public class CardLoader : MonoBehaviour
     [SerializeField] private TMP_Text residentialOpinionText;
     [SerializeField] private TMP_Text corporateOpinionText;
     [SerializeField] private TMP_Text politicalOpinionText;
-    [SerializeField] private TMP_Text moneyText;
-    [SerializeField] private TMP_Text actionPointsText;
+    //Money and action points are lists of images
+    [SerializeField] private List<Image> moneyImages;
+    [SerializeField] private List<Image> actionPointsImages;
 
     public CardData _cardData { get; private set; }
 
@@ -28,7 +31,22 @@ public class CardLoader : MonoBehaviour
         corporateOpinionText.text = _cardData.corporateOpinion.ToString();
         politicalOpinionText.text = _cardData.politicalOpinion.ToString();
 
-        moneyText.text = _cardData.money.ToString();
-        actionPointsText.text = _cardData.actionPoints.ToString();
+        // Set money pips
+        for (int i = 0; i < _cardData.money; i++)
+        {
+            if (i < moneyImages.Count)
+            {
+                moneyImages[i].gameObject.SetActive(true);
+            }
+        }
+
+        // Set action points pips
+        for (int i = 0; i < _cardData.actionPoints; i++)
+        {
+            if (i < actionPointsImages.Count)
+            {
+                actionPointsImages[i].gameObject.SetActive(true);
+            }
+        }
     }
 }
