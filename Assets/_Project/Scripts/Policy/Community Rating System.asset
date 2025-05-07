@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19932a6f78438324abdb24cf54da3745, type: 3}
   m_Name: Community Rating System
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Community Rating System
   cardType: 0
-  description: 
-  residentialOpinion: 0
-  corporateOpinion: 0
-  politicalOpinion: 0
-  money: 0
-  actionPoints: 0
+  description: Reduce flood insurance costs based on the community's efforts in reducing
+    flood risk
+  residentialOpinion: 2
+  corporateOpinion: 2
+  politicalOpinion: 2
+  money: 1
+  actionPoints: 2

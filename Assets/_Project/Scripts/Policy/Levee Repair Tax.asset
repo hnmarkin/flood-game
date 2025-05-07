@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19932a6f78438324abdb24cf54da3745, type: 3}
   m_Name: Levee Repair Tax
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Levee Repair Tax Funding
   cardType: 0
-  description: 
-  residentialOpinion: 0
-  corporateOpinion: 0
-  politicalOpinion: 0
-  money: 0
-  actionPoints: 0
+  description: Fund levee repairs with tax money
+  residentialOpinion: 1
+  corporateOpinion: -1
+  politicalOpinion: 2
+  money: 2
+  actionPoints: 4

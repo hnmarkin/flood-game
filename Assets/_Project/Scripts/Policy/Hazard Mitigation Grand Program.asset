@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19932a6f78438324abdb24cf54da3745, type: 3}
   m_Name: Hazard Mitigation Grand Program
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Hazard Mitigation Grant Program
   cardType: 0
-  description: 
-  residentialOpinion: 0
-  corporateOpinion: 0
-  politicalOpinion: 0
-  money: 0
-  actionPoints: 0
+  description: "Community assistance in rebuilding with flood resilience:\n  - Floodwalls\n 
+    - Structure elevation\n  - Drainage improvements"
+  residentialOpinion: 2
+  corporateOpinion: 2
+  politicalOpinion: 2
+  money: 1
+  actionPoints: 4
