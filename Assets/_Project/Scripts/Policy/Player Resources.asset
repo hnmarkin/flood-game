@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a95a7d03a1e914e87a9a57c7fe198a, type: 3}
   m_Name: Player Resources
   m_EditorClassIdentifier: 
-  money: 0
-  actionPoints: 0
+  money: 5
+  actionPoints: 5
   residentialOpinion: 0
   corporateOpinion: 0
   politicalOpinion: 0
