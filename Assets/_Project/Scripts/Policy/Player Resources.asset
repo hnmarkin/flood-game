@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a95a7d03a1e914e87a9a57c7fe198a, type: 3}
   m_Name: Player Resources
   m_EditorClassIdentifier: 
-  money: 5
-  actionPoints: 5
-  residentialOpinion: 0
-  corporateOpinion: 0
-  politicalOpinion: 0
+  OnResourcesChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  _money: 5
+  _actionPoints: 1
+  _residentialOpinion: 8
+  _corporateOpinion: 2
+  _politicalOpinion: -7
