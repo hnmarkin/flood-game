@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9b84a403e48ae74cb31771f3c25a3d4, type: 3}
+  m_Script: {fileID: 11500000, guid: cbf86cf945e87434bbf8e1c6f8497b77, type: 3}
   m_Name: CardSelect
   m_EditorClassIdentifier: 

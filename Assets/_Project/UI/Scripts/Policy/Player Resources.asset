@@ -18,5 +18,5 @@ MonoBehaviour:
   _money: 5
   _actionPoints: 4
   _residentialOpinion: 8
-  _corporateOpinion: 2
+  _corporateOpinion: 5
   _politicalOpinion: -7
