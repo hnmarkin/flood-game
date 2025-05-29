@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class CardLoader : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class CardLoader : MonoBehaviour
     //Money and action points are lists of images
     [SerializeField] private List<Image> moneyImages;
     [SerializeField] private List<Image> actionPointsImages;
+
+    [SerializeField] private AvailableLoader _infoTextManager;
+    [SerializeField] private Toggle _cardButton;
 
     public CardData _cardData { get; private set; }
 
@@ -47,6 +51,24 @@ public class CardLoader : MonoBehaviour
             {
                 actionPointsImages[i].gameObject.SetActive(true);
             }
+        }
+    }
+
+    public void OnClick()
+    {
+        Debug.Log($"Card clicked: {_cardData.cardName}");
+        if (_infoTextManager == null)
+        {
+            _infoTextManager = GetComponentInParent<AvailableLoader>();
+        }
+
+        if (_infoTextManager != null && _cardData != null)
+        {
+            _infoTextManager.SetInfoText(_cardData.description);
+        }
+        else if (_cardData != null)
+        {
+            Debug.LogWarning("InfoTextManager not assigned to CardLoader!");
         }
     }
 }
