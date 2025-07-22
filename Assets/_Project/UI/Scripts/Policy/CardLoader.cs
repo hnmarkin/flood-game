@@ -57,6 +57,22 @@ public class CardLoader : MonoBehaviour
     public void OnClick()
     {
         Debug.Log($"Card clicked: {_cardData.cardName}");
+        
+        // Update the PolicyManager with the current selection
+        if (PolicyManager.Instance != null && _cardData != null)
+        {
+            PolicyManager.Instance.SelectPolicy(_cardData);
+        }
+        else if (_cardData == null)
+        {
+            Debug.LogError("CardData is null when trying to select policy!");
+        }
+        else
+        {
+            Debug.LogError("PolicyManager instance not found! Make sure PolicyManager is in the scene.");
+        }
+
+        // Keep the existing info text functionality
         if (_infoTextManager == null)
         {
             _infoTextManager = GetComponentInParent<AvailableLoader>();
