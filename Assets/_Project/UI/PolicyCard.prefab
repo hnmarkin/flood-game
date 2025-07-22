@@ -3460,7 +3460,10 @@ MonoBehaviour:
   - {fileID: 6488894460035999918}
   - {fileID: 2390387698638541620}
   _infoTextManager: {fileID: 0}
-  _cardButton: {fileID: 0}
+  _cardButton: {fileID: 3247486708289426079}
+  cardCanvasGroup: {fileID: 9058463917562953431}
+  disabledAlpha: 0.5
+  disabledTextColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!225 &9058463917562953431
 CanvasGroup:
   m_ObjectHideFlags: 0
