@@ -59,8 +59,8 @@ public class EnactPolicyButton : MonoBehaviour
     /// <summary>
     /// Called when policy selection changes
     /// </summary>
-    /// <param name="selectionData">The new selection data</param>
-    private void OnPolicySelectionChanged(PolicySelectionData selectionData)
+    /// <param name="cardData">The new selected card data</param>
+    private void OnPolicySelectionChanged(CardData cardData)
     {
         UpdateButtonState();
     }
@@ -84,22 +84,22 @@ public class EnactPolicyButton : MonoBehaviour
             return;
         }
 
-        if (!PolicyManager.Instance.HasSelection())
+        if (!PolicyManager.Instance.HasSelection)
         {
             SetButtonState(false, noSelectionText);
             return;
         }
 
-        if (PolicyManager.Instance.CanAffordSelectedPolicy)
+        if (PolicyManager.Instance.CanAffordSelected)
         {
             SetButtonState(true, defaultButtonText);
-            UpdateStatusText($"Ready to enact: {PolicyManager.Instance.SelectedCardName}");
+            UpdateStatusText($"Ready to enact: {PolicyManager.Instance.SelectedCard.cardName}");
         }
         else
         {
             SetButtonState(false, cantAffordText);
-            UpdateStatusText($"Need {PolicyManager.Instance.SelectedMoney} money, {PolicyManager.Instance.SelectedActionPoints} action points. " +
-                           $"Have {PolicyManager.Instance.CurrentMoney} money, {PolicyManager.Instance.CurrentActionPoints} action points.");
+            var card = PolicyManager.Instance.SelectedCard;
+            UpdateStatusText($"Need {card.money} money, {card.actionPoints} action points.");
         }
     }
 
@@ -138,44 +138,38 @@ public class EnactPolicyButton : MonoBehaviour
             return;
         }
 
-        // Try to execute the selected policy
-        bool success = PolicyManager.Instance.TryExecuteSelectedPolicy();
-
-        if (success)
+        // Check if we can enact the policy
+        if (!PolicyManager.Instance.HasSelection || !PolicyManager.Instance.CanAffordSelected)
         {
-            // Policy was enacted successfully
-            OnPolicyEnacted();
-        }
-        else
-        {
-            // Policy couldn't be enacted (insufficient resources or no selection)
             OnPolicyEnactFailed();
+            return;
         }
 
-        // Update button state after attempting to enact
+        // Store the card data before enacting (since it gets cleared)
+        CardData enactedCard = PolicyManager.Instance.SelectedCard;
+
+        // Enact the policy (this handles resource deduction and animation)
+        PolicyManager.Instance.EnactSelectedPolicy(() => 
+        {
+            Debug.Log($"Enact animation completed for {enactedCard.cardName}");
+        });
+
+        // Policy was enacted successfully
+        OnPolicyEnacted(enactedCard);
+
+        // Update button state after enacting
         UpdateButtonState();
     }
 
     /// <summary>
     /// Called when a policy is successfully enacted
     /// </summary>
-    private void OnPolicyEnacted()
+    private void OnPolicyEnacted(CardData policy)
     {
-        var policy = PolicyManager.Instance.CurrentSelection;
-        
         Debug.Log($"Policy '{policy.cardName}' enacted successfully!");
         
         // Here you would integrate with your game systems to apply the policy effects
         ApplyPolicyEffects(policy);
-
-        // Animate the selected card to the policy slot
-        PolicyManager.Instance.AnimateSelectedCardToSlot(() => 
-        {
-            Debug.Log($"Enact animation completed for {policy.cardName}");
-        });
-        
-        // Optional: Clear selection after successful enactment
-        // PolicyManager.Instance.ClearSelection();
 
         // Optional: Show success feedback to player
         UpdateStatusText($"Enacted: {policy.cardName}");
@@ -189,7 +183,7 @@ public class EnactPolicyButton : MonoBehaviour
         Debug.LogWarning("Failed to enact policy - insufficient resources or no selection");
         
         // Optional: Show error feedback to player
-        if (!PolicyManager.Instance.HasSelection())
+        if (!PolicyManager.Instance.HasSelection)
         {
             UpdateStatusText("Please select a policy first");
         }
@@ -204,7 +198,7 @@ public class EnactPolicyButton : MonoBehaviour
     /// This is where you'd integrate with your opinion system, game state, etc.
     /// </summary>
     /// <param name="policy">The policy that was enacted</param>
-    private void ApplyPolicyEffects(PolicySelectionData policy)
+    private void ApplyPolicyEffects(CardData policy)
     {
         // Example integrations:
         
@@ -245,15 +239,14 @@ public class EnactPolicyButton : MonoBehaviour
         
         if (PolicyManager.Instance != null)
         {
-            Debug.Log($"Has Selection: {PolicyManager.Instance.HasSelection()}");
-            Debug.Log($"Can Afford: {PolicyManager.Instance.CanAffordSelectedPolicy}");
-            Debug.Log($"Current Money: {PolicyManager.Instance.CurrentMoney}");
-            Debug.Log($"Current Action Points: {PolicyManager.Instance.CurrentActionPoints}");
+            Debug.Log($"Has Selection: {PolicyManager.Instance.HasSelection}");
+            Debug.Log($"Can Afford: {PolicyManager.Instance.CanAffordSelected}");
             
-            if (PolicyManager.Instance.HasSelection())
+            if (PolicyManager.Instance.HasSelection)
             {
-                Debug.Log($"Selected Policy: {PolicyManager.Instance.SelectedCardName}");
-                Debug.Log($"Policy Cost: {PolicyManager.Instance.SelectedMoney} money, {PolicyManager.Instance.SelectedActionPoints} action points");
+                var card = PolicyManager.Instance.SelectedCard;
+                Debug.Log($"Selected Policy: {card.cardName}");
+                Debug.Log($"Policy Cost: {card.money} money, {card.actionPoints} action points");
             }
         }
     }

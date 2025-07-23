@@ -306,7 +306,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00016159943}
+  m_AnchoredPosition: {x: 0, y: 0.012424366}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &33157835
@@ -466,7 +466,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 640189168}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9997572
+  m_Size: 0.9997401
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -724,19 +724,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad2cb8e146b91e24e8a565b7afccee72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentSelection:
-    cardName: 
-    cardType: 0
-    description: 
-    residentialOpinion: 0
-    corporateOpinion: 0
-    politicalOpinion: 0
-    money: 0
-    actionPoints: 0
-  _resourcesData: {fileID: 11400000, guid: fd2d3969c2546014d9c1749cf41bd7f2, type: 2}
   policySlotContainer: {fileID: 1340133425}
-  scrollRect: {fileID: 992415848}
-  enactAnimationDuration: 0.25
+  animationDuration: 1
+  resourcesData: {fileID: 11400000, guid: fd2d3969c2546014d9c1749cf41bd7f2, type: 2}
   OnPolicySelected:
     m_PersistentCalls:
       m_Calls: []
@@ -3750,7 +3740,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00016159943}
+  m_AnchoredPosition: {x: 0, y: 0.012424366}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1340133426
@@ -4981,7 +4971,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1829807972}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9997074
+  m_Size: 0.9996869
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

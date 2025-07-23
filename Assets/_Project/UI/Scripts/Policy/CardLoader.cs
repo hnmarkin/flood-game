@@ -107,7 +107,7 @@ public class CardLoader : MonoBehaviour
         }
 
         // Check affordability through PolicyManager
-        isAffordable = PolicyManager.Instance.CanAffordPolicy(_cardData);
+        isAffordable = PolicyManager.Instance.CanAfford(_cardData);
         
         // Update visual state
         UpdateVisualState();
@@ -139,8 +139,7 @@ public class CardLoader : MonoBehaviour
         if (!isAffordable)
         {
             Debug.Log($"Cannot select {_cardData.cardName} - insufficient resources! " +
-                     $"Costs: {_cardData.money} money, {_cardData.actionPoints} action points. " +
-                     $"Available: {PolicyManager.Instance?.CurrentMoney} money, {PolicyManager.Instance?.CurrentActionPoints} action points.");
+                     $"Costs: {_cardData.money} money, {_cardData.actionPoints} action points.");
             // Optionally show a UI message to the player here
         }
 
