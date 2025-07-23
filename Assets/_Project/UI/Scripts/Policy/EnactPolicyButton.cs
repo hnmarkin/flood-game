@@ -167,10 +167,16 @@ public class EnactPolicyButton : MonoBehaviour
         
         // Here you would integrate with your game systems to apply the policy effects
         ApplyPolicyEffects(policy);
+
+        // Animate the selected card to the policy slot
+        PolicyManager.Instance.AnimateSelectedCardToSlot(() => 
+        {
+            Debug.Log($"Enact animation completed for {policy.cardName}");
+        });
         
         // Optional: Clear selection after successful enactment
         // PolicyManager.Instance.ClearSelection();
-        
+
         // Optional: Show success feedback to player
         UpdateStatusText($"Enacted: {policy.cardName}");
     }

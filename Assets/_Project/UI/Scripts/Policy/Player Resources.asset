@@ -15,7 +15,7 @@ MonoBehaviour:
   OnResourcesChanged:
     m_PersistentCalls:
       m_Calls: []
-  _money: 4
+  _money: 20
   _actionPoints: 0
   _residentialOpinion: 8
   _corporateOpinion: 5

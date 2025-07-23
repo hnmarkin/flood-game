@@ -149,7 +149,7 @@ public class CardLoader : MonoBehaviour
         // Update the PolicyManager with the current selection
         if (PolicyManager.Instance != null && _cardData != null)
         {
-            PolicyManager.Instance.SelectPolicy(_cardData);
+            PolicyManager.Instance.SelectPolicy(_cardData, this);
         }
         else if (_cardData == null)
         {
