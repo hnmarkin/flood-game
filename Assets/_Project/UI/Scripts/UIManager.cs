@@ -1,17 +1,29 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [Header("Resource Overlay")]
-    public GameObject resourceOverlayPrefab;
+    [Header("Resources Overlay (Always Used)")]
+    [Tooltip("The resources overlay that shows money, action points, etc.")]
+    public GameObject resourcesOverlayPrefab;
+
+    [Header("Title Overlay")]
+    [Tooltip("The title overlay that shows game title, level name, etc.")]
+    public GameObject titleOverlayPrefab;
+
+    [Header("Additional UI Prefabs")]
+    [Tooltip("List of additional UI prefabs to instantiate in the canvas")]
+    public List<GameObject> uiPrefabs = new List<GameObject>();
     
     [Header("Canvas Assignment (Optional)")]
     [Tooltip("If left empty, will automatically find the first Canvas in the scene")]
     public Canvas targetCanvas;
     
-    private GameObject resourceOverlayInstance;
+    private GameObject resourcesOverlayInstance;
+    private GameObject titleOverlayInstance;
+    private List<GameObject> instantiatedUIs = new List<GameObject>();
 
     void Awake()
     {
@@ -19,7 +31,9 @@ public class UIManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            InstantiateResourceOverlay();
+            InstantiateUIPrefabs();
+            InstantiateResourcesOverlay();
+            InstantiateTitleOverlay();
         }
         else
         {
@@ -27,11 +41,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void InstantiateResourceOverlay()
+    private void InstantiateResourcesOverlay()
     {
-        if (resourceOverlayPrefab == null)
+        if (resourcesOverlayPrefab == null)
         {
-            Debug.LogWarning("Resource overlay prefab not assigned!");
+            Debug.LogWarning("Resources overlay prefab not assigned!");
             return;
         }
 
@@ -39,15 +53,72 @@ public class UIManager : MonoBehaviour
         Canvas canvas = GetTargetCanvas();
         if (canvas == null)
         {
-            Debug.LogError("No Canvas found for resource overlay!");
+            Debug.LogError("No Canvas found for resources overlay!");
             return;
         }
 
         // Instantiate and parent to canvas
-        resourceOverlayInstance = Instantiate(resourceOverlayPrefab, canvas.transform);
-        DontDestroyOnLoad(resourceOverlayInstance);
+        resourcesOverlayInstance = Instantiate(resourcesOverlayPrefab, canvas.transform);
+        DontDestroyOnLoad(resourcesOverlayInstance);
         
-        Debug.Log($"Resource overlay instantiated in canvas: {canvas.name}");
+        Debug.Log($"Resources overlay instantiated in canvas: {canvas.name}");
+    }
+
+    private void InstantiateUIPrefabs()
+    {
+        if (uiPrefabs == null || uiPrefabs.Count == 0)
+        {
+            Debug.Log("No additional UI prefabs assigned to UIManager.");
+            return;
+        }
+
+        // Find target canvas
+        Canvas canvas = GetTargetCanvas();
+        if (canvas == null)
+        {
+            Debug.LogError("No Canvas found for additional UI prefabs!");
+            return;
+        }
+
+        // Instantiate all additional UI prefabs
+        foreach (GameObject prefab in uiPrefabs)
+        {
+            if (prefab == null)
+            {
+                Debug.LogWarning("Null prefab found in UI prefabs list, skipping...");
+                continue;
+            }
+
+            GameObject instance = Instantiate(prefab, canvas.transform);
+            DontDestroyOnLoad(instance);
+            instantiatedUIs.Add(instance);
+            
+            Debug.Log($"Additional UI prefab '{prefab.name}' instantiated in canvas: {canvas.name}");
+        }
+        
+        Debug.Log($"UIManager instantiated {instantiatedUIs.Count} additional UI prefabs");
+    }
+
+    public void InstantiateTitleOverlay()
+    {
+        if (titleOverlayPrefab != null)
+        {
+            Canvas targetCanvas = GetTargetCanvas();
+            if (targetCanvas != null)
+            {
+                titleOverlayInstance = Instantiate(titleOverlayPrefab, targetCanvas.transform);
+                DontDestroyOnLoad(titleOverlayInstance);
+                Debug.Log("Title overlay instantiated successfully.");
+            }
+            else
+            {
+                Debug.LogError("UIManager: No canvas found for title overlay instantiation.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: Title overlay prefab is not assigned.");
+        }
     }
 
     private Canvas GetTargetCanvas()
