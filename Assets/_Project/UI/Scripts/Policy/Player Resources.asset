@@ -16,7 +16,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _money: 3
-  _actionPoints: 0
+  _actionPoints: 4
   _residentialOpinion: 8
   _corporateOpinion: 5
   _politicalOpinion: -7
