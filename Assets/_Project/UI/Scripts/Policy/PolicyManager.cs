@@ -133,7 +133,7 @@ public class PolicyManager : MonoBehaviour
             .setEaseInOutQuad()
             .setOnComplete(() => {
                 // Remove the override Canvas components now that animation is complete
-                if (animationCanvas != null) DestroyImmediate(animationCanvas);
+                //if (animationCanvas != null) DestroyImmediate(animationCanvas);
                 
                 GraphicRaycaster raycaster = copy.GetComponent<GraphicRaycaster>();
                 if (raycaster != null) DestroyImmediate(raycaster);
