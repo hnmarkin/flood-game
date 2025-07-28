@@ -305,7 +305,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1608067712718896886}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999756
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1974,7 +1974,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4401026339720833841}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999696
+  m_Size: 0.99999654
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2607,7 +2607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000030977415}
+  m_AnchoredPosition: {x: 0, y: 0.000040268314}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3175717230852930465
@@ -3719,7 +3719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   policySlotContainer: {fileID: 4055636571792282773}
-  animationDuration: 1
+  animationDuration: 0.3
   resourcesData: {fileID: 11400000, guid: fd2d3969c2546014d9c1749cf41bd7f2, type: 2}
   OnPolicySelected:
     m_PersistentCalls:
@@ -3763,7 +3763,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000015503886}
+  m_AnchoredPosition: {x: 0, y: 0.00003168888}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2051555352774442975
