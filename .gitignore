@@ -77,4 +77,8 @@ crashlytics-build.properties
 
 # API Keys
 API_Key.env
+<<<<<<< HEAD
 *.env
+=======
+*.env
+>>>>>>> origin/main
