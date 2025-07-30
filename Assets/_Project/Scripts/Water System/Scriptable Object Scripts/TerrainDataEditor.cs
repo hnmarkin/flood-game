@@ -90,8 +90,7 @@ public class TerrainDataEditor : Editor
                 }
                 else
                 {
-                    // Fallback: clear data directly
-                    ClearTerrainData(terrainData);
+                    EditorUtility.DisplayDialog("Error", "No TerrainLoader found in scene to clear data.", "OK");
                 }
             }
         }
@@ -145,16 +144,5 @@ public class TerrainDataEditor : Editor
         {
             EditorUtility.SetDirty(terrainData);
         }
-    }
-    
-    // Simple fallback methods for when no TerrainLoader is available
-    private void ClearTerrainData(TerrainData terrainData)
-    {
-        terrainData.TilePositions.Clear();
-        terrainData.TileValues.Clear();
-        terrainData.DataLoaded = false;
-        terrainData.TotalTilesWritten = 0;
-        terrainData.LastOperationResult = "FAILED: Data cleared manually (Tiles: 0)";
-        EditorUtility.SetDirty(terrainData);
     }
 }
