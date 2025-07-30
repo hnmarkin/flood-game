@@ -30,55 +30,27 @@ public class TerrainData : ScriptableObject
     [Header("Terrain Types")]
     [SerializeField] private List<TerrainTypeData> terrainTypesList = new List<TerrainTypeData>();
     
-    [Header("Tile Values (Debug/Visual Inspection)")]
+    [Header("Loaded Tile Data (Debug/Visual Inspection)")]
     [SerializeField] private List<Vector2Int> tilePositions = new List<Vector2Int>();
     [SerializeField] private List<int> tileValues = new List<int>();
     
-    [Header("Data Status")]
+    [Header("Debug Status")]
     [SerializeField] private bool dataLoaded = false;
     [SerializeField] private int totalTilesWritten = 0;
     [SerializeField] private string lastOperationResult = "No operation performed";
     
-    // Properties for external access
+    // Simple properties for data access
     public int TerrainTypes 
     { 
         get => terrainTypes; 
         set 
         { 
             terrainTypes = value;
-            ValidateTerrainHeights();
+            ValidateTerrainTypesList();
         } 
     }
     
     public List<TerrainTypeData> TerrainTypesList => terrainTypesList;
-    
-    // Backward compatibility properties
-    public List<TileBase> TerrainTiles 
-    {
-        get
-        {
-            List<TileBase> tiles = new List<TileBase>();
-            foreach (var terrainType in terrainTypesList)
-            {
-                tiles.Add(terrainType.tile);
-            }
-            return tiles;
-        }
-    }
-    
-    public List<float> TerrainHeights 
-    {
-        get
-        {
-            List<float> heights = new List<float>();
-            foreach (var terrainType in terrainTypesList)
-            {
-                heights.Add(terrainType.height);
-            }
-            return heights;
-        }
-    }
-    
     public List<Vector2Int> TilePositions => tilePositions;
     public List<int> TileValues => tileValues;
     public bool DataLoaded 
@@ -99,10 +71,10 @@ public class TerrainData : ScriptableObject
     
     private void OnValidate()
     {
-        ValidateTerrainHeights();
+        ValidateTerrainTypesList();
     }
 
-    private void ValidateTerrainHeights()
+    private void ValidateTerrainTypesList()
     {
         // Ensure the terrain types list matches the terrain types count
         while (terrainTypesList.Count < terrainTypes)

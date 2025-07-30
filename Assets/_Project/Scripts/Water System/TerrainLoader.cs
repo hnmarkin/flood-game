@@ -11,6 +11,35 @@ public class TerrainLoader : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool showDebugInfo = false;
     
+    // Public setters for the editor
+    public void SetTerrainData(TerrainData data) => terrainData = data;
+    public void SetSourceTilemap(Tilemap tilemap) => sourceTilemap = tilemap;
+    
+    // Helper methods to access terrain data in convenient ways
+    public List<TileBase> GetTerrainTiles()
+    {
+        if (terrainData == null) return new List<TileBase>();
+        
+        List<TileBase> tiles = new List<TileBase>();
+        foreach (var terrainType in terrainData.TerrainTypesList)
+        {
+            tiles.Add(terrainType.tile);
+        }
+        return tiles;
+    }
+    
+    public List<float> GetTerrainHeights()
+    {
+        if (terrainData == null) return new List<float>();
+        
+        List<float> heights = new List<float>();
+        foreach (var terrainType in terrainData.TerrainTypesList)
+        {
+            heights.Add(terrainType.height);
+        }
+        return heights;
+    }
+    
     /// <summary>
     /// Loads terrain data from the assigned tilemap and stores it in the TerrainData ScriptableObject
     /// </summary>
@@ -76,16 +105,25 @@ public class TerrainLoader : MonoBehaviour
     
     /// <summary>
     /// Determines the terrain type based on the tile
-    /// Override this method or expand it based on your specific tile system
+    /// First tries direct tile comparison, then falls back to name-based detection
     /// </summary>
     /// <param name="tile">The tile to analyze</param>
     /// <returns>The terrain type index (0 to terrainTypes-1)</returns>
     private int DetermineTileType(TileBase tile)
     {
         if (tile == null) return 0;
+        if (terrainData == null) return 0;
         
-        // Simple implementation based on tile name
-        // You can expand this based on your specific tile system
+        // First: Try direct tile comparison with configured terrain tiles
+        for (int i = 0; i < terrainData.TerrainTypesList.Count; i++)
+        {
+            if (terrainData.TerrainTypesList[i].tile == tile)
+            {
+                return i;
+            }
+        }
+        
+        // Fallback: Name-based detection (for backward compatibility)
         string tileName = tile.name.ToLower();
         
         if (tileName.Contains("water") || tileName.Contains("blue"))
@@ -129,9 +167,9 @@ public class TerrainLoader : MonoBehaviour
             if (gridX >= 0 && gridX < gridWidth && gridY >= 0 && gridY < gridHeight)
             {
                 // Ensure tileValue is within valid range
-                if (tileValue >= 0 && tileValue < terrainData.TerrainHeights.Count)
+                if (tileValue >= 0 && tileValue < terrainData.TerrainTypesList.Count)
                 {
-                    heightArray[gridX, gridY] = terrainData.TerrainHeights[tileValue];
+                    heightArray[gridX, gridY] = terrainData.TerrainTypesList[tileValue].height;
                 }
             }
         }
@@ -177,11 +215,12 @@ public class TerrainLoader : MonoBehaviour
     {
         if (terrainData == null) return "TerrainData reference is null";
         
+        List<float> heights = GetTerrainHeights();
         return $"Data Loaded: {terrainData.DataLoaded}\n" +
                $"Terrain Types: {terrainData.TerrainTypes}\n" +
                $"Total Tiles: {terrainData.TotalTilesWritten}\n" +
                $"Last Operation: {terrainData.LastOperationResult}\n" +
-               $"Heights: [{string.Join(", ", terrainData.TerrainHeights)}]";
+               $"Heights: [{string.Join(", ", heights)}]";
     }
     
     /// <summary>
@@ -211,7 +250,7 @@ public class TerrainLoader : MonoBehaviour
         
         bool isValid = terrainData.DataLoaded && 
                       terrainData.TilePositions.Count == terrainData.TileValues.Count && 
-                      terrainData.TerrainHeights.Count == terrainData.TerrainTypes &&
+                      terrainData.TerrainTypesList.Count == terrainData.TerrainTypes &&
                       terrainData.TotalTilesWritten > 0;
         
         if (!isValid)
@@ -219,7 +258,7 @@ public class TerrainLoader : MonoBehaviour
             string reason = "Unknown validation error";
             if (!terrainData.DataLoaded) reason = "No data loaded";
             else if (terrainData.TilePositions.Count != terrainData.TileValues.Count) reason = "Tile position/value count mismatch";
-            else if (terrainData.TerrainHeights.Count != terrainData.TerrainTypes) reason = "Terrain heights count doesn't match terrain types";
+            else if (terrainData.TerrainTypesList.Count != terrainData.TerrainTypes) reason = "Terrain types list count doesn't match terrain types";
             else if (terrainData.TotalTilesWritten <= 0) reason = "No tiles were written";
             
             LogOperation(false, $"Data validation failed: {reason}", terrainData.TotalTilesWritten);
