@@ -21,6 +21,22 @@ public class FloodSimDataEditor : Editor
             sim.StepSimulation();
             EditorUtility.SetDirty(sim);
         }
+        
+        if (GUILayout.Button("Reload Terrain from Tilemap"))
+        {
+            if (sim.terrain == null)
+            {
+                sim.Initialize();
+            }
+            else
+            {
+                // Force reload terrain from tilemap using reflection since method is private
+                var loadMethod = typeof(FloodSimData).GetMethod("LoadTerrainFromTilemap", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                loadMethod?.Invoke(sim, null);
+            }
+            EditorUtility.SetDirty(sim);
+        }
 
         if (GUILayout.Button("Print Water Matrix"))
         {

@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0839580e457ca4eb6eb66c8374ac02, type: 3}
   m_Name: FloodSimData
   m_EditorClassIdentifier: 
-  N: 10
+  N: 50
   dx: 1
   dy: 1
   dt: 1
   g: 9.81
   friction: 0.02
   basTerrainProbability: 0.05
-  adjacentTerrainProbability: 0.1
+  adjacentTerrainProbability: 0.75
+  useTilemapTerrain: 0
+  terrainDataAsset: {fileID: 11400000, guid: 31360ec829ca10f44b7662710c638192, type: 2}
