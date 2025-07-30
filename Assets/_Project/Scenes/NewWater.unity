@@ -6023,9 +6023,9 @@ MonoBehaviour:
   tilemap: {fileID: 64700822}
   waterTiles:
   - {fileID: 11400000, guid: 7bd16e3ea8c66ef4aa8f2ef51fbe8468, type: 2}
-  - {fileID: 11400000, guid: ecb840f0e1f981d48a121b066328869a, type: 2}
-  - {fileID: 11400000, guid: 5ce9cbc3bd9fe6845b73cebf488555c7, type: 2}
-  - {fileID: 11400000, guid: 1632ed5f924d6d54ab8782ee6f30b3cd, type: 2}
+  - {fileID: 11400000, guid: d3775bb284bd33b40ada4ca899da5b1a, type: 2}
+  - {fileID: 11400000, guid: 5abf43c9558beb1468020ca1171a73d7, type: 2}
+  - {fileID: 11400000, guid: c1ef3fd7114d2fb4ab24cd86d4ffc14a, type: 2}
   maxWaterDepth: 1
 --- !u!4 &1685835204
 Transform:

@@ -20,5 +20,3 @@ MonoBehaviour:
   friction: 0.02
   basTerrainProbability: 0.05
   adjacentTerrainProbability: 0.75
-  useTilemapTerrain: 0
-  terrainDataAsset: {fileID: 11400000, guid: 31360ec829ca10f44b7662710c638192, type: 2}
