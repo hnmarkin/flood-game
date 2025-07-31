@@ -75,7 +75,39 @@ public class FloodSimulationManager : MonoBehaviour
             
             if (terrainLoader != null)
             {
-                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N);
+                // Debug: Check what coordinate ranges we have in the terrain data
+                if (debugOutput && simulationData.TerrainDataSource.TilePositions.Count > 0)
+                {
+                    int minX = int.MaxValue, maxX = int.MinValue;
+                    int minY = int.MaxValue, maxY = int.MinValue;
+                    foreach (var pos in simulationData.TerrainDataSource.TilePositions)
+                    {
+                        minX = Mathf.Min(minX, pos.x);
+                        maxX = Mathf.Max(maxX, pos.x);
+                        minY = Mathf.Min(minY, pos.y);
+                        maxY = Mathf.Max(maxY, pos.y);
+                    }
+                    Debug.Log($"[FloodSimulationManager] Terrain bounds: X[{minX}, {maxX}], Y[{minY}, {maxY}], Target grid: {N}x{N}");
+                }
+                
+                // Calculate offsets to shift terrain coordinates into valid [0, N-1] range
+                int offsetX = 0, offsetY = 0;
+                if (simulationData.TerrainDataSource.TilePositions.Count > 0)
+                {
+                    int minX = int.MaxValue, minY = int.MaxValue;
+                    foreach (var pos in simulationData.TerrainDataSource.TilePositions)
+                    {
+                        minX = Mathf.Min(minX, pos.x);
+                        minY = Mathf.Min(minY, pos.y);
+                    }
+                    // Shift negative coordinates to start at 0
+                    offsetX = -minX;
+                    offsetY = -minY;
+                    if (debugOutput)
+                        Debug.Log($"[FloodSimulationManager] Applying offset: ({offsetX}, {offsetY})");
+                }
+                
+                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N, offsetX, offsetY);
                 if (terrainFromData != null)
                 {
                     // Initialize arrays
@@ -85,15 +117,20 @@ public class FloodSimulationManager : MonoBehaviour
                     simulationData.flowY = new float[gridWidth, gridHeight];
 
                     // Copy terrain data from TerrainData (offset by 1 for boundary)
+                    int terrainCellsSet = 0;
                     for (int y = 0; y < N; y++)
                     {
                         for (int x = 0; x < N; x++)
                         {
                             simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
+                            if (terrainFromData[x, y] > 0) terrainCellsSet++;
                             // Water should be a thin layer on top of terrain, not a separate height
                             simulationData.water[x + 1, y + 1] = 0.1f; // Small amount of water on top of terrain
                         }
                     }
+
+                    if (debugOutput)
+                        Debug.Log($"[FloodSimulationManager] Terrain cells with height > 0: {terrainCellsSet}/{N*N}");
 
                     simulationData.IsInitialized = true;
                     if (debugOutput)
