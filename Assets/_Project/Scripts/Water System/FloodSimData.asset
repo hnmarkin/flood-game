@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8eb666f98070848ad1819faa36b847, type: 3}
   m_Name: FloodSimData
   m_EditorClassIdentifier: 
-  N: 10
+  N: 20
   dx: 1
   dy: 1
   dt: 1
   g: 9.81
   friction: 0.02
-  terrainDataSource: {fileID: 0}
-  isInitialized: 0
+  terrainDataSource: {fileID: 11400000, guid: 31360ec829ca10f44b7662710c638192, type: 2}
+  isInitialized: 1
