@@ -5,10 +5,20 @@ public class FloodTilemapRenderer : MonoBehaviour
 {
     [SerializeField] private FloodSimulationManager simulationManager;
     public Tilemap tilemap;
-    public TileBase[] waterTiles; // index 0 = terrain, index 1 = dry water, index N = deep water
 
-    public float maxWaterDepth = 1.0f; // normalize against this
+    [Header("Water Tiles: 5 Depth Levels")]
+    public TileBase transparentTile;  // 0.00 - 0.05: most transparent
+    public TileBase lightTile;        // 0.05 - 0.35: light water
+    public TileBase mediumTile;       // 0.35 - 0.65: medium water
+    public TileBase deepTile;         // 0.65 - 0.95: deep water
+    public TileBase deepestTile;      // 0.95 - 1.00: deepest water
 
+    // Hardcoded water depth ranges for 5 tiles
+    private readonly float[] waterRanges = { 0.05f, 0.35f, 0.65f, 0.95f, 1.0f };
+    
+    // Build tile array from individual fields
+    private TileBase[] waterTiles => new TileBase[] { transparentTile, lightTile, mediumTile, deepTile, deepestTile };
+    
     void Start()
     {
         // Try to find simulation manager if not assigned
@@ -57,23 +67,37 @@ public class FloodTilemapRenderer : MonoBehaviour
                 int simX = x + 1;
                 int simY = y + 1;
                 
-                // Check if there's terrain at this position
-                if (simulationData.terrain != null && simulationData.terrain[simX, simY] > 0f)
+                // Get water depth at this position
+                float waterDepth = simulationData.water[simX, simY];
+                
+                // Select tile based on hardcoded water depth ranges
+                int tileIndex = GetWaterTileIndex(waterDepth);
+                
+                Vector3Int tilePos = new Vector3Int(x, y, 0);
+                
+                // Only place a tile if there's water or terrain
+                if (tileIndex >= 0 && tileIndex < waterTiles.Length && waterTiles[tileIndex] != null)
                 {
-                    // Use the first tile (index 0) for terrain
-                    Vector3Int tilePos = new Vector3Int(x, y, 0);
-                    tilemap.SetTile(tilePos, waterTiles[0]);
-                }
-                else
-                {
-                    // Water tiles start at index 1, so add 1 to the calculation
-                    float depth = simulationData.water[simX, simY];
-                    int tileIndex = Mathf.Clamp(Mathf.FloorToInt(depth / maxWaterDepth * (waterTiles.Length - 2)) + 1, 1, waterTiles.Length - 1);
-
-                    Vector3Int tilePos = new Vector3Int(x, y, 0);
                     tilemap.SetTile(tilePos, waterTiles[tileIndex]);
                 }
             }
         }
+    }
+    
+    /// <summary>
+    /// Returns the appropriate tile index based on water depth
+    /// Uses hardcoded ranges: 0-0.05, 0.05-0.35, 0.35-0.65, 0.65-0.95, 0.95-1.0
+    /// </summary>
+    private int GetWaterTileIndex(float waterDepth)
+    {
+        // Clamp depth to valid range
+        waterDepth = Mathf.Clamp01(waterDepth);
+        
+        // Find appropriate tile based on hardcoded ranges
+        if (waterDepth <= waterRanges[0]) return 0;      // 0.00 - 0.05: most transparent
+        else if (waterDepth <= waterRanges[1]) return 1; // 0.05 - 0.35: light water
+        else if (waterDepth <= waterRanges[2]) return 2; // 0.35 - 0.65: medium water
+        else if (waterDepth <= waterRanges[3]) return 3; // 0.65 - 0.95: deep water
+        else return 4;                                   // 0.95 - 1.00: deepest water
     }
 }

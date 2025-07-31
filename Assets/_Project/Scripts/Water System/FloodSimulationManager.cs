@@ -125,7 +125,7 @@ public class FloodSimulationManager : MonoBehaviour
                             simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
                             if (terrainFromData[x, y] > 0) terrainCellsSet++;
                             // Water should be a thin layer on top of terrain, not a separate height
-                            simulationData.water[x + 1, y + 1] = 0.1f; // Small amount of water on top of terrain
+                            simulationData.water[x + 1, y + 1] = simulationData.startingWaterDepth; // Configurable starting water depth
                         }
                     }
 
@@ -156,7 +156,7 @@ public class FloodSimulationManager : MonoBehaviour
         // Fill with some water everywhere
         for (int y = 1; y <= N; y++)
             for (int x = 1; x <= N; x++)
-                simulationData.water[x, y] = 0.1f; // Small amount of water on the ground
+                simulationData.water[x, y] = simulationData.startingWaterDepth; // Configurable starting water depth
 
         simulationData.IsInitialized = true;
         if (debugOutput)

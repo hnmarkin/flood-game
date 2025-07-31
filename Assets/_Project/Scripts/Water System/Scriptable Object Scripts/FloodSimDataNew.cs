@@ -9,6 +9,10 @@ public class FloodSimDataNew : ScriptableObject
     public float dx = 1f, dy = 1f, dt = 1f;
     public float g = 9.81f;
     public float friction = 0.02f;
+    
+    [Header("Water Settings")]
+    [Range(0f, 1f)]
+    public float startingWaterDepth = 0.1f;
 
     [Header("Terrain Data Source")]
     [SerializeField] private TerrainData terrainDataSource;
@@ -49,6 +53,7 @@ public class FloodSimDataNew : ScriptableObject
         dt = Mathf.Max(0.01f, dt);
         g = Mathf.Max(0f, g);
         friction = Mathf.Clamp01(friction);
+        startingWaterDepth = Mathf.Clamp01(startingWaterDepth);
     }
 }
 
