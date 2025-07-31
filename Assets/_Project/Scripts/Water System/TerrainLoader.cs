@@ -147,18 +147,32 @@ public class TerrainLoader : MonoBehaviour
     /// <returns>2D array of terrain heights</returns>
     public float[,] ConvertToHeightArray(int gridWidth, int gridHeight, int offsetX = 0, int offsetY = 0)
     {
-        if (terrainData == null)
+        return ConvertToHeightArray(terrainData, gridWidth, gridHeight, offsetX, offsetY);
+    }
+    
+    /// <summary>
+    /// Converts the specified terrain data to a 2D height array for use with flood simulation
+    /// </summary>
+    /// <param name="sourceTerrainData">The TerrainData to convert from</param>
+    /// <param name="gridWidth">Width of the target grid</param>
+    /// <param name="gridHeight">Height of the target grid</param>
+    /// <param name="offsetX">X offset to apply when mapping tiles to grid</param>
+    /// <param name="offsetY">Y offset to apply when mapping tiles to grid</param>
+    /// <returns>2D array of terrain heights</returns>
+    public float[,] ConvertToHeightArray(TerrainData sourceTerrainData, int gridWidth, int gridHeight, int offsetX = 0, int offsetY = 0)
+    {
+        if (sourceTerrainData == null)
         {
-            Debug.LogWarning("[TerrainLoader] TerrainData reference is null");
+            Debug.LogWarning("[TerrainLoader] Provided TerrainData is null");
             return new float[gridWidth, gridHeight];
         }
         
         float[,] heightArray = new float[gridWidth, gridHeight];
         
-        for (int i = 0; i < terrainData.TilePositions.Count && i < terrainData.TileValues.Count; i++)
+        for (int i = 0; i < sourceTerrainData.TilePositions.Count && i < sourceTerrainData.TileValues.Count; i++)
         {
-            Vector2Int tilePos = terrainData.TilePositions[i];
-            int tileValue = terrainData.TileValues[i];
+            Vector2Int tilePos = sourceTerrainData.TilePositions[i];
+            int tileValue = sourceTerrainData.TileValues[i];
             
             // Apply offset and check bounds
             int gridX = tilePos.x + offsetX;
@@ -167,9 +181,9 @@ public class TerrainLoader : MonoBehaviour
             if (gridX >= 0 && gridX < gridWidth && gridY >= 0 && gridY < gridHeight)
             {
                 // Ensure tileValue is within valid range
-                if (tileValue >= 0 && tileValue < terrainData.TerrainTypesList.Count)
+                if (tileValue >= 0 && tileValue < sourceTerrainData.TerrainTypesList.Count)
                 {
-                    heightArray[gridX, gridY] = terrainData.TerrainTypesList[tileValue].height;
+                    heightArray[gridX, gridY] = sourceTerrainData.TerrainTypesList[tileValue].height;
                 }
             }
         }

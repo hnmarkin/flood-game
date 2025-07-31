@@ -75,7 +75,7 @@ public class FloodSimulationManager : MonoBehaviour
             
             if (terrainLoader != null)
             {
-                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(N, N);
+                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N);
                 if (terrainFromData != null)
                 {
                     // Initialize arrays
