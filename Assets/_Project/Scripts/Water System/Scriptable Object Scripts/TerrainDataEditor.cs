@@ -37,12 +37,19 @@ public class TerrainDataEditor : Editor
         }
         else
         {
-            EditorGUILayout.HelpBox("TerrainLoader found in scene. Use the TerrainLoader component to load terrain data from tilemaps.", MessageType.Info);
+            EditorGUILayout.HelpBox("TerrainLoader found in scene. You can load terrain data directly from here.", MessageType.Info);
+            
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Load Terrain Data", GUILayout.Height(30)))
+            {
+                LoadTerrainData(terrainData);
+            }
             
             if (GUILayout.Button("Select TerrainLoader", GUILayout.Height(30)))
             {
                 Selection.activeGameObject = terrainLoader.gameObject;
             }
+            EditorGUILayout.EndHorizontal();
         }
         
         EditorGUILayout.Space(10);
@@ -59,5 +66,37 @@ public class TerrainDataEditor : Editor
         {
             EditorUtility.SetDirty(terrainData);
         }
+    }
+    
+    private void LoadTerrainData(TerrainData terrainData)
+    {
+        if (terrainLoader == null)
+        {
+            EditorUtility.DisplayDialog("Error", "No TerrainLoader found in scene. Please create a TerrainLoader GameObject first.", "OK");
+            return;
+        }
+        
+        // Set the terrain data reference on the loader if it's not set
+        terrainLoader.SetTerrainData(terrainData);
+        
+        // Attempt to load terrain data
+        bool success = terrainLoader.LoadTerrainFromTilemap();
+        
+        if (success)
+        {
+            EditorUtility.DisplayDialog("Success", 
+                $"Terrain data loaded successfully!\n" +
+                $"Tiles processed: {terrainData.TotalTilesWritten}\n" +
+                $"Operation result: {terrainData.LastOperationResult}", "OK");
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Failed", 
+                "Failed to load terrain data. Check the console for error details.\n" +
+                "Make sure the TerrainLoader has a valid source tilemap assigned.", "OK");
+        }
+        
+        // Mark the asset as dirty to save changes
+        EditorUtility.SetDirty(terrainData);
     }
 }
