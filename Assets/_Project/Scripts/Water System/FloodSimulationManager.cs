@@ -9,7 +9,6 @@ public class FloodSimulationManager : MonoBehaviour
     [Header("Runtime Settings")]
     [SerializeField] private bool autoStep = false;
     [SerializeField] private float stepInterval = 0.1f;
-    [SerializeField] private bool debugOutput = false;
 
     // Events
     public event Action OnSimulationInitialized;
@@ -70,26 +69,9 @@ public class FloodSimulationManager : MonoBehaviour
         {
             // Find a TerrainLoader to help us convert the data
             TerrainLoader terrainLoader = FindObjectOfType<TerrainLoader>();
-            if (debugOutput)
-                Debug.Log($"[FloodSimulationManager] Initializing with TerrainData source: {simulationData.TerrainDataSource.name}, Data Loaded: {simulationData.TerrainDataSource.DataLoaded}");
             
             if (terrainLoader != null)
             {
-                // Debug: Check what coordinate ranges we have in the terrain data
-                if (debugOutput && simulationData.TerrainDataSource.TilePositions.Count > 0)
-                {
-                    int minX = int.MaxValue, maxX = int.MinValue;
-                    int minY = int.MaxValue, maxY = int.MinValue;
-                    foreach (var pos in simulationData.TerrainDataSource.TilePositions)
-                    {
-                        minX = Mathf.Min(minX, pos.x);
-                        maxX = Mathf.Max(maxX, pos.x);
-                        minY = Mathf.Min(minY, pos.y);
-                        maxY = Mathf.Max(maxY, pos.y);
-                    }
-                    Debug.Log($"[FloodSimulationManager] Terrain bounds: X[{minX}, {maxX}], Y[{minY}, {maxY}], Target grid: {N}x{N}");
-                }
-                
                 // Calculate offsets to shift terrain coordinates into valid [0, N-1] range
                 int offsetX = 0, offsetY = 0;
                 if (simulationData.TerrainDataSource.TilePositions.Count > 0)
@@ -103,8 +85,6 @@ public class FloodSimulationManager : MonoBehaviour
                     // Shift negative coordinates to start at 0
                     offsetX = -minX;
                     offsetY = -minY;
-                    if (debugOutput)
-                        Debug.Log($"[FloodSimulationManager] Applying offset: ({offsetX}, {offsetY})");
                 }
                 
                 float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N, offsetX, offsetY);
@@ -117,13 +97,11 @@ public class FloodSimulationManager : MonoBehaviour
                     simulationData.flowY = new float[gridWidth, gridHeight];
 
                     // Copy terrain data from TerrainData (offset by 1 for boundary)
-                    int terrainCellsSet = 0;
                     for (int y = 0; y < N; y++)
                     {
                         for (int x = 0; x < N; x++)
                         {
                             simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
-                            if (terrainFromData[x, y] > 0) terrainCellsSet++;
                             // Water should be a thin layer on top of terrain, not a separate height
                             simulationData.water[x + 1, y + 1] = simulationData.startingWaterDepth; // Configurable starting water depth
                         }
@@ -145,12 +123,7 @@ public class FloodSimulationManager : MonoBehaviour
                         simulationData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
                     }
 
-                    if (debugOutput)
-                        Debug.Log($"[FloodSimulationManager] Terrain cells with height > 0: {terrainCellsSet}/{N*N}");
-
                     simulationData.IsInitialized = true;
-                    if (debugOutput)
-                        Debug.Log($"[FloodSimulationManager] Initialized with terrain data from TerrainData source");
                     
                     OnSimulationInitialized?.Invoke();
                     OnSimulationStep?.Invoke();
@@ -191,8 +164,6 @@ public class FloodSimulationManager : MonoBehaviour
         }
 
         simulationData.IsInitialized = true;
-        if (debugOutput)
-            Debug.Log($"[FloodSimulationManager] Initialized with empty terrain (no TerrainData source or data not loaded)");
         
         OnSimulationInitialized?.Invoke();
         OnSimulationStep?.Invoke(); // Notify subscribers that initialization is complete
@@ -304,22 +275,5 @@ public class FloodSimulationManager : MonoBehaviour
     public void SetStepInterval(float interval)
     {
         stepInterval = Mathf.Max(0.01f, interval);
-    }
-
-    // Debug methods
-    public void PrintWaterMatrix()
-    {
-        if (!IsInitialized)
-        {
-            Debug.Log("Water matrix not initialized.");
-            return;
-        }
-        
-        for (int y = 0; y < simulationData.N; y++) {
-            string row = "";
-            for (int x = 0; x < simulationData.N; x++)
-                row += simulationData.water[x + 1, y + 1].ToString("0.00") + " ";
-            Debug.Log(row);
-        }
     }
 }

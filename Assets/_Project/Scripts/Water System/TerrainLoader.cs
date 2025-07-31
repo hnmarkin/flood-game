@@ -8,9 +8,6 @@ public class TerrainLoader : MonoBehaviour
     [SerializeField] private TerrainData terrainData;
     [SerializeField] private Tilemap sourceTilemap;
     
-    [Header("Debug")]
-    [SerializeField] private bool showDebugInfo = false;
-    
     // Public setters for the editor
     public void SetTerrainData(TerrainData data) => terrainData = data;
     public void SetSourceTilemap(Tilemap tilemap) => sourceTilemap = tilemap;
@@ -58,13 +55,13 @@ public class TerrainLoader : MonoBehaviour
     {
         if (terrainData == null)
         {
-            LogOperation(false, "TerrainData reference is null", 0);
+            Debug.LogError("[TerrainLoader] TerrainData reference is null");
             return false;
         }
         
         if (tilemap == null)
         {
-            LogOperation(false, "Tilemap is null", 0);
+            Debug.LogError("[TerrainLoader] Tilemap is null");
             return false;
         }
         
@@ -98,7 +95,14 @@ public class TerrainLoader : MonoBehaviour
         }
         
         bool success = tilesProcessed > 0;
-        LogOperation(success, success ? "Successfully loaded terrain data" : "No tiles found in tilemap", tilesProcessed);
+        if (success)
+        {
+            terrainData.DataLoaded = true;
+            terrainData.TotalTilesWritten = tilesProcessed;
+            #if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(terrainData);
+            #endif
+        }
         
         return success;
     }
@@ -189,130 +193,5 @@ public class TerrainLoader : MonoBehaviour
         }
         
         return heightArray;
-    }
-    
-    /// <summary>
-    /// Debug function to communicate operation results
-    /// </summary>
-    /// <param name="success">Whether the operation was successful</param>
-    /// <param name="message">Result message</param>
-    /// <param name="tilesWritten">Number of tiles processed</param>
-    public void LogOperation(bool success, string message, int tilesWritten)
-    {
-        if (terrainData != null)
-        {
-            terrainData.DataLoaded = success;
-            terrainData.TotalTilesWritten = tilesWritten;
-            terrainData.LastOperationResult = $"{(success ? "SUCCESS" : "FAILED")}: {message} (Tiles: {tilesWritten})";
-            
-            #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(terrainData);
-            #endif
-        }
-        
-        // Also log to Unity console for immediate feedback
-        if (success)
-        {
-            Debug.Log($"[TerrainLoader] {message} (Tiles: {tilesWritten})");
-        }
-        else
-        {
-            Debug.LogWarning($"[TerrainLoader] {message} (Tiles: {tilesWritten})");
-        }
-    }
-    
-    /// <summary>
-    /// Debug function for external classes to check data status
-    /// </summary>
-    /// <returns>Formatted string with current data status</returns>
-    public string GetDataStatus()
-    {
-        if (terrainData == null) return "TerrainData reference is null";
-        
-        List<float> heights = GetTerrainHeights();
-        return $"Data Loaded: {terrainData.DataLoaded}\n" +
-               $"Terrain Types: {terrainData.TerrainTypes}\n" +
-               $"Total Tiles: {terrainData.TotalTilesWritten}\n" +
-               $"Last Operation: {terrainData.LastOperationResult}\n" +
-               $"Heights: [{string.Join(", ", heights)}]";
-    }
-    
-    /// <summary>
-    /// Clears all loaded terrain data
-    /// </summary>
-    public void ClearData()
-    {
-        if (terrainData != null)
-        {
-            terrainData.TilePositions.Clear();
-            terrainData.TileValues.Clear();
-            LogOperation(false, "Data cleared manually", 0);
-        }
-    }
-    
-    /// <summary>
-    /// Validates that all data is consistent and ready for use
-    /// </summary>
-    /// <returns>True if data is valid and ready to use</returns>
-    public bool ValidateData()
-    {
-        if (terrainData == null)
-        {
-            Debug.LogWarning("[TerrainLoader] TerrainData reference is null");
-            return false;
-        }
-        
-        bool isValid = terrainData.DataLoaded && 
-                      terrainData.TilePositions.Count == terrainData.TileValues.Count && 
-                      terrainData.TerrainTypesList.Count == terrainData.TerrainTypes &&
-                      terrainData.TotalTilesWritten > 0;
-        
-        if (!isValid)
-        {
-            string reason = "Unknown validation error";
-            if (!terrainData.DataLoaded) reason = "No data loaded";
-            else if (terrainData.TilePositions.Count != terrainData.TileValues.Count) reason = "Tile position/value count mismatch";
-            else if (terrainData.TerrainTypesList.Count != terrainData.TerrainTypes) reason = "Terrain types list count doesn't match terrain types";
-            else if (terrainData.TotalTilesWritten <= 0) reason = "No tiles were written";
-            
-            LogOperation(false, $"Data validation failed: {reason}", terrainData.TotalTilesWritten);
-        }
-        
-        return isValid;
-    }
-    
-    // Unity Events for Inspector buttons
-    [ContextMenu("Load Terrain from Tilemap")]
-    public void LoadTerrainFromTilemapContextMenu()
-    {
-        LoadTerrainFromTilemap();
-    }
-    
-    [ContextMenu("Validate Data")]
-    public void ValidateDataContextMenu()
-    {
-        bool isValid = ValidateData();
-        Debug.Log($"[TerrainLoader] Validation {(isValid ? "PASSED" : "FAILED")}");
-    }
-    
-    [ContextMenu("Clear Data")]
-    public void ClearDataContextMenu()
-    {
-        ClearData();
-    }
-    
-    [ContextMenu("Print Data Status")]
-    public void PrintDataStatusContextMenu()
-    {
-        Debug.Log($"[TerrainLoader] Data Status:\n{GetDataStatus()}");
-    }
-    
-    private void OnValidate()
-    {
-        // Show debug info in inspector if enabled
-        if (showDebugInfo && terrainData != null)
-        {
-            Debug.Log($"[TerrainLoader] {GetDataStatus()}");
-        }
     }
 }

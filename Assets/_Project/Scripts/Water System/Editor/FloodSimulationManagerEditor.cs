@@ -55,11 +55,6 @@ public class FloodSimulationManagerEditor : Editor
             manager.ResetSimulation();
         }
 
-        if (GUILayout.Button("Print Water Matrix"))
-        {
-            manager.PrintWaterMatrix();
-        }
-
         // Auto-repaint the inspector during play mode to update the status
         if (Application.isPlaying)
         {
