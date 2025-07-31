@@ -6373,7 +6373,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3775bb284bd33b40ada4ca899da5b1a, type: 2}
   - {fileID: 11400000, guid: 5abf43c9558beb1468020ca1171a73d7, type: 2}
   - {fileID: 11400000, guid: c1ef3fd7114d2fb4ab24cd86d4ffc14a, type: 2}
-  maxWaterDepth: 1
+  maxWaterDepth: 0.1
 --- !u!4 &1685835204
 Transform:
   m_ObjectHideFlags: 0
