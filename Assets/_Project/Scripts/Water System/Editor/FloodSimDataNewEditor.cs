@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(FloodSimDataNew))]
-public class FloodSimDataNewEditor : Editor
+[CustomEditor(typeof(FloodSimData))]
+public class FloodSimDataEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        FloodSimDataNew data = (FloodSimDataNew)target;
+        FloodSimData data = (FloodSimData)target;
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Data Information", EditorStyles.boldLabel);

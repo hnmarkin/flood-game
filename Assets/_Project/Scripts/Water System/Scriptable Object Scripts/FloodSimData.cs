@@ -1,25 +1,31 @@
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "FloodSimData", menuName = "Flood/Flood Simulation")]
+[CreateAssetMenu(fileName = "FloodSimData", menuName = "Flood/Flood Simulation Data")]
 public class FloodSimData : ScriptableObject
 {
+    [Header("Simulation Parameters")]
     public int N = 10;
     public float dx = 1f, dy = 1f, dt = 1f;
     public float g = 9.81f;
     public float friction = 0.02f;
+    
+    [Header("Water Settings")]
+    [Range(0f, 1f)]
+    public float startingWaterDepth = 0.1f;
 
     [Header("Terrain Data Source")]
     [SerializeField] private TerrainData terrainDataSource;
 
-    public float[,] water;
-    public float[,] terrain;
-    public float[,] flowX;
-    public float[,] flowY;
-
-    // Event that fires when simulation steps
-    public event Action OnSimulationStep;
+    [Header("Runtime Data (Read-Only)")]
+    [SerializeField, ReadOnly] private bool isInitialized = false;
     
+    // Runtime simulation arrays - these will be managed by the FloodSimulationManager
+    [NonSerialized] public float[,] water;
+    [NonSerialized] public float[,] terrain;
+    [NonSerialized] public float[,] flowX;
+    [NonSerialized] public float[,] flowY;
+
     // Property to access terrain data source
     public TerrainData TerrainDataSource 
     { 
@@ -27,123 +33,42 @@ public class FloodSimData : ScriptableObject
         set => terrainDataSource = value; 
     }
 
-    public void Initialize()
-    {
-        // Determine grid dimensions
-        int gridWidth = N + 2;
-        int gridHeight = N + 2;
-        
-        // If we have terrain data source, try to match its dimensions
-        if (terrainDataSource != null && terrainDataSource.DataLoaded)
-        {
-            // Find a TerrainLoader to help us convert the data
-            TerrainLoader terrainLoader = FindObjectOfType<TerrainLoader>();
-            Debug.Log($"[FloodSimData] Initializing with TerrainData source: {terrainDataSource.name}, Data Loaded: {terrainDataSource.DataLoaded}");
-            if (terrainLoader != null)
-            {
-                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(N, N);
-                if (terrainFromData != null)
-                {
-                    // Initialize arrays
-                    water = new float[gridWidth, gridHeight];
-                    terrain = new float[gridWidth, gridHeight];
-                    flowX = new float[gridWidth, gridHeight];
-                    flowY = new float[gridWidth, gridHeight];
-
-                    // Copy terrain data from TerrainData (offset by 1 for boundary)
-                    for (int y = 0; y < N; y++)
-                    {
-                        for (int x = 0; x < N; x++)
-                        {
-                            terrain[x + 1, y + 1] = terrainFromData[x, y];
-                            // Water should be a thin layer on top of terrain, not a separate height
-                            water[x + 1, y + 1] = 0.1f; // Small amount of water on top of terrain
-                        }
-                    }
-
-                    Debug.Log($"[FloodSimData] Initialized with terrain data from TerrainData source");
-                    OnSimulationStep?.Invoke();
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("[FloodSimData] TerrainData source found but no TerrainLoader in scene to convert data");
-            }
-        }
-        
-        // Fallback: Initialize with empty terrain
-        water = new float[gridWidth, gridHeight];
-        terrain = new float[gridWidth, gridHeight];
-        flowX = new float[gridWidth, gridHeight];
-        flowY = new float[gridWidth, gridHeight];
-
-        // Fill with some water everywhere
-        for (int y = 1; y <= N; y++)
-            for (int x = 1; x <= N; x++)
-                water[x, y] = 0.1f; // Small amount of water on the ground
-
-        Debug.Log($"[FloodSimData] Initialized with empty terrain (no TerrainData source or data not loaded)");
-        OnSimulationStep?.Invoke(); // Notify subscribers that initialization is complete
+    public bool IsInitialized 
+    { 
+        get => isInitialized; 
+        set => isInitialized = value; 
     }
 
-    public void StepSimulation()
+    // Grid dimensions calculation
+    public int GridWidth => N + 2;
+    public int GridHeight => N + 2;
+
+    // Data validation
+    private void OnValidate()
     {
-        if (water == null) Initialize();
-
-        float frictionFactor = Mathf.Pow(1 - friction, dt);
-
-        // Boundary (you can customize later)
-        for (int i = 1; i <= N; ++i) {
-            flowX[0, i] = flowX[N + 1, i] = 0f;
-            flowY[i, 0] = flowY[i, N + 1] = 0f;
-        }
-
-        // Accelerate X
-        for (int y = 1; y <= N; ++y)
-            for (int x = 1; x <= N; ++x)
-                flowX[x, y] = flowX[x, y] * frictionFactor
-                    + ((water[x - 1, y] + terrain[x - 1, y]) - (water[x, y] + terrain[x, y])) * g * dt / dx;
-
-        // Accelerate Y
-        for (int y = 1; y <= N; ++y)
-            for (int x = 1; x <= N; ++x)
-                flowY[x, y] = flowY[x, y] * frictionFactor
-                    + ((water[x, y - 1] + terrain[x, y - 1]) - (water[x, y] + terrain[x, y])) * g * dt / dy;
-
-        // Scale outflows
-        for (int y = 1; y <= N; ++y)
-        {
-            for (int x = 1; x <= N; ++x)
-            {
-                float totalOutflow = 0f;
-                totalOutflow += Mathf.Max(0f, -flowX[x, y]);
-                totalOutflow += Mathf.Max(0f, -flowY[x, y]);
-                totalOutflow += Mathf.Max(0f, flowX[x + 1, y]);
-                totalOutflow += Mathf.Max(0f, flowY[x, y + 1]);
-
-                float maxOutflow = water[x, y] * dx * dy / dt;
-
-                if (totalOutflow > 0f)
-                {
-                    float scale = Mathf.Min(1f, maxOutflow / totalOutflow);
-                    if (flowX[x, y] < 0f) flowX[x, y] *= scale;
-                    if (flowY[x, y] < 0f) flowY[x, y] *= scale;
-                    if (flowX[x + 1, y] > 0f) flowX[x + 1, y] *= scale;
-                    if (flowY[x, y + 1] > 0f) flowY[x, y + 1] *= scale;
-                }
-            }
-        }
-
-        // Update water
-        for (int y = 1; y <= N; ++y)
-            for (int x = 1; x <= N; ++x)
-                water[x, y] += (
-                    flowX[x, y] + flowY[x, y]
-                  - flowX[x + 1, y] - flowY[x, y + 1]
-                ) * dt / dx / dy;
-        
-        // Fire the event to notify subscribers that simulation has stepped
-        OnSimulationStep?.Invoke();
+        // Ensure positive values
+        N = Mathf.Max(1, N);
+        dx = Mathf.Max(0.1f, dx);
+        dy = Mathf.Max(0.1f, dy);
+        dt = Mathf.Max(0.01f, dt);
+        g = Mathf.Max(0f, g);
+        friction = Mathf.Clamp01(friction);
+        startingWaterDepth = Mathf.Clamp01(startingWaterDepth);
     }
 }
+
+// Custom attribute for read-only fields in inspector
+public class ReadOnlyAttribute : PropertyAttribute { }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
+public class ReadOnlyDrawer : UnityEditor.PropertyDrawer
+{
+    public override void OnGUI(Rect position, UnityEditor.SerializedProperty property, GUIContent label)
+    {
+        GUI.enabled = false;
+        UnityEditor.EditorGUI.PropertyField(position, property, label, true);
+        GUI.enabled = true;
+    }
+}
+#endif

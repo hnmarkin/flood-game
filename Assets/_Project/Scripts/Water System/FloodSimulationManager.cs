@@ -4,7 +4,7 @@ using System;
 public class FloodSimulationManager : MonoBehaviour
 {
     [Header("Simulation Data")]
-    [SerializeField] private FloodSimDataNew simulationData;
+    [SerializeField] private FloodSimData simulationData;
 
     [Header("Runtime Settings")]
     [SerializeField] private bool autoStep = false;
@@ -18,7 +18,7 @@ public class FloodSimulationManager : MonoBehaviour
     private float stepTimer = 0f;
 
     // Properties
-    public FloodSimDataNew SimulationData 
+    public FloodSimData SimulationData 
     { 
         get => simulationData; 
         set => simulationData = value; 
