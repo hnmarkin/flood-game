@@ -129,6 +129,22 @@ public class FloodSimulationManager : MonoBehaviour
                         }
                     }
 
+                    // Add boundary walls to prevent water from flowing off edges
+                    for (int i = 0; i < gridWidth; i++)
+                    {
+                        simulationData.terrain[i, 0] = 1.0f;           // Bottom wall
+                        simulationData.terrain[i, gridHeight - 1] = 1.0f; // Top wall
+                        simulationData.water[i, 0] = 0.0f;             // No water on boundary
+                        simulationData.water[i, gridHeight - 1] = 0.0f; // No water on boundary
+                    }
+                    for (int i = 0; i < gridHeight; i++)
+                    {
+                        simulationData.terrain[0, i] = 1.0f;           // Left wall
+                        simulationData.terrain[gridWidth - 1, i] = 1.0f;  // Right wall
+                        simulationData.water[0, i] = 0.0f;             // No water on boundary
+                        simulationData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
+                    }
+
                     if (debugOutput)
                         Debug.Log($"[FloodSimulationManager] Terrain cells with height > 0: {terrainCellsSet}/{N*N}");
 
@@ -157,6 +173,22 @@ public class FloodSimulationManager : MonoBehaviour
         for (int y = 1; y <= N; y++)
             for (int x = 1; x <= N; x++)
                 simulationData.water[x, y] = simulationData.startingWaterDepth; // Configurable starting water depth
+
+        // Add boundary walls to prevent water from flowing off edges
+        for (int i = 0; i < gridWidth; i++)
+        {
+            simulationData.terrain[i, 0] = 1.0f;           // Bottom wall
+            simulationData.terrain[i, gridHeight - 1] = 1.0f; // Top wall
+            simulationData.water[i, 0] = 0.0f;             // No water on boundary
+            simulationData.water[i, gridHeight - 1] = 0.0f; // No water on boundary
+        }
+        for (int i = 0; i < gridHeight; i++)
+        {
+            simulationData.terrain[0, i] = 1.0f;           // Left wall
+            simulationData.terrain[gridWidth - 1, i] = 1.0f;  // Right wall
+            simulationData.water[0, i] = 0.0f;             // No water on boundary
+            simulationData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
+        }
 
         simulationData.IsInitialized = true;
         if (debugOutput)
@@ -232,6 +264,18 @@ public class FloodSimulationManager : MonoBehaviour
                     simulationData.flowX[x, y] + simulationData.flowY[x, y]
                   - simulationData.flowX[x + 1, y] - simulationData.flowY[x, y + 1]
                 ) * dt / dx / dy;
+        
+        // Keep boundary cells completely dry
+        for (int i = 0; i < simulationData.GridWidth; i++)
+        {
+            simulationData.water[i, 0] = 0.0f;
+            simulationData.water[i, simulationData.GridHeight - 1] = 0.0f;
+        }
+        for (int i = 0; i < simulationData.GridHeight; i++)
+        {
+            simulationData.water[0, i] = 0.0f;
+            simulationData.water[simulationData.GridWidth - 1, i] = 0.0f;
+        }
         
         // Fire the event to notify subscribers that simulation has stepped
         OnSimulationStep?.Invoke();
