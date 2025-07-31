@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class FloodSimulationManager : MonoBehaviour
+public class OldFloodSimulationManager : MonoBehaviour
 {
     /*
     public GridManager gridManager;

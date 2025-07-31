@@ -38,6 +38,7 @@ public class FloodSimData : ScriptableObject
         {
             // Find a TerrainLoader to help us convert the data
             TerrainLoader terrainLoader = FindObjectOfType<TerrainLoader>();
+            Debug.Log($"[FloodSimData] Initializing with TerrainData source: {terrainDataSource.name}, Data Loaded: {terrainDataSource.DataLoaded}");
             if (terrainLoader != null)
             {
                 float[,] terrainFromData = terrainLoader.ConvertToHeightArray(N, N);
@@ -48,7 +49,7 @@ public class FloodSimData : ScriptableObject
                     terrain = new float[gridWidth, gridHeight];
                     flowX = new float[gridWidth, gridHeight];
                     flowY = new float[gridWidth, gridHeight];
-                    
+
                     // Copy terrain data from TerrainData (offset by 1 for boundary)
                     for (int y = 0; y < N; y++)
                     {
@@ -59,7 +60,7 @@ public class FloodSimData : ScriptableObject
                             water[x + 1, y + 1] = 0.1f; // Small amount of water on top of terrain
                         }
                     }
-                    
+
                     Debug.Log($"[FloodSimData] Initialized with terrain data from TerrainData source");
                     OnSimulationStep?.Invoke();
                     return;
