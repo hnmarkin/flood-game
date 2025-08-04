@@ -15,15 +15,15 @@ MonoBehaviour:
   terrainTypes: 5
   terrainTypesList:
   - tile: {fileID: 11400000, guid: d51f487f529901847a6aa956bad9056c, type: 2}
-    height: 4
-  - tile: {fileID: 11400000, guid: 868c68745ca246d49ac78b1f125496f5, type: 2}
-    height: 3.5
-  - tile: {fileID: 11400000, guid: 8342fee0c3935e840b77de0b3f10806a, type: 2}
     height: 2
-  - tile: {fileID: 11400000, guid: d487630b1662ae14ba8fadb63a355dad, type: 2}
+  - tile: {fileID: 11400000, guid: 868c68745ca246d49ac78b1f125496f5, type: 2}
     height: 1.5
-  - tile: {fileID: 11400000, guid: 77610b1d70b4e1c438094da09dbf1946, type: 2}
+  - tile: {fileID: 11400000, guid: 8342fee0c3935e840b77de0b3f10806a, type: 2}
     height: 1
+  - tile: {fileID: 11400000, guid: d487630b1662ae14ba8fadb63a355dad, type: 2}
+    height: 0.5
+  - tile: {fileID: 11400000, guid: 77610b1d70b4e1c438094da09dbf1946, type: 2}
+    height: 0
   tilePositions:
   - {x: -1, y: -1}
   - {x: -1, y: 0}

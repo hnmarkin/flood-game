@@ -18,6 +18,6 @@ MonoBehaviour:
   dt: 0.1
   g: 9.81
   friction: 0.02
-  startingWaterDepth: 0.21
+  startingWaterDepth: 0.513
   terrainDataSource: {fileID: 11400000, guid: 31360ec829ca10f44b7662710c638192, type: 2}
   isInitialized: 1
