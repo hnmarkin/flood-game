@@ -5,7 +5,8 @@ public class ElevationRenderer : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private FloodSimulationManager simulationManager;
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private Tilemap terrainTilemap;
+    [SerializeField] private Tilemap waterTilemap;
     
     [Header("Elevation Settings")]
     [SerializeField] [Range(1f, 50f)] private float elevationYMultiplier = 10f; // How much Y space per elevation unit
@@ -26,8 +27,23 @@ public class ElevationRenderer : MonoBehaviour
         if (simulationManager == null)
             simulationManager = FindObjectOfType<FloodSimulationManager>();
         
-        if (tilemap == null)
-            tilemap = GetComponent<Tilemap>();
+        if (terrainTilemap == null)
+            terrainTilemap = GetComponent<Tilemap>();
+            
+        // Try to find water tilemap (should be a child or sibling with higher sorting order)
+        if (waterTilemap == null)
+        {
+            // Look for a tilemap with "water" in the name
+            Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
+            foreach (var tm in tilemaps)
+            {
+                if (tm.name.ToLower().Contains("water"))
+                {
+                    waterTilemap = tm;
+                    break;
+                }
+            }
+        }
             
         // Try to find TerrainData if not assigned
         if (terrainDataSource == null)
@@ -67,14 +83,21 @@ public class ElevationRenderer : MonoBehaviour
         if (simulationData == null || simulationData.water == null || simulationData.terrain == null)
             return;
         
-        if (tilemap == null)
+        if (terrainTilemap == null)
         {
-            Debug.LogWarning("[ElevationRenderer] No tilemap assigned!");
+            Debug.LogWarning("[ElevationRenderer] No terrain tilemap assigned!");
+            return;
+        }
+        
+        if (waterTilemap == null)
+        {
+            Debug.LogWarning("[ElevationRenderer] No water tilemap assigned!");
             return;
         }
         
         // Clear existing tiles
-        tilemap.ClearAllTiles();
+        terrainTilemap.ClearAllTiles();
+        waterTilemap.ClearAllTiles();
         
         int N = simulationData.N;
         
@@ -101,23 +124,23 @@ public class ElevationRenderer : MonoBehaviour
         int terrainYOffset = Mathf.RoundToInt(terrainHeight * elevationYMultiplier);
         Vector3Int terrainPosition = new Vector3Int(gridX, gridY + terrainYOffset, 0);
         
-        // Place terrain tile
+        // Place terrain tile on terrain tilemap
         TileBase terrainTile = GetTerrainTileForHeight(terrainHeight);
         if (terrainTile != null)
         {
-            tilemap.SetTile(terrainPosition, terrainTile);
+            terrainTilemap.SetTile(terrainPosition, terrainTile);
         }
         
-        // Place water tile above terrain if water exists
+        // Place water tile on water tilemap at the same position as terrain (water overlay)
         if (waterDepth > 0.01f) // Only show significant water depth
         {
-            int waterYOffset = terrainYOffset + Mathf.RoundToInt(waterDepth * elevationYMultiplier);
-            Vector3Int waterPosition = new Vector3Int(gridX, gridY + waterYOffset, 0);
+            // Water goes on the same position as terrain - it's just an overlay
+            Vector3Int waterPosition = terrainPosition;
             
             TileBase waterTile = GetWaterTileForDepth(waterDepth);
             if (waterTile != null)
             {
-                tilemap.SetTile(waterPosition, waterTile);
+                waterTilemap.SetTile(waterPosition, waterTile);
             }
         }
     }
@@ -200,14 +223,28 @@ public class ElevationRenderer : MonoBehaviour
         
         // Use provided tile, or get appropriate tile for height
         TileBase tileToUse = tile ?? GetTerrainTileForHeight(height);
-        tilemap.SetTile(position, tileToUse);
+        terrainTilemap.SetTile(position, tileToUse);
+    }
+    
+    // Utility method to set a water tile at a specific grid position and height
+    public void SetWaterTileAtPosition(int gridX, int gridY, float height, float waterDepth)
+    {
+        int yOffset = Mathf.RoundToInt(height * elevationYMultiplier);
+        Vector3Int position = new Vector3Int(gridX, gridY + yOffset, 0);
+        
+        TileBase waterTile = GetWaterTileForDepth(waterDepth);
+        if (waterTile != null)
+        {
+            waterTilemap.SetTile(position, waterTile);
+        }
     }
     
     // Utility method to clear all tiles in an area
     public void ClearArea(int startX, int startY, int width, int height)
     {
         BoundsInt area = new BoundsInt(startX, startY, 0, width, height, 1);
-        tilemap.SetTilesBlock(area, new TileBase[width * height]);
+        terrainTilemap.SetTilesBlock(area, new TileBase[width * height]);
+        waterTilemap.SetTilesBlock(area, new TileBase[width * height]);
     }
     
 #if UNITY_EDITOR
@@ -220,8 +257,10 @@ public class ElevationRenderer : MonoBehaviour
     [ContextMenu("Clear All Tiles")]
     public void ClearAllTilesFromMenu()
     {
-        if (tilemap != null)
-            tilemap.ClearAllTiles();
+        if (terrainTilemap != null)
+            terrainTilemap.ClearAllTiles();
+        if (waterTilemap != null)
+            waterTilemap.ClearAllTiles();
     }
 #endif
 }
