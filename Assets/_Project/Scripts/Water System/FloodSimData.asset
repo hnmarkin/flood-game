@@ -19,6 +19,5 @@ MonoBehaviour:
   g: 9.81
   friction: 0.02
   startingWaterDepth: 0.1
-  terrainDataSource: {fileID: 0}
-  newTerrainDataSource: {fileID: 11400000, guid: b16608c468fe9ae409bc3bc958142b93, type: 2}
+  terrainDataSource: {fileID: 11400000, guid: d1f5a0da272866045a3ac0a1f86c7b56, type: 2}
   isInitialized: 1
