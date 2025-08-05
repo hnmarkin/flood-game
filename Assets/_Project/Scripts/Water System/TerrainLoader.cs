@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class NewTerrainLoader : MonoBehaviour
+public class TerrainLoader : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private NewTerrainData newTerrainData;
+    [SerializeField] private TerrainData terrainData;
     [SerializeField] private Tilemap sourceTilemap;
     
     [Header("Loading Settings")]
@@ -12,12 +12,12 @@ public class NewTerrainLoader : MonoBehaviour
     [SerializeField] private float elevationScale = 1.0f;
     
     // Public setters for editor and runtime use
-    public void SetNewTerrainData(NewTerrainData data) => newTerrainData = data;
+    public void SetTerrainData(TerrainData data) => terrainData = data;
     public void SetSourceTilemap(Tilemap tilemap) => sourceTilemap = tilemap;
     
     private void Start()
     {
-        if (loadOnStart && newTerrainData != null && sourceTilemap != null)
+        if (loadOnStart && terrainData != null && sourceTilemap != null)
         {
             LoadTerrainFromTilemap();
         }
@@ -39,25 +39,25 @@ public class NewTerrainLoader : MonoBehaviour
     /// <returns>True if data was successfully loaded</returns>
     public bool LoadTerrainFromTilemap(Tilemap tilemap)
     {
-        if (newTerrainData == null)
+        if (terrainData == null)
         {
-            Debug.LogError("[NewTerrainLoader] NewTerrainData reference is null");
+            Debug.LogError("[TerrainLoader] TerrainData reference is null");
             return false;
         }
         
         if (tilemap == null)
         {
-            Debug.LogError("[NewTerrainLoader] Tilemap is null");
+            Debug.LogError("[TerrainLoader] Tilemap is null");
             return false;
         }
         
         // Clear existing data
-        newTerrainData.ClearData();
+        terrainData.ClearData();
         
         int tilesProcessed = 0;
         BoundsInt bounds = tilemap.cellBounds;
         
-        Debug.Log($"[NewTerrainLoader] Processing tilemap bounds: {bounds}");
+        Debug.Log($"[TerrainLoader] Processing tilemap bounds: {bounds}");
         
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -72,12 +72,12 @@ public class NewTerrainLoader : MonoBehaviour
                     {
                         // Store the full 3D position and use z-value as elevation
                         int elevation = z;
-                        newTerrainData.AddTile(position, elevation);
+                        terrainData.AddTile(position, elevation);
                         tilesProcessed++;
                         
                         if (tilesProcessed % 100 == 0)
                         {
-                            Debug.Log($"[NewTerrainLoader] Processed {tilesProcessed} tiles...");
+                            Debug.Log($"[TerrainLoader] Processed {tilesProcessed} tiles...");
                         }
                     }
                 }
@@ -87,20 +87,20 @@ public class NewTerrainLoader : MonoBehaviour
         bool success = tilesProcessed > 0;
         if (success)
         {
-            newTerrainData.DataLoaded = true;
-            newTerrainData.ValidateData();
+            terrainData.DataLoaded = true;
+            terrainData.ValidateData();
             
-            Debug.Log($"[NewTerrainLoader] Successfully loaded {tilesProcessed} tiles from tilemap");
-            Debug.Log($"[NewTerrainLoader] Elevation range: [{newTerrainData.MinElevation}, {newTerrainData.MaxElevation}]");
+            Debug.Log($"[TerrainLoader] Successfully loaded {tilesProcessed} tiles from tilemap");
+            Debug.Log($"[TerrainLoader] Elevation range: [{terrainData.MinElevation}, {terrainData.MaxElevation}]");
             
             #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(newTerrainData);
+            UnityEditor.EditorUtility.SetDirty(terrainData);
             #endif
         }
         else
         {
-            Debug.LogWarning("[NewTerrainLoader] No tiles found in tilemap");
-            newTerrainData.LastOperationResult = "No tiles found in tilemap";
+            Debug.LogWarning("[TerrainLoader] No tiles found in tilemap");
+            terrainData.LastOperationResult = "No tiles found in tilemap";
         }
         
         return success;
@@ -116,25 +116,25 @@ public class NewTerrainLoader : MonoBehaviour
     /// <returns>True if data was successfully loaded</returns>
     public bool LoadTerrainFromTilemapAtZ(Tilemap tilemap, int zLevel, bool useZAsElevation = true, int fixedElevation = 0)
     {
-        if (newTerrainData == null)
+        if (terrainData == null)
         {
-            Debug.LogError("[NewTerrainLoader] NewTerrainData reference is null");
+            Debug.LogError("[TerrainLoader] TerrainData reference is null");
             return false;
         }
         
         if (tilemap == null)
         {
-            Debug.LogError("[NewTerrainLoader] Tilemap is null");
+            Debug.LogError("[TerrainLoader] Tilemap is null");
             return false;
         }
         
         // Clear existing data
-        newTerrainData.ClearData();
+        terrainData.ClearData();
         
         int tilesProcessed = 0;
         BoundsInt bounds = tilemap.cellBounds;
         
-        Debug.Log($"[NewTerrainLoader] Processing tilemap at z-level {zLevel}, bounds: {bounds}");
+        Debug.Log($"[TerrainLoader] Processing tilemap at z-level {zLevel}, bounds: {bounds}");
         
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -147,12 +147,12 @@ public class NewTerrainLoader : MonoBehaviour
                 {
                     // Use either the z-level or a fixed elevation value
                     int elevation = useZAsElevation ? zLevel : fixedElevation;
-                    newTerrainData.AddTile(position, elevation);
+                    terrainData.AddTile(position, elevation);
                     tilesProcessed++;
                     
                     if (tilesProcessed % 100 == 0)
                     {
-                        Debug.Log($"[NewTerrainLoader] Processed {tilesProcessed} tiles...");
+                        Debug.Log($"[TerrainLoader] Processed {tilesProcessed} tiles...");
                     }
                 }
             }
@@ -161,20 +161,20 @@ public class NewTerrainLoader : MonoBehaviour
         bool success = tilesProcessed > 0;
         if (success)
         {
-            newTerrainData.DataLoaded = true;
-            newTerrainData.ValidateData();
+            terrainData.DataLoaded = true;
+            terrainData.ValidateData();
             
-            Debug.Log($"[NewTerrainLoader] Successfully loaded {tilesProcessed} tiles from z-level {zLevel}");
-            Debug.Log($"[NewTerrainLoader] Elevation range: [{newTerrainData.MinElevation}, {newTerrainData.MaxElevation}]");
+            Debug.Log($"[TerrainLoader] Successfully loaded {tilesProcessed} tiles from z-level {zLevel}");
+            Debug.Log($"[TerrainLoader] Elevation range: [{terrainData.MinElevation}, {terrainData.MaxElevation}]");
             
             #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(newTerrainData);
+            UnityEditor.EditorUtility.SetDirty(terrainData);
             #endif
         }
         else
         {
-            Debug.LogWarning($"[NewTerrainLoader] No tiles found at z-level {zLevel}");
-            newTerrainData.LastOperationResult = $"No tiles found at z-level {zLevel}";
+            Debug.LogWarning($"[TerrainLoader] No tiles found at z-level {zLevel}");
+            terrainData.LastOperationResult = $"No tiles found at z-level {zLevel}";
         }
         
         return success;
@@ -190,13 +190,13 @@ public class NewTerrainLoader : MonoBehaviour
     /// <returns>2D float array of terrain heights</returns>
     public float[,] ConvertToSimulationGrid(int gridWidth, int gridHeight, int offsetX = 0, int offsetY = 0)
     {
-        if (newTerrainData == null)
+        if (terrainData == null)
         {
-            Debug.LogWarning("[NewTerrainLoader] NewTerrainData is null, returning empty grid");
+            Debug.LogWarning("[TerrainLoader] TerrainData is null, returning empty grid");
             return new float[gridWidth, gridHeight];
         }
         
-        return newTerrainData.ConvertToHeightArray(gridWidth, gridHeight, offsetX, offsetY, elevationScale);
+        return terrainData.ConvertToHeightArray(gridWidth, gridHeight, offsetX, offsetY, elevationScale);
     }
     
     /// <summary>
@@ -205,10 +205,10 @@ public class NewTerrainLoader : MonoBehaviour
     /// <returns>Bounds of all loaded tiles</returns>
     public BoundsInt GetLoadedTileBounds()
     {
-        if (newTerrainData == null)
+        if (terrainData == null)
             return new BoundsInt(0, 0, 0, 0, 0, 0);
             
-        return newTerrainData.GetTileBounds();
+        return terrainData.GetTileBounds();
     }
     
     /// <summary>
@@ -216,17 +216,17 @@ public class NewTerrainLoader : MonoBehaviour
     /// </summary>
     public void LogTerrainInfo()
     {
-        if (newTerrainData == null)
+        if (terrainData == null)
         {
-            Debug.Log("[NewTerrainLoader] No terrain data loaded");
+            Debug.Log("[TerrainLoader] No terrain data loaded");
             return;
         }
         
-        Debug.Log($"[NewTerrainLoader] Terrain Info:");
-        Debug.Log($"  - Tiles loaded: {newTerrainData.TotalTilesWritten}");
-        Debug.Log($"  - Data loaded: {newTerrainData.DataLoaded}");
-        Debug.Log($"  - Elevation range: [{newTerrainData.MinElevation}, {newTerrainData.MaxElevation}]");
-        Debug.Log($"  - Tile bounds: {newTerrainData.GetTileBounds()}");
-        Debug.Log($"  - Last operation: {newTerrainData.LastOperationResult}");
+        Debug.Log($"[TerrainLoader] Terrain Info:");
+        Debug.Log($"  - Tiles loaded: {terrainData.TotalTilesWritten}");
+        Debug.Log($"  - Data loaded: {terrainData.DataLoaded}");
+        Debug.Log($"  - Elevation range: [{terrainData.MinElevation}, {terrainData.MaxElevation}]");
+        Debug.Log($"  - Tile bounds: {terrainData.GetTileBounds()}");
+        Debug.Log($"  - Last operation: {terrainData.LastOperationResult}");
     }
 }

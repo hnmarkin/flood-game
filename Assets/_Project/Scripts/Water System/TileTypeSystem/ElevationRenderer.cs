@@ -124,13 +124,6 @@ public class ElevationRenderer : MonoBehaviour
         int terrainYOffset = Mathf.RoundToInt(terrainHeight * elevationYMultiplier);
         Vector3Int terrainPosition = new Vector3Int(gridX, gridY + terrainYOffset, 0);
         
-        // Place terrain tile on terrain tilemap
-        TileBase terrainTile = GetTerrainTileForHeight(terrainHeight);
-        if (terrainTile != null)
-        {
-            terrainTilemap.SetTile(terrainPosition, terrainTile);
-        }
-        
         // Place water tile on water tilemap at the same position as terrain (water overlay)
         if (waterDepth > 0.01f) // Only show significant water depth
         {
@@ -143,35 +136,6 @@ public class ElevationRenderer : MonoBehaviour
                 waterTilemap.SetTile(waterPosition, waterTile);
             }
         }
-    }
-    
-    private TileBase GetTerrainTileForHeight(float height)
-    {
-        // Try to get tile from TerrainData first
-        if (terrainDataSource != null && terrainDataSource.TerrainTypesList != null && terrainDataSource.TerrainTypesList.Count > 0)
-        {
-            TileBase bestTile = null;
-            float closestDistance = float.MaxValue;
-            
-            // Find the terrain type with height closest to the input height
-            foreach (var terrainType in terrainDataSource.TerrainTypesList)
-            {
-                if (terrainType.tile == null) continue;
-                
-                float distance = Mathf.Abs(terrainType.height - height);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    bestTile = terrainType.tile;
-                }
-            }
-            
-            if (bestTile != null)
-                return bestTile;
-        }
-        
-        // Fallback to manual tile if TerrainData doesn't have a match
-        return fallbackTerrainTile;
     }
     
     private TileBase GetWaterTileForDepth(float waterDepth)
@@ -213,17 +177,6 @@ public class ElevationRenderer : MonoBehaviour
     {
         elevationYMultiplier = Mathf.Max(1f, multiplier);
         UpdateElevationVisualization(); // Refresh with new multiplier
-    }
-    
-    // Utility method to set a terrain tile at a specific grid position and height
-    public void SetTerrainTileAtPosition(int gridX, int gridY, float height, TileBase tile = null)
-    {
-        int yOffset = Mathf.RoundToInt(height * elevationYMultiplier);
-        Vector3Int position = new Vector3Int(gridX, gridY + yOffset, 0);
-        
-        // Use provided tile, or get appropriate tile for height
-        TileBase tileToUse = tile ?? GetTerrainTileForHeight(height);
-        terrainTilemap.SetTile(position, tileToUse);
     }
     
     // Utility method to set a water tile at a specific grid position and height

@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(NewTerrainData))]
-public class NewTerrainDataEditor : Editor
+[CustomEditor(typeof(TerrainData))]
+public class TerrainDataEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        NewTerrainData terrainData = (NewTerrainData)target;
+        TerrainData terrainData = (TerrainData)target;
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Terrain Information", EditorStyles.boldLabel);
@@ -52,7 +52,7 @@ public class NewTerrainDataEditor : Editor
         EditorGUILayout.Space();
         
         // Find and show info about associated loaders
-        NewTerrainLoader[] loaders = FindObjectsOfType<NewTerrainLoader>();
+        TerrainLoader[] loaders = FindObjectsOfType<TerrainLoader>();
         if (loaders.Length > 0)
         {
             EditorGUILayout.LabelField("Associated Loaders", EditorStyles.boldLabel);
@@ -69,10 +69,10 @@ public class NewTerrainDataEditor : Editor
         }
         else
         {
-            EditorGUILayout.HelpBox("No NewTerrainLoader components found in the scene. Create a NewTerrainLoader to load terrain data into this ScriptableObject.", MessageType.Info);
+            EditorGUILayout.HelpBox("No TerrainLoader components found in the scene. Create a TerrainLoader to load terrain data into this ScriptableObject.", MessageType.Info);
         }
 
         EditorGUILayout.Space();
-        EditorGUILayout.HelpBox("This ScriptableObject stores terrain elevation data based on tile z-values. Use a NewTerrainLoader component to populate this data from a tilemap.", MessageType.Info);
+        EditorGUILayout.HelpBox("This ScriptableObject stores terrain elevation data based on tile z-values. Use a TerrainLoader component to populate this data from a tilemap.", MessageType.Info);
     }
 }

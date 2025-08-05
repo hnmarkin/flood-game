@@ -2,25 +2,25 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
 
-[CustomEditor(typeof(NewTerrainLoader))]
-public class NewTerrainLoaderEditor : Editor
+[CustomEditor(typeof(TerrainLoader))]
+public class TerrainLoaderEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        NewTerrainLoader loader = (NewTerrainLoader)target;
+        TerrainLoader loader = (TerrainLoader)target;
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Loader Actions", EditorStyles.boldLabel);
 
         // Check if we have the required references
-        bool hasTerrainData = loader.GetType().GetField("newTerrainData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(loader) != null;
+        bool hasTerrainData = loader.GetType().GetField("terrainData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(loader) != null;
         bool hasTilemap = loader.GetType().GetField("sourceTilemap", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(loader) != null;
 
         if (!hasTerrainData)
         {
-            EditorGUILayout.HelpBox("No NewTerrainData assigned. Please assign a NewTerrainData ScriptableObject.", MessageType.Warning);
+            EditorGUILayout.HelpBox("No TerrainData assigned. Please assign a TerrainData ScriptableObject.", MessageType.Warning);
         }
 
         if (!hasTilemap)

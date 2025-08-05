@@ -1,60 +1,60 @@
-# New Terrain Data System - Z-Value Based Elevation
+# Terrain Data System - Z-Value Based Elevation
 
-This document explains the new terrain data system that reads elevation directly from tile z-values instead of tile types.
+This document explains the terrain data system that reads elevation directly from tile z-values.
 
 ## Overview
 
-The new system consists of:
-- **NewTerrainData** - ScriptableObject that stores tile positions and elevations (integers)
-- **NewTerrainLoader** - Component that reads z-values from tilemaps and populates NewTerrainData
-- **Updated FloodSimulationManager** - Now supports both old and new terrain data systems
-- **Custom Editors** - User-friendly interfaces for managing the new system
+The system consists of:
+- **TerrainData** - ScriptableObject that stores tile positions and elevations (integers)
+- **TerrainLoader** - Component that reads z-values from tilemaps and populates TerrainData
+- **FloodSimulationManager** - Uses TerrainData for flood simulation
+- **Custom Editors** - User-friendly interfaces for managing the system
 
-## Key Differences from Old System
+## Key Features
 
-| Aspect | Old System (TerrainData) | New System (NewTerrainData) |
-|--------|-------------------------|----------------------------|
-| Elevation Source | Tile type determines height | Tile z-coordinate determines elevation |
-| Data Structure | List of terrain types with heights | Direct position→elevation mapping |
-| Flexibility | Limited to predefined tile types | Any z-value can represent elevation |
-| Precision | Float heights per type | Integer elevations per tile |
+| Aspect | Implementation |
+|--------|----------------|
+| Elevation Source | Tile z-coordinate determines elevation |
+| Data Structure | Direct position→elevation mapping |
+| Flexibility | Any z-value can represent elevation |
+| Precision | Integer elevations per tile |
 
 ## Setup Instructions
 
-### 1. Create NewTerrainData Asset
+### 1. Create TerrainData Asset
 1. Right-click in Project window
-2. Go to Create → Flood → New Terrain Data
-3. Name your asset (e.g., "MyNewTerrainData")
+2. Go to Create → Flood → Terrain Data
+3. Name your asset (e.g., "MyTerrainData")
 
-### 2. Set Up NewTerrainLoader
-1. Add `NewTerrainLoader` component to a GameObject
-2. Assign your NewTerrainData asset to the "New Terrain Data" field
+### 2. Set Up TerrainLoader
+1. Add `TerrainLoader` component to a GameObject
+2. Assign your TerrainData asset to the "Terrain Data" field
 3. Assign your tilemap to the "Source Tilemap" field
 4. Click "Load Terrain from Tilemap" in the inspector
 
 ### 3. Connect to FloodSimulationManager
 1. Open your FloodSimData asset
-2. Assign your NewTerrainData to the "New Terrain Data Source" field
-3. The FloodSimulationManager will automatically use the new system
+2. Assign your TerrainData to the "Terrain Data Source" field
+3. The FloodSimulationManager will automatically use the system
 
 ## Using the System
 
 ### Loading All Z-Levels
 ```csharp
-NewTerrainLoader loader = GetComponent<NewTerrainLoader>();
+TerrainLoader loader = GetComponent<TerrainLoader>();
 loader.LoadTerrainFromTilemap(myTilemap);
 ```
 
 ### Loading Specific Z-Level
 ```csharp
-NewTerrainLoader loader = GetComponent<NewTerrainLoader>();
+TerrainLoader loader = GetComponent<TerrainLoader>();
 // Load tiles at z=2, using z-value as elevation
 loader.LoadTerrainFromTilemapAtZ(myTilemap, 2, true);
 ```
 
 ### Converting to Simulation Grid
 ```csharp
-float[,] heightGrid = newTerrainData.ConvertToHeightArray(
+float[,] heightGrid = terrainData.ConvertToHeightArray(
     gridWidth: 50, 
     gridHeight: 50, 
     offsetX: 0, 
@@ -63,16 +63,9 @@ float[,] heightGrid = newTerrainData.ConvertToHeightArray(
 );
 ```
 
-## Priority System
-
-When both terrain data sources are assigned to FloodSimData:
-1. **NewTerrainData** (z-value based) takes priority
-2. **TerrainData** (tile type based) is used as fallback
-3. Empty terrain is used if neither is available
-
 ## Data Structure
 
-### NewTerrainData Properties
+### TerrainData Properties
 - `TilePositions` - List of Vector3Int positions
 - `TileElevations` - List of integer elevations
 - `MinElevation` / `MaxElevation` - Elevation range
@@ -88,21 +81,20 @@ When both terrain data sources are assigned to FloodSimData:
 
 ## Editor Features
 
-### NewTerrainData Inspector
+### TerrainData Inspector
 - Shows terrain information (tiles, elevation range, bounds)
 - Validate/Clear data buttons
 - Lists associated loaders in scene
 - Status information and warnings
 
-### NewTerrainLoader Inspector
+### TerrainLoader Inspector
 - Load terrain from tilemap buttons
 - Z-level specific loading options
 - Tilemap information display
 - Easy access to terrain info logging
 
 ### FloodSimData Inspector
-- Shows both old and new terrain source status
-- Indicates which system will be used
+- Shows terrain source status
 - Terrain data statistics
 
 ## Example Usage
@@ -111,21 +103,21 @@ When both terrain data sources are assigned to FloodSimData:
 public class TerrainSetupExample : MonoBehaviour
 {
     [SerializeField] private Tilemap sourceTilemap;
-    [SerializeField] private NewTerrainData newTerrainData;
+    [SerializeField] private TerrainData terrainData;
     [SerializeField] private FloodSimData floodSimData;
     
     void Start()
     {
         // Set up loader
-        NewTerrainLoader loader = gameObject.AddComponent<NewTerrainLoader>();
-        loader.SetNewTerrainData(newTerrainData);
+        TerrainLoader loader = gameObject.AddComponent<TerrainLoader>();
+        loader.SetTerrainData(terrainData);
         loader.SetSourceTilemap(sourceTilemap);
         
         // Load terrain data
         if (loader.LoadTerrainFromTilemap())
         {
             // Connect to simulation
-            floodSimData.NewTerrainDataSource = newTerrainData;
+            floodSimData.TerrainDataSource = terrainData;
             
             // Initialize simulation
             FindObjectOfType<FloodSimulationManager>().ResetSimulation();
@@ -157,10 +149,10 @@ For the new system to work properly:
 - Verify tilemap is assigned to NewTerrainLoader
 - Check console for detailed error messages
 
-### Simulation Not Using New Data
-- Ensure NewTerrainData is assigned to FloodSimData
-- Check that NewTerrainData.DataLoaded is true
-- Verify FloodSimulationManager is finding NewTerrainLoader in scene
+### Simulation Not Using Data
+- Ensure TerrainData is assigned to FloodSimData
+- Check that TerrainData.DataLoaded is true
+- Verify FloodSimulationManager is finding TerrainLoader in scene
 
 ### Elevation Values Wrong
 - Check z-values in your tilemap

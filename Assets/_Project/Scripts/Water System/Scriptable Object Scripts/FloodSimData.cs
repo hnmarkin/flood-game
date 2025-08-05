@@ -16,7 +16,6 @@ public class FloodSimData : ScriptableObject
 
     [Header("Terrain Data Source")]
     [SerializeField] private TerrainData terrainDataSource;
-    [SerializeField] private NewTerrainData newTerrainDataSource;
 
     [Header("Runtime Data (Read-Only)")]
     [SerializeField, ReadOnly] private bool isInitialized = false;
@@ -32,13 +31,6 @@ public class FloodSimData : ScriptableObject
     { 
         get => terrainDataSource; 
         set => terrainDataSource = value; 
-    }
-
-    // Property to access new terrain data source
-    public NewTerrainData NewTerrainDataSource 
-    { 
-        get => newTerrainDataSource; 
-        set => newTerrainDataSource = value; 
     }
 
     public bool IsInitialized 
