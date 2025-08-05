@@ -64,79 +64,159 @@ public class FloodSimulationManager : MonoBehaviour
         int gridHeight = simulationData.GridHeight;
         int N = simulationData.N;
         
-        // If we have terrain data source, try to match its dimensions
+        // Priority 1: Check for NewTerrainData (z-value based system)
+        if (simulationData.NewTerrainDataSource != null && simulationData.NewTerrainDataSource.DataLoaded)
+        {
+            if (InitializeWithNewTerrainData(gridWidth, gridHeight, N))
+                return;
+        }
+        
+        // Priority 2: Check for old TerrainData (tile type based system)
         if (simulationData.TerrainDataSource != null && simulationData.TerrainDataSource.DataLoaded)
         {
-            // Find a TerrainLoader to help us convert the data
-            TerrainLoader terrainLoader = FindObjectOfType<TerrainLoader>();
-            
-            if (terrainLoader != null)
-            {
-                // Calculate offsets to shift terrain coordinates into valid [0, N-1] range
-                int offsetX = 0, offsetY = 0;
-                if (simulationData.TerrainDataSource.TilePositions.Count > 0)
-                {
-                    int minX = int.MaxValue, minY = int.MaxValue;
-                    foreach (var pos in simulationData.TerrainDataSource.TilePositions)
-                    {
-                        minX = Mathf.Min(minX, pos.x);
-                        minY = Mathf.Min(minY, pos.y);
-                    }
-                    // Shift negative coordinates to start at 0
-                    offsetX = -minX;
-                    offsetY = -minY;
-                }
-                
-                float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N, offsetX, offsetY);
-                if (terrainFromData != null)
-                {
-                    // Initialize arrays
-                    simulationData.water = new float[gridWidth, gridHeight];
-                    simulationData.terrain = new float[gridWidth, gridHeight];
-                    simulationData.flowX = new float[gridWidth, gridHeight];
-                    simulationData.flowY = new float[gridWidth, gridHeight];
-
-                    // Copy terrain data from TerrainData (offset by 1 for boundary)
-                    for (int y = 0; y < N; y++)
-                    {
-                        for (int x = 0; x < N; x++)
-                        {
-                            simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
-                            // Water should be a thin layer on top of terrain, not a separate height
-                            simulationData.water[x + 1, y + 1] = simulationData.startingWaterDepth; // Configurable starting water depth
-                        }
-                    }
-
-                    // Add boundary walls to prevent water from flowing off edges
-                    for (int i = 0; i < gridWidth; i++)
-                    {
-                        simulationData.terrain[i, 0] = 1.0f;           // Bottom wall
-                        simulationData.terrain[i, gridHeight - 1] = 1.0f; // Top wall
-                        simulationData.water[i, 0] = 0.0f;             // No water on boundary
-                        simulationData.water[i, gridHeight - 1] = 0.0f; // No water on boundary
-                    }
-                    for (int i = 0; i < gridHeight; i++)
-                    {
-                        simulationData.terrain[0, i] = 1.0f;           // Left wall
-                        simulationData.terrain[gridWidth - 1, i] = 1.0f;  // Right wall
-                        simulationData.water[0, i] = 0.0f;             // No water on boundary
-                        simulationData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
-                    }
-
-                    simulationData.IsInitialized = true;
-                    
-                    OnSimulationInitialized?.Invoke();
-                    OnSimulationStep?.Invoke();
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("[FloodSimulationManager] TerrainData source found but no TerrainLoader in scene to convert data");
-            }
+            if (InitializeWithOldTerrainData(gridWidth, gridHeight, N))
+                return;
         }
         
         // Fallback: Initialize with empty terrain
+        InitializeWithEmptyTerrain(gridWidth, gridHeight, N);
+    }
+
+    /// <summary>
+    /// Initialize simulation using the new NewTerrainData (z-value based system)
+    /// </summary>
+    private bool InitializeWithNewTerrainData(int gridWidth, int gridHeight, int N)
+    {
+        // Find a NewTerrainLoader to help us convert the data
+        NewTerrainLoader newTerrainLoader = FindObjectOfType<NewTerrainLoader>();
+        
+        if (newTerrainLoader == null)
+        {
+            Debug.LogWarning("[FloodSimulationManager] NewTerrainData source found but no NewTerrainLoader in scene to convert data");
+            return false;
+        }
+
+        // Calculate offsets to shift terrain coordinates into valid [0, N-1] range
+        int offsetX = 0, offsetY = 0;
+        if (simulationData.NewTerrainDataSource.TilePositions.Count > 0)
+        {
+            int minX = int.MaxValue, minY = int.MaxValue;
+            foreach (var pos in simulationData.NewTerrainDataSource.TilePositions)
+            {
+                minX = Mathf.Min(minX, pos.x);
+                minY = Mathf.Min(minY, pos.y);
+            }
+            // Shift negative coordinates to start at 0
+            offsetX = -minX;
+            offsetY = -minY;
+        }
+        
+        float[,] terrainFromData = newTerrainLoader.ConvertToSimulationGrid(N, N, offsetX, offsetY);
+        if (terrainFromData != null)
+        {
+            // Initialize arrays
+            simulationData.water = new float[gridWidth, gridHeight];
+            simulationData.terrain = new float[gridWidth, gridHeight];
+            simulationData.flowX = new float[gridWidth, gridHeight];
+            simulationData.flowY = new float[gridWidth, gridHeight];
+
+            // Copy terrain data from NewTerrainData (offset by 1 for boundary)
+            for (int y = 0; y < N; y++)
+            {
+                for (int x = 0; x < N; x++)
+                {
+                    simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
+                    // Water should be a thin layer on top of terrain, not a separate height
+                    simulationData.water[x + 1, y + 1] = simulationData.startingWaterDepth;
+                }
+            }
+
+            SetupBoundaryWalls(gridWidth, gridHeight);
+            
+            simulationData.IsInitialized = true;
+            
+            Debug.Log($"[FloodSimulationManager] Initialized with NewTerrainData: {simulationData.NewTerrainDataSource.TotalTilesWritten} tiles");
+            Debug.Log($"[FloodSimulationManager] Elevation range: [{simulationData.NewTerrainDataSource.MinElevation}, {simulationData.NewTerrainDataSource.MaxElevation}]");
+            
+            OnSimulationInitialized?.Invoke();
+            OnSimulationStep?.Invoke();
+            return true;
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// Initialize simulation using the old TerrainData (tile type based system)
+    /// </summary>
+    private bool InitializeWithOldTerrainData(int gridWidth, int gridHeight, int N)
+    {
+        // Find a TerrainLoader to help us convert the data
+        TerrainLoader terrainLoader = FindObjectOfType<TerrainLoader>();
+        
+        if (terrainLoader == null)
+        {
+            Debug.LogWarning("[FloodSimulationManager] TerrainData source found but no TerrainLoader in scene to convert data");
+            return false;
+        }
+
+        // Calculate offsets to shift terrain coordinates into valid [0, N-1] range
+        int offsetX = 0, offsetY = 0;
+        if (simulationData.TerrainDataSource.TilePositions.Count > 0)
+        {
+            int minX = int.MaxValue, minY = int.MaxValue;
+            foreach (var pos in simulationData.TerrainDataSource.TilePositions)
+            {
+                minX = Mathf.Min(minX, pos.x);
+                minY = Mathf.Min(minY, pos.y);
+            }
+            // Shift negative coordinates to start at 0
+            offsetX = -minX;
+            offsetY = -minY;
+        }
+        
+        float[,] terrainFromData = terrainLoader.ConvertToHeightArray(simulationData.TerrainDataSource, N, N, offsetX, offsetY);
+        if (terrainFromData != null)
+        {
+            // Initialize arrays
+            simulationData.water = new float[gridWidth, gridHeight];
+            simulationData.terrain = new float[gridWidth, gridHeight];
+            simulationData.flowX = new float[gridWidth, gridHeight];
+            simulationData.flowY = new float[gridWidth, gridHeight];
+
+            // Copy terrain data from TerrainData (offset by 1 for boundary)
+            for (int y = 0; y < N; y++)
+            {
+                for (int x = 0; x < N; x++)
+                {
+                    simulationData.terrain[x + 1, y + 1] = terrainFromData[x, y];
+                    // Water should be a thin layer on top of terrain, not a separate height
+                    simulationData.water[x + 1, y + 1] = simulationData.startingWaterDepth;
+                }
+            }
+
+            SetupBoundaryWalls(gridWidth, gridHeight);
+
+            simulationData.IsInitialized = true;
+            
+            Debug.Log($"[FloodSimulationManager] Initialized with old TerrainData: {simulationData.TerrainDataSource.TotalTilesWritten} tiles");
+            
+            OnSimulationInitialized?.Invoke();
+            OnSimulationStep?.Invoke();
+            return true;
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// Initialize simulation with empty/default terrain
+    /// </summary>
+    private void InitializeWithEmptyTerrain(int gridWidth, int gridHeight, int N)
+    {
+        Debug.Log("[FloodSimulationManager] No terrain data sources available, initializing with empty terrain");
+        
+        // Initialize with empty terrain
         simulationData.water = new float[gridWidth, gridHeight];
         simulationData.terrain = new float[gridWidth, gridHeight];
         simulationData.flowX = new float[gridWidth, gridHeight];
@@ -145,8 +225,21 @@ public class FloodSimulationManager : MonoBehaviour
         // Fill with some water everywhere
         for (int y = 1; y <= N; y++)
             for (int x = 1; x <= N; x++)
-                simulationData.water[x, y] = simulationData.startingWaterDepth; // Configurable starting water depth
+                simulationData.water[x, y] = simulationData.startingWaterDepth;
 
+        SetupBoundaryWalls(gridWidth, gridHeight);
+
+        simulationData.IsInitialized = true;
+        
+        OnSimulationInitialized?.Invoke();
+        OnSimulationStep?.Invoke();
+    }
+
+    /// <summary>
+    /// Sets up boundary walls to prevent water from flowing off edges
+    /// </summary>
+    private void SetupBoundaryWalls(int gridWidth, int gridHeight)
+    {
         // Add boundary walls to prevent water from flowing off edges
         for (int i = 0; i < gridWidth; i++)
         {
@@ -162,11 +255,6 @@ public class FloodSimulationManager : MonoBehaviour
             simulationData.water[0, i] = 0.0f;             // No water on boundary
             simulationData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
         }
-
-        simulationData.IsInitialized = true;
-        
-        OnSimulationInitialized?.Invoke();
-        OnSimulationStep?.Invoke(); // Notify subscribers that initialization is complete
     }
 
     public void StepSimulation()
