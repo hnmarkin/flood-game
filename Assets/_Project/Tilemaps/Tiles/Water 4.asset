@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Water 4
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: acb19fa5475385a47a614d3a2f318ed1, type: 3}
-  m_Color: {r: 0, g: 0.21134442, b: 0.5169811, a: 0.78431374}
+  m_Color: {r: 0, g: 0.21134442, b: 0.5169811, a: 1}
   m_Transform:
     e00: 1
     e01: 0
