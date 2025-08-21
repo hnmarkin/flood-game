@@ -120,6 +120,12 @@ public class FloodTilemapRenderer : MonoBehaviour
                     // Place water one Z-level above the terrain since water tiles are thin planes
                     Vector3Int tilePos = new Vector3Int(worldCoords.x, worldCoords.y, terrainElevation + z_Booster);
                     
+                    // Simple debug - just log one tile to see if Z-coordinates are correct
+                    if (x == 0 && y == 0)
+                    {
+                        Debug.Log($"First tile Z: {tilePos.z} (terrain: {terrainElevation} + booster: {z_Booster})");
+                    }
+                    
                     // Only place a tile if we have a valid tile for this depth
                     if (tileIndex >= 0 && tileIndex < waterTiles.Length && waterTiles[tileIndex] != null)
                     {
