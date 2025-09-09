@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9116d5a47fc9f045b8fa255766534d7, type: 3}
   m_Name: TileRuleMap
   m_EditorClassIdentifier: 
-  entries: []
+  entries:
+  - terrainType: 0
+    waterRange: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 1b56b2968462ee646b5299d0eb31ed08, type: 2}
+  - terrainType: 0
+    waterRange: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 6b9c3740ed926bb4ca2cb6454045f561, type: 2}
+  - terrainType: 0
+    waterRange: {x: 2, y: 3}
+    tile: {fileID: 11400000, guid: eb03dc77b37900a42bbba7383fa33f74, type: 2}
