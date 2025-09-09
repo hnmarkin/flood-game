@@ -11,7 +11,6 @@ public class TileRuleMap : ScriptableObject
     {
         public TerrainType terrainType;
         public Vector2Int waterRange;
-        public byte elevation;
         public TileBase tile;
     }
     public List<Entry> entries;
