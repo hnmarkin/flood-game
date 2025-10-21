@@ -57,22 +57,6 @@ public class TerrainLoaderEditor : Editor
         EditorGUI.BeginDisabledGroup(useZAsElevation);
         int fixedElevation = EditorGUILayout.IntField("Fixed Elevation", 0);
         EditorGUI.EndDisabledGroup();
-        
-        if (GUILayout.Button($"Load from Z-Level {zLevel}"))
-        {
-            Tilemap tilemap = loader.GetType().GetField("sourceTilemap", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(loader) as Tilemap;
-            if (tilemap != null)
-            {
-                if (loader.LoadTerrainFromTilemapAtZ(tilemap, zLevel, useZAsElevation, fixedElevation))
-                {
-                    EditorUtility.DisplayDialog("Success", $"Terrain data loaded successfully from Z-level {zLevel}!", "OK");
-                }
-                else
-                {
-                    EditorUtility.DisplayDialog("Failed", $"Failed to load terrain data from Z-level {zLevel}. Check the console for details.", "OK");
-                }
-            }
-        }
 
         EditorGUI.EndDisabledGroup();
 

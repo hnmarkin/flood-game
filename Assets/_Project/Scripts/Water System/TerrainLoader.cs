@@ -39,14 +39,12 @@ public class TerrainLoader : MonoBehaviour
     /// <returns>True if data was successfully loaded</returns>
     public bool LoadTerrainFromTilemap(Tilemap tilemap)
     {
-        if (terrainData == null)
-        {
+        if (terrainData == null) {
             Debug.LogError("[TerrainLoader] TerrainData reference is null");
             return false;
         }
         
-        if (tilemap == null)
-        {
+        if (tilemap == null) {
             Debug.LogError("[TerrainLoader] Tilemap is null");
             return false;
         }
@@ -101,80 +99,6 @@ public class TerrainLoader : MonoBehaviour
         {
             Debug.LogWarning("[TerrainLoader] No tiles found in tilemap");
             terrainData.LastOperationResult = "No tiles found in tilemap";
-        }
-        
-        return success;
-    }
-    
-    /// <summary>
-    /// Loads terrain data from tilemap but only considers tiles at a specific z-level
-    /// </summary>
-    /// <param name="tilemap">The tilemap to read from</param>
-    /// <param name="zLevel">The z-level to read tiles from</param>
-    /// <param name="useZAsElevation">If true, uses the z-level as elevation. If false, uses a fixed elevation value</param>
-    /// <param name="fixedElevation">Fixed elevation value to use when useZAsElevation is false</param>
-    /// <returns>True if data was successfully loaded</returns>
-    public bool LoadTerrainFromTilemapAtZ(Tilemap tilemap, int zLevel, bool useZAsElevation = true, int fixedElevation = 0)
-    {
-        if (terrainData == null)
-        {
-            Debug.LogError("[TerrainLoader] TerrainData reference is null");
-            return false;
-        }
-        
-        if (tilemap == null)
-        {
-            Debug.LogError("[TerrainLoader] Tilemap is null");
-            return false;
-        }
-        
-        // Clear existing data
-        terrainData.ClearData();
-        
-        int tilesProcessed = 0;
-        BoundsInt bounds = tilemap.cellBounds;
-        
-        Debug.Log($"[TerrainLoader] Processing tilemap at z-level {zLevel}, bounds: {bounds}");
-        
-        for (int x = bounds.xMin; x < bounds.xMax; x++)
-        {
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                Vector3Int position = new Vector3Int(x, y, zLevel);
-                TileBase tile = tilemap.GetTile(position);
-                
-                if (tile != null)
-                {
-                    // Use either the z-level or a fixed elevation value
-                    int elevation = useZAsElevation ? zLevel : fixedElevation;
-                    terrainData.AddTile(position, elevation);
-                    tilesProcessed++;
-                    
-                    if (tilesProcessed % 100 == 0)
-                    {
-                        Debug.Log($"[TerrainLoader] Processed {tilesProcessed} tiles...");
-                    }
-                }
-            }
-        }
-        
-        bool success = tilesProcessed > 0;
-        if (success)
-        {
-            terrainData.DataLoaded = true;
-            terrainData.ValidateData();
-            
-            Debug.Log($"[TerrainLoader] Successfully loaded {tilesProcessed} tiles from z-level {zLevel}");
-            Debug.Log($"[TerrainLoader] Elevation range: [{terrainData.MinElevation}, {terrainData.MaxElevation}]");
-            
-            #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(terrainData);
-            #endif
-        }
-        else
-        {
-            Debug.LogWarning($"[TerrainLoader] No tiles found at z-level {zLevel}");
-            terrainData.LastOperationResult = $"No tiles found at z-level {zLevel}";
         }
         
         return success;
