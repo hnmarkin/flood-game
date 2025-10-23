@@ -1578,7 +1578,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 80
-      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf00000000000000000000803f0000803f0000803f00000000000000000000803f00000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1912,7 +1912,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 80
-      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf00000000000000000000803f0000803f0000803f00000000000000000000803f00000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -2171,6 +2171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808315020}
   - component: {fileID: 808315021}
+  - component: {fileID: 808315022}
   m_Layer: 0
   m_Name: TerrainLoader
   m_TagString: Untagged
@@ -2209,6 +2210,25 @@ MonoBehaviour:
   sourceTilemap: {fileID: 64804915}
   loadOnStart: 0
   elevationScale: 1
+--- !u!114 &808315022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808315018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb722cabd7066a049ace337c5bfc8a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grass_tile: {fileID: 0}
+  beach_tile: {fileID: 0}
+  forest_tile: {fileID: 0}
+  mountain_tile: {fileID: 0}
+  infra_tile: {fileID: 0}
+  city_tile: {fileID: 0}
+  water_tile: {fileID: 0}
 --- !u!213 &1052689236
 Sprite:
   m_ObjectHideFlags: 0
@@ -2403,7 +2423,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 80
-      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf00000000000000000000803f0000803f0000803f00000000000000000000803f00000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2

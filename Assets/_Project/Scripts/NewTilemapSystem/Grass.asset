@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   tileName: Grass
-  sprites: []
+  sprites:
+  - sprite: {fileID: 0}
+    min: 0
+    max: 0
+  - sprite: {fileID: 0}
+    min: 0
+    max: 0
   soilCapacity: 0

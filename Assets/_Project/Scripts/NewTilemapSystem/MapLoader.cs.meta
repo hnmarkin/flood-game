@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cb722cabd7066a049ace337c5bfc8a71
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - grass_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  - beach_tile: {instanceID: 0}
+  - forest_tile: {instanceID: 0}
+  - mountain_tile: {instanceID: 0}
+  - infra_tile: {instanceID: 0}
+  - city_tile: {instanceID: 0}
+  - water_tile: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

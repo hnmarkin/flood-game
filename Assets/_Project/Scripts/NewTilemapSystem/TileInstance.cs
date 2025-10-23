@@ -3,6 +3,8 @@ using UnityEngine;
 public class TileInstance : MonoBehaviour
 {
     public TileType tileType;
+    public int x;
+    public int y;
     public int elevation;
     public int water;
     public int population;
