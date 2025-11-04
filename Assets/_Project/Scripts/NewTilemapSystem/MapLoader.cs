@@ -53,11 +53,12 @@ public class MapLoader : MonoBehaviour
     private void LoadTerrainMap()
     {
         // Bounds and progress bar setup
+        terrainMap.CompressBounds();
         BoundsInt bounds = terrainMap.cellBounds;
         // Correction to start at 0
-        if (bounds.xMin < 0) bounds.xMin = 0;
-        if (bounds.yMin < 0) bounds.yMin = 0;
-        if (bounds.zMin < 0) bounds.zMin = 0;
+        // if (bounds.xMin < 0) bounds.xMin = 0;
+        // if (bounds.yMin < 0) bounds.yMin = 0;
+        // if (bounds.zMin < 0) bounds.zMin = 0;
 
         Debug.Log($"Loading terrain map with bounds: {bounds}");
         // Iterate through each cell in the Tilemap
@@ -79,12 +80,12 @@ public class MapLoader : MonoBehaviour
 
                     // Retrieve tile data
                     Vector3Int pos = new Vector3Int(x, y, z);
-                    Tile tile = terrainMap.GetTile(pos) as Tile;
-                    if (tile == null)
+                    if (!terrainMap.GetTile(pos))
                     {
                         Debug.LogWarning($"No tile found at position {pos}");
-                        return;
+                        continue; // No tile at this position
                     }
+                    Tile tile = terrainMap.GetTile(pos) as Tile;
 
                     // Look up dictionary entry for this sprite
                     if (LookupTileTypeForSprite(tile.sprite) != null)
