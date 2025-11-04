@@ -5,16 +5,10 @@ using UnityEngine.Tilemaps;
 public class MapLoader : MonoBehaviour
 {
     // Initialization
-    public Dictionary<Sprite, TileType> spriteTileMapping {
-        get { return spriteTileMapping; }
-        private set { spriteTileMapping = value; } 
-    }
-    public Dictionary<TileType, Sprite> tileTypeSpriteMapping
-    {
-        get { return tileTypeSpriteMapping; }
-        private set { tileTypeSpriteMapping = value; }
-    }
-    public IReadOnlyDictionary<Sprite, TileType> SpriteTileMapping => spriteTileMapping;
+    private Dictionary<Sprite, TileType> _spriteTileMapping = new Dictionary<Sprite, TileType>();
+    private Dictionary<TileType, Sprite> _tileTypeSpriteMapping = new Dictionary<TileType, Sprite>();
+    public IReadOnlyDictionary<Sprite, TileType> SpriteTileMapping => _spriteTileMapping;
+    public IReadOnlyDictionary<TileType, Sprite> TileTypeSpriteMapping => _tileTypeSpriteMapping;
 
     [SerializeField] private TileType grass_tile;
     [SerializeField] private TileType beach_tile;
@@ -25,6 +19,7 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private TileType water_tile;
 
     public Tilemap terrainMap;
+    public TileMapData tileMapData;
 
     private void Awake()
     {
@@ -50,7 +45,7 @@ public class MapLoader : MonoBehaviour
         {
             foreach (var spriteRange in tileType.sprites)
             {
-                spriteTileMapping[spriteRange.sprite] = tileType;
+                _spriteTileMapping[spriteRange.sprite] = tileType;
             }
         }
     }
@@ -59,9 +54,12 @@ public class MapLoader : MonoBehaviour
     {
         // Bounds and progress bar setup
         BoundsInt bounds = terrainMap.cellBounds;
-        int total = (bounds.xMax - bounds.xMin) * (bounds.yMax - bounds.yMin);
-        int current = 0;
+        // Correction to start at 0
+        if (bounds.xMin < 0) bounds.xMin = 0;
+        if (bounds.yMin < 0) bounds.yMin = 0;
+        if (bounds.zMin < 0) bounds.zMin = 0;
 
+        Debug.Log($"Loading terrain map with bounds: {bounds}");
         // Iterate through each cell in the Tilemap
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -69,32 +67,33 @@ public class MapLoader : MonoBehaviour
             {
                 for (int z = bounds.zMin; z < bounds.zMax; z++)
                 {
-                    // Progress bar
-                    if (UnityEditor.EditorUtility.DisplayCancelableProgressBar(
-                    "Loading Terrain",
-                    $"Processing tile {current}/{total}",
-                    current / (float)total))
-                    {
-                        break;
-                    }
-                    current++;
+                    // // Progress bar
+                    // if (UnityEditor.EditorUtility.DisplayCancelableProgressBar(
+                    // "Loading Terrain",
+                    // $"Processing tile {current}/{total}",
+                    // current / (float)total))
+                    // {
+                    //     break;
+                    // }
+                    // current++;
 
                     // Retrieve tile data
                     Vector3Int pos = new Vector3Int(x, y, z);
                     Tile tile = terrainMap.GetTile(pos) as Tile;
-                    if (tile == null) {
+                    if (tile == null)
+                    {
                         Debug.LogWarning($"No tile found at position {pos}");
-                        continue;
+                        return;
                     }
 
                     // Look up dictionary entry for this sprite
                     if (LookupTileTypeForSprite(tile.sprite) != null)
                     {
+                        Debug.Log($"Found tile at {pos} with sprite {tile.sprite.name}");
                         TileType tileType = LookupTileTypeForSprite(tile.sprite);
 
                         // Create TileInstance GameObject
-                        GameObject tileGO = new GameObject($"Tile_{x}_{y}");
-                        TileInstance tileInstance = tileGO.AddComponent<TileInstance>();
+                        TileInstance tileInstance = new TileInstance();
                         tileInstance.tileType = tileType;
                         tileInstance.x = x;
                         tileInstance.y = y;
@@ -105,13 +104,16 @@ public class MapLoader : MonoBehaviour
                         // tileInstance.damage = tile.damage;
                         // tileInstance.casualties = tile.casualties;
 
-                        // Position the TileInstance in the world
-                        tileGO.transform.position = new Vector3(x, y, 0);
+                        // Assign to tileMapData
+                        tileMapData.SetTileInstanceAt(x, y, tileInstance);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"No TileType mapping found for sprite {tile.sprite.name} at position {pos}");
                     }
                 }
             }
         }
-        UnityEditor.EditorUtility.ClearProgressBar();
     }
 
     //Helper methods
@@ -129,7 +131,7 @@ public class MapLoader : MonoBehaviour
 
     private TileType LookupTileTypeForSprite(Sprite sprite)
     {
-        if (spriteTileMapping.TryGetValue(sprite, out TileType tileType))
+        if (_spriteTileMapping.TryGetValue(sprite, out TileType tileType))
         {
             return tileType;
         }

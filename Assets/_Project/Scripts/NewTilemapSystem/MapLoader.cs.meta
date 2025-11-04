@@ -11,6 +11,9 @@ MonoImporter:
   - infra_tile: {instanceID: 0}
   - city_tile: {instanceID: 0}
   - water_tile: {instanceID: 0}
+  - terrainMap: {instanceID: 0}
+  - tileType: {instanceID: 0}
+  - tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
