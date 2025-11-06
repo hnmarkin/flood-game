@@ -31,17 +31,24 @@ public class TileMapData : ScriptableObject
     {
         // For simplicity, we set z = 0 for 2D tilemaps
         Set(x, y, 0, tileInstance);
+        Debug.Log("Successfully assigned TileInstance to TileMapData at position " + new Vector3Int(x, y, 0));
+
     }
 
     public int CountNonNullTiles()
     {
-        if (tiles == null) return 0;
-        
+        //if (tiles == null) return 0;
+
         int count = 0;
         foreach (var tile in tiles)
         {
             if (tile != null) count++;
         }
         return count;
+    }
+    
+    public void ShowHeaderInfo()
+    {
+        Debug.Log($"TileMapData Size: {sizeX} x {sizeY} x {sizeZ}");
     }
 }

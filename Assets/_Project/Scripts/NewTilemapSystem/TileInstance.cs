@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TileInstance : MonoBehaviour
+public class TileInstance
 {
     public TileType tileType;
     public int x;
