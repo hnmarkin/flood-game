@@ -6,7 +6,7 @@ public class TileInstance
     public int x;
     public int y;
     public int elevation;
-    public int water;
+    public int waterHeight;
     public int population;
     public int econVal;
     public int damage;
