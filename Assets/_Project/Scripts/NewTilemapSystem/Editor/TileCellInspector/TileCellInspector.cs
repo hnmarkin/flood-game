@@ -9,17 +9,45 @@ public class TileCellInspector : EditorWindow
     // Hook up your data source here.
     // Replace this with however you store/lookup TileInstance (array, dict, ScriptableObject, etc.).
     public TileMapData data; // your ScriptableObject that contains TileInstances and dimensions
+    private TileInstance currentTile;
+    private Vector3Int currentCell;
+    private Tilemap currentTilemap;
 
     [MenuItem("Window/Tile Cell Inspector")]
     public static void ShowWindow() => GetWindow<TileCellInspector>("Tile Cell Inspector");
 
     void OnEnable()
     {
-        EditorApplication.update += Repaint; // keep UI fresh as selection changes
+        GridSelection.gridSelectionChanged += OnGridSelectionChanged;
     }
     void OnDisable()
     {
-        EditorApplication.update -= Repaint;
+        GridSelection.gridSelectionChanged -= OnGridSelectionChanged;
+    }
+
+    void OnGridSelectionChanged()
+    {
+        UpdateSelection();
+        Repaint();
+    }
+
+    void UpdateSelection()
+    {
+        // Update active tilemap from the current paint target
+        currentTilemap = GridPaintingState.scenePaintTarget
+            ? GridPaintingState.scenePaintTarget.GetComponent<Tilemap>()
+            : null;
+
+        // Reset if no active selection or not a single cell or no tilemap
+        if (!GridSelection.active || GridSelection.position.size != Vector3Int.one || currentTilemap == null)
+        {
+            currentTile = null;
+            return;
+        }
+
+        // Cache the selected cell and resolve the tile instance via your SO
+        currentCell = GridSelection.position.position;
+        currentTile = (data != null) ? data.Get(currentCell.x, currentCell.y, currentCell.z) : null;
     }
 
     void OnGUI()
