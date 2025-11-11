@@ -5,6 +5,9 @@ public class TileMapData : ScriptableObject
 {
     [Header("Grid Size")]
     public int sizeX = 256, sizeY = 256, sizeZ = 10;
+    public Vector2Int rangeX;
+    public Vector2Int rangeY;
+    public Vector2Int rangeZ;
 
     [SerializeField, HideInInspector]
     private TileInstance[] tiles;

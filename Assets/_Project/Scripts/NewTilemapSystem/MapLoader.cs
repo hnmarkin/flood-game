@@ -62,6 +62,10 @@ public class MapLoader : MonoBehaviour
 
         Debug.Log($"Loading terrain map with bounds: {bounds}");
         // Iterate through each cell in the Tilemap
+        tileMapData.rangeX = new Vector2Int(bounds.xMin, bounds.xMax);
+        tileMapData.rangeY = new Vector2Int(bounds.yMin, bounds.yMax);
+        tileMapData.rangeZ = new Vector2Int(bounds.zMin, bounds.zMax);
+
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
             for (int y = bounds.yMin; y < bounds.yMax; y++)
