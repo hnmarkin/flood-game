@@ -98,12 +98,13 @@ public class MapLoader : MonoBehaviour
                         tileInstance.tileType = tileType;
                         tileInstance.x = x;
                         tileInstance.y = y;
-                        // tileInstance.elevation = tile.z;
-                        // tileInstance.water = tile.water;
-                        // tileInstance.population = tile.population;
-                        // tileInstance.econVal = tile.econVal;
-                        // tileInstance.damage = tile.damage;
-                        // tileInstance.casualties = tile.casualties;
+                        tileInstance.elevation = z;
+                        // Placeholder values
+                        tileInstance.waterHeight = 0;
+                        tileInstance.population = 1000;
+                        tileInstance.econVal = 1;
+                        tileInstance.damage = 0;
+                        tileInstance.casualties = 0;
 
                         // Assign to tileMapData
                         tileMapData.SetTileInstanceAt(x, y, tileInstance);
