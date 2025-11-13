@@ -10,7 +10,7 @@ public class DynamicTile : TileBase
     public override void GetTileData(
         Vector3Int position,
         ITilemap tilemap,
-        ref TileData tileData)
+        ref UnityEngine.Tilemaps.TileData tileData)
     {
         // Default values
         tileData.sprite = fallbackSprite;

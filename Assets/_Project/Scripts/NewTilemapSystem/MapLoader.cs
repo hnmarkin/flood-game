@@ -96,6 +96,7 @@ public class MapLoader : MonoBehaviour
                     {
                         Debug.Log($"Found tile at {pos} with tileBase {tile}");
                         TileType tileType = LookupTileTypeForSprite(tile);
+                        TileBase sprite = LookupSpriteForTileType(tileType, 0); // Placeholder water height = 0
 
                         // Create TileInstance GameObject
                         TileInstance tileInstance = new TileInstance();
@@ -111,7 +112,7 @@ public class MapLoader : MonoBehaviour
                         tileInstance.casualties = 0;
 
                         // Assign to tileMapData
-                        tileMapData.SetTileInstanceAt(new Vector3Int(x,y,z), tileInstance);
+                        tileMapData.SetTileInstanceAt(new Vector2Int(x,y), tileInstance);
                     }
                     else
                     {
@@ -123,11 +124,11 @@ public class MapLoader : MonoBehaviour
     }
 
     //Helper methods
-    private TileBase LookupSpriteForTileType(TileType tileType, int elevation)
+    private TileBase LookupSpriteForTileType(TileType tileType, int water)
     {
         foreach (var spriteRange in tileType.tileBases)
         {
-            if (elevation >= spriteRange.min && elevation <= spriteRange.max)
+            if (water >= spriteRange.min && water <= spriteRange.max)
             {
                 return spriteRange.tileBase;
             }

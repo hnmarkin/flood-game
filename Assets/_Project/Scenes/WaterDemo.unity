@@ -820,6 +820,55 @@ MonoBehaviour:
   water_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
   terrainMap: {fileID: 364666467}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+--- !u!1 &1546444747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546444749}
+  - component: {fileID: 1546444748}
+  m_Layer: 0
+  m_Name: WaterSimulationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1546444748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546444747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beaf81aa4aedd3645bc54e051c493715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simulationData: {fileID: 11400000, guid: 8921f6b640e71e74db63e13c886db7b9, type: 2}
+  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+  terrainMap: {fileID: 364666467}
+  waterHeight: 0
+  blanketType: 0
+--- !u!4 &1546444749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546444747}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.38153526, y: 0.19513008, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1982371192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,3 +1053,4 @@ SceneRoots:
   - {fileID: 1982371194}
   - {fileID: 698237307}
   - {fileID: 808315020}
+  - {fileID: 1546444749}

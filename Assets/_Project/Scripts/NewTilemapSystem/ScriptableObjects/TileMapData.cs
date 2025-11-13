@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Tiles/TileMapData")]
 public class TileMapData : ScriptableObject
@@ -21,16 +22,26 @@ public class TileMapData : ScriptableObject
     // Helpers
 
     // Compute a unique index for (x,y,z)
-    private int Idx(int x, int y, int z)
-        => (x * sizeY * sizeZ) + (y * sizeZ) + z;
+    private int Idx(int x, int y)
+        => (x * sizeY) + y;
 
-    public TileInstance Get(Vector3Int pos)
-        => tiles[Idx(pos.x, pos.y, pos.z)];
+    public TileInstance Get(Vector2Int pos)
+        => tiles[Idx(pos.x, pos.y)];
 
-    public void Set(Vector3Int pos, TileInstance t)
-        => tiles[Idx(pos.x, pos.y, pos.z)] = t;
+    public void Set(Vector2Int pos, TileInstance t)
+        => tiles[Idx(pos.x, pos.y)] = t;
 
-    public void SetTileInstanceAt(Vector3Int pos, TileInstance tileInstance)
+    public void SetWater(Vector2Int pos, float water)
+    {
+        tiles[Idx(pos.x, pos.y)].waterHeight = water;
+    }
+
+    public void SetSprite(Vector2Int pos, Sprite sprite)
+    {
+        tiles[Idx(pos.x, pos.y)].sprite = sprite;
+    }
+
+    public void SetTileInstanceAt(Vector2Int pos, TileInstance tileInstance)
     {
         // For simplicity, we set z = 0 for 2D tilemaps
         Set(pos, tileInstance);

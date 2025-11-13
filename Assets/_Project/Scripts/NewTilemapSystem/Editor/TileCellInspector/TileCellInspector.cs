@@ -47,7 +47,7 @@ public class TileCellInspector : EditorWindow
 
         // Cache the selected cell and resolve the tile instance via your SO
         currentCell = GridSelection.position.position;
-        currentTile = (data != null) ? data.Get(new Vector3Int(currentCell.x, currentCell.y, currentCell.z)): null;
+        currentTile = (data != null) ? data.Get(new Vector2Int(currentCell.x, currentCell.y)): null;
     }
 
     void OnGUI()
@@ -82,7 +82,7 @@ public class TileCellInspector : EditorWindow
         EditorGUILayout.LabelField("Selected Cell", $"({cell.x}, {cell.y})");
 
         // Lookup your TileInstance by (x,y)
-        TileInstance ti = data ? data.Get(new Vector3Int(cell.x, cell.y, cell.z)) : null;
+        TileInstance ti = data ? data.Get(new Vector2Int(cell.x, cell.y)) : null;
 
         if (ti == null)
         {
@@ -97,7 +97,8 @@ public class TileCellInspector : EditorWindow
             EditorGUILayout.IntField("x", ti.x);
             EditorGUILayout.IntField("y", ti.y);
             EditorGUILayout.IntField("Elevation", ti.elevation);
-            EditorGUILayout.FloatField("Water Height", ti.waterHeight);
+            string spriteName = ti.sprite != null ? ti.sprite.name : "None";
+            EditorGUILayout.LabelField("Sprite", spriteName);            EditorGUILayout.FloatField("Water Height", ti.waterHeight);
             EditorGUILayout.IntField("Population", ti.population);
             EditorGUILayout.IntField("Economic Value", ti.econVal);
             EditorGUILayout.IntField("Damage", ti.damage);

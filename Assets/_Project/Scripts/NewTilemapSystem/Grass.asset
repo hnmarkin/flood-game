@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb7f5273eb1f306479c149b60289126c, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
-  tileName: 
+  tileName: Grass
   tileBases:
   - tileBase: {fileID: 11400000, guid: ad6b9b32e8bc502489b720180df6f1b4, type: 2}
     min: 0

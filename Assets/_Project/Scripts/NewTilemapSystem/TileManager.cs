@@ -18,16 +18,23 @@ public class TileManager : MonoBehaviour
     public TileInstance GetTileTypeAt(Vector3Int pos)
     {
         // Convert tilemap cell position → array coords as needed
-        return grid.Get(pos);
+        return grid.Get(new Vector2Int(pos.x, pos.y));
     }
 
-    public void SetTileType(Vector3Int pos, TileInstance type)
+    public void SetTileType(Vector2Int pos, TileInstance type)
     {
         grid.Set(pos, type);
+        int z = grid.Get(pos).elevation;
 
         // Tell Unity to redraw this tile
-        tilemap.RefreshTile(pos);
+        tilemap.RefreshTile(new Vector3Int(pos.x, pos.y, z));
     }
+
+    public void RefreshAt(Vector3Int cell)
+    {
+        tilemap.RefreshTile(cell);
+    }
+
 
     public void RefreshAll()
     {
