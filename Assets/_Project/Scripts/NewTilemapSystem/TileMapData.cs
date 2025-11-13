@@ -24,17 +24,17 @@ public class TileMapData : ScriptableObject
     private int Idx(int x, int y, int z)
         => (x * sizeY * sizeZ) + (y * sizeZ) + z;
 
-    public TileInstance Get(int x, int y, int z)
-        => tiles[Idx(x, y, z)];
+    public TileInstance Get(Vector3Int pos)
+        => tiles[Idx(pos.x, pos.y, pos.z)];
 
-    public void Set(int x, int y, int z, TileInstance t)
-        => tiles[Idx(x, y, z)] = t;
+    public void Set(Vector3Int pos, TileInstance t)
+        => tiles[Idx(pos.x, pos.y, pos.z)] = t;
 
-    public void SetTileInstanceAt(int x, int y, TileInstance tileInstance)
+    public void SetTileInstanceAt(Vector3Int pos, TileInstance tileInstance)
     {
         // For simplicity, we set z = 0 for 2D tilemaps
-        Set(x, y, 0, tileInstance);
-        Debug.Log("Successfully assigned TileInstance to TileMapData at position " + new Vector3Int(x, y, 0));
+        Set(pos, tileInstance);
+        Debug.Log("Successfully assigned TileInstance to TileMapData at position " + pos);
 
     }
 

@@ -47,7 +47,7 @@ public class TileCellInspector : EditorWindow
 
         // Cache the selected cell and resolve the tile instance via your SO
         currentCell = GridSelection.position.position;
-        currentTile = (data != null) ? data.Get(currentCell.x, currentCell.y, currentCell.z) : null;
+        currentTile = (data != null) ? data.Get(new Vector3Int(currentCell.x, currentCell.y, currentCell.z)): null;
     }
 
     void OnGUI()
@@ -82,7 +82,7 @@ public class TileCellInspector : EditorWindow
         EditorGUILayout.LabelField("Selected Cell", $"({cell.x}, {cell.y})");
 
         // Lookup your TileInstance by (x,y)
-        TileInstance ti = data ? data.Get(cell.x, cell.y, cell.z) : null;
+        TileInstance ti = data ? data.Get(new Vector3Int(cell.x, cell.y, cell.z)) : null;
 
         if (ti == null)
         {

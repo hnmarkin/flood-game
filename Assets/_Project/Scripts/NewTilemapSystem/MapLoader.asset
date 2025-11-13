@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb722cabd7066a049ace337c5bfc8a71, type: 3}
+  m_Name: MapLoader
+  m_EditorClassIdentifier: 
+  grass_tile: {fileID: 11400000, guid: 60f6edeb6a856394e92ca2ae7b5c4eef, type: 2}
+  beach_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  forest_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  mountain_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  infra_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  city_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  water_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
+  terrainMap: {fileID: 0}
+  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}

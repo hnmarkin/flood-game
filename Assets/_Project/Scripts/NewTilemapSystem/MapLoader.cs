@@ -111,7 +111,7 @@ public class MapLoader : MonoBehaviour
                         tileInstance.casualties = 0;
 
                         // Assign to tileMapData
-                        tileMapData.SetTileInstanceAt(x, y, tileInstance);
+                        tileMapData.SetTileInstanceAt(new Vector3Int(x,y,z), tileInstance);
                     }
                     else
                     {
