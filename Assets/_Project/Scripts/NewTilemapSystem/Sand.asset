@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Sand
   m_EditorClassIdentifier: 
   tileName: Sand
-  sprites:
-  - sprite: {fileID: 21300000, guid: 949d402d415a53442bf12c7330ceb765, type: 3}
+  tileBases:
+  - tileBase: {fileID: 11400000, guid: 7743449d873365141bd18d5de24f35b1, type: 2}
     min: 0
     max: 2
-  - sprite: {fileID: 21300000, guid: 0b03d33cf1333ca4b982e6c33fba04b3, type: 3}
+  - tileBase: {fileID: 11400000, guid: 73f7bfb51bd44c84b86d2932c5a913f3, type: 2}
     min: 2
     max: 4
-  - sprite: {fileID: 21300000, guid: e9871ddbe541e6a488eaafa6cdfdc9aa, type: 3}
+  - tileBase: {fileID: 11400000, guid: 32dde9c856cdd4f42921b96d3299f718, type: 2}
     min: 4
     max: 6
   soilCapacity: 10

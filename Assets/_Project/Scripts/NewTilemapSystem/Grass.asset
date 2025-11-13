@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   tileName: 
-  sprites:
-  - sprite: {fileID: 21300000, guid: dbdf497c0c7e88c49a98ffc71ef6f5f4, type: 3}
+  tileBases:
+  - tileBase: {fileID: 11400000, guid: ad6b9b32e8bc502489b720180df6f1b4, type: 2}
     min: 0
     max: 2
-  - sprite: {fileID: 21300000, guid: 39b538415b549734c9c16f97f24bfba6, type: 3}
+  - tileBase: {fileID: 11400000, guid: 9fa74f44f92167a4881dd2001ea699bd, type: 2}
     min: 2
     max: 4
-  - sprite: {fileID: 21300000, guid: d80cda04b5a34494bb3acd2ba83110c4, type: 3}
+  - tileBase: {fileID: 11400000, guid: 416ad0d054cbeb34fb9433f54dba5b0f, type: 2}
     min: 4
     max: 6
   soilCapacity: 0

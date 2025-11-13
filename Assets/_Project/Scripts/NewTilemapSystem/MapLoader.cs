@@ -5,10 +5,10 @@ using UnityEngine.Tilemaps;
 public class MapLoader : MonoBehaviour
 {
     // Initialization
-    private Dictionary<Sprite, TileType> _spriteTileMapping = new Dictionary<Sprite, TileType>();
-    private Dictionary<TileType, Sprite> _tileTypeSpriteMapping = new Dictionary<TileType, Sprite>();
-    public IReadOnlyDictionary<Sprite, TileType> SpriteTileMapping => _spriteTileMapping;
-    public IReadOnlyDictionary<TileType, Sprite> TileTypeSpriteMapping => _tileTypeSpriteMapping;
+    private Dictionary<TileBase, TileType> _spriteTileMapping = new Dictionary<TileBase, TileType>();
+    private Dictionary<TileType, TileBase> _tileTypeSpriteMapping = new Dictionary<TileType, TileBase>();
+    public IReadOnlyDictionary<TileBase, TileType> SpriteTileMapping => _spriteTileMapping;
+    public IReadOnlyDictionary<TileType, TileBase> TileTypeSpriteMapping => _tileTypeSpriteMapping;
 
     [SerializeField] private TileType grass_tile;
     [SerializeField] private TileType beach_tile;
@@ -43,9 +43,9 @@ public class MapLoader : MonoBehaviour
 
         foreach (TileType tileType in tileTypes)
         {
-            foreach (var spriteRange in tileType.sprites)
+            foreach (var tileBaseRange in tileType.tileBases)
             {
-                _spriteTileMapping[spriteRange.sprite] = tileType;
+                _spriteTileMapping[tileBaseRange.tileBase] = tileType;
             }
         }
     }
@@ -89,13 +89,13 @@ public class MapLoader : MonoBehaviour
                         Debug.LogWarning($"No tile found at position {pos}");
                         continue; // No tile at this position
                     }
-                    Tile tile = terrainMap.GetTile(pos) as Tile;
+                    TileBase tile = terrainMap.GetTile(pos) as TileBase;
 
-                    // Look up dictionary entry for this sprite
-                    if (LookupTileTypeForSprite(tile.sprite) != null)
+                    // Look up dictionary entry for this tileBase
+                    if (LookupTileTypeForSprite(tile) != null)
                     {
-                        Debug.Log($"Found tile at {pos} with sprite {tile.sprite.name}");
-                        TileType tileType = LookupTileTypeForSprite(tile.sprite);
+                        Debug.Log($"Found tile at {pos} with tileBase {tile}");
+                        TileType tileType = LookupTileTypeForSprite(tile);
 
                         // Create TileInstance GameObject
                         TileInstance tileInstance = new TileInstance();
@@ -115,7 +115,7 @@ public class MapLoader : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning($"No TileType mapping found for sprite {tile.sprite.name} at position {pos}");
+                        Debug.LogWarning($"No TileType mapping found for tileBase {tile} at position {pos}");
                     }
                 }
             }
@@ -123,21 +123,21 @@ public class MapLoader : MonoBehaviour
     }
 
     //Helper methods
-    private Sprite LookupSpriteForTileType(TileType tileType, int elevation)
+    private TileBase LookupSpriteForTileType(TileType tileType, int elevation)
     {
-        foreach (var spriteRange in tileType.sprites)
+        foreach (var spriteRange in tileType.tileBases)
         {
             if (elevation >= spriteRange.min && elevation <= spriteRange.max)
             {
-                return spriteRange.sprite;
+                return spriteRange.tileBase;
             }
         }
-        return null; // or a default sprite
+        return null; // or a default tileBase
     }
 
-    private TileType LookupTileTypeForSprite(Sprite sprite)
+    private TileType LookupTileTypeForSprite(TileBase tileBase)
     {
-        if (_spriteTileMapping.TryGetValue(sprite, out TileType tileType))
+        if (_spriteTileMapping.TryGetValue(tileBase, out TileType tileType))
         {
             return tileType;
         }

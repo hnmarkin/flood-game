@@ -4,31 +4,34 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(menuName = "Tiles/DynamicTile")]
 public class DynamicTile : TileBase
 {
-    // Optional: default sprite if your lookup fails
     public Sprite fallbackSprite;
+    public Color fallbackColor = Color.white;
 
-    public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+    public override void GetTileData(
+        Vector3Int position,
+        ITilemap tilemap,
+        ref TileData tileData)
     {
-        // --- Retrieve your simulation data for this cell ---
-        TileInstance type = TileManager.Instance.GetTileTypeAt(position);
+        // Default values
+        tileData.sprite = fallbackSprite;
+        tileData.color = fallbackColor;
+        tileData.transform = Matrix4x4.identity;
+        tileData.flags = TileFlags.None;
+        tileData.colliderType = Tile.ColliderType.None;
 
-        // --- Fill out Unity's render packet (TileData) ---
-        if (type != null)
-        {
-            tileData.sprite = type.sprite;       // sprite chosen from TileType
-            tileData.color = Color.white;             // or Color.white
-            tileData.transform = Matrix4x4.identity;  // no skew/rotation unless desired
-            tileData.flags = TileFlags.None;          // editable at runtime
-            tileData.colliderType = Tile.ColliderType.None;
-        }
-        else
-        {
-            // fallback to avoid pink squares if data missing
-            tileData.sprite = fallbackSprite;
-            tileData.color = Color.white;
-            tileData.transform = Matrix4x4.identity;
-            tileData.flags = TileFlags.None;
-            tileData.colliderType = Tile.ColliderType.None;
-        }
+        // Only use runtime data when the game is actually playing
+        if (!Application.isPlaying)
+            return;
+
+        if (TileManager.Instance == null)
+            return;
+
+        TileInstance type = TileManager.Instance.GetTileTypeAt(position);
+        if (type == null)
+            return;
+
+        // Override with simulation-driven visuals
+        tileData.sprite = type.sprite;
+        tileData.color = Color.white;
     }
 }

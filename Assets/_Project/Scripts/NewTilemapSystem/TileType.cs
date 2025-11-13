@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
-public struct SpriteRange {
-    public Sprite sprite;
+public struct TileBaseRange {
+    public TileBase tileBase;
     public int min;
     public int max;
 }
@@ -11,6 +12,13 @@ public struct SpriteRange {
 public class TileType : ScriptableObject
 {
     public string tileName;
-    public SpriteRange[] sprites;
+    public TileBaseRange[] tileBases;
     public int soilCapacity;
+
+    public TileBase GetTileForWaterHeight(float h) {
+        foreach (var r in tileBases)
+            if (h >= r.min && h <= r.max)
+                return r.tileBase;
+        return null;
+    }
 }
