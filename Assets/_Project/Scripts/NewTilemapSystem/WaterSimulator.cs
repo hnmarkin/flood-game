@@ -17,10 +17,11 @@ public class WaterSimulator : MonoBehaviour
     [SerializeField] private float waterHeight;
     [SerializeField] private BlanketTypes blanketType;
 
+    private bool waterApplied = false;
+
     private void Start()
     {
         if (simulationData != null) {
-            //ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
         }
         else
         {
@@ -32,6 +33,11 @@ public class WaterSimulator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!waterApplied)
+        {
+            waterApplied = true;
+            ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
+        }
 
     }
 
@@ -47,6 +53,11 @@ public class WaterSimulator : MonoBehaviour
                     {
                         //Placeholder
                         Vector2Int pos = new Vector2Int(x, y);
+                        //Check for null reference exception
+                        if (tileMapData.Get(pos) == null) {
+                            Debug.LogWarning($"TileInstance at position {pos} is null, skipping assignment.");
+                            continue;
+                        }
                         tileMapData.SetWater(pos, waterHeight);
                         //tileMapData.SetSprite(pos, );
                         Debug.Log($"Set water height at ({x},{y}) to {waterHeight}");

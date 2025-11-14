@@ -8,7 +8,10 @@ public class TileInstance
         get => _sprite;
         set {
             _sprite = value;
-            TileManager.Instance.RefreshAt(new Vector3Int(this.x, this.y, this.elevation));
+            if (Application.isPlaying && TileManager.Instance != null)
+            {
+                TileManager.Instance.RefreshAt(new Vector3Int(x, y, elevation));
+            }
         }
     }
 

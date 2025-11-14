@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 [System.Serializable]
 public struct TilebaseRange {
     public TileBase tileBase;
+    public Sprite sprite;
     public int min;
     public int max;
 }
@@ -15,10 +16,10 @@ public class TileType : ScriptableObject
     public TilebaseRange[] tileBases;
     public int soilCapacity;
 
-    public TileBase GetTileForWaterHeight(float h) {
+    public Sprite GetTileForWaterHeight(float h) {
         foreach (var r in tileBases)
             if (h >= r.min && h <= r.max)
-                return r.tileBase;
+                return r.sprite;
         return null;
     }
 }

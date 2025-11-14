@@ -5,10 +5,13 @@ using UnityEngine.Tilemaps;
 public class MapLoader : MonoBehaviour
 {
     // Initialization
-    private Dictionary<TileBase, TileType> _spriteTileMapping = new Dictionary<TileBase, TileType>();
-    private Dictionary<TileType, TileBase> _tileTypeSpriteMapping = new Dictionary<TileType, TileBase>();
-    public IReadOnlyDictionary<TileBase, TileType> SpriteTileMapping => _spriteTileMapping;
-    public IReadOnlyDictionary<TileType, TileBase> TileTypeSpriteMapping => _tileTypeSpriteMapping;
+    private Dictionary<TileBase, TileType> _tileBaseTileTypeMapping = new Dictionary<TileBase, TileType>();
+    private Dictionary<TileType, TileBase> _tileTypeTileBaseMapping = new Dictionary<TileType, TileBase>();
+    //private Dictionary<TileType, Sprite> _tileTypeSpriteMapping = new Dictionary<TileType, Sprite>();
+
+    public IReadOnlyDictionary<TileBase, TileType> TileBaseTileTypeMapping => _tileBaseTileTypeMapping;
+    public IReadOnlyDictionary<TileType, TileBase> TileTypeTileBaseMapping => _tileTypeTileBaseMapping;
+    //public IReadOnlyDictionary<TileType, Sprite> TileTypeSpriteMapping => _tileTypeSpriteMapping;
 
     [SerializeField] private TileType grass_tile;
     [SerializeField] private TileType beach_tile;
@@ -45,9 +48,17 @@ public class MapLoader : MonoBehaviour
         {
             foreach (var tileBaseRange in tileType.tileBases)
             {
-                _spriteTileMapping[tileBaseRange.tileBase] = tileType;
+                _tileBaseTileTypeMapping[tileBaseRange.tileBase] = tileType;
             }
         }
+
+        // foreach (TileType tileType in tileTypes)
+        // {
+        //     foreach (var tileBaseRange in tileType.tileBases)
+        //     {
+        //         _tileTypeSpriteMapping[tileBaseRange] = tileType.sprite;
+        //     }
+        // }
     }
 
     private void LoadTerrainMap()
@@ -96,7 +107,7 @@ public class MapLoader : MonoBehaviour
                     {
                         Debug.Log($"Found tile at {pos} with tileBase {tile}");
                         TileType tileType = LookupTileTypeForSprite(tile);
-                        TileBase sprite = LookupSpriteForTileType(tileType, 0); // Placeholder water height = 0
+                        Sprite sprite = tileType.GetTileForWaterHeight(0); // Placeholder water height = 0
 
                         // Create TileInstance GameObject
                         TileInstance tileInstance = new TileInstance();
@@ -110,6 +121,7 @@ public class MapLoader : MonoBehaviour
                         tileInstance.econVal = 1;
                         tileInstance.damage = 0;
                         tileInstance.casualties = 0;
+                        //tileInstance.sprite = sprite;
 
                         // Assign to tileMapData
                         tileMapData.SetTileInstanceAt(new Vector2Int(x,y), tileInstance);
@@ -124,13 +136,13 @@ public class MapLoader : MonoBehaviour
     }
 
     //Helper methods
-    private TileBase LookupSpriteForTileType(TileType tileType, int water)
+    private Sprite LookupSpriteForTileType(TileType tileType, int water)
     {
         foreach (var spriteRange in tileType.tileBases)
         {
             if (water >= spriteRange.min && water <= spriteRange.max)
             {
-                return spriteRange.tileBase;
+                return spriteRange.sprite;
             }
         }
         return null; // or a default tileBase
@@ -138,7 +150,7 @@ public class MapLoader : MonoBehaviour
 
     private TileType LookupTileTypeForSprite(TileBase tileBase)
     {
-        if (_spriteTileMapping.TryGetValue(tileBase, out TileType tileType))
+        if (_tileBaseTileTypeMapping.TryGetValue(tileBase, out TileType tileType))
         {
             return tileType;
         }

@@ -33,7 +33,10 @@ public class TileMapData : ScriptableObject
 
     public void SetWater(Vector2Int pos, float water)
     {
-        tiles[Idx(pos.x, pos.y)].waterHeight = water;
+        TileInstance ti = tiles[Idx(pos.x, pos.y)];
+        ti.waterHeight = water;
+        // Change Sprite based on water height
+        ti.sprite = ti.tileType.GetTileForWaterHeight(water);
     }
 
     public void SetSprite(Vector2Int pos, Sprite sprite)
