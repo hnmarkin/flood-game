@@ -777,6 +777,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808315020}
   - component: {fileID: 808315022}
+  - component: {fileID: 808315023}
   m_Layer: 0
   m_Name: TerrainLoader
   m_TagString: Untagged
@@ -820,6 +821,20 @@ MonoBehaviour:
   water_tile: {fileID: 11400000, guid: 59ebdf10780859f4da91f6f41bd1f60a, type: 2}
   terrainMap: {fileID: 364666467}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+--- !u!114 &808315023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808315018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af11ccd244855604c810153b42875b85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 364666467}
+  grid: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
 --- !u!1 &1546444747
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +867,7 @@ MonoBehaviour:
   simulationData: {fileID: 11400000, guid: 8921f6b640e71e74db63e13c886db7b9, type: 2}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   terrainMap: {fileID: 364666467}
-  waterHeight: 0
+  waterHeight: 3
   blanketType: 0
 --- !u!4 &1546444749
 Transform:

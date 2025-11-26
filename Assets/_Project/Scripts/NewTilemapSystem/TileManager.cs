@@ -8,7 +8,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private Tilemap tilemap;
 
     // Your simulation data (2D/3D array, dictionary, etc.)
-    private TileMapData grid;
+    [SerializeField] private TileMapData grid;
 
     private void Awake()
     {
@@ -33,6 +33,7 @@ public class TileManager : MonoBehaviour
     public void RefreshAt(Vector3Int cell)
     {
         tilemap.RefreshTile(cell);
+        Debug.Log("Refreshed tile at " + cell);
     }
 
 
