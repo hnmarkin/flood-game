@@ -6,12 +6,7 @@ public class MapLoader : MonoBehaviour
 {
     // Initialization
     private Dictionary<TileBase, TileType> _tileBaseTileTypeMapping = new Dictionary<TileBase, TileType>();
-    private Dictionary<TileType, TileBase> _tileTypeTileBaseMapping = new Dictionary<TileType, TileBase>();
-    //private Dictionary<TileType, Sprite> _tileTypeSpriteMapping = new Dictionary<TileType, Sprite>();
-
     public IReadOnlyDictionary<TileBase, TileType> TileBaseTileTypeMapping => _tileBaseTileTypeMapping;
-    public IReadOnlyDictionary<TileType, TileBase> TileTypeTileBaseMapping => _tileTypeTileBaseMapping;
-    //public IReadOnlyDictionary<TileType, Sprite> TileTypeSpriteMapping => _tileTypeSpriteMapping;
 
     [SerializeField] private TileType grass_tile;
     [SerializeField] private TileType beach_tile;
@@ -51,14 +46,6 @@ public class MapLoader : MonoBehaviour
                 _tileBaseTileTypeMapping[tileBaseRange.tileBase] = tileType;
             }
         }
-
-        // foreach (TileType tileType in tileTypes)
-        // {
-        //     foreach (var tileBaseRange in tileType.tileBases)
-        //     {
-        //         _tileTypeSpriteMapping[tileBaseRange] = tileType.sprite;
-        //     }
-        // }
     }
 
     private void LoadTerrainMap()
@@ -66,10 +53,6 @@ public class MapLoader : MonoBehaviour
         // Bounds and progress bar setup
         terrainMap.CompressBounds();
         BoundsInt bounds = terrainMap.cellBounds;
-        // Correction to start at 0
-        // if (bounds.xMin < 0) bounds.xMin = 0;
-        // if (bounds.yMin < 0) bounds.yMin = 0;
-        // if (bounds.zMin < 0) bounds.zMin = 0;
 
         Debug.Log($"Loading terrain map with bounds: {bounds}");
         // Iterate through each cell in the Tilemap
@@ -83,16 +66,6 @@ public class MapLoader : MonoBehaviour
             {
                 for (int z = bounds.zMin; z < bounds.zMax; z++)
                 {
-                    // // Progress bar
-                    // if (UnityEditor.EditorUtility.DisplayCancelableProgressBar(
-                    // "Loading Terrain",
-                    // $"Processing tile {current}/{total}",
-                    // current / (float)total))
-                    // {
-                    //     break;
-                    // }
-                    // current++;
-
                     // Retrieve tile data
                     Vector3Int pos = new Vector3Int(x, y, z);
                     if (!terrainMap.GetTile(pos))
@@ -133,19 +106,6 @@ public class MapLoader : MonoBehaviour
                 }
             }
         }
-    }
-
-    //Helper methods
-    private Sprite LookupSpriteForTileType(TileType tileType, int water)
-    {
-        foreach (var spriteRange in tileType.tileBases)
-        {
-            if (water >= spriteRange.min && water <= spriteRange.max)
-            {
-                return spriteRange.sprite;
-            }
-        }
-        return null; // or a default tileBase
     }
 
     private TileType LookupTileTypeForSprite(TileBase tileBase)
