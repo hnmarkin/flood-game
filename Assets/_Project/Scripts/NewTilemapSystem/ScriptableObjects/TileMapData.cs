@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,6 +11,18 @@ public class TileMapData : ScriptableObject
     public Vector2Int rangeY;
     public Vector2Int rangeZ;
 
+    [Header("Simulation Parameters")]
+    public int N;
+    public float dx = 1f, dy = 1f, dt = 1f;
+    public float g = 9.81f;
+    public float friction = 0.02f;
+
+    [NonSerialized] public float[,] flowX;
+    [NonSerialized] public float[,] flowY;
+
+    public int GridWidth => N + 2;
+    public int GridHeight => N + 2;
+
     [SerializeField, HideInInspector]
     private TileInstance[] tiles;
 
@@ -18,6 +31,8 @@ public class TileMapData : ScriptableObject
         int total = sizeX * sizeY * sizeZ;
         if (tiles == null || tiles.Length != total)
             tiles = new TileInstance[total];
+
+        N = rangeX.y;
     }
     // Helpers
 
