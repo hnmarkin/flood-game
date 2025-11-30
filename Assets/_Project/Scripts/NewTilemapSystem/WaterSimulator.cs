@@ -1,5 +1,6 @@
 using System.Numerics;
 using Unity.Collections;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -15,7 +16,6 @@ enum BlanketTypes
 
 public class WaterSimulator : MonoBehaviour
 {
-    [SerializeField] private FloodSimData simulationData;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap terrainMap;
     [SerializeField] private float waterHeight;
@@ -23,11 +23,65 @@ public class WaterSimulator : MonoBehaviour
 
     private void Start()
     {
-        if (simulationData != null)
+        if (tileMapData != null)
         {
             ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
+            Initialize();        
         }
         else { Debug.LogError("[FloodSimulationManager] No simulation data assigned!"); }
+    }
+
+    public void Initialize()
+    {
+        if (tileMapData == null)
+        {
+            Debug.LogError("[TileMapData] No TileMapData assigned!");
+            return;
+        }
+        int gridWidth = tileMapData.GridWidth;
+        int gridHeight = tileMapData.GridHeight;
+        int N = tileMapData.N;
+
+        tileMapData.terrain = new float[gridWidth, gridHeight];
+        tileMapData.water = new float[gridWidth, gridHeight];        
+        tileMapData.flowX = new float[gridWidth, gridHeight];
+        tileMapData.flowY = new float[gridWidth, gridHeight];
+
+        // Terrain and Water Initialization
+        for (int y = 0; y < N; y++)
+        {
+            for (int x = 0; x < N; x++)
+            {
+                TileInstance tile = tileMapData.Get(new Vector2Int(x,y));
+                tileMapData.terrain[x+1,y+1] = tile.elevation;
+                tileMapData.water[x+1,y+1] = tile.waterHeight;
+            }
+        }
+        SetupBoundaryWalls(gridWidth, gridHeight);
+        tileMapData.simInitialized = true;
+        Debug.Log("[WaterSimulator] Initialized simulation data");
+    }
+
+    /// <summary>
+    /// Sets up boundary walls to prevent water from flowing off edges
+    /// </summary>
+    private void SetupBoundaryWalls(int gridWidth, int gridHeight)
+    {
+        // Add boundary walls to prevent water from flowing off edges
+        for (int i = 0; i < gridWidth; i++)
+        {
+            tileMapData.terrain[i, 0] = 1.0f;           // Bottom wall
+            tileMapData.terrain[i, gridHeight - 1] = 1.0f; // Top wall
+            tileMapData.water[i, 0] = 0.0f;             // No water on boundary
+            tileMapData.water[i, gridHeight - 1] = 0.0f; // No water on boundary
+        }
+        for (int i = 0; i < gridHeight; i++)
+        {
+            tileMapData.terrain[0, i] = 1.0f;           // Left wall
+            tileMapData.terrain[gridWidth - 1, i] = 1.0f;  // Right wall
+            tileMapData.water[0, i] = 0.0f;             // No water on boundary
+            tileMapData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
+        }
     }
 
     void ApplyWaterBlanket(Vector2Int rangeX, Vector2Int rangeY, float waterHeight, BlanketTypes blanketType)
