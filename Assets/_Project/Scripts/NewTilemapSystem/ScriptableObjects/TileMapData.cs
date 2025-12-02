@@ -17,8 +17,12 @@ public class TileMapData : ScriptableObject
     public float g = 9.81f;
     public float friction = 0.02f;
 
+    [NonSerialized] public float[,] water;
+    [NonSerialized] public float[,] terrain;
     [NonSerialized] public float[,] flowX;
     [NonSerialized] public float[,] flowY;
+
+    public bool simInitialized = false;
 
     public int GridWidth => N + 2;
     public int GridHeight => N + 2;

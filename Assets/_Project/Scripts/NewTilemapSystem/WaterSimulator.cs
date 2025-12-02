@@ -1,7 +1,4 @@
-using System.Numerics;
-using Unity.Collections;
-using Unity.Mathematics;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
@@ -21,6 +18,8 @@ public class WaterSimulator : MonoBehaviour
     [SerializeField] private float waterHeight;
     [SerializeField] private BlanketTypes blanketType;
 
+    public event Action OnSimulationStep;
+
     private void Start()
     {
         if (tileMapData != null)
@@ -29,6 +28,15 @@ public class WaterSimulator : MonoBehaviour
             Initialize();        
         }
         else { Debug.LogError("[FloodSimulationManager] No simulation data assigned!"); }
+    }
+
+    private void Update()
+    {
+        //StepSimulation if buttonclicked
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StepSimulation();
+        }
     }
 
     public void Initialize()
@@ -82,6 +90,93 @@ public class WaterSimulator : MonoBehaviour
             tileMapData.water[0, i] = 0.0f;             // No water on boundary
             tileMapData.water[gridWidth - 1, i] = 0.0f; // No water on boundary
         }
+    }
+
+    public void StepSimulation()
+    {
+        if (!tileMapData.simInitialized)
+        {
+            Debug.LogWarning("[FloodSimulationManager] Cannot step simulation: Not initialized!");
+            return;
+        }
+
+        int N = tileMapData.N;
+        float dx = tileMapData.dx;
+        float dy = tileMapData.dy;
+        float dt = tileMapData.dt;
+        float g = tileMapData.g;
+        float friction = tileMapData.friction;
+
+        float frictionFactor = Mathf.Pow(1 - friction, dt);
+
+        // // Boundary (you can customize later)
+        // for (int i = 1; i <= N; ++i) {
+        //     tileMapData.flowX[1, i] = tileMapData.flowX[N + 1, i] = 0f;
+        //     tileMapData.flowY[i, 1] = tileMapData.flowY[i, N + 1] = 0f;
+        // }
+
+        // Accelerate X
+        for (int y = 1; y <= N; ++y)
+            for (int x = 2; x <= N; ++x)
+                tileMapData.flowX[x, y] = tileMapData.flowX[x, y] * frictionFactor
+                    + ((tileMapData.water[x - 1, y] + tileMapData.terrain[x - 1, y]) - (tileMapData.water[x, y] + tileMapData.terrain[x, y])) * g * dt / dx;
+
+        // Accelerate Y
+        for (int y = 2; y <= N; ++y)
+            for (int x = 1; x <= N; ++x)
+                tileMapData.flowY[x, y] = tileMapData.flowY[x, y] * frictionFactor
+                    + ((tileMapData.water[x, y - 1] + tileMapData.terrain[x, y - 1]) - (tileMapData.water[x, y] + tileMapData.terrain[x, y])) * g * dt / dy;
+
+        // Scale outflows
+        for (int y = 1; y <= N; ++y)
+        {
+            for (int x = 1; x <= N; ++x)
+            {
+                float totalOutflow = 0f;
+                totalOutflow += Mathf.Max(0f, -tileMapData.flowX[x, y]);
+                totalOutflow += Mathf.Max(0f, -tileMapData.flowY[x, y]);
+                totalOutflow += Mathf.Max(0f, tileMapData.flowX[x + 1, y]);
+                totalOutflow += Mathf.Max(0f, tileMapData.flowY[x, y + 1]);
+
+                float maxOutflow = tileMapData.water[x, y] * dx * dy / dt;
+
+                if (totalOutflow > 0f)
+                {
+                    float scale = Mathf.Min(1f, maxOutflow / totalOutflow);
+                    if (tileMapData.flowX[x, y] < 0f) tileMapData.flowX[x, y] *= scale;
+                    if (tileMapData.flowY[x, y] < 0f) tileMapData.flowY[x, y] *= scale;
+                    if (tileMapData.flowX[x + 1, y] > 0f) tileMapData.flowX[x + 1, y] *= scale;
+                    if (tileMapData.flowY[x, y + 1] > 0f) tileMapData.flowY[x, y + 1] *= scale;
+                }
+            }
+        }
+
+        // Update water
+        for (int y = 1; y <= N; ++y)
+            for (int x = 1; x <= N; ++x) {
+                tileMapData.water[x, y] += (
+                    tileMapData.flowX[x, y] + tileMapData.flowY[x, y]
+                  - tileMapData.flowX[x + 1, y] - tileMapData.flowY[x, y + 1]
+                ) * dt / dx / dy;
+                // Clamp tiny negative values (rounding errors) to zero
+                tileMapData.water[x, y] = Mathf.Max(0f, tileMapData.water[x, y]);
+                tileMapData.SetWater(new Vector2Int(x-1,y-1), tileMapData.water[x, y]);
+            }
+        
+        // Keep boundary cells completely dry
+        for (int i = 0; i < tileMapData.GridWidth; i++)
+        {
+            tileMapData.water[i, 0] = 0.0f;
+            tileMapData.water[i, tileMapData.GridHeight - 1] = 0.0f;
+        }
+        for (int i = 0; i < tileMapData.GridHeight; i++)
+        {
+            tileMapData.water[0, i] = 0.0f;
+            tileMapData.water[tileMapData.GridWidth - 1, i] = 0.0f;
+        }
+        
+        // Fire the event to notify subscribers that simulation has stepped
+        OnSimulationStep?.Invoke();
     }
 
     void ApplyWaterBlanket(Vector2Int rangeX, Vector2Int rangeY, float waterHeight, BlanketTypes blanketType)

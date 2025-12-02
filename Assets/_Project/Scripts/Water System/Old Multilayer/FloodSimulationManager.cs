@@ -205,7 +205,7 @@ public class FloodSimulationManager : MonoBehaviour
         float frictionFactor = Mathf.Pow(1 - friction, dt);
 
         // Boundary (you can customize later)
-        for (int i = 1; i <= N; ++i) {
+        for (int i = 0; i <= N+1; ++i) {
             simulationData.flowX[0, i] = simulationData.flowX[N + 1, i] = 0f;
             simulationData.flowY[i, 0] = simulationData.flowY[i, N + 1] = 0f;
         }
@@ -217,8 +217,8 @@ public class FloodSimulationManager : MonoBehaviour
                     + ((simulationData.water[x - 1, y] + simulationData.terrain[x - 1, y]) - (simulationData.water[x, y] + simulationData.terrain[x, y])) * g * dt / dx;
 
         // Accelerate Y
-        for (int y = 1; y <= N; ++y)
-            for (int x = 1; x <= N; ++x)
+        for (int y = 2; y <= N; ++y)
+            for (int x = 2; x <= N; ++x)
                 simulationData.flowY[x, y] = simulationData.flowY[x, y] * frictionFactor
                     + ((simulationData.water[x, y - 1] + simulationData.terrain[x, y - 1]) - (simulationData.water[x, y] + simulationData.terrain[x, y])) * g * dt / dy;
 

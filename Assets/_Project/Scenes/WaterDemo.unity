@@ -864,11 +864,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beaf81aa4aedd3645bc54e051c493715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulationData: {fileID: 11400000, guid: 8921f6b640e71e74db63e13c886db7b9, type: 2}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   terrainMap: {fileID: 364666467}
-  waterHeight: 3
-  blanketType: 0
+  waterHeight: 6
+  blanketType: 2
 --- !u!4 &1546444749
 Transform:
   m_ObjectHideFlags: 0
