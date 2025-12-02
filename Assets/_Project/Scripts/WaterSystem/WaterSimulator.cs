@@ -11,12 +11,26 @@ enum BlanketTypes
     Corners
 }
 
+enum StepMode
+{
+    SpaceKey,
+    Automatic,
+}
+
 public class WaterSimulator : MonoBehaviour
 {
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap terrainMap;
     [SerializeField] private float waterHeight;
     [SerializeField] private BlanketTypes blanketType;
+
+    [Header("Simulation Stepping Trigger")]
+    [SerializeField] private StepMode stepMode;
+
+    [Min(0.05f)]
+    public float autoStepInterval = 0.5f;
+
+    float _timer;
 
     public event Action OnSimulationStep;
 
@@ -32,11 +46,23 @@ public class WaterSimulator : MonoBehaviour
 
     private void Update()
     {
-        //StepSimulation if buttonclicked
-        if (Input.GetKeyDown(KeyCode.Space))
+        switch (stepMode)
         {
-            StepSimulation();
+            case StepMode.SpaceKey:
+                //StepSimulation if buttonclicked
+                if (Input.GetKeyDown(KeyCode.Space))
+                    StepSimulation();
+                break;
+            case StepMode.Automatic:
+                _timer += Time.deltaTime;
+                if (_timer >= autoStepInterval)
+                {
+                    _timer = 0f;
+                    StepSimulation();
+                }
+                break;
         }
+
     }
 
     public void Initialize()
