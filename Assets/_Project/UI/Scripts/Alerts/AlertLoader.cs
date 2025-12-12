@@ -26,17 +26,18 @@ public class AlertLoader : MonoBehaviour
     [SerializeField] private Transform alertParent;
     [SerializeField] private TMP_Text infoText;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable() 
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            LoadAlert();
-        }
+        AlertBus.AlertRaised += OnAlertRaised;
     }
 
-    private void LoadAlert()
+    private void OnDisable() 
     {
-           
+        AlertBus.AlertRaised -= OnAlertRaised;
+    }
+
+    private void OnAlertRaised(AlertData alertData)
+    {
+        // Get to this later
     }
 }
