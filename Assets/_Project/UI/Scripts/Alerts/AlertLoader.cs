@@ -24,7 +24,7 @@ public class AlertLoader : MonoBehaviour
 {
     [SerializeField] private GameObject alertPrefab;
     [SerializeField] private Transform alertParent;
-    [SerializeField] private TMP_Text infoText;
+    // [SerializeField] private TMP_Text infoText;
 
     private void OnEnable() 
     {
@@ -38,6 +38,15 @@ public class AlertLoader : MonoBehaviour
 
     private void OnAlertRaised(AlertData alertData)
     {
-        // Get to this later
+        GameObject alertObj = Instantiate(alertPrefab, alertParent);
+        AlertViewer viewer = alertObj.GetComponent<AlertViewer>();
+        if (viewer != null)
+        {
+            viewer.Setup(alertData);
+        }
+        else
+        {
+            Debug.LogError("AlertViewer component not found on alert prefab.");
+        }
     }
 }

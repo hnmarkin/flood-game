@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fcbb84da585bb0478b9a49b38dd79cf, type: 3}
-  m_Name: Info
+  m_Name: Style
   m_EditorClassIdentifier: 
   entries:
   - type: 0
@@ -22,10 +22,10 @@ MonoBehaviour:
     accentColor: {r: 0.93725497, g: 0.6039216, b: 0.34117648, a: 0}
     icon: {fileID: 21300000, guid: 4c73403134d9eb3458d9c495a33c2c13, type: 3}
   - type: 2
-    mainColor: {r: 0, g: 0, b: 0, a: 0}
-    accentColor: {r: 0, g: 0, b: 0, a: 0}
-    icon: {fileID: 21300000, guid: 0774bcb7613f85e4b8fcdbd60eff9319, type: 3}
-  - type: 0
+    mainColor: {r: 0.83921576, g: 0.3254902, b: 0.3254902, a: 0}
+    accentColor: {r: 1, g: 0.50377357, b: 0.50377357, a: 0}
+    icon: {fileID: 21300000, guid: 40ccbad338c816049995dabec548734d, type: 3}
+  - type: 3
     mainColor: {r: 0, g: 0, b: 0, a: 0}
     accentColor: {r: 0, g: 0, b: 0, a: 0}
     icon: {fileID: 0}
