@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toolName: Sandbags
   toolIcon: {fileID: 21300000, guid: a642a9ab36713304e993be5d47e43597, type: 3}
-  tileToPaint: {fileID: 0}
+  tileToPaint: {fileID: 11400000, guid: 2ebb64d8ded821d40b8529dfc9c429c9, type: 2}
   continuousPainting: 1
   elevationAdd: 15
   waterDrainRate: 0

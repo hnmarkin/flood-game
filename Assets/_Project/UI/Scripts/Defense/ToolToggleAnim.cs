@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class ToolToggleAnim : MonoBehaviour
 {
+    [SerializeField] private ToolDefinition tool;
+    [SerializeField] private ToolManager toolManager;
+    
     [SerializeField] private Toggle toggle;
     [SerializeField] private ButtonClickAnimation buttonAnim;
 
@@ -20,7 +23,11 @@ public class ToolToggleAnim : MonoBehaviour
 
     private void OnToggleChanged(bool isOn)
     {
-        if (isOn) buttonAnim.MoveButtonDown();
+        if (isOn) {
+            toolManager.EnterTool(tool);   
+            buttonAnim.MoveButtonDown();
+            Debug.Log("Tool selected: " + tool.toolName);
+        }
         else buttonAnim.ReturnButtonToOriginalPosition();
     }
 }
