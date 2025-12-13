@@ -52,11 +52,33 @@ public class TileMapData : ScriptableObject
 
     public void SetWater(Vector2Int pos, float water)
     {
-        TileInstance ti = tiles[Idx(pos.x, pos.y)];
+        int idx = Idx(pos.x, pos.y);
+
+        if (tiles == null || idx < 0 || idx >= tiles.Length)
+        {
+            Debug.LogWarning($"[TileMapData] SetWater: position {pos} is out of range.");
+            return;
+        }
+
+        TileInstance ti = tiles[idx];
+        if (ti == null)
+        {
+            // No TileInstance at this position – nothing to update
+            // Debug.LogWarning($"[TileMapData] SetWater: no TileInstance at {pos}.");
+            return;
+        }
+
         ti.waterHeight = water;
-        // Change Sprite based on water height
-        ti.sprite = ti.tileType.GetTileForWaterHeight(water);
+
+        // Only update sprite if we have a TileType
+        if (ti.tileType != null)
+        {
+            var sprite = ti.tileType.GetTileForWaterHeight(water);
+            if (sprite != null)
+                ti.sprite = sprite;
+        }
     }
+
 
     public void SetSprite(Vector2Int pos, Sprite sprite)
     {
