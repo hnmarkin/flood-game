@@ -34,7 +34,7 @@ public class ButtonClickAnimation : MonoBehaviour, IPointerDownHandler, IPointer
         ReturnButtonToOriginalPosition();
     }
 
-    private void MoveButtonDown()
+    public void MoveButtonDown()
     {
         if (buttonObject == null) return;
 
@@ -49,7 +49,7 @@ public class ButtonClickAnimation : MonoBehaviour, IPointerDownHandler, IPointer
         LeanTween.moveLocal(buttonObject, targetPos, animationDuration).setEaseOutQuad();
     }
 
-    private void ReturnButtonToOriginalPosition()
+    public void ReturnButtonToOriginalPosition()
     {
         if (buttonObject == null) return;
         LeanTween.moveLocal(buttonObject, originalPosition, animationDuration).setEaseOutQuad();
