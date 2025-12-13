@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb7f5273eb1f306479c149b60289126c, type: 3}
+  m_Name: BuildingTileType
+  m_EditorClassIdentifier: 
+  tileName: 
+  tileBases:
+  - tileBase: {fileID: 11400000, guid: 00c3cd3b48aa04a3d959afde9e254e92, type: 2}
+    sprite: {fileID: 21300000, guid: 1b0ac30d67f3040e69937c2e4eee28ce, type: 3}
+    min: 0
+    max: 1
+  - tileBase: {fileID: 11400000, guid: 00c3cd3b48aa04a3d959afde9e254e92, type: 2}
+    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    min: 2
+    max: 1000
+  soilCapacity: 0

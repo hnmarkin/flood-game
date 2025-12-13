@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb7f5273eb1f306479c149b60289126c, type: 3}
+  m_Name: GrassTileType
+  m_EditorClassIdentifier: 
+  tileName: GrassTileType
+  tileBases:
+  - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
+    sprite: {fileID: 21300000, guid: 80d1c5b5f51b245089e50f61cbb3ac0c, type: 3}
+    min: 0
+    max: 1
+  - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
+    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    min: 2
+    max: 1000
+  soilCapacity: 0

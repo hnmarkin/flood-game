@@ -8,7 +8,8 @@ enum BlanketTypes
 {
     Full,
     Edges,
-    Corners
+    Corners,
+    WaterBodies
 }
 
 enum StepMode
@@ -24,6 +25,9 @@ public class WaterSimulator : MonoBehaviour
     [SerializeField] private float waterHeight;
     [SerializeField] private BlanketTypes blanketType;
 
+    [Header("Tile Types")]
+    [SerializeField] private TileType waterTileType;
+
     [Header("Simulation Stepping Trigger")]
     [SerializeField] private StepMode stepMode;
 
@@ -34,25 +38,82 @@ public class WaterSimulator : MonoBehaviour
 
     public event Action OnSimulationStep;
 
+    // control to manually run the water simulation
+    [Header("Control")]
+    [SerializeField] private bool startOnPlay = false;   // default false so it waits for button
+    private bool _simulationEnabled = false;
+
+    public void StartSimulationFromUI()
+    {
+        if (tileMapData == null)
+        {
+            Debug.LogError("[WaterSimulator] No TileMapData assigned!");
+            return;
+        }
+
+        // Apply initial water (blanket)
+        ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
+
+        // Initialize simulation arrays
+        Initialize();
+
+        Debug.Log("[WaterSimulator] Simulation started from UI button!");
+    }
+
+
     private void Start()
     {
-        if (tileMapData != null)
+        if (tileMapData == null)
+        {
+            Debug.LogError("[FloodSimulationManager] No simulation data assigned!");
+            return;
+        }
+
+        if (startOnPlay)
         {
             ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
-            Initialize();        
+            Initialize();
+            _simulationEnabled = true;
         }
-        else { Debug.LogError("[FloodSimulationManager] No simulation data assigned!"); }
+        
+        // Button will call BeginSimulationFromUI().
     }
+
+    public void BeginSimulationFromUI()
+        {
+            if (tileMapData == null)
+            {
+                Debug.LogError("[WaterSimulator] Cannot start: no TileMapData assigned.");
+                return;
+            }
+
+            // Only initialize once
+            if (_simulationEnabled)
+            {
+                Debug.LogWarning("[WaterSimulator] Simulation already started.");
+                return;
+            }
+
+            ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
+            Initialize();
+            _simulationEnabled = true;
+
+            Debug.Log("[WaterSimulator] Simulation started from UI button.");
+        }
+
 
     private void Update()
     {
+        if (!_simulationEnabled)
+            return;   
+
         switch (stepMode)
         {
             case StepMode.SpaceKey:
-                //StepSimulation if buttonclicked
                 if (Input.GetKeyDown(KeyCode.Space))
                     StepSimulation();
                 break;
+
             case StepMode.Automatic:
                 _timer += Time.deltaTime;
                 if (_timer >= autoStepInterval)
@@ -62,7 +123,6 @@ public class WaterSimulator : MonoBehaviour
                 }
                 break;
         }
-
     }
 
     public void Initialize()
@@ -277,9 +337,37 @@ public class WaterSimulator : MonoBehaviour
                     tileMapData.SetWater(c, waterHeight);
                 }
                 break;
-            default:
-                Debug.LogError("Invalid BlanketType");
-                break;
+
+
+            case BlanketTypes.WaterBodies:
+            if (waterTileType == null)
+            {
+                Debug.LogError("[WaterSimulator] WaterBodies blanket selected, but waterTileType is not assigned.");
+                return;
+            }
+            for (int x = 0; x < rangeX.y; x++)
+            {
+                for (int y = 0; y < rangeY.y; y++)
+                {
+                    Vector2Int pos = new Vector2Int(x, y);
+                    if (!TileExists(pos)) continue;
+
+                    TileInstance ti = tileMapData.Get(pos);
+
+                    // Only seed water on tiles that are actually "water"
+                    if (ti.tileType == waterTileType)
+                    {
+                        tileMapData.SetWater(pos, waterHeight);
+                        // Optional debug:
+                        // Debug.Log($"Seeded water at water tile {pos} with height {waterHeight}");
+                    }
+                }
+            }
+            break;
+            
+        default:
+            Debug.LogError("Invalid BlanketType");
+            break;
         }
     }
 }
