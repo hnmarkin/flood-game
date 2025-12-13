@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "flood-game.sln"
+    "dotnet.defaultSolution": "flood-game.slnx"
 }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class ButtonClickAnimation : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class ButtonClickAnimationPolicy : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private GameObject buttonObject; // The button GameObject to animate
     [SerializeField] private float animationDuration = 0.2f; // Duration of the animation in seconds
