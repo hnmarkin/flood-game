@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fcbb84da585bb0478b9a49b38dd79cf, type: 3}
+  m_Name: Style
+  m_EditorClassIdentifier: 
+  entries:
+  - type: 0
+    mainColor: {r: 0.3357991, g: 0.7508256, b: 0.89433956, a: 1}
+    accentColor: {r: 0.70952654, g: 0.7906726, b: 0.85660374, a: 1}
+    iconBackgroundColor: {r: 0.39694554, g: 0.6279128, b: 0.7433963, a: 1}
+    icon: {fileID: 21300000, guid: 883c9ddf3617dec428bc0fafdad03f92, type: 3}
+  - type: 1
+    mainColor: {r: 0.9490197, g: 0.7568628, b: 0.30588236, a: 1}
+    accentColor: {r: 0.90188676, g: 0.5107818, b: 0.202499, a: 1}
+    iconBackgroundColor: {r: 0.90943396, g: 0.5227326, b: 0.21792093, a: 1}
+    icon: {fileID: 21300000, guid: 4c73403134d9eb3458d9c495a33c2c13, type: 3}
+  - type: 2
+    mainColor: {r: 0.7735849, g: 0.3079743, b: 0.3079743, a: 1}
+    accentColor: {r: 0.97735846, g: 0.16043426, b: 0.16043426, a: 1}
+    iconBackgroundColor: {r: 0.6075471, g: 0.16850834, b: 0.16850834, a: 1}
+    icon: {fileID: 21300000, guid: 0774bcb7613f85e4b8fcdbd60eff9319, type: 3}
+  - type: 3
+    mainColor: {r: 0.33333334, g: 0.78823537, b: 0.43137258, a: 1}
+    accentColor: {r: 0.040120948, g: 0.6075471, b: 0.18397552, a: 1}
+    iconBackgroundColor: {r: 0.28235295, g: 0.7137255, b: 0.38823533, a: 1}
+    icon: {fileID: 21300000, guid: 83c65dcb40aa76c4c83e56e61f0fa50a, type: 3}
+  - type: 4
+    mainColor: {r: 0.2784314, g: 0.68235296, b: 0.91372555, a: 1}
+    accentColor: {r: 0.14763258, g: 0.36737812, b: 0.5471698, a: 1}
+    iconBackgroundColor: {r: 0.17254902, g: 0.5176471, b: 0.77647066, a: 1}
+    icon: {fileID: 21300000, guid: fd17e86cde79d054ba2a9b2e6b078493, type: 3}
+  - type: 5
+    mainColor: {r: 0.6431373, g: 0.54901963, b: 0.9215687, a: 1}
+    accentColor: {r: 0.34117648, g: 0.19607843, b: 0.77254903, a: 1}
+    iconBackgroundColor: {r: 0.43529415, g: 0.30588236, b: 0.82745105, a: 1}
+    icon: {fileID: 21300000, guid: 383bf5fb512d2384db36f92da2ba5e6c, type: 3}
