@@ -513,6 +513,8 @@ MonoBehaviour:
   accentBar: {fileID: 3123799628705437749}
   iconBackground: {fileID: 5266791646865022674}
   styleLibrary: {fileID: 11400000, guid: bf22a66bdada19a45a15307997cea32f, type: 2}
+  accentButton: {fileID: 3335617566626679823}
+  slideRoot: {fileID: 3275384232463384652}
 --- !u!114 &6470810068118385464
 MonoBehaviour:
   m_ObjectHideFlags: 0

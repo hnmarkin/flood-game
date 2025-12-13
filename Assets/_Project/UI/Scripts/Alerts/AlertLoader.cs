@@ -52,9 +52,10 @@ public class AlertLoader : MonoBehaviour
         // Instantiate alert under row
         var go = Instantiate(alertPrefab, rowRT, false);
         var rt = go.GetComponent<RectTransform>();
-
         var viewer = go.GetComponent<AlertViewer>();
         viewer.Setup(alertData);
+        viewer.SetRow(rowRT);   // so it can destroy the row, not just itself
+        
         // Start indented
         rt.anchoredPosition = new Vector2(offsetX, 0f);
 

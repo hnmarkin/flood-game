@@ -13,6 +13,24 @@ public class AlertViewer : MonoBehaviour
     [SerializeField] private Image iconBackground;
     [SerializeField] private AlertStyleLibrary styleLibrary;
 
+    [SerializeField] private Button accentButton;
+    [SerializeField] private RectTransform slideRoot;
+    private RectTransform _rowRT;
+    private bool _closing;
+
+    public void SetRow(RectTransform rowRT) => _rowRT = rowRT;
+
+    private void Awake()
+    {
+        accentButton.onClick.AddListener(() =>
+        {
+            if (_closing) return;
+            _closing = true;
+            float duration = GetComponent<AlertAnimation>().PlaySlideOut(gameObject, new Vector2(720f, 0f));
+            if (_rowRT != null) Destroy(_rowRT.gameObject, duration);
+        });
+    }
+
     public void Setup(AlertData data)
     {
         if (messageText != null) messageText.text = data.message;
