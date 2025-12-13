@@ -10,6 +10,7 @@ public class AlertViewer : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private Image mainBackground;
     [SerializeField] private Image accentBar;
+    [SerializeField] private Image iconBackground;
     [SerializeField] private AlertStyleLibrary styleLibrary;
 
     public void Setup(AlertData data)
@@ -21,5 +22,6 @@ public class AlertViewer : MonoBehaviour
         if (iconImage != null)          iconImage.sprite = style.icon;
         if (mainBackground != null)     mainBackground.color = style.mainColor;
         if (accentBar != null)          accentBar.color = style.accentColor;
+        if (iconBackground != null)      iconBackground.color = style.iconBackgroundColor;
     }
 }

@@ -7,6 +7,7 @@ public class AlertStyleEntry
     public AlertType type;
     public Color mainColor;
     public Color accentColor;
+    public Color iconBackgroundColor;
     public Sprite icon;
 }
 
