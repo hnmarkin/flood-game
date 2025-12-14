@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using System.Runtime;
 
 public class FloodHUD : MonoBehaviour
 {
@@ -15,14 +16,23 @@ public class FloodHUD : MonoBehaviour
 
     [Header("Alert Settings")]
     [Range(0f, 1f)]
-    public float floodThreshold = 0.6f;                      // 60% by default
-    public UnityEvent onFloodThresholdReached;               // hook popup here
+    public float floodThreshold = 0.6f;                      // critical threshold (60% by default)
+    [Range(0f, 1f)]
+    public float warningThreshold = 0.2f;                    // warning threshold (20% by default)
+
+    public UnityEvent onFloodThresholdReached;               // hook popup here (critical)
+    public UnityEvent onFloodWarningReached;                 // hook popup here (warning)
 
     [Tooltip("Ignore tiny puddles below this depth when counting flooded tiles.")]
     public float minFloodDepth = 0.01f;
 
-    private bool _thresholdFired = false;
+    private bool _criticalFired = false;
+    private bool _warningFired = false;
     private float _currentFloodFraction = 0f;
+    // Initial counts used to compute progress relative to initial land tiles
+    private int _initialLandTiles = 0;
+    private int _initialWaterTiles = 0;
+    private bool _initialCountsSet = false;
 
     private void OnEnable()
     {
@@ -42,6 +52,12 @@ public class FloodHUD : MonoBehaviour
 
     private void HandleSimulationStep()
     {
+        // Compute initial counts on first step when simulation is ready
+        if (!_initialCountsSet && tileMapData != null && tileMapData.simInitialized)
+        {
+            ComputeInitialCounts();
+        }
+
         UpdateFloodFraction();
         UpdateUI();
         CheckThreshold();
@@ -77,7 +93,55 @@ public class FloodHUD : MonoBehaviour
             }
         }
 
-        _currentFloodFraction = (float)flooded / total;
+        // If we have initial counts available, compute progress relative to
+        // initially dry land: (current water - initial water) / initial land
+        if (_initialCountsSet && _initialLandTiles > 0)
+        {
+            int newlyFlooded = flooded - _initialWaterTiles;
+            float frac = (float)newlyFlooded / (float)_initialLandTiles;
+            _currentFloodFraction = Mathf.Clamp01(frac);
+        }
+        else
+        {
+            // Fallback to simple fraction until initial counts are available
+            Debug.LogWarning("[FloodHUD] Initial counts not set; using simple flooded/total fraction.");
+            _currentFloodFraction = (float)flooded / total;
+        }
+    }
+
+    private void ComputeInitialCounts()
+    {
+        if (tileMapData == null)
+        {
+            Debug.LogWarning("[FloodHUD] TileMapData is null, cannot compute initial counts.");
+            _initialCountsSet = true;
+            return;
+        }
+
+        int N = tileMapData.N;
+        if (N <= 0)
+        {
+            _initialWaterTiles = 0;
+            _initialLandTiles = 0;
+            _initialCountsSet = true;
+            return;
+        }
+
+        int water = 0;
+        for (int y = 1; y <= N; y++)
+        {
+            for (int x = 1; x <= N; x++)
+            {
+                if (tileMapData.water[x, y] > minFloodDepth)
+                    water++;
+            }
+        }
+
+        _initialWaterTiles = water;
+        _initialLandTiles = N * N - _initialWaterTiles;
+        _initialCountsSet = true;
+
+        Debug.Log($"[FloodHUD] Initial counts computed: water={_initialWaterTiles}, land={_initialLandTiles}");
     }
 
     private void UpdateUI()
@@ -96,19 +160,40 @@ public class FloodHUD : MonoBehaviour
 
     private void CheckThreshold()
     {
-        if (_thresholdFired)
+        if (_warningFired && _criticalFired)
             return;
 
-        if (_currentFloodFraction >= floodThreshold)
+        // Warning threshold
+        if (!_warningFired && _currentFloodFraction >= warningThreshold)
         {
-            _thresholdFired = true;
+            _warningFired = true;
+            onFloodWarningReached?.Invoke();
+            var warnData = new AlertData
+            {
+                type = AlertType.Warning,
+                message = $"Flood level has reached {warningThreshold * 100f:0}% (Warning)."
+            };
+            AlertBus.RaiseAlert(warnData);
+        }
+
+        // Critical threshold
+        if (!_criticalFired && _currentFloodFraction >= floodThreshold)
+        {
+            _criticalFired = true;
             onFloodThresholdReached?.Invoke();
+            var critData = new AlertData
+            {
+                type = AlertType.Critical,
+                message = $"Flood level has reached {floodThreshold * 100f:0}% (Critical)!"
+            };
+            AlertBus.RaiseAlert(critData);
         }
     }
 
     // Optional helper if you want to reset between runs:
     public void ResetAlert()
     {
-        _thresholdFired = false;
+        _criticalFired = false;
+        _warningFired = false;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -110,7 +111,7 @@ public class WaterSimulator : MonoBehaviour
         switch (stepMode)
         {
             case StepMode.SpaceKey:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
                     StepSimulation();
                 break;
 

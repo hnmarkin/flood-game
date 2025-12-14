@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 using System;
 using System.Collections;
@@ -35,8 +36,9 @@ public class TypewriterEffect : MonoBehaviour
                 audioSource.PlayOneShot(typeSFX);
             }
 
-            //Check for mouse click
-            if (Input.GetMouseButtonDown(0)) {
+            //Check for mouse click (new Input System)
+            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            {
                 // If the user clicks, show the full text immediately
                 textLabel.text = textToType;
                 break; // Exit the loop

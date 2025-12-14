@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.InputSystem;
 
 public class DefensePlacer : MonoBehaviour
 {
@@ -24,14 +25,17 @@ public class DefensePlacer : MonoBehaviour
         }
 
         var tool = toolManager.ActiveTool;
-        var mp = Input.mousePosition;
+        // Ugly new Input System way
+        var mp = Mouse.current != null
+            ? (Vector3)Mouse.current.position.ReadValue()
+            : Vector3.zero;
         mp.z = -cam.transform.position.z;   // distance from camera to z=0 plane (works if camera looks toward +z)
         Vector3 world = cam.ScreenToWorldPoint(mp);
         world.z = 0f;
         Vector3Int cell = defenseTilemap.WorldToCell(world);
 
         // If mouse is not held, we're only hovering
-        if (!Input.GetMouseButton(0))
+        if (Mouse.current == null || !Mouse.current.leftButton.isPressed)
         {
             // If we're already hovering on this cell, nothing to do
             if (cell == _lastCell) return;
