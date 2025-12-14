@@ -17,7 +17,11 @@ MonoBehaviour:
   - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
     sprite: {fileID: 21300000, guid: f0fdca9347baf4e3397b54c67cde4dc2, type: 3}
     min: 0
-    max: 1
+    max: 2
+  - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
+    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    min: 2
+    max: 1000
   - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
     sprite: {fileID: 21300000, guid: 4c61c22322ff4476db2b74dc43f98d19, type: 3}
     min: 2
