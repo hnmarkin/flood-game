@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class HoverTileTooltip : MonoBehaviour
@@ -38,12 +39,9 @@ public class HoverTileTooltip : MonoBehaviour
             return;
 
         // Convert mouse to world
-        Vector3 mouseScreen = Input.mousePosition;
+        Vector2 screen = Mouse.current.position.ReadValue();
+        Vector3 world = Camera.main.ScreenToWorldPoint(new Vector3(screen.x, screen.y, Camera.main.nearClipPlane));
 
-        // For an orthographic camera looking at Z=0:
-        Vector3 world = sceneCamera.ScreenToWorldPoint(
-            new Vector3(mouseScreen.x, mouseScreen.y, -sceneCamera.transform.position.z)
-        );
 
         // Compute tile cell from ground tilemap
         var groundTilemap = jsonMapLoader.groundTilemap;
@@ -65,11 +63,11 @@ public class HoverTileTooltip : MonoBehaviour
         if (_hoverTimer >= hoverDelay)
         {
             // Time to show/update tooltip
-            UpdateTooltipForCell(cell, mouseScreen);
+            UpdateTooltipForCell(cell, screen);
         }
     }
 
-    void UpdateTooltipForCell(Vector3Int cell, Vector3 mouseScreen)
+    void UpdateTooltipForCell(Vector3Int cell, Vector2 mouseScreen)
     {
         // Use your existing helper to get JSON-based info
         int r, c, pop;

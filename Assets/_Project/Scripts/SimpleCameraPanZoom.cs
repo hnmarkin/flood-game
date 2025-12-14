@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SimpleCameraPanZoom : MonoBehaviour
 {
@@ -9,15 +10,22 @@ public class SimpleCameraPanZoom : MonoBehaviour
 
     void Update()
     {
-        // Pan with WASD / arrow keys
-        float dx = Input.GetAxis("Horizontal");
-        float dy = Input.GetAxis("Vertical");
+        // Pan with WASD / arrow keys the ugly new input system way
+        float dx = (Keyboard.current.rightArrowKey.isPressed ? 1f : 0f)
+                - (Keyboard.current.leftArrowKey.isPressed  ? 1f : 0f);
+
+        float dy = (Keyboard.current.upArrowKey.isPressed   ? 1f : 0f)
+                - (Keyboard.current.downArrowKey.isPressed ? 1f : 0f);
+
         transform.position += new Vector3(dx, dy, 0f) * panSpeed * Time.deltaTime;
 
         // Zoom with scroll wheel
         if (Camera.main != null && Camera.main.orthographic)
         {
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            // Ugly new Input System way
+            float scroll = Mouse.current != null
+                ? Mouse.current.scroll.ReadValue().y * 0.1f
+                : 0f;
             if (Mathf.Abs(scroll) > 0.0001f)
             {
                 Camera.main.orthographicSize -= scroll * zoomSpeed;
