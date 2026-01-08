@@ -14,6 +14,7 @@ JSON File Location -> Assets/StreamingAssets/tilemap_with_population_elev.json
 Unity loads this file at runtime using the StreamingAssets path.
 The script paints all tiles to GroundTilemap 
 Elevation can be visulaized using stacked elevation layers but stacking them looks weird. So its optional.
+
 --------------------------------------
 
 Scene Startup Flow
@@ -24,6 +25,7 @@ When the scene starts:
 3. Tiles are painted onto the Ground Tilemap
 4. Internal grid data is stored in TileMapData
 This allows other systems (e.g., flood simulation) to query elevation, tile type, and population data.
+
 --------------------------------------
 
 Tilemap Data Structure
@@ -44,6 +46,7 @@ TileMapDataTest stores:
     Population
     Flood state
 This data is populated during JSON loading and used by the flood simulator.
+
 --------------------------------------
 
 
@@ -70,6 +73,7 @@ WaterSimulatorObject
 ├─ Tile Types:
 │   └─ Water Tile Type: WaterTileType
 ├─ Start On Play: Unchecked
+
 ------------------
 
 Sprites used for this map are located within Assets/_Project/Sprites/Tiles
@@ -128,4 +132,5 @@ Building Tile Type ->
         Sprite: waterTopFace
         Min: 2
         Max: 1000
+
 ------------------
