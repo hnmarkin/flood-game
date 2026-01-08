@@ -15,15 +15,15 @@ MonoBehaviour:
   tileName: 
   tileBases:
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    sprite: {fileID: 21300000, guid: 4c61c22322ff4476db2b74dc43f98d19, type: 3}
     min: 0
     max: 0
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    sprite: {fileID: 21300000, guid: 7f63f8b6adc304dc89ef5160bdf7e563, type: 3}
     min: 1
     max: 2
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+    sprite: {fileID: 21300000, guid: 217dbb08fa47647b9ae4ef6333188b7e, type: 3}
     min: 3
     max: 1000
   soilCapacity: 0
