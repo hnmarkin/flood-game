@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33a95a7d03a1e914e87a9a57c7fe198a, type: 3}
-  m_Name: Player Resources
+  m_Script: {fileID: 11500000, guid: 41b2cd47c03ea3d49bd2c98e815952f9, type: 3}
+  m_Name: DeepWater
   m_EditorClassIdentifier: 
-  OnResourcesChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  _money: 3
-  _actionPoints: 6
-  _residentialOpinion: 6
-  _corporateOpinion: 6
-  _politicalOpinion: 6
+  fallbackSprite: {fileID: 0}
+  fallbackColor: {r: 1, g: 1, b: 1, a: 1}
