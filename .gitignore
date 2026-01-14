@@ -5,6 +5,7 @@ Build/
 Builds/
 Logs/
 MemoryCaptures/
+UserSettings/
 .vs/
 .idea/
 *.csproj
