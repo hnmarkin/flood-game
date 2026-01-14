@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.VersionControl;
 using Unity.VisualScripting;
 
 public class AlertViewer : MonoBehaviour

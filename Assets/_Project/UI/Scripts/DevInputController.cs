@@ -11,7 +11,7 @@ public class DevInputController : MonoBehaviour
             AlertBus.RaiseAlert(new AlertData
             {
                 type = AlertType.Info,
-                message = "This is an info alert."
+                message = "You now have 20 sandbags available for flood defense."
             });
         }
         else if (Keyboard.current != null && Keyboard.current.digit2Key.wasPressedThisFrame)
@@ -19,7 +19,7 @@ public class DevInputController : MonoBehaviour
             AlertBus.RaiseAlert(new AlertData
             {
                 type = AlertType.Warning,
-                message = "This is a warning alert."
+                message = "Funding is low! Consider reallocating resources."
             });
         }
         else if (Keyboard.current != null && Keyboard.current.digit3Key.wasPressedThisFrame)

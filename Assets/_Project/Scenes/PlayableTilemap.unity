@@ -2636,7 +2636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &841802069
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23974,6 +23974,7 @@ GameObject:
   - component: {fileID: 1407405829}
   - component: {fileID: 1407405828}
   - component: {fileID: 1407405831}
+  - component: {fileID: 1407405832}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -24041,6 +24042,18 @@ MonoBehaviour:
   defenseTilemap: {fileID: 868491625}
   hoverTilemap: {fileID: 1268517517}
   hoverTile: {fileID: 11400000, guid: 9dec11752935d9f4cb055537a88c57bb, type: 2}
+--- !u!114 &1407405832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407405827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddefc99aad9dbf54c9e67ec69a0b9569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1411769531
 GameObject:
   m_ObjectHideFlags: 0
