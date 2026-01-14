@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b2cd47c03ea3d49bd2c98e815952f9, type: 3}
   m_Name: WaterDynamicTile
   m_EditorClassIdentifier: 
-  fallbackSprite: {fileID: 21300000, guid: e12f58c060c9543fb8719802a2b4228d, type: 3}
+  fallbackSprite: {fileID: 21300000, guid: 4c61c22322ff4476db2b74dc43f98d19, type: 3}
   fallbackColor: {r: 1, g: 1, b: 1, a: 1}
