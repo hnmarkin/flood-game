@@ -12,10 +12,10 @@ Used for in-progress development, experiments, and prototypes.
 If a feature is not ready to merge into `main`, it **must** live here.
 
 All files in this folder must be explicitly marked as disposable:
-- Prefix filenames with `Prototype_`
+- Prefix filenames with `Dev_`
 
 Example:  
-`LLMManager.cs` → `Prototype_LLMManager.cs`
+`LLMManager.cs` → `Dev_LLMManager.cs`
 
 You will remove this when merging to main.
 
