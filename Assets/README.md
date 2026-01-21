@@ -6,7 +6,7 @@ This document defines the required structure of the Unity `Assets/` folder. Its 
 - Prevent third-party assets from contaminating core systems
 - Make pull requests predictable and reviewable
 
-## _Dev
+## Dev
 Used for in-progress development, experiments, and prototypes.
 
 If a feature is not ready to merge into `main`, it **must** live here.
@@ -33,6 +33,12 @@ When making a pull request to merge with main:
 4. Remove all development prefixes/suffixes.
 5. Open your pull request.
 
+## Settings
+Contains build profiles and render pipeline assets.
+
+## Third Party
+Contains all third-party assets and packages.
+
 ## Tools
 Contains custom debugging, diagnostics, and development utilities.
 These are not gameplay features.
@@ -42,9 +48,6 @@ Tools are divided into two categories:
 2. **Editor Tools:** used in the Unity Editor outside of Play Mode (e.g. our custom `TileCellInspector` editor window)
 
 Editor-only code must live under an `Editor/` subfolder.
-
-## Third Party
-Contains all third-party assets and packages.
 
 This includes:
 - Asset Store packages
