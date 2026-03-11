@@ -1,0 +1,33 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UI%20Editor/GameHUD.uss?fileID=7433441132597879392&amp;guid=809ec925c21754d0c90e99a74404980a&amp;type=3#GameHUD" />
+    <Style src="project://database/Assets/_Project/UI/UI%20Editor/RetroTheme.uss?fileID=7433441132597879392&amp;guid=e0e06280dee754fc591880cc85e816f8&amp;type=3#RetroTheme" />
+    <ui:VisualElement name="hud_root" class="hud-root root">
+        <ui:Button name="weather_button" emoji-fallback-support="false" class="weather-button" style="color: rgb(255, 255, 255); white-space: nowrap; font-size: 10px; text-overflow: clip; background-image: url(&quot;project://database/Assets/_Project/UI/UI%20Editor/warning.png?fileID=2800000&amp;guid=5dd669285127a4f0f892f7ae009892b6&amp;type=3#warning&quot;); background-color: rgba(25, 25, 25, 0); border-left-color: rgba(255, 200, 0, 0); border-right-color: rgba(255, 200, 0, 0); border-top-color: rgba(255, 200, 0, 0); border-bottom-color: rgba(255, 200, 0, 0); border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; border-top-right-radius: 2px; border-top-left-radius: 2px; width: 25px; height: 25px; top: 30px;" />
+        <ui:VisualElement name="weather_modal" class="modal-hidden modal" style="border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">
+            <ui:VisualElement name="modal_backdrop" class="modal-backdrop" />
+            <ui:VisualElement name="modal_panel" class="modal-panel" style="border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;">
+                <ui:Label text="Weather Broadcast" name="weather_title" class="modal-title" />
+                <ui:Label text="Centered off the southwest coast of Florida on Sunday afternoon, a storm surge is in effect for the southern Alabama border, with winds expected to reach between 40 and 70 mph once the storm hits land. Forecasts predict Sally will hit land near New Orleans and eventually travel northeast, eventually through Alabama. This will likely be a prolonged event, according to the National Weather Service, with heavy rainfall and dangerous surf." name="weather_text" class="modal-body" style="flex-wrap: wrap; white-space: normal;" />
+                <ui:Button text="Okay" name="weather_ok" class="modal-ok" />
+            </ui:VisualElement>
+            <ui:VisualElement name="decision_screen" class="hidden" style="flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="npc_modal" class="modal-hidden modal">
+            <ui:VisualElement name="npc_backdrop" class="modal-backdrop" />
+            <ui:VisualElement name="npc_panel" class="npc-panel">
+                <ui:VisualElement name="npc_portrait" class="npc-portrait" style="background-image: url(&quot;project://database/Assets/_Project/UI/UI%20Editor/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg?fileID=2800000&amp;guid=57b02040b8126487e8d7b0b5b2fa8ca4&amp;type=3#pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853&quot;); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;" />
+                <ui:VisualElement name="npc_text_col" class="npc-text-col">
+                    <ui:Label name="npc_name" text="Operations Lead" class="npc-name" style="padding-bottom: 0; margin-bottom: 0;" />
+                    <ui:Label name="npc_dialog" class="npc-dialog" style="margin-top: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0;" />
+                    <ui:Button name="npc_ok" text="Okay" class="npc-ok" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="npc_toast" class="npc-toast hidden">
+            <ui:VisualElement name="npc_toast_panel" class="npc-toast-panel" style="border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; border-left-color: rgb(0, 131, 255); border-right-color: rgb(0, 131, 255); border-top-color: rgb(0, 131, 255); border-bottom-color: rgb(0, 131, 255); flex-wrap: nowrap;">
+                <ui:VisualElement name="npc_toast_portrait" class="npc-toast-portrait" style="border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; background-image: url(&quot;project://database/Assets/_Project/UI/UI%20Editor/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg?fileID=2800000&amp;guid=57b02040b8126487e8d7b0b5b2fa8ca4&amp;type=3#pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853&quot;); flex-wrap: nowrap;" />
+                <ui:Label name="npc_toast_text" text="Strong decision. Sandbagging the most vulnerable zone helps protect the hospital and many nearby residents. Sandbags can slow floodwaters, buying valuable time during a storm. In future rounds, combining barriers with other measures—like drainage improvements or early warnings—could strengthen your overall flood defense." class="npc-toast-text" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
