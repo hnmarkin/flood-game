@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 3813347c7eef53b449b02e2f2b280a0c
+=======
+guid: 9ade8b343876b4ab0bdc1dfe89f14645
+>>>>>>> 009751a (Add to GIS-DataPipeline)
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
