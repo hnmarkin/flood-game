@@ -70,12 +70,22 @@ public class TileMapData : ScriptableObject
 
         ti.waterHeight = water;
 
+        // depth->tint mapping
+        float t = Mathf.InverseLerp(0f, 1.0f, water); // choose your "deep" max
+        Color shallow = new Color(0.70f, 0.85f, 1.00f, 1f);
+        Color deep    = new Color(0.10f, 0.25f, 0.50f, 1f);
+
+        // If you want even darker for severe flooding, clamp higher max, etc.
+        ti.tint = Color.Lerp(shallow, deep, t);
+
+        // ensure visuals update when tint changes
+        TileManager.Instance?.RefreshAt(new Vector3Int(pos.x, pos.y, 0));
+
         // Only update sprite if we have a TileType
-        if (ti.tileType != null)
+        if (ti.tileType != null && !(ti.tileType.isWater && ti.tileType.isAnimated))
         {
             var sprite = ti.tileType.GetTileForWaterHeight(water);
-            if (sprite != null)
-                ti.sprite = sprite;
+            if (sprite != null) ti.sprite = sprite;
         }
     }
 

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UI%20Editor/ResourceBar.uss?fileID=7433441132597879392&amp;guid=07a57d15418344212bab9e26792527e2&amp;type=3#ResourceBar" />
+    <ui:VisualElement name="resource_bar" class="resource-bar" style="padding-right: 0; padding-left: 0; font-size: 8px; color: rgb(255, 255, 255); background-color: rgb(117, 124, 255); width: auto; height: 25px;">
+        <ui:VisualElement class="resource-group left-group" style="font-size: 8px;">
+            <ui:VisualElement class="icon icon-money" />
+            <ui:Label text="Money: $200" class="resource-text" style="font-size: 8px;" />
+            <ui:VisualElement class="icon icon-time" />
+            <ui:Label text="Turn: 1/8" class="resource-text" style="font-size: 8px;" />
+        </ui:VisualElement>
+        <ui:Label name="page_title" text="GAME" class="resource-title" style="font-size: 10px; padding-top: 0; margin-top: 2px;" />
+        <ui:VisualElement class="resource-group right-group" style="font-size: 8px;">
+            <ui:VisualElement class="icon icon-pop" />
+            <ui:Label text="Population: 2000" class="resource-text" style="font-size: 8px;" />
+            <ui:VisualElement class="icon icon-zone" />
+            <ui:Label text="Zones: 6" class="resource-text" style="font-size: 8px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,15 @@
+:root {
+    --bg-teal: rgb(141, 210, 206);      /* teal background like screenshot */
+    --panel-blue: rgb(46, 132, 198);    /* header blue */
+    --panel-blue-dark: rgb(25, 95, 150);
+    --card-body: rgb(200, 210, 214);    /* light gray */
+    --outline-dark: rgb(30, 60, 80);    /* pixel border */
+    --text-dark: rgb(20, 35, 45);
+    --text-light: rgb(245, 255, 255);
+
+    --badge-green: rgb(0, 210, 90);
+    --badge-blue: rgb(0, 140, 255);
+    --badge-purple: rgb(145, 70, 255);
+
+    --shadow: rgba(0, 0, 0, 0.35);
+}

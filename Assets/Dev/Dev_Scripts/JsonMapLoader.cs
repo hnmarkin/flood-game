@@ -11,6 +11,7 @@ public class JsonMapLoader : MonoBehaviour
     public Tilemap groundTilemap;
     public Tilemap roadTilemap;
     public Tilemap buildingTilemap;
+    public Tilemap backgroundTilemap;
 
     [Header("Tiles")]
     public TileBase landTile;
@@ -48,6 +49,11 @@ public class JsonMapLoader : MonoBehaviour
         public TileCell[] tiles;
         public string elevation_note; // optional
     }
+
+    [Header("Background Fill (outside playable area)")]
+    public TileBase backgroundTile;          // usually your landTile
+    public int backgroundPaddingCells = 1000;  // how far beyond map to fill
+    public Color backgroundTint = new Color(0.6f, 0.6f, 0.6f, 1f); // greyed
 
     [Header("Elevation (stacked)")]
     [Tooltip("Provide 10 Tilemaps ordered back-to-front (or top-to-bottom) for levels 1..10.")]
@@ -202,6 +208,34 @@ public class JsonMapLoader : MonoBehaviour
             // roadTilemap?.ClearAllTiles();
             // buildingTilemap?.ClearAllTiles();
 
+            // Background fill
+            if (backgroundTilemap != null)
+            {
+                backgroundTilemap.ClearAllTiles();
+
+                int pad = Mathf.Max(0, backgroundPaddingCells);
+                TileBase bg = backgroundTile != null ? backgroundTile : landTile;
+
+                // Your playable tile cells are:
+                // x: 0..cols-1
+                // y: 0..rows-1   (because you flip with rows-1-r)
+                int xMin = 0 - pad;
+                int xMax = (cols - 1) + pad;
+                int yMin = 0 - pad;
+                int yMax = (rows - 1) + pad;
+
+                for (int y = yMin; y <= yMax; y++)
+                for (int x = xMin; x <= xMax; x++)
+                {
+                    var cell = new Vector3Int(x, y, 0);
+                    backgroundTilemap.SetTile(cell, bg);
+                    backgroundTilemap.SetColor(cell, backgroundTint);
+                }
+
+                backgroundTilemap.RefreshAllTiles();
+                backgroundTilemap.CompressBounds();
+            }
+
             if (elevationLayers != null)
             {
                 foreach (var tm in elevationLayers)
@@ -263,13 +297,19 @@ public class JsonMapLoader : MonoBehaviour
                     tileInstance.elevation   = t.elev_level_1_10;
                     tileInstance.waterHeight = 0f;        // initial water = 0, blanket will update this
                     tileInstance.population  = t.pop_total;
+                    tileInstance.geoid    = t.GEOID;
+                    tileInstance.category = t.category;
                     tileInstance.econVal     = 1;         // placeholder, adjust if you have better data
                     tileInstance.damage      = 0;
                     tileInstance.casualties  = 0;
 
                     if (tileType != null)
-                        tileInstance.sprite = tileType.GetTileForWaterHeight(0f);
-
+                    {
+                        if (tileType.isWater && tileType.isAnimated && tileType.animationFrames != null && tileType.animationFrames.Length > 0)
+                            tileInstance.sprite = tileType.animationFrames[0]; // preview/fallback
+                        else
+                            tileInstance.sprite = tileType.GetTileForWaterHeight(0f);
+                    }
 
                     // This is exactly what your teammate's MapLoader does:
                     tileMapData.SetTileInstanceAt(new Vector2Int(cell.x, cell.y), tileInstance);
@@ -326,6 +366,12 @@ public class JsonMapLoader : MonoBehaviour
         {
             Debug.LogError($"Failed to paint: {ex.Message}\n{ex.StackTrace}");
         }
+        var waves = FindObjectOfType<WaterWaveStripeAnimator>();
+        if (waves != null)
+        {
+            waves.Recache();
+        }
+
     }
 
 
