@@ -1,0 +1,136 @@
+/* =========================
+   RESOURCE BAR (RETRO HUD)
+   ========================= */
+
+/* Utility */
+.hidden { display: none; }
+
+/* Whole top bar */
+.resource-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    height: 40px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    background-color: var(--card-body);
+
+    border-bottom-width: 4px;
+    border-bottom-color: var(--outline-dark);
+
+    /* retro shadow "step" */
+    box-shadow: 0 4px 0 var(--shadow);
+
+    /* important so title shadow isn't clipped */
+    overflow: visible;
+}
+
+/* =========================
+   LEFT / RIGHT GROUPS
+   ========================= */
+
+/* Groups share the same baseline alignment */
+.resource-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    /* keep items tight and readable */
+    gap: 6px;
+
+    /* small retro HUD size */
+    font-size: 10px;
+    -unity-font-style: bold;
+
+    /* keep consistent text rendering */
+    color: var(--text-dark);
+}
+
+/* CRITICAL: equal flexible columns so center stays centered */
+.left-group,
+.right-group {
+    flex-grow: 1;
+    flex-basis: 0;          /* <-- keeps center truly centered */
+    min-width: 0;           /* avoids pushing center off */
+}
+
+.left-group { justify-content: flex-start; }
+.right-group { justify-content: flex-end; }
+
+/* Each "stat chunk": icon + label (keeps vertical alignment perfect) */
+.resource-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;               /* icon-text spacing */
+    min-width: 0;
+}
+
+/* Numbers/labels */
+.resource-text {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: var(--text-dark);
+
+    /* avoid unexpected wrapping in tight layouts */
+    white-space: nowrap;
+}
+
+/* =========================
+   CENTER TITLE TAB
+   ========================= */
+
+.resource-title {
+    flex-shrink: 0;
+
+    /* tab look */
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    font-size: 11px;
+    -unity-font-style: bold;
+
+    color: var(--text-light);
+    background-color: var(--panel-blue);
+
+    border-width: 4px;
+    border-color: var(--outline-dark);
+    border-radius: 0;
+
+    /* retro hard shadow */
+    box-shadow: 4px 4px 0 var(--shadow);
+
+    /* keep it visually centered + tidy */
+    white-space: nowrap;
+}
+
+/* =========================
+   ICONS
+   ========================= */
+
+.icon {
+    width: 14px;
+    height: 14px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    flex-shrink: 0;
+}
+
+/* Optional: tiny optical alignment tweaks */
+.icon-money { margin-top: 0px; }
+.icon-time  { margin-top: 0px; }
+.icon-pop   { margin-top: 0px; }
+.icon-zone  { margin-top: 0px; }

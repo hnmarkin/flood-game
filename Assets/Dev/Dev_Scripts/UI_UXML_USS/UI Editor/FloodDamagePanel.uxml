@@ -1,0 +1,28 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/FloodDamagePanel.uss?fileID=7433441132597879392&amp;guid=bac71ac849753416fac37c87edd5bab2&amp;type=3#FloodDamagePanel" />
+    <ui:VisualElement name="damage-panel" class="panel" style="width: auto; flex-wrap: wrap; font-size: 8px; background-color: rgb(165, 195, 255);">
+        <ui:Label text="FLOOD DAMAGE REPORT" name="Label" class="panel-title" style="background-color: rgb(71, 142, 255);" />
+        <ui:VisualElement class="panel-body" style="flex-wrap: wrap; background-color: rgb(165, 196, 255);">
+            <ui:VisualElement class="row">
+                <ui:Label text="Flooded Tiles" class="label" />
+                <ui:Label text="0" name="flooded-tiles-value" class="value tiles-value" style="flex-wrap: wrap;" />
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:Label text="Max Depth Reached" class="label" />
+                <ui:Label text="0.00 m" name="max-depth-value" class="value depth-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:Label text="Estimated Damage" class="label" />
+                <ui:Label text="$0" name="total-damage-value" class="value money-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:Label text="Average Damage" class="label" />
+                <ui:Label text="0.0%" name="avg-damage-value" class="value percent-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="row severity-row">
+                <ui:Label text="Severity" class="label" />
+                <ui:Label text="LOW" name="severity-value" class="value severity severity-low" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,254 @@
+/* =========================
+   GameHUD.uss (Clean + Retro)
+   ========================= */
+
+/* Utility */
+.hidden { display: none; }
+.modal-hidden { display: none; }
+
+/* Root should cover the screen */
+.hud-root {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+}
+
+/* =========================
+   Weather Button
+   ========================= */
+.weather-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    width: 56px;
+    height: 56px;
+
+    border-width: 4px;
+    border-color: var(--outline-dark);
+    border-radius: 0;
+
+    background-color: var(--card-body);
+    box-shadow: 4px 4px 0 var(--shadow);
+}
+
+/* =========================
+   Modal Overlay (Weather + NPC Guidance)
+   ========================= */
+.modal {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Make sure it overlays the scene/UI */
+    z-index: 100;
+}
+
+/* Backdrop behind modal panel */
+.modal-backdrop {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+
+    /* Retro tint but NOT opaque */
+    background-color: rgba(141, 210, 206, 0.35);
+}
+
+/* Main popup panel */
+.modal-panel {
+    position: relative;            /* important: not absolute */
+    width: 76%;
+    max-width: 720px;
+
+    /* Keep it on screen */
+    max-height: 80%;
+
+    background-color: var(--card-body);
+    border-color: var(--outline-dark);
+    border-width: 4px;
+    border-radius: 0;
+
+    box-shadow: 6px 6px 0 var(--shadow);
+
+    padding: 0;
+    padding-bottom: 15px;
+    overflow: hidden;
+
+    /* Make sure it renders above backdrop */
+    z-index: 1;
+}
+
+/* Header strip */
+.modal-title {
+    background-color: var(--panel-blue);
+    border-bottom-color: var(--outline-dark);
+    border-bottom-width: 4px;
+
+    color: var(--text-light);
+    padding: 10px 12px;
+
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+/* Body text area */
+.modal-body {
+    padding: 12px;
+
+    color: var(--text-dark);
+    font-size: 12px;
+    white-space: normal;
+
+    /* Allow long weather text without pushing panel off screen */
+    overflow: hidden;
+    max-height: 360px;
+}
+
+/* Ok button */
+.modal-ok {
+    margin: 2px 2px;
+    padding: 8px 14px;
+    padding-bottom:1px;
+    padding-top:1px;
+
+    border-width: 4px;
+    border-color: var(--outline-dark);
+    border-radius: 0;
+
+    background-color: var(--panel-blue);
+    color: var(--text-light);
+}
+
+/* =========================
+   NPC Guidance Modal (Portrait + dialog)
+   Use same overlay classes (.modal, .modal-backdrop)
+   but panel uses npc-panel class for layout.
+   ========================= */
+.npc-panel {
+    position: relative;
+    width: 76%;
+    max-width: 720px;
+    max-height: 80%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    background-color: var(--card-body);
+    border-color: var(--outline-dark);
+    border-width: 4px;
+    border-radius: 0;
+
+    box-shadow: 6px 6px 0 var(--shadow);
+
+    padding: 10px;
+    overflow: hidden;
+
+    z-index: 1;
+}
+
+.npc-portrait {
+    width: 64px;
+    height: 64px;
+    margin-right: 12px;
+
+    border-width: 4px;
+    border-color: var(--outline-dark);
+    border-radius: 0;
+
+    background-color: rgba(255, 255, 255, 0.08);
+    background-size: cover;
+    background-position: center;
+
+    flex-shrink: 0;
+}
+
+.npc-text-col {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.npc-name {
+    color: var(--panel-blue-dark);
+    font-size: 12px;
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.npc-dialog {
+    color: var(--text-dark);
+    font-size: 12px;
+    white-space: normal;
+    margin-bottom: 10px;
+
+    /* If dialog grows, it wraps instead of breaking layout */
+    flex-grow: 1;
+}
+
+.npc-ok {
+    align-self: flex-end;
+
+    height: 32px;
+    padding-left: 14px;
+    padding-right: 14px;
+
+    background-color: var(--panel-blue);
+    color: var(--text-light);
+
+    border-width: 4px;
+    border-color: var(--outline-dark);
+    border-radius: 0;
+}
+
+/* =========================
+   NPC Toast (tiny horizontal)
+   ========================= */
+.npc-toast {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    width: 520px;
+}
+
+.npc-toast-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;   /* <- change this */
+    padding: 8px 10px;
+    background-color: var(--card-body);
+    border-color: var(--outline-dark);
+    border-width: 4px;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.npc-toast-portrait {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+    flex-shrink: 0;  /* keep fixed size */
+}
+
+.npc-toast-text {
+    flex-grow: 1;
+    flex-shrink: 1;     /* allow shrinking */
+    min-width: 0;       /* CRITICAL for wrapping in a row flex layout */
+
+    white-space: normal;
+    overflow: hidden;
+
+    color: var(--text-dark);
+    font-size: 12px;
+    -unity-font-style: bold;
+    unity-text-align: upper-left;
+}
+
+.npc-toast-text-wrap {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; /* also critical */
+}
