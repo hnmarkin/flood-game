@@ -1,0 +1,94 @@
+{
+  "cards": [
+    {
+      "id": "drainage_maintenance_blitz",
+      "title": "Drainage Maintenance Blitz",
+      "type": "Program (Structural/O&M)",
+      "money": "1-3",
+      "action_points": "Medium",
+      "effects": "Drainage Efficiency ↑↑",
+      "description": "Intensive inspection, inlet clearing, channel/debris removal, and urgent repairs to restore baseline capacity before storm season."
+    },
+    {
+      "id": "sandbag",
+      "title": "Sandbag & Temporary Barrier Stockpile",
+      "type": "Operations (Temporary Defense)",
+      "money": "1-3",
+      "action_points": "Medium",
+      "effects": "External Water Load ↓↓ (Temporary)",
+      "description": "Pre-position sandbags and temporary barriers to divert floodwaters, recognizing labor intensity and potential interior drainage challenges."
+    },
+    {
+      "id": "Early_Warning_Risk_Communication",
+      "title": "Early Warning & Risk Communication",
+      "type": "Operations (Public Communication)",
+      "money": "1-3",
+      "action_points": "Low-Medium",
+      "effects": "Event Pacing ↓↓↓",
+      "description": "Implement integrated alert systems, multilingual communication, and coordinated public messaging to accelerate protective action."
+    },
+    {
+      "id": "pmp_stns_bkup_pwr",
+      "title": "Pump Stations + Backup Power",
+      "type": "Program (Structural/Continuity)",
+      "money": "5",
+      "action_points": "High",
+      "effects": "Drainage Efficiency ↑↑↑",
+      "description": "Construct or upgrade pump stations with redundancy and backup power systems to maintain drainage during extreme rainfall and grid outages."
+    },
+    {
+      "id": "detention_underground_storage",
+      "title": "Detention / Underground Storage",
+      "type": "Program (Structural/Storage)",
+      "money": "5",
+      "action_points": "High",
+      "effects": "Drainage Efficiency ↑↑↑; External Water Load ↓↓; Event Pacing ↓↓",
+      "description": "Construct detention basins, underground tanks, or storage tunnels to absorb and delay peak runoff during prolonged rainfall events."
+    },
+    {
+      "id": "levee_floodwall_construction",
+      "title": "Levee / Floodwall Construction",
+      "type": "Program (Structural/Barrier)",
+      "money": "5",
+      "action_points": "High",
+      "effects": "Base Infrastructure Resilience ↑↑↑; External Water Load ↓↓↓",
+      "description": "Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk."
+    },
+    {
+      "id": "critical_facility",
+      "title": "Critical Facility Utility Hardening",
+      "type": "Program (Structural/Critical Infrastructure)",
+      "money": "5",
+      "action_points": "Medium–High",
+      "effects": "Base Infrastructure Resilience ↑↑↑; Event Pacing ↓",
+      "description": "Elevate and floodproof electrical and mechanical systems at hospitals, water plants, and other essential facilities to prevent cascading failures."
+    },
+    {
+      "id": "Green_Streets_Urban_Trees",
+      "title": "Green Streets & Urban Trees",
+      "type": "Project (Nature-Based/Distributed GI)",
+      "money": "3",
+      "action_points": "High",
+      "effects": "Drainage Efficiency ↑↑; External Water Load ↓",
+      "description": "Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk."
+    },
+    {
+      "id": "Higher_Flood_Resistant_Building_Code_Upgrade",
+      "title": "Higher Flood-Resistant Building Code Upgrade",
+      "type": "Policy (Codes/Standards))",
+      "money": "1-3",
+      "action_points": "High",
+      "effects": "Base Infrastructure Resilience ↑↑↑; Wind Stress ↓",
+      "description": "Adopt and enforce modern flood-resistant construction standards, including elevation requirements and strengthened structural provisions."
+    },
+    {
+      "id": "EOP_Annex_Evacuation_Shelter_Ops",
+      "title": "EOP Annex: Evacuation + Shelter Ops",
+      "type": "Operations (Planning)",
+      "money": "1-3",
+      "action_points": "Medium",
+      "effects": "Event Pacing ↓↓; Base Infrastructure Resilience ↑",
+      "description": "Develop and exercise evacuation routes, shelter agreements, and continuity planning to reduce casualties and cascading disruptions."
+    }
+  ]
+}
