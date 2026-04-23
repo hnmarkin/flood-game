@@ -78,6 +78,8 @@ Game State includes core game logic that the other systems interact with, includ
 
 ### Preparation Actions
 
+    This system includes the Preparation Action base class, the Preparation Actions, and the interface with other systems, `PreparationActionService.cs`.
+
 ### Scenario and Content Data
 
 ### UI
