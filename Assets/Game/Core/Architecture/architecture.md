@@ -81,8 +81,10 @@ Game State includes core game logic that the other systems interact with, includ
         c. Pumps
         d. Generators
    7. Emergency Response Personnel
+   8. Communication Level
 
 4. **Time Tracker**
+    
     Time involves two simple systems--Preparation Phase Time (PPT) and Crisis Phase Time (CPT), which are turn-based and real-time, respectively. The time tracker involves two scripts: `PhaseTime.cs` and `TimeController.cs`.
     
     `PhaseTime.cs` defines PPT and CPT and tracks them, as well as defining their modification rules and time passage rates. `TimeController.cs` calls a PhaseAdvance() function when the game phase advances (e.g. Preparation -> Crisis), and also calls a modifier function whenever Event Pacing is changed. Time passage rate modifiers are multiplicative and thus all recorded, much like the Modifier system.
@@ -94,8 +96,50 @@ Game State includes core game logic that the other systems interact with, includ
 ### World Simulation: Tile Map & Water System
 
 ### Preparation Actions
+The system for Preparation Actions includes six components, the base class, individual card definitions, a runtime card state, a loader script, a communication failure resolver, and the interface with other game systems.
 
-    This system includes the Preparation Action base class, the Preparation Actions, and the interface with other systems, `PreparationActionService.cs`.
+1. **Base ScriptableObject Definition - `PrepActionDef.cs`**
+
+    The base class definition defines the common variables for a Preparation Action. In addition, it has the code for enabling certain tool screens for crisis tools as the effects of certain Actions.
+
+    *Variables:*
+    1. Card Name
+    2. Card Type
+    3. Residential Reputation Cost
+    4. Corporate Reputation Cost
+    5. Political Reputation Cost
+    6. Money Cost
+    7. Action Point Cost
+    8. Turns
+    9. Prerequisites
+    10. Stackability
+    11. Effects (on modifiers)
+    12. Comms Failure Type
+    13. Text Description/Tooltip
+
+2. **Individual Preparation Action Definitions**
+
+    Most individual Preparation Actions are simple ScriptableObjects with the proper variables. However, some cards may be more complex. To accomodate these, we will simply create a subclass of the `PrepActionDef.cs` base class with the functionality we need, and then create subclass ScriptableObjects.
+
+3. **Runtime Preparation Action State - `PrepActionInstance.cs`**
+
+    This script handles the status of cards during play and is modified by `PrepActionService.cs`. The variables include:
+
+    1. Status - `Locked`, `Available`, `In-Progress`, `Completed`
+    1. Turns Remaining (null if not being enacted)
+
+
+4. **Preparation Action Loader Script - `PrepActionLoader.cs`**
+
+    The Preparaction Action loader takes a Preparation Action Configuration ScriptableObject from the Scenario and Content Data section and maintains a list of enabled/disabled Preparation Actions for the current level. This should be exported to a file in Save/Load/Meta-Progression.
+
+5. **Communication Failure Resolver - `CommsFailResolver.cs`**
+
+    Because communication failure varies widely, it is handled by a separate script. This script both defines the Comms Failure types that `PrepActionDef.cs` references and is used by `PrepActionService.cs` to modify card values (depending on failure type) before sending changes to other systems.
+
+6. **Interface With Other Systems - `PrepActionService.cs`**
+
+    The outside interface, as usual, primarily consists of error checking--if prerequisites/resources are met, if stackability has been exceeded, and if it clashes with a mutually exclusive card already in play (many of these reference `PrepActionInstance.cs`). `PrepActionService.cs` additionally ensures that `CommsFailResolver.cs` checks for communication failure based on current Communication Level.
 
 ### Scenario and Content Data
 
