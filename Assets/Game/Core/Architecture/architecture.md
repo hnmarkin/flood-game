@@ -4,7 +4,7 @@
 
 This document explains the architecture of FloodGame in a way that aims to maximize modularity and minimize duplication. We aim for maximum readability and separation of concerns, so that debugging and future updating are easy.
 
-Practically, this means that our architecture is divided into a couple domains, with cross-interaction happening through specified centralized locations. Also, we aim to be data-driven and avoid hard coding.
+Practically, this means that our architecture is divided into a couple domains, with cross-interaction happening through specified centralized locations. Also, we want to be data-driven and avoid hard coding.
 
 ## Domains
 
@@ -28,9 +28,17 @@ Game State includes core game logic that the other systems interact with, includ
    2. UI (particles / overlay effects)
    3. Audio (ambient sounds)
    4. Preparation Actions (long-term availability toggle)
+   5. LLM (for scoring)
 
    **Game Flow FSM**  
-   States: `Main Menu`, `Campaign Select`, `Loading`, `Gameplay`, `Pause`, `Results`
+   States: `Main Menu`, `Campaign Select`, `Loading`, `Gameplay`, `Pause`
+
+   Systems that should subscribe (basically everything):
+   1. World Simulation (check for Gameplay/Pause/Loading)
+   2. Scenario and Content Data (for Campaign Select/Loading)
+   3. UI (Pause/Loading)
+   4. Input System?
+   5. Save/Load/Meta-Progression
 
    **Tool FSM**  
    States: `Normal`, `Placement`, `Inspection`
@@ -49,7 +57,7 @@ Game State includes core game logic that the other systems interact with, includ
 
     The default values at the start of the level should be in ScriptableObjects for each Scenario (e.g. `HurricaneSally.SO`), which should be in Scenario and Content Data. These will be loaded in by a `ScenarioLoader.cs` script.
 
-    *Scenario Modifiers:* `Drainage Eficiency`, `Base Infrastructure Resilience`, `Rainfall Rate`, `Antecedent Wetness`, `External Water Load`, `Wind Stress`, and `Event Pacing`
+    *Scenario Modifiers:* `Drainage Efficiency`, `Base Infrastructure Resilience`, `Rainfall Rate`, `Antecedent Wetness`, `External Water Load`, `Wind Stress`, and `Event Pacing`
 
     *Crisis Modifiers:* `Defense Placement Speed`, `Evacuation Speed`, `Warning Window`
 
@@ -67,10 +75,19 @@ Game State includes core game logic that the other systems interact with, includ
    3. Residential Reputation
    4. Corporate Reputation
    5. Political Reputation
-   6. Placeable Defenses (sandbags, barriers, generators)
+   6. Placeable Defenses
+        a. Sandbags
+        b. Barriers
+        c. Pumps
+        d. Generators
    7. Emergency Response Personnel
 
 4. **Time Tracker**
+    Time involves two simple systems--Preparation Phase Time (PPT) and Crisis Phase Time (CPT), which are turn-based and real-time, respectively. The time tracker involves two scripts: `PhaseTime.cs` and `TimeController.cs`.
+    
+    `PhaseTime.cs` defines PPT and CPT and tracks them, as well as defining their modification rules and time passage rates. `TimeController.cs` calls a PhaseAdvance() function when the game phase advances (e.g. Preparation -> Crisis), and also calls a modifier function whenever Event Pacing is changed. Time passage rate modifiers are multiplicative and thus all recorded, much like the Modifier system.
+
+    `TimeController.cs` interfaces with other game systems, including the important subscription to the Game Phase FSM event bus. Also, Event Pacing must be retrieved from Modifiers when the phase is changed to Crisis Phase. All interaction with the time system passes through here. The other role of `TimeController.cs` is error checks--ensuring that every phase has a timer and preventing repeated phase transitions.
 
 > Note: Use C# events, not Unity events - C# event subscriptions are easier to track.
 
