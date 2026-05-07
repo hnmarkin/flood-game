@@ -33,7 +33,7 @@ Game State includes core game logic that the other systems interact with, includ
    **Game Flow FSM**  
    States: `Main Menu`, `Campaign Select`, `Loading`, `Gameplay`, `Pause`
 
-   Systems that should subscribe (basically everything):
+   Systems that should subscribe:
    1. World Simulation (check for Gameplay/Pause/Loading)
    2. Scenario and Content Data (for Campaign Select/Loading)
    3. UI (Pause/Loading)
@@ -100,7 +100,7 @@ The system for Preparation Actions includes six components, the base class, indi
 
 1. **Base ScriptableObject Definition - `PrepActionDef.cs`**
 
-    The base class definition defines the common variables for a Preparation Action. In addition, it has the code for enabling certain tool screens for crisis tools as the effects of certain Actions.
+    The base class definition defines the common variables for a Preparation Action.
 
     *Variables:*
     1. Card Name
