@@ -8,3 +8,19 @@
 4. Avoid anonymous lambdas for event subscriptions unless the delegate is stored and can be unsubscribed.
 5. Static events and global event buses must provide an explicit cleanup/reset path.
 6. Events do not own subscribers and must not destroy listener objects.
+
+## Controller Script Rules
+
+1. Controller scripts are the public interface for systems that need to be accessed by other systems.
+2. Controller scripts should be named `XController.cs`, where `X` is the system or domain they manage, such as `ModifierController.cs` or `ResourceController.cs`.
+3. Other systems should interact with a system through its controller instead of directly reading or writing that system's trackers, state objects, resolvers, or runtime collections.
+4. Value retrieval methods should be named `GetX`, such as `GetModifierValue()` or `GetResourceAmount()`.
+5. Value-writing methods should be named `SetX`, such as `SetModifierContribution()` or `SetResourceAmount()`.
+6. Use `TrySetX` when a write can fail for normal gameplay reasons and the caller needs to react to success or failure.
+7. Use `CanX` methods for validation checks that do not change state, such as `CanAffordCost()` or `CanStartPrepAction()`.
+8. `GetX` methods must be side-effect free. They should not mutate state, trigger gameplay events, spend resources, or initialize missing data.
+9. `SetX` methods must validate inputs before changing state and should log clear errors or warnings when invalid data is passed in.
+10. Controllers should enforce system invariants, such as clamping resource values, rejecting unknown modifier keys, or preventing illegal phase transitions.
+11. Controllers may call lower-level scripts in the same system, such as trackers, resolvers, or runtime state classes, but those lower-level scripts should not call back into the controller.
+12. Controllers should raise C# events after successful state changes when other systems need to react.
+13. Controllers should not contain UI logic, save-file serialization, asset lookup, or scenario selection logic unless that is the explicit purpose of the system they control.
