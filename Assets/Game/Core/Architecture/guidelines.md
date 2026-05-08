@@ -1,5 +1,11 @@
 # Flood Game Agentic Coding Guidelines
 
+## General Practices
+1. RECORD CHANGES: For code-changing tasks, create or update a markdown record in `flood-game\Assets\Game\Core\Architecture\Records`. After completing the changes, summarize them in 100 words or less.
+2. HUNT FOR EXAMPLES: Before implementing, look for existing code that solves a similar problem. If no clear reference exists, ask the developer whether they know of one.
+3. PLAN APPROPRIATELY: For substantial, risky, or architectural changes, propose a plan before editing code. For small obvious fixes, proceed with a brief explanation.
+4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
+
 ## Event Subscription Rules
 
 1. The subscriber is responsible for unsubscribing from events it subscribes to.
