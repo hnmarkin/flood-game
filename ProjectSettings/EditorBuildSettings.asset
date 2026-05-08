@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Game/Content/Scenes/MainScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Game/Content/Scenes/MainMenu.unity
+    guid: 3d48c0f315739468f97d2663fb1c86fd
   - enabled: 1
     path: Assets/Dev/PrototypeScenes/Dev_CardUI.unity
     guid: 4327e105f2fea9d419edbd8c2c9b53f0
+  - enabled: 1
+    path: Assets/Game/Content/Scenes/PlayableTilemap.unity
+    guid: cb67b3d9fdfb9494fad72156f87b2da7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

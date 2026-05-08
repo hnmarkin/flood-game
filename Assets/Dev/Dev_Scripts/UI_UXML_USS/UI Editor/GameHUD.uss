@@ -210,8 +210,15 @@
 .npc-toast {
     position: absolute;
     left: 16px;
-    bottom: 14px;
     width: 520px;
+}
+
+.npc-toast-bottom {
+    bottom: 14px;
+}
+
+.npc-toast-top {
+    top: 14px;
 }
 
 .npc-toast-panel {
@@ -248,7 +255,13 @@
 }
 
 .npc-toast-text-wrap {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0; /* also critical */
+}
+
+.npc-toast-name {
+    margin-bottom: 4px;
 }

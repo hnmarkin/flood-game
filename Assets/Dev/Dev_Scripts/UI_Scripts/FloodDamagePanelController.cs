@@ -7,11 +7,11 @@ public class FloodDamagePanelController : MonoBehaviour
     [Header("References")]
     [SerializeField] private FloodDamageCalculator damageCalculator;
 
-    private Label _floodedTilesValue;
-    private Label _maxDepthValue;
+    private Label _zoneValue;
     private Label _totalDamageValue;
     private Label _avgDamageValue;
     private Label _severityValue;
+    private string _currentGeoid;
 
     private void OnEnable()
     {
@@ -24,8 +24,7 @@ public class FloodDamagePanelController : MonoBehaviour
 
         VisualElement root = uiDocument.rootVisualElement;
 
-        _floodedTilesValue = root.Q<Label>("flooded-tiles-value");
-        _maxDepthValue     = root.Q<Label>("max-depth-value");
+        _zoneValue         = root.Q<Label>("zone-value");
         _totalDamageValue  = root.Q<Label>("total-damage-value");
         _avgDamageValue    = root.Q<Label>("avg-damage-value");
         _severityValue     = root.Q<Label>("severity-value");
@@ -48,24 +47,30 @@ public class FloodDamagePanelController : MonoBehaviour
     {
         if (damageCalculator == null) return;
 
-        if (_floodedTilesValue != null)
-            _floodedTilesValue.text = damageCalculator.FloodedTileCount.ToString();
+        if (string.IsNullOrWhiteSpace(_currentGeoid))
+        {
+            SetEmptyState();
+            return;
+        }
 
-        if (_maxDepthValue != null)
-            _maxDepthValue.text = $"{damageCalculator.MaxDepthReached:0.00} m";
+        if (!damageCalculator.TryGetZoneDamageSummary(_currentGeoid, out var summary))
+        {
+            SetEmptyState();
+            return;
+        }
+
+        if (_zoneValue != null)
+            _zoneValue.text = summary.Geoid;
 
         if (_totalDamageValue != null)
-            _totalDamageValue.text = $"${damageCalculator.TotalEstimatedDamage:0}";
+            _totalDamageValue.text = $"${summary.TotalEstimatedDamage:0}";
 
         if (_avgDamageValue != null)
-            _avgDamageValue.text = $"{damageCalculator.AverageDamagePercent:0.0}%";
-
-        if (_severityValue != null)
-            _severityValue.text = damageCalculator.GetSeverityLabel();
+            _avgDamageValue.text = $"{summary.AverageDamagePercent:0.0}%";
 
         if (_severityValue != null)
         {
-            string severity = damageCalculator.GetSeverityLabel();
+            string severity = damageCalculator.GetSeverityLabel(summary);
             _severityValue.text = severity.ToUpper();
 
             _severityValue.RemoveFromClassList("severity-low");
@@ -89,5 +94,39 @@ public class FloodDamagePanelController : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void SetZone(string geoid)
+    {
+        _currentGeoid = string.IsNullOrWhiteSpace(geoid) ? null : geoid.Trim();
+        RefreshUI();
+    }
+
+    public void ClearZone()
+    {
+        _currentGeoid = null;
+        SetEmptyState();
+    }
+
+    private void SetEmptyState()
+    {
+        if (_zoneValue != null)
+            _zoneValue.text = "--";
+
+        if (_totalDamageValue != null)
+            _totalDamageValue.text = "$0";
+
+        if (_avgDamageValue != null)
+            _avgDamageValue.text = "0.0%";
+
+        if (_severityValue == null)
+            return;
+
+        _severityValue.text = "LOW";
+        _severityValue.RemoveFromClassList("severity-low");
+        _severityValue.RemoveFromClassList("severity-moderate");
+        _severityValue.RemoveFromClassList("severity-high");
+        _severityValue.RemoveFromClassList("severity-severe");
+        _severityValue.AddToClassList("severity-low");
     }
 }
