@@ -47,7 +47,9 @@ Game State includes core game logic that the other systems interact with, includ
 
     Modifiers is a one-stop shop for effects that modify other actions in the game. These are divided into two scripts: Scenario Modifiers, which broadly affect the map; and Crisis Modifiers, which (naturally) affect certain actions the player can take in the Crisis Phase. 
 
-    Because many modifier changes are multiplicative, we need to track contributions. Thus, we will use three scripts to track and interact with modifiers: `ModifierTracker.cs`, `ModifierResolver.cs`, and `ModifierController.cs`. 
+    Because many modifier changes are multiplicative, we need to track contributions. Thus, we will use three scripts to track and interact with modifiers: `ModifierTracker.cs`, `ModifierResolver.cs`, and `ModifierController.cs`. Additionally, `ModifierInitializer.cs` sets modifier values at the beginning of a scenario.
+
+    `ModifierInitializer.cs` sets initial values and is called by `ScenarioBootstrapper.cs`. It must clear all modifer values and history, and then add the values to `ModifierTracker.cs` using a special contribution type that can only be overwritten/erased through `ModifierInitializer.cs`.
     
     `ModifierTracker.cs` stores the contributions to any modifiers *and their source* (e.g. starting Scenario Modifiers, Preparation Action X, etc.), which is vital if we use multiplicative effects and we want an undo feature. 
     
@@ -142,6 +144,20 @@ The system for Preparation Actions includes six components, the base class, indi
     The outside interface, as usual, primarily consists of error checking--if prerequisites/resources are met, if stackability has been exceeded, and if it clashes with a mutually exclusive card already in play (many of these reference `PrepActionInstance.cs`). `PrepActionService.cs` additionally ensures that `CommsFailResolver.cs` checks for communication failure based on current Communication Level.
 
 ### Scenario and Content Data
+
+This section is where the loadable data for scenarios is stored. Tilemaps, starting resource configurations, LLM personas, Preparation Action libraries, etc. We will have a `ScenarioConfig.cs` that defines a Scenario ScriptableObject, although it will be complemented by a few other files. It is likely best to have folders for each scenario. Each Scenario Config will have these:
+
+1. Phase Structure (mainly if the level is multi-phased)
+2. Starting Modifiers & Resources
+3. Available Preparation Actions
+
+Each scenario folder should contain these files:
+
+1. Scenario Config
+2. Tilemap
+3. LLM Personas
+
+    Remember: this section does not write to other systems!
 
 ### UI
 
