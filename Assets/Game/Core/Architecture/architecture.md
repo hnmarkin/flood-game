@@ -12,6 +12,17 @@ Practically, this means that our architecture is divided into a couple domains, 
 
 Game State includes core game logic that the other systems interact with, including the state machines that trigger events that other systems should listen to, the modifiers for the map and level, and all resources that the player accumulates.
 
+#### Menu Handler
+
+#### Scenario Initialization
+
+Scenario initialization loads relevant scenario-specific values and objects, including modifiers, resources, LLM personas, and Preparation Actions. All of this is done by `ScenarioBootstrapper.cs`.
+
+`ScenarioBootstrapper.cs` will reference the objects in Scenario & Content Data, as well as all necessary initialization scripts (e.g. `ModifierInitializer.cs`). The list is:
+
+1. `ModifierInitializer.cs`
+2. (MISSING)
+
 #### Parts of Game State
 
 1. **Finite State Machines (FSMs) / Event Buses**
@@ -157,7 +168,7 @@ Each scenario folder should contain these files:
 2. Tilemap
 3. LLM Personas
 
-    Remember: this section does not write to other systems!
+>Remember: this section does not write to other systems!
 
 ### UI
 
