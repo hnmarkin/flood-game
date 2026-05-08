@@ -27,12 +27,12 @@
 /* Main floating panel */
 .panel {
     position: absolute;
-    right: 12px;
-    top: 12px;
+    left: 0;
+    top: 0;
 
-    width: 15%;
-    min-width: 190px;
-    max-width: 240px;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
 
     background-color: var(--panel-bg);
     color: var(--text-dark);
@@ -47,11 +47,15 @@
     border-right-color: var(--outline-dark);
 
     border-radius: 0px;
-    box-shadow: 4px 4px 0px var(--shadow);
+    box-shadow: 1px 1px 0px var(--shadow);
 
     padding: 0px;
     overflow: hidden;
     flex-direction: column;
+}
+
+.popup-panel {
+    opacity: 0.96;
 }
 
 /* Top title bar */
@@ -59,18 +63,18 @@
     background-color: var(--panel-header);
     color: var(--text-light);
 
-    border-bottom-width: 3px;
+    border-bottom-width: 1px;
     border-bottom-color: var(--outline-dark);
 
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
 
-    font-size: 10px;
+    font-size: 4px;
     -unity-font-style: bold;
-    unity-text-align: middle-left;
-    white-space: normal;
+    unity-text-align: middle-center;
+    white-space: nowrap;
 }
 
 /* Optional small subtitle if you add one later */
@@ -82,13 +86,20 @@
 
 /* Content body */
 .panel-body {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
 
     background-color: var(--panel-bg);
     flex-direction: column;
+}
+
+.compact-body {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 /* Each stat row */
@@ -96,13 +107,13 @@
     flex-direction: row;
     align-items: center;
 
-    min-height: 24px;
+    min-height: 10px;
 
-    margin-bottom: 4px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 4px;
-    padding-right: 4px;
+    margin-bottom: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
 
     background-color: rgba(255, 255, 255, 0.18);
 
@@ -120,27 +131,27 @@
 /* Left label text */
 .label {
     color: var(--text-dark);
-    font-size: 8px;
+    font-size: 4px;
     -unity-font-style: bold;
 
     flex-grow: 1;
     flex-shrink: 1;
     max-width: none;
 
-    margin-right: 4px;
-    white-space: normal;
+    margin-right: 1px;
+    white-space: nowrap;
 }
 
 /* Right numeric value box */
 .value {
-    width: 62px;
-    min-width: 62px;
-    max-width: 62px;
+    width: 30px;
+    min-width: 30px;
+    max-width: 30px;
 
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
 
     background-color: var(--value-bg);
 
@@ -155,16 +166,22 @@
     border-right-color: var(--value-border);
 
     color: var(--text-dark);
-    font-size: 8px;
+    font-size: 4px;
     -unity-font-style: bold;
 
     unity-text-align: middle-center;
     flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.value.zone-value {
+    background-color: rgb(214, 231, 255);
+    font-size: 3px;
 }
 
 /* Special row for severity */
 .row.severity-row {
-    margin-top: 2px;
+    margin-top: 1px;
     background-color: rgba(30, 30, 30, 0.06);
 
     border-top-color: var(--outline-dark);
@@ -215,10 +232,6 @@
 
 .value.percent-value {
     background-color: rgb(225, 234, 205);
-}
-
-.value.tiles-value {
-    background-color: rgb(226, 228, 237);
 }
 
 /* Bottom footer strip */

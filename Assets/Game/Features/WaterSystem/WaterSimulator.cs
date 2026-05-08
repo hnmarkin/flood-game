@@ -47,6 +47,10 @@ public class WaterSimulator : MonoBehaviour
     [Header("Visual Flood Persistence")]
     [SerializeField] private bool persistentFloodVisuals = true;
 
+    [Header("Visual Water Transition")]
+    [Min(0f)]
+    [SerializeField] private float visualWaterChangePerStep = 1f;
+
     private float _spreadTimer;
     private bool[,] _active;
 
@@ -64,6 +68,7 @@ public class WaterSimulator : MonoBehaviour
     private bool _simulationEnabled = false;
 
     private float[,] _visualWater;
+    private float[,] _visualTargetWater;
 
     private void Awake()
     {
@@ -103,8 +108,10 @@ public class WaterSimulator : MonoBehaviour
 
     private void BeginSimulationInternal()
     {
-        ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
         Initialize();
+        ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
+        InitializeActiveRegion();
+        ApplyVisualWaterState();
 
         _simulationEnabled = true;
         Debug.Log("[WaterSimulator] Simulation started.");
@@ -154,7 +161,8 @@ public class WaterSimulator : MonoBehaviour
         tileMapData.water   = new float[gridWidth, gridHeight];
         tileMapData.flowX   = new float[gridWidth, gridHeight];
         tileMapData.flowY   = new float[gridWidth, gridHeight];
-        _visualWater = new float[gridWidth, gridHeight];
+        _visualWater        = new float[gridWidth, gridHeight];
+        _visualTargetWater  = new float[gridWidth, gridHeight];
 
         for (int y = 0; y < N; y++)
         {
@@ -167,15 +175,29 @@ public class WaterSimulator : MonoBehaviour
                 tileMapData.water[x + 1, y + 1] = tile.waterHeight;
 
                 _visualWater[x + 1, y + 1] = tile.waterHeight;
+                _visualTargetWater[x + 1, y + 1] = tile.waterHeight;
             }
         }
 
         SetupBoundaryWalls(gridWidth, gridHeight);
 
+        tileMapData.simInitialized = true;
+    }
+
+    private void InitializeActiveRegion()
+    {
+        int gridWidth = tileMapData.GridWidth;
+        int gridHeight = tileMapData.GridHeight;
+        int N = tileMapData.N;
+
         _active = new bool[gridWidth, gridHeight];
         for (int x = 1; x <= N; x++)
+        {
             for (int y = 1; y <= N; y++)
+            {
                 _active[x, y] = tileMapData.water[x, y] > expandFromWaterThreshold;
+            }
+        }
 
         _spreadTimer = 0f;
 
@@ -184,8 +206,42 @@ public class WaterSimulator : MonoBehaviour
             ExpandActiveRegion();
             _spreadTimer = 0f;
         }
+    }
 
-        tileMapData.simInitialized = true;
+    private void ApplyVisualWaterState()
+    {
+        int N = tileMapData.N;
+
+        for (int y = 1; y <= N; ++y)
+        {
+            for (int x = 1; x <= N; ++x)
+            {
+                tileMapData.SetWater(new Vector2Int(x - 1, y - 1), _visualWater[x, y]);
+            }
+        }
+    }
+
+    private void UpdateVisualWaterAt(int x, int y, float logicalWater)
+    {
+        float targetWater = persistentFloodVisuals
+            ? Mathf.Max(_visualTargetWater[x, y], logicalWater)
+            : logicalWater;
+
+        _visualTargetWater[x, y] = targetWater;
+
+        if (visualWaterChangePerStep <= 0f)
+        {
+            _visualWater[x, y] = targetWater;
+        }
+        else
+        {
+            _visualWater[x, y] = Mathf.MoveTowards(
+                _visualWater[x, y],
+                targetWater,
+                visualWaterChangePerStep);
+        }
+
+        tileMapData.SetWater(new Vector2Int(x - 1, y - 1), _visualWater[x, y]);
     }
 
     private void SetupBoundaryWalls(int gridWidth, int gridHeight)
@@ -339,9 +395,7 @@ public class WaterSimulator : MonoBehaviour
                 if (useSpreadGating && !_active[x, y])
                 {
                     tileMapData.water[x, y] = 0f;
-
-                    float visualDepth = persistentFloodVisuals ? _visualWater[x, y] : 0f;
-                    tileMapData.SetWater(new Vector2Int(x - 1, y - 1), visualDepth);
+                    UpdateVisualWaterAt(x, y, 0f);
                     continue;
                 }
 
@@ -352,15 +406,7 @@ public class WaterSimulator : MonoBehaviour
 
             tileMapData.water[x, y] = Mathf.Max(0f, tileMapData.water[x, y]);
 
-            if (persistentFloodVisuals)
-            {
-                _visualWater[x, y] = Mathf.Max(_visualWater[x, y], tileMapData.water[x, y]);
-                tileMapData.SetWater(new Vector2Int(x - 1, y - 1), _visualWater[x, y]);
-            }
-            else
-            {
-                tileMapData.SetWater(new Vector2Int(x - 1, y - 1), tileMapData.water[x, y]);
-            }
+            UpdateVisualWaterAt(x, y, tileMapData.water[x, y]);
             }
         }
 
@@ -424,7 +470,7 @@ public class WaterSimulator : MonoBehaviour
                     {
                         var pos = new Vector2Int(x, y);
                         if (!TileExists(pos)) continue;
-                        tileMapData.SetWater(pos, h);
+                        SeedWaterAt(pos, h);
                     }
                 break;
 
@@ -439,7 +485,7 @@ public class WaterSimulator : MonoBehaviour
                         {
                             var pos = new Vector2Int(x, y);
                             if (!TileExists(pos)) continue;
-                            tileMapData.SetWater(pos, h);
+                            SeedWaterAt(pos, h);
                         }
                     }
                     else
@@ -447,8 +493,8 @@ public class WaterSimulator : MonoBehaviour
                         var pos1 = new Vector2Int(x, 0);
                         var pos2 = new Vector2Int(x, maxY);
                         if (!TileExists(pos1) || !TileExists(pos2)) continue;
-                        tileMapData.SetWater(pos1, h);
-                        tileMapData.SetWater(pos2, h);
+                        SeedWaterAt(pos1, h);
+                        SeedWaterAt(pos2, h);
                     }
                 }
                 break;
@@ -466,7 +512,7 @@ public class WaterSimulator : MonoBehaviour
                 foreach (var c in corners)
                 {
                     if (!TileExists(c)) break;
-                    tileMapData.SetWater(c, h);
+                    SeedWaterAt(c, h);
                 }
                 break;
 
@@ -480,9 +526,21 @@ public class WaterSimulator : MonoBehaviour
                         if (!TileExists(pos)) continue;
                         var ti = tileMapData.Get(pos);
                         if (ti != null && ti.tileType == waterTileType)
-                            tileMapData.SetWater(pos, h);
+                            SeedWaterAt(pos, h);
                     }
                 break;
+        }
+
+        void SeedWaterAt(Vector2Int pos, float depth)
+        {
+            int simX = pos.x + 1;
+            int simY = pos.y + 1;
+
+            if (simX < 1 || simX > tileMapData.N || simY < 1 || simY > tileMapData.N)
+                return;
+
+            tileMapData.water[simX, simY] = Mathf.Max(tileMapData.water[simX, simY], depth);
+            _visualTargetWater[simX, simY] = Mathf.Max(_visualTargetWater[simX, simY], tileMapData.water[simX, simY]);
         }
     }
 }
