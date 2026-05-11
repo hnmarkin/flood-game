@@ -32,6 +32,6 @@ public class ZoneInfoHoverToggle : MonoBehaviour
     {
         IsEnabled = enabled;
         if (label != null)
-            label.text = enabled ? "Zone Information: ON" : "Zone Information: OFF";
+            label.text = enabled ? "Zone Info:ON" : "Zone Info:OFF";
     }
 }

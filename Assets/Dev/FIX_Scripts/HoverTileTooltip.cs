@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using TMPro;
+using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class HoverTileTooltip : MonoBehaviour
 {
@@ -10,153 +9,395 @@ public class HoverTileTooltip : MonoBehaviour
     [SerializeField] private JsonMapLoader jsonMapLoader;
     [SerializeField] private TileMapData tileMapData;
 
-    [Header("UI")]
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private RectTransform tooltipPanel;
-    [SerializeField] private TMP_Text tooltipText;
+    [Header("UI Toolkit Document")]
+    [SerializeField] private UIDocument zoneInfoDocument;
+
+    [Header("UI Element Names")]
+    [SerializeField] private string panelName = "zone_info_panel";
+    [SerializeField] private string categoryLabelName = "category_label";
+    [SerializeField] private string populationLabelName = "population_label";
+    [SerializeField] private string elevationLabelName = "elevation_label";
+    [SerializeField] private string zoneLabelName = "zone_label";
 
     [Header("Behavior")]
-    [SerializeField] private float hoverDelay = 3f; // seconds to wait before showing tooltip
+    [SerializeField] private bool zoneInfoMode = false;
+    [SerializeField] private float hoverDelay = 3f;
+    [SerializeField] private float stationaryPixelThreshold = 3f;
 
-    Vector3Int _currentCell;
-    bool _hasCell = false;
-    float _hoverTimer = 0f;
-    bool _tooltipVisible = false;
+    [Header("Panel Position")]
+    [SerializeField] private bool movePanelNearCursor = true;
+    [SerializeField] private Vector2 panelOffset = new Vector2(18f, 18f);
 
-    void Awake()
+    private VisualElement _root;
+    private VisualElement _panel;
+
+    private Label _categoryLabel;
+    private Label _populationLabel;
+    private Label _elevationLabel;
+    private Label _zoneLabel;
+
+    private Vector2 _lastMouseScreenPosition;
+    private Vector3Int _currentCell;
+    private bool _hasCell = false;
+
+    private float _hoverTimer = 0f;
+    private bool _tooltipVisible = false;
+
+    private Vector2Int _tileOrigin = Vector2Int.zero;
+
+    private void Awake()
     {
-        if (!sceneCamera) sceneCamera = Camera.main;
-        
-        if (tooltipPanel != null)
-            tooltipPanel.pivot = new Vector2(0.5f, 0f);  // bottom middle
+        if (sceneCamera == null)
+            sceneCamera = Camera.main;
 
+        zoneInfoMode = false;
+
+        BindUI();
+        UpdateTileOrigin();
+        HideTooltip();
+
+        Debug.Log("[HoverTileTooltip] Zone info mode forced OFF at startup.");
+    }
+
+    private void OnEnable()
+    {
+        BindUI();
         HideTooltip();
     }
 
-    void Update()
+    private void Update()
     {
-        if (sceneCamera == null || jsonMapLoader == null || canvas == null || tooltipPanel == null)
+        if (!zoneInfoMode)
             return;
 
-        // Convert mouse to world
-        Vector2 screen = Mouse.current.position.ReadValue();
-        Vector3 world = Camera.main.ScreenToWorldPoint(new Vector3(screen.x, screen.y, Camera.main.nearClipPlane));
+        HandleHover();
+    }
 
+    public void ToggleZoneInfoFromUI()
+    {
+        if (zoneInfoMode)
+        {
+            DisableZoneInfoFromUI();
+        }
+        else
+        {
+            EnableZoneInfoFromUI();
+        }
+    }
 
-        // Compute tile cell from ground tilemap
-        var groundTilemap = jsonMapLoader.groundTilemap;
-        if (groundTilemap == null) return;
+    public void EnableZoneInfoFromUI()
+    {
+        zoneInfoMode = true;
 
+        _lastMouseScreenPosition = Input.mousePosition;
+        _hoverTimer = 0f;
+        _hasCell = false;
+
+        HideTooltip();
+
+        Debug.Log("[HoverTileTooltip] Zone info mode ON. Keep cursor still over a zone for 3 seconds.");
+    }
+
+    public void DisableZoneInfoFromUI()
+    {
+        zoneInfoMode = false;
+
+        _hoverTimer = 0f;
+        _hasCell = false;
+
+        HideTooltip();
+        GlobalHUDController.Instance?.ClearHoveredZoneInfo();
+
+        Debug.Log("[HoverTileTooltip] Zone info mode OFF.");
+    }
+
+    private void BindUI()
+    {
+        if (zoneInfoDocument == null)
+        {
+            Debug.LogWarning("[HoverTileTooltip] zoneInfoDocument is not assigned.");
+            return;
+        }
+
+        _root = zoneInfoDocument.rootVisualElement;
+
+        if (_root == null)
+        {
+            Debug.LogWarning("[HoverTileTooltip] UIDocument rootVisualElement is null.");
+            return;
+        }
+
+        _panel = _root.Q<VisualElement>(panelName);
+
+        _categoryLabel = _root.Q<Label>(categoryLabelName);
+        _populationLabel = _root.Q<Label>(populationLabelName);
+        _elevationLabel = _root.Q<Label>(elevationLabelName);
+        _zoneLabel = _root.Q<Label>(zoneLabelName);
+
+        if (_panel == null)
+            Debug.LogWarning($"[HoverTileTooltip] Could not find panel named '{panelName}'.");
+
+        if (_categoryLabel == null)
+            Debug.LogWarning($"[HoverTileTooltip] Could not find label named '{categoryLabelName}'.");
+
+        if (_populationLabel == null)
+            Debug.LogWarning($"[HoverTileTooltip] Could not find label named '{populationLabelName}'.");
+
+        if (_elevationLabel == null)
+            Debug.LogWarning($"[HoverTileTooltip] Could not find label named '{elevationLabelName}'.");
+
+        if (_zoneLabel == null)
+            Debug.LogWarning($"[HoverTileTooltip] Could not find label named '{zoneLabelName}'.");
+
+        if (_panel != null)
+        {
+            _panel.style.display = DisplayStyle.None;
+
+            if (movePanelNearCursor)
+                _panel.style.position = Position.Absolute;
+        }
+    }
+
+    private void HandleHover()
+    {
+        if (!ValidateReferences())
+            return;
+
+        Tilemap groundTilemap = jsonMapLoader.groundTilemap;
+
+        if (groundTilemap == null)
+            return;
+
+        Vector2 mouseScreen = Input.mousePosition;
+        float movement = Vector2.Distance(mouseScreen, _lastMouseScreenPosition);
+
+        if (movement > stationaryPixelThreshold)
+        {
+            _lastMouseScreenPosition = mouseScreen;
+            ResetHover();
+            return;
+        }
+
+        Vector3 world = ScreenToWorld(mouseScreen);
         Vector3Int cell = groundTilemap.WorldToCell(world);
 
-        // If we moved to a different cell, reset
         if (!_hasCell || cell != _currentCell)
         {
             _hasCell = true;
             _currentCell = cell;
-            _hoverTimer = 0f;
-            if (_tooltipVisible) HideTooltip();
+            ResetHover();
+            return;
         }
+
+        if (!TryGetZoneInfo(world, cell, out string category, out int population, out int elevation, out string zone))
+        {
+            GlobalHUDController.Instance?.ClearHoveredZoneInfo();
+            ResetHover();
+            return;
+        }
+
+        GlobalHUDController.Instance?.SetHoveredZoneInfo(zone, population);
 
         _hoverTimer += Time.deltaTime;
 
         if (_hoverTimer >= hoverDelay)
         {
-            // Time to show/update tooltip
-            UpdateTooltipForCell(cell, screen);
+            UpdateTooltipText(category, population, elevation, zone);
+            PositionTooltip(mouseScreen);
+            ShowTooltip();
         }
     }
 
-    void UpdateTooltipForCell(Vector3Int cell, Vector2 mouseScreen)
+    private bool TryGetZoneInfo(
+        Vector3 world,
+        Vector3Int cell,
+        out string category,
+        out int population,
+        out int elevation,
+        out string zone
+    )
     {
-        // Use your existing helper to get JSON-based info
-        int r, c, pop;
-        string category, geoid;
+        category = "Unknown";
+        population = 0;
+        elevation = 0;
+        zone = "N/A";
 
-        if (!jsonMapLoader.TryGetTileInfoAtWorld(
-                sceneCamera.ScreenToWorldPoint(
-                    new Vector3(mouseScreen.x, mouseScreen.y, -sceneCamera.transform.position.z)
-                ),
-                out r, out c, out category, out geoid, out pop))
-        {
-            // No tile info here
-            HideTooltip();
-            return;
-        }
+        int r;
+        int c;
+        int pop;
+        string foundCategory;
+        string geoid;
 
-        // Elevation from TileMapData / TileInstance
-        int elevation = 0;
-        if (tileMapData != null)
-        {
-            // TileMapData stores tiles keyed by cell.x, cell.y
-            var ti = tileMapData.Get(new Vector2Int(cell.x, cell.y));
-            if (ti != null)
-                elevation = ti.elevation;
-        }
-
-        // Build text
-        string catLabel = string.IsNullOrEmpty(category) ? "Unknown" : category;
-        string zoneLabel = string.IsNullOrEmpty(geoid) ? "N/A" : geoid;
-
-        tooltipText.text =
-            $"Category: {catLabel}\n" +
-            $"Population: {pop}\n" +
-            $"Elevation: {elevation}\n" +
-            $"Zone: {zoneLabel}";
-
-        // Position panel near mouse
-        PositionTooltip(mouseScreen);
-
-        ShowTooltip();
-    }
-
-    void PositionTooltip(Vector3 mouseScreen)
-    {
-        RectTransform canvasRect = canvas.transform as RectTransform;
-
-        // Convert screen point to anchored position in the canvas
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            mouseScreen,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
-            out localPoint
+        bool hit = jsonMapLoader.TryGetTileInfoAtWorld(
+            world,
+            out r,
+            out c,
+            out foundCategory,
+            out geoid,
+            out pop
         );
 
-        // Offset: a bit above the cursor
-        float verticalOffset = 20f;
-        Vector2 targetPos = localPoint + new Vector2(0f, verticalOffset);
+        if (!hit || string.IsNullOrEmpty(geoid))
+            return false;
 
-        // Clamp so the panel stays fully on-screen
-        Vector2 panelSize = tooltipPanel.sizeDelta;
-        Vector2 halfSize = panelSize * 0.5f;
+        category = string.IsNullOrEmpty(foundCategory) ? "Unknown" : foundCategory;
+        population = pop;
+        zone = geoid;
+        elevation = GetElevationFromCell(cell);
 
-        // Canvas rect extents
-        float minX = -canvasRect.rect.width  * 0.5f + halfSize.x;
-        float maxX =  canvasRect.rect.width  * 0.5f - halfSize.x;
-        float minY = -canvasRect.rect.height * 0.5f + halfSize.y;
-        float maxY =  canvasRect.rect.height * 0.5f - halfSize.y;
-
-        targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
-        targetPos.y = Mathf.Clamp(targetPos.y, minY, maxY);
-
-        tooltipPanel.anchoredPosition = targetPos;
+        return true;
     }
 
-
-    void ShowTooltip()
+    private int GetElevationFromCell(Vector3Int cell)
     {
+        if (tileMapData == null || jsonMapLoader == null || jsonMapLoader.groundTilemap == null)
+            return 0;
+
+        UpdateTileOrigin();
+
+        int tx = cell.x - _tileOrigin.x;
+        int ty = cell.y - _tileOrigin.y;
+
+        if (tx < 0 || ty < 0 || tx >= tileMapData.N || ty >= tileMapData.N)
+            return 0;
+
+        TileInstance tile = tileMapData.Get(new Vector2Int(tx, ty));
+
+        if (tile == null)
+            return 0;
+
+        return tile.elevation;
+    }
+
+    private void UpdateTileOrigin()
+    {
+        if (jsonMapLoader == null || jsonMapLoader.groundTilemap == null)
+            return;
+
+        Tilemap groundTilemap = jsonMapLoader.groundTilemap;
+
+        groundTilemap.CompressBounds();
+        BoundsInt bounds = groundTilemap.cellBounds;
+
+        _tileOrigin = new Vector2Int(bounds.xMin, bounds.yMin);
+    }
+
+    private Vector3 ScreenToWorld(Vector2 mouseScreen)
+    {
+        float zDistance = -sceneCamera.transform.position.z;
+
+        Vector3 world = sceneCamera.ScreenToWorldPoint(
+            new Vector3(mouseScreen.x, mouseScreen.y, zDistance)
+        );
+
+        world.z = 0f;
+        return world;
+    }
+
+    private void UpdateTooltipText(string category, int population, int elevation, string zone)
+    {
+        if (_categoryLabel != null)
+            _categoryLabel.text = $"Category: {category}";
+
+        if (_populationLabel != null)
+            _populationLabel.text = $"Population: {population:N0}";
+
+        if (_elevationLabel != null)
+            _elevationLabel.text = $"Elevation: {elevation}";
+
+        if (_zoneLabel != null)
+            _zoneLabel.text = $"Zone: {zone}";
+    }
+
+    private void PositionTooltip(Vector2 mouseScreen)
+    {
+        if (!movePanelNearCursor || _panel == null || _root == null)
+            return;
+
+        Vector2 panelPosition;
+
+        // Correct way for UI Toolkit runtime panels.
+        // Converts Input.mousePosition screen pixels into UI Toolkit panel coordinates.
+        if (_root.panel != null)
+        {
+            panelPosition = RuntimePanelUtils.ScreenToPanel(_root.panel, mouseScreen);
+        }
+        else
+        {
+            // Fallback, in case the panel is not ready yet.
+            panelPosition = new Vector2(mouseScreen.x, Screen.height - mouseScreen.y);
+        }
+
+        // style.left/top are relative to the panel's parent, not always the root.
+        VisualElement parent = _panel.parent != null ? _panel.parent : _root;
+        Vector2 localPosition = parent.WorldToLocal(panelPosition);
+
+        float panelWidth = _panel.resolvedStyle.width;
+        float panelHeight = _panel.resolvedStyle.height;
+
+        if (panelWidth <= 0f)
+            panelWidth = 180f;
+
+        if (panelHeight <= 0f)
+            panelHeight = 100f;
+
+        float parentWidth = parent.resolvedStyle.width;
+        float parentHeight = parent.resolvedStyle.height;
+
+        float x = localPosition.x + panelOffset.x;
+        float y = localPosition.y + panelOffset.y;
+
+        // Keep the panel inside its parent.
+        x = Mathf.Clamp(x, 0f, Mathf.Max(0f, parentWidth - panelWidth));
+        y = Mathf.Clamp(y, 0f, Mathf.Max(0f, parentHeight - panelHeight));
+
+        _panel.style.left = x;
+        _panel.style.top = y;
+    }
+
+    private void ShowTooltip()
+    {
+        if (_panel == null)
+            return;
+
         if (!_tooltipVisible)
         {
-            tooltipPanel.gameObject.SetActive(true);
+            _panel.style.display = DisplayStyle.Flex;
             _tooltipVisible = true;
         }
     }
 
-    void HideTooltip()
+    private void HideTooltip()
     {
-        if (tooltipPanel != null)
-            tooltipPanel.gameObject.SetActive(false);
+        if (_panel != null)
+            _panel.style.display = DisplayStyle.None;
+
         _tooltipVisible = false;
+    }
+
+    private void ResetHover()
+    {
+        _hoverTimer = 0f;
+        HideTooltip();
+    }
+
+    private bool ValidateReferences()
+    {
+        if (sceneCamera == null)
+            return false;
+
+        if (jsonMapLoader == null)
+            return false;
+
+        if (jsonMapLoader.groundTilemap == null)
+            return false;
+
+        if (zoneInfoDocument == null)
+            return false;
+
+        if (_panel == null)
+            BindUI();
+
+        return true;
     }
 }

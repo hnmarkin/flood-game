@@ -1,18 +1,14 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/_Project/UI/UI%20Editor/ResourceBar.uss?fileID=7433441132597879392&amp;guid=07a57d15418344212bab9e26792527e2&amp;type=3#ResourceBar" />
-    <ui:VisualElement name="resource_bar" class="resource-bar" style="padding-right: 0; padding-left: 0; font-size: 8px; color: rgb(255, 255, 255); background-color: rgb(117, 124, 255); width: auto; height: 25px;">
-        <ui:VisualElement class="resource-group left-group" style="font-size: 8px;">
-            <ui:VisualElement class="icon icon-money" />
-            <ui:Label text="Money: $200" class="resource-text" style="font-size: 8px;" />
-            <ui:VisualElement class="icon icon-time" />
-            <ui:Label text="Turn: 1/8" class="resource-text" style="font-size: 8px;" />
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/ResourceBar.uss?fileID=7433441132597879392&amp;guid=07a57d15418344212bab9e26792527e2&amp;type=3#ResourceBar" />
+    <ui:VisualElement name="resource_bar" class="resource-bar" style="padding-right: 0; padding-left: 0; font-size: 8px; color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0); width: auto; height: 25px; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI_Flat_Frame02a.png?fileID=21300000&amp;guid=8af5486b054cb4f3bbe947c1b23458e3&amp;type=3#UI_Flat_Frame02a&quot;);">
+        <ui:VisualElement name="VisualElement" class="resource-group left-group" style="font-size: 5px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); flex-direction: row;">
+            <ui:Label text="Money: $200" name="money_label" class="resource-text" style="font-size: 5px;" />
+            <ui:Label text="Turn: 1/8" name="barrier_label" class="resource-text" style="font-size: 5px; margin-right: 2px;" />
         </ui:VisualElement>
-        <ui:Label name="page_title" text="GAME" class="resource-title" style="font-size: 10px; padding-top: 0; margin-top: 2px;" />
-        <ui:VisualElement class="resource-group right-group" style="font-size: 8px;">
-            <ui:VisualElement class="icon icon-pop" />
-            <ui:Label text="Population: 2000" class="resource-text" style="font-size: 8px;" />
-            <ui:VisualElement class="icon icon-zone" />
-            <ui:Label text="Zones: 6" class="resource-text" style="font-size: 8px;" />
+        <ui:Label name="page_title" text="In Game" class="resource-title" style="font-size: 7px; padding-top: 3px; margin-top: 2px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); padding-bottom: 0; padding-left: 5px; margin-right: 5px; flex-direction: row;" />
+        <ui:VisualElement class="resource-group right-group" style="font-size: 5px;">
+            <ui:Label text="Population: 2000" name="pop_label" class="resource-text" style="font-size: 5px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;);" />
+            <ui:Label text="Zones: 6" name="zone_label" class="resource-text" style="font-size: 5px; padding-right: 4px; margin-right: 10px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;);" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
