@@ -6,6 +6,16 @@
 3. PLAN APPROPRIATELY: For substantial, risky, or architectural changes, propose a plan before editing code. For small obvious fixes, proceed with a brief explanation.
 4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
 
+## Mockups
+1. If I ask you to prototype anything related to UI, first make an HTML mockup in `C:\Users\hmark\flood-game\Assets\Dev\Mockups`.
+2. Name mockups after the feature or screen being explored, such as `prep-phase-resource-panel.html`.
+3. Keep mockups self-contained unless there is a clear reason to share assets or scripts.
+4. Use mockups to resolve layout, interaction flow, copy, visual hierarchy, and state changes before editing Unity UI code or prefabs.
+5. Represent important UI states, including empty, disabled, selected, error, overflow, and active/in-progress states when relevant.
+6. Prefer existing game terminology, colors, icons, and layout patterns when they are known. If uncertain, leave a short note in the mockup explaining the assumption.
+7. After creating a mockup, summarize what production Unity files or systems would likely need to change if the mockup is approved.
+
+
 ## Event Subscription Rules
 
 1. The subscriber is responsible for unsubscribing from events it subscribes to.
