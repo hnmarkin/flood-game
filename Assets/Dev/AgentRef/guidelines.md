@@ -7,7 +7,7 @@
 4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
 
 ## Mockups
-1. If I ask you to prototype anything related to UI, first make an HTML mockup in `C:\Users\hmark\flood-game\Assets\Dev\Mockups`.
+1. If I ask you to prototype anything related to UI, first make an HTML mockup in `flood-game\Assets\Dev\AgentRef\Mockups`.
 2. Name mockups after the feature or screen being explored, such as `prep-phase-resource-panel.html`.
 3. Keep mockups self-contained unless there is a clear reason to share assets or scripts.
 4. Use mockups to resolve layout, interaction flow, copy, visual hierarchy, and state changes before editing Unity UI code or prefabs.
