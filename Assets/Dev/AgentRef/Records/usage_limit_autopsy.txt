@@ -1,0 +1,969 @@
+• Viewed Image
+  └ ..\output\playwright\prep-actions-overlay.png
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The browser check loaded the page and showed only a favicon 404, not a script failure. I’m making two small cleanup edits: suppress that browser noise and tighten the bottom resource delta formatting so money/AP changes
+  read cleanly.
+
+• Edited Dev\AgentRef\Mockups\prep-actions-overlay.html (+8 -7)
+       5    <meta name="viewport" content="width=device-width, initial-scale=1">
+       6 +  <link rel="icon" href="data:,">
+       7    <title>Preparation Actions Overlay Mockup</title>
+         ⋮
+    1189        document.getElementById('resourceChange').innerHTML = [
+    1189 -        ['$', deltas.money],
+    1190 -        ['AP', deltas.actionPoints],
+    1191 -        ['Home', deltas.residential],
+    1192 -        ['Biz', deltas.corporate],
+    1193 -        ['Gov', deltas.political]
+    1194 -      ].map(([label, value]) => {
+    1190 +        ['$', deltas.money, '$'],
+    1191 +        ['AP', deltas.actionPoints, 'AP'],
+    1192 +        ['Home', deltas.residential, ''],
+    1193 +        ['Biz', deltas.corporate, ''],
+    1194 +        ['Gov', deltas.political, '']
+    1195 +      ].map(([label, value, format]) => {
+    1196          const tone = value < 0 ? 'negative' : value > 0 ? 'positive' : '';
+    1196 -        return `<span class="change-pill ${tone}">${label} ${formatDelta(value)}</span>`;
+    1197 +        return `<span class="change-pill ${tone}">${label} ${formatDelta(value, format)}</span>`;
+    1198        }).join('');
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default reload
+
+• Ran Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:8765/prep-actions-overlay.html' | Select-Object StatusCode,StatusDescription
+  └
+    StatusCode StatusDescription
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default reload
+  └ ### Ran Playwright code
+    ```js
+    … +5 lines (ctrl + t to view transcript)
+    ### Snapshot
+    - [Snapshot](.playwright-cli\page-2026-05-12T17-30-34-525Z.yml)
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\output\playwright\prep-actions-overlay.png"
+  └ ### Result
+    - [Screenshot of viewport](..\output\playwright\prep-actions-overlay.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\output\playwright\prep-actions-overlay.png"
+  └ ### Result
+    - [Screenshot of viewport](..\output\playwright\prep-actions-overlay.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The cleanup worked: Playwright now reports zero console errors or warnings. I’m going to click through the ENACT path once to verify the left-column move and resource updates happen in the mockup.
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+  └ ### Page
+    - Page URL: http://127.0.0.1:8765/prep-actions-overlay.html
+    … +281 lines (ctrl + t to view transcript)
+      - button "Enact" [ref=e520] [cursor=pointer]
+    ```
+
+• Edited Dev\AgentRef\Mockups\prep-actions-overlay.html (+4 -3)
+    1189        document.getElementById('resourceChange').innerHTML = [
+    1190 -        ['$', deltas.money, '$'],
+    1191 -        ['AP', deltas.actionPoints, 'AP'],
+    1190 +        ['Money', deltas.money, '$'],
+    1191 +        ['AP', deltas.actionPoints, 'plain'],
+    1192          ['Home', deltas.residential, ''],
+         ⋮
+    1196          const tone = value < 0 ? 'negative' : value > 0 ? 'positive' : '';
+    1197 -        return `<span class="change-pill ${tone}">${label} ${formatDelta(value, format)}</span>`;
+    1197 +        const text = format === 'plain' ? formatDelta(value) : formatDelta(value, format);
+    1198 +        return `<span class="change-pill ${tone}">${label} ${text}</span>`;
+    1199        }).join('');
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default reload
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default reload
+  └ ### Ran Playwright code
+    ```js
+    … +5 lines (ctrl + t to view transcript)
+    ### Snapshot
+    - [Snapshot](.playwright-cli\page-2026-05-12T17-31-22-379Z.yml)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default click e520
+  └ ### Ran Playwright code
+    ```js
+    … +5 lines (ctrl + t to view transcript)
+    ### Snapshot
+    - [Snapshot](.playwright-cli\page-2026-05-12T17-31-30-591Z.yml)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+  └ ### Page
+    - Page URL: http://127.0.0.1:8765/prep-actions-overlay.html
+    … +293 lines (ctrl + t to view transcript)
+      - button "Enact" [active] [ref=e520] [cursor=pointer]
+    ```
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The ENACT flow is working: after one click, the selected card appears in the Enacted column, money drops from 13 to 11, and the three opinion totals rise from 6 to 7. I’m shutting down the temporary local server/browser
+  session now.
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+
+• Ran Stop-Process -Id 40068
+  └ (no output)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+  └ Browser 'default' closed
+
+
+• Ran git status --short
+  └ ?? .playwright-cli/
+    ?? Dev/AgentRef/Mockups/
+    ?? ../output/
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Playwright left two untracked scratch folders (.playwright-cli and output/playwright). I’m checking their resolved paths and contents, then I’ll remove only those generated verification artifacts so the mockup HTML is
+  the only repo change.
+
+• Running Resolve-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli'
+
+• Running Resolve-Path 'C:\Users\hmark\flood-game\output'
+
+• Running Get-ChildItem -Recurse -Force 'C:\Users\hmark\flood-game\output'
+
+• Ran Resolve-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli'
+  └
+    Path
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Resolve-Path 'C:\Users\hmark\flood-game\output'
+  └
+    Path
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Get-ChildItem -Recurse -Force 'C:\Users\hmark\flood-game\output'
+  └
+
+    … +14 lines (ctrl + t to view transcript)
+
+
+
+• Ran Get-ChildItem -Recurse -Force 'C:\Users\hmark\flood-game\Assets\.playwright-cli' | Select-Object FullName,Length
+  └
+    FullName                                                                              Length
+    … +6 lines (ctrl + t to view transcript)
+
+
+
+• Ran Remove-Item -Recurse -LiteralPath 'C:\Users\hmark\flood-game\Assets\.playwright-cli','C:\Users\hmark\flood-game\output'
+  └ (no output)
+
+• Ran git status --short
+  └ ?? Dev/AgentRef/Mockups/
+
+• Running Get-ChildItem -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups'
+
+• Ran Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern '<link rel="icon"|Money|AP|const actions|Municipal Tax Increase|Flood Defense Department Expansion'
+  └
+    Dev\AgentRef\Mockups\prep-actions-overlay.html:6:  <link rel="icon" href="data:,">
+    … +8 lines (ctrl + t to view transcript)
+    Dev\AgentRef\Mockups\prep-actions-overlay.html:190:      gap: 0;
+    Dev\AgentRef\Mockups\prep-actions-overlay.html:212:      gap: 24px;
+
+• Ran Get-ChildItem -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups'
+  └
+
+    … +6 lines (ctrl + t to view transcript)
+
+
+
+• Ran Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern '<link rel="icon"|Money|AP|const actions|Municipal Tax Increase|Flood Defense Department Expansion'
+  └
+    Dev\AgentRef\Mockups\prep-actions-overlay.html:6:  <link rel="icon" href="data:,">
+    … +112 lines (ctrl + t to view transcript)
+
+
+
+• Updated Plan
+  └ Created the self-contained HTML mockup and verified it through a localhost Playwright pass with zero console errors; ENACT moves a selected card left and applies visible resource/opinion updates.
+    ✔ Inspect reference files and existing mockup conventions
+    ✔ Build static Preparation Actions overlay HTML/CSS/JS
+    ✔ Open/read the result for obvious layout and data issues
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Done: Dev/AgentRef/Mockups/prep-actions-overlay.html
+
+  It’s a self-contained HTML mockup with the three-column overlay, all current prep-action cards from PrepActionLib.md, selectable card info on the right, and an ENACT flow that moves the selected card left and applies
+  visible resource/opinion changes.
+
+  Verification: loaded it through a temporary localhost server with Playwright, checked zero console errors/warnings, and confirmed one ENACT click updates the Enacted column and totals.
+
+  Note: cost/resource values come from the metadata. The right-panel “Real-Life Basis” and “Tooltip” copy is draft copy because those fields are not currently present in PrepActionLib.md.
+
+  If approved for Unity, likely production touch points are the Preparation Actions overlay prefab/layout, card view renderer, selected-info panel binding, cost/resource display component, and enact/apply-action
+  controller path.
+
+─ Worked for 14m 22s ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.130.0)                                                     │
+│                                                                                 │
+│ Visit https://chatgpt.com/codex/settings/usage for up-to-date                   │
+│ information on rate limits and credits                                          │
+│                                                                                 │
+│  Model:                gpt-5.5 (reasoning xhigh, summaries auto)                │
+│  Directory:            ~\flood-game\Assets                                      │
+│  Permissions:          Full Access                                              │
+│  Agents.md:            <none>                                                   │
+│  Account:              hnmarkin@crimson.ua.edu (Business)                       │
+│  Collaboration mode:   Default                                                  │
+│  Session:              019e1d18-a7e2-7bc2-b4ee-90d0481abd8c                     │
+│                                                                                 │
+│  Context window:       71% left (84.7K used / 258K)                             │
+│  5h limit:             [██████████░░░░░░░░░░] 49% left (resets 16:01)           │
+│  Weekly limit:         [████████████████░░░░] 81% left (resets 15:11 on 14 May) │
+╰─────────────────────────────────────────────────────────────────────────────────╯
+
+
+› Open the html file yourself. As you can see, it's fairly good, but a few things need adjusting. First, the columns are off--the action cards are overextending. Also, do not show the metadata in the info section for any
+  of the cards. Can you fix the mismatched UI and change the info?
+
+
+• I’ll use the Playwright browser check again so I’m looking at the same kind of rendered page, then I’ll adjust the HTML/CSS and remove the metadata block from the info panel.
+
+• Ran Get-Content -Path 'C:\Users\hmark\.codex\skills\playwright\SKILL.md' -TotalCount 80
+  └ ---
+    name: "playwright"
+    … +77 lines (ctrl + t to view transcript)
+
+    ## When to snapshot again
+
+• Running Get-Command npx.cmd
+
+• Ran Get-Command npx.cmd
+  └
+    CommandType     Name                                               Version    Source
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Start-Process -WindowStyle Hidden -FilePath python -ArgumentList @('-m','http.server','8765','--bind','127.0.0.1') -WorkingDirectory 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups' -PassThru | Select-Object
+  │ Id,ProcessName
+  └
+       Id ProcessName
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli open "http://127.0.0.1:8765/prep-actions-overlay.html"
+
+• Ran Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:8765/prep-actions-overlay.html' | Select-Object StatusCode,StatusDescription
+  └
+    StatusCode StatusDescription
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli open "http://127.0.0.1:8765/prep-actions-overlay.html"
+  └ (no output)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli list
+  └ ### Browsers
+    - default:
+    … +2 lines (ctrl + t to view transcript)
+      - user-data-dir: <in-memory>
+      - headed: false
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1920 1080
+  └ ### Ran Playwright code
+    ```js
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    ```
+
+• Ran New-Item -ItemType Directory -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview' | Select-Object FullName
+  └
+    FullName
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview\prep-actions-before.png"
+  └ ### Result
+    - [Screenshot of viewport](Dev\AgentRef\Mockups\_preview\prep-actions-before.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+• Viewed Image
+  └ Dev\AgentRef\Mockups\_preview\prep-actions-before.png
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• I can see the mismatch now: the middle card grid is visually spilling against the neighboring columns and the lower row is getting awkwardly clipped by the bottom controls. I’m going to tighten the three-column
+  geometry, constrain the available-card grid inside a clearer center lane, and replace the metadata section with only player-facing info.
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1366 768
+  └ ### Ran Playwright code
+    ```js
+    await page.setViewportSize({ width: 1366, height: 768 });
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview\prep-actions-before-1366.png"
+  └ ### Result
+    - [Screenshot of viewport](Dev\AgentRef\Mockups\_preview\prep-actions-before-1366.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+• Viewed Image
+  └ Dev\AgentRef\Mockups\_preview\prep-actions-before-1366.png
+
+• Running Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern 'min-width: 1220px|\.stage|linear-gradient|\.layout|@media|available-grid|action-card|info-kicker|
+  │ Metadata' -Context 0,8
+
+• Ran Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern 'min-width: 1220px|\.stage|linear-gradient|\.layout|@media|available-grid|action-card|info-kicker|
+  │ Metadata' -Context 0,8
+  └
+    > Dev\AgentRef\Mockups\prep-actions-overlay.html:44:      min-width: 1220px;
+    … +156 lines (ctrl + t to view transcript)
+
+
+
+• Ran Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern 'function renderInfo' -Context 0,60
+  └
+    > Dev\AgentRef\Mockups\prep-actions-overlay.html:1137:    function renderInfo() {
+    … +60 lines (ctrl + t to view transcript)
+
+
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• I’m editing the mockup now. The main changes are: responsive column widths instead of the fixed 1400px small-screen stage, a constrained two-card grid inside the Available lane, smaller adaptive card height, and a right
+  info panel that stops after description, real-life basis, and tooltip.
+
+• Edited Dev\AgentRef\Mockups\prep-actions-overlay.html (+59 -32)
+     34        --good: #62f336;
+     35 +      --left-col: clamp(330px, 25vw, 480px);
+     36 +      --right-col: clamp(340px, 25vw, 480px);
+     37      }
+        ⋮
+     72        background:
+     71 -        linear-gradient(90deg, rgba(255, 255, 255, 0.23) 31.5%, transparent 31.5%, transparent 68.5%, rgba(255, 255, 255, 0.23) 68.5%),
+     73 +        linear-gradient(
+     74 +          90deg,
+     75 +          rgba(255, 255, 255, 0.23) 0 var(--left-col),
+     76 +          transparent var(--left-col) calc(100% - var(--right-col)),
+     77 +          rgba(255, 255, 255, 0.23) calc(100% - var(--right-col)) 100%
+     78 +        ),
+     79          var(--bg);
+        ⋮
+    104        line-height: 1;
+    105 +      white-space: nowrap;
+    106        text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.14);
+        ⋮
+    196        display: grid;
+    189 -      grid-template-columns: 480px minmax(560px, 1fr) 480px;
+    197 +      grid-template-columns: var(--left-col) minmax(560px, 1fr) var(--right-col);
+    198        gap: 0;
+        ⋮
+    284        min-height: 0;
+    277 -      padding: 20px 8px 0;
+    285 +      padding: 20px 16px 0;
+    286        overflow: hidden auto;
+        ⋮
+    292        display: grid;
+    285 -      grid-template-columns: repeat(2, minmax(286px, 1fr));
+    286 -      gap: 16px 12px;
+    293 +      grid-template-columns: repeat(2, minmax(0, 1fr));
+    294 +      gap: 16px 14px;
+    295        align-items: start;
+    296 +      max-width: 940px;
+    297 +      margin: 0 auto;
+    298        padding-bottom: 24px;
+        ⋮
+    302        position: relative;
+    293 -      min-height: 196px;
+    303 +      min-height: clamp(160px, 18vh, 196px);
+    304        border: 0;
+        ⋮
+    336        position: relative;
+    327 -      min-height: 62px;
+    337 +      min-height: clamp(54px, 6vh, 62px);
+    338        display: grid;
+        ⋮
+    485        min-height: 0;
+    476 -      padding: 20px 60px 0;
+    486 +      padding: 20px clamp(24px, 3.1vw, 60px) 0;
+    487        overflow: hidden auto;
+        ⋮
+    553        bottom: 0;
+    544 -      width: 480px;
+    554 +      width: var(--left-col);
+    555        height: 110px;
+        ⋮
+    583        bottom: 0;
+    574 -      width: 480px;
+    584 +      width: var(--right-col);
+    585        height: 110px;
+        ⋮
+    605        bottom: 0;
+    596 -      left: 480px;
+    597 -      right: 480px;
+    606 +      left: var(--left-col);
+    607 +      right: var(--right-col);
+    608        height: 110px;
+        ⋮
+    653      @media (max-width: 1400px) {
+    644 -      html,
+    645 -      body {
+    646 -        overflow: auto;
+    654 +      .hud-left,
+    655 +      .hud-right {
+    656 +        width: 400px;
+    657 +        gap: 10px;
+    658 +        font-size: 24px;
+    659        }
+    660
+    649 -      .stage {
+    650 -        width: 1400px;
+    651 -        height: 900px;
+    661 +      .hud-left {
+    662 +        grid-template-columns: minmax(92px, 1fr) minmax(112px, 1fr) 38px 52px;
+    663        }
+    664
+    654 -      .layout {
+    655 -        grid-template-columns: 360px 680px 360px;
+    665 +      .hud-right {
+    666 +        padding-left: 24px;
+    667 +        padding-right: 8px;
+    668        }
+    669
+    658 -      .hud-left,
+    659 -      .hud-right {
+    660 -        width: 430px;
+    670 +      .hud-resource {
+    671 +        gap: 12px;
+    672        }
+    673
+    663 -      .bottom-left,
+    664 -      .enact-panel {
+    665 -        width: 360px;
+    674 +      .title-ribbon {
+    675 +        width: min(610px, 44vw);
+    676 +        font-size: 36px;
+    677        }
+    678
+    668 -      .selected-strip {
+    669 -        left: 360px;
+    670 -        right: 360px;
+    679 +      .column-heading {
+    680 +        font-size: 42px;
+    681        }
+    682
+    673 -      .info-body {
+    674 -        padding-left: 34px;
+    675 -        padding-right: 34px;
+    683 +      .badge-row {
+    684 +        padding-left: 14px;
+    685 +        padding-right: 14px;
+    686 +        gap: 8px;
+    687 +      }
+    688 +
+    689 +      .opinion-badge {
+    690 +        height: 40px;
+    691 +        grid-template-columns: 30px minmax(0, 1fr);
+    692 +        font-size: 20px;
+    693 +      }
+    694 +
+    695 +      .opinion-badge svg {
+    696 +        width: 30px;
+    697 +        height: 30px;
+    698 +      }
+    699 +
+    700 +      .cost-grid {
+    701 +        padding-left: 16px;
+    702 +        padding-right: 16px;
+    703        }
+
+• Edited Dev\AgentRef\Mockups\prep-actions-overlay.html (+0 -20)
+    1165        const card = getCard(state.selectedId) || actions[0];
+    1166 -      const deltas = pendingDeltas(card);
+    1166        document.getElementById('infoBody').innerHTML = `
+    1167          <h3 class="info-title">${escapeHtml(card.title)}</h3>
+    1169 -        <div class="info-kicker">
+    1170 -          <span class="tag">${escapeHtml(card.type)}</span>
+    1171 -          <span class="tag">${escapeHtml(card.turns)} turn${card.turns === '1' ? '' : 's'}</span>
+    1172 -          <span class="tag">Stacks: ${escapeHtml(card.stacks)}</span>
+    1173 -        </div>
+    1168
+         ⋮
+    1181            <p>${escapeHtml(card.tooltip)}</p>
+    1188 -        </section>
+    1189 -
+    1190 -        <section class="info-section">
+    1191 -          <h3>Metadata</h3>
+    1192 -          <dl>
+    1193 -            <dt>Residential</dt><dd>${escapeHtml(card.residential)} (${formatDelta(deltas.residential)})</dd>
+    1194 -            <dt>Corporate</dt><dd>${escapeHtml(card.corporate)} (${formatDelta(deltas.corporate)})</dd>
+    1195 -            <dt>Political</dt><dd>${escapeHtml(card.political)} (${formatDelta(deltas.political)})</dd>
+    1196 -            <dt>Money</dt><dd>${escapeHtml(card.money)} (${formatDelta(deltas.money, '$')})</dd>
+    1197 -            <dt>Action Pts</dt><dd>${escapeHtml(card.actionPoints)} (${formatDelta(deltas.actionPoints, 'AP')})</dd>
+    1198 -            <dt>Prereqs</dt><dd>${escapeHtml(card.prereqs)}</dd>
+    1199 -            <dt>Effects</dt><dd>${escapeHtml(card.effects.join(' | '))}</dd>
+    1200 -            <dt>Comms Fail</dt><dd>${escapeHtml(card.commsFailure)}</dd>
+    1201 -          </dl>
+    1182          </section>`;
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The layout and info panel edits are in. I’m reloading the mockup at both desktop and smaller widths now to check whether the card grid stays inside its lane and the info panel no longer exposes metadata.
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1920 1080
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default reload
+  └ ### Ran Playwright code
+    ```js
+    … +5 lines (ctrl + t to view transcript)
+    ### Snapshot
+    - [Snapshot](.playwright-cli\page-2026-05-12T17-43-43-297Z.yml)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1920 1080
+  └ ### Ran Playwright code
+    ```js
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    ```
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview\prep-actions-after-1920.png"
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+  └ ### Page
+    - Page URL: http://127.0.0.1:8765/prep-actions-overlay.html
+    … +258 lines (ctrl + t to view transcript)
+      - button "Enact" [ref=e497] [cursor=pointer]
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview\prep-actions-after-1920.png"
+  └ ### Result
+    - [Screenshot of viewport](Dev\AgentRef\Mockups\_preview\prep-actions-after-1920.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Viewed Image
+  └ Dev\AgentRef\Mockups\_preview\prep-actions-after-1920.png
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1366 768
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1366 768
+  └ ### Ran Playwright code
+    ```js
+    await page.setViewportSize({ width: 1366, height: 768 });
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default screenshot --filename "C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview\prep-actions-after-1366.png"
+  └ ### Result
+    - [Screenshot of viewport](Dev\AgentRef\Mockups\_preview\prep-actions-after-1366.png)
+    … +7 lines (ctrl + t to view transcript)
+    });
+    ```
+
+• Viewed Image
+  └ Dev\AgentRef\Mockups\_preview\prep-actions-after-1366.png
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The revised smaller-width view now keeps the cards inside the Available column instead of pushing into the Info area. I’m doing one ENACT interaction pass after the CSS changes, then I’ll clean up the browser scratch
+  files.
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default click "role=button[name='Enact']"
+  └ ### Ran Playwright code
+    ```js
+    … +5 lines (ctrl + t to view transcript)
+    ### Snapshot
+    - [Snapshot](.playwright-cli\page-2026-05-12T17-44-53-027Z.yml)
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+  └ ### Page
+    - Page URL: http://127.0.0.1:8765/prep-actions-overlay.html
+    … +270 lines (ctrl + t to view transcript)
+      - button "Enact" [active] [ref=e497] [cursor=pointer]
+    ```
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+
+• Ran Stop-Process -Id 23440
+  └ (no output)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+  └ Browser 'default' closed
+
+
+• Running Resolve-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli' -ErrorAction SilentlyContinue
+
+• Ran Resolve-Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview' -ErrorAction SilentlyContinue
+  └
+    Path
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Resolve-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli' -ErrorAction SilentlyContinue
+  └
+    Path
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Resolve-Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview' -ErrorAction SilentlyContinue
+  └
+    Path
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Remove-Item -Recurse -LiteralPath 'C:\Users\hmark\flood-game\Assets\.playwright-cli','C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\_preview'
+  └ (no output)
+
+• Running git status --short
+
+• Ran git status --short
+  └ ?? Dev/AgentRef/Mockups/
+
+• Ran Select-String -Path 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups\prep-actions-overlay.html' -Pattern 'grid-template-columns: var\(--left-col\)|max-width: 940px|Metadata|info-kicker|<h3>Description</h3>|
+  │ Real-Life Basis|Tooltip'
+  └
+    Dev\AgentRef\Mockups\prep-actions-overlay.html:11:    Draft right-panel basis/tooltip copy is included for layout pressure testing.
+    … +19 lines (ctrl + t to view transcript)
+
+
+
+• Running Get-ChildItem -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups'
+
+• Ran Test-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli'
+  └ False
+
+• Ran Get-ChildItem -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups'
+  └
+
+    … +6 lines (ctrl + t to view transcript)
+
+
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• The verification artifacts are cleaned up; only the mockup HTML remains. I noticed a few unused info-panel styles left from the old metadata tags, so I’m trimming those too to keep the mockup source aligned with what it
+  renders.
+
+• Edited Dev\AgentRef\Mockups\prep-actions-overlay.html (+1 -33)
+    500
+    501 -    .info-kicker {
+    502 -      margin-bottom: 22px;
+    503 -      display: flex;
+    504 -      flex-wrap: wrap;
+    505 -      gap: 9px;
+    506 -    }
+    507 -
+    508 -    .tag {
+    509 -      padding: 5px 10px;
+    510 -      color: white;
+    511 -      background: rgba(6, 79, 134, 0.32);
+    512 -      font-size: 18px;
+    513 -      line-height: 1;
+    514 -      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.13);
+    515 -    }
+    516 -
+    501      .info-section {
+        ⋮
+    511
+    528 -    .info-section p,
+    529 -    .info-section dl {
+    512 +    .info-section p {
+    513        margin: 0;
+        ⋮
+    515        line-height: 1.28;
+    533 -    }
+    534 -
+    535 -    .info-section dl {
+    536 -      display: grid;
+    537 -      grid-template-columns: 150px 1fr;
+    538 -      gap: 8px 16px;
+    539 -      align-items: start;
+    540 -    }
+    541 -
+    542 -    .info-section dt {
+    543 -      color: rgba(255, 255, 255, 0.78);
+    544 -    }
+    545 -
+    546 -    .info-section dd {
+    547 -      margin: 0;
+    516      }
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• I made the cleanup patch. I’m doing one final browser reload pass after that small CSS trim so the final state is verified, not just assumed.
+
+• Running Start-Process -WindowStyle Hidden -FilePath python -ArgumentList @('-m','http.server','8765','--bind','127.0.0.1') -WorkingDirectory 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups' -PassThru |
+  │ Select-Object Id,ProcessName
+
+• Ran Get-Command npx.cmd
+  └
+    CommandType     Name                                               Version    Source
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran Start-Process -WindowStyle Hidden -FilePath python -ArgumentList @('-m','http.server','8765','--bind','127.0.0.1') -WorkingDirectory 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups' -PassThru | Select-Object
+  │ Id,ProcessName
+  └
+       Id ProcessName
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Running Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:8765/prep-actions-overlay.html' | Select-Object StatusCode,StatusDescription
+
+• Ran Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:8765/prep-actions-overlay.html' | Select-Object StatusCode,StatusDescription
+  └
+    StatusCode StatusDescription
+    … +2 lines (ctrl + t to view transcript)
+
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli open "http://127.0.0.1:8765/prep-actions-overlay.html"
+  └ (no output)
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1920 1080
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default console
+  └ ### Result
+    Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default resize 1920 1080
+  └ ### Ran Playwright code
+    ```js
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    ```
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default snapshot
+  └ ### Page
+    - Page URL: http://127.0.0.1:8765/prep-actions-overlay.html
+    … +258 lines (ctrl + t to view transcript)
+      - button "Enact" [ref=e497] [cursor=pointer]
+    ```
+
+• Running npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+
+• Ran Stop-Process -Id 43288
+  └ (no output)
+
+• Ran npx.cmd --yes --package @playwright/cli playwright-cli -s=default close
+  └ Browser 'default' closed
+
+
+• Running Remove-Item -Recurse -LiteralPath 'C:\Users\hmark\flood-game\Assets\.playwright-cli' -ErrorAction SilentlyContinue
+
+• Running git status --short
+
+• Ran git status --short
+  └ ?? .playwright-cli/
+    ?? Dev/AgentRef/Mockups/
+
+• Ran Remove-Item -Recurse -LiteralPath 'C:\Users\hmark\flood-game\Assets\.playwright-cli' -ErrorAction SilentlyContinue
+  └ (no output)
+
+• Ran Get-ChildItem -Force 'C:\Users\hmark\flood-game\Assets\Dev\AgentRef\Mockups'
+  └
+
+    … +6 lines (ctrl + t to view transcript)
+
+
+
+• Running git status --short
+
+• Ran Test-Path 'C:\Users\hmark\flood-game\Assets\.playwright-cli'
+  └ False
+
+• Ran git status --short
+  └ ?? Dev/AgentRef/Mockups/
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Fixed Dev/AgentRef/Mockups/prep-actions-overlay.html.
+
+  Changes:
+
+  - Reworked the column sizing so the Available cards stay inside the middle lane instead of spilling into the neighboring columns.
+  - Removed the fixed 1400px small-screen layout that was causing mismatched/cropped columns.
+  - Tightened the card grid and responsive card sizing.
+  - Removed all metadata display from the Info panel. It now shows only title, description, real-life basis, and tooltip.
+
+  Verified in browser at 1920x1080 and 1366x768 with zero console errors. ENACT still moves the selected card left and applies resource/opinion changes.
+
+─ Worked for 8m 14s ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+› That looks good. Did you look at AGENTS.md at all?
+
+
+⚠ Heads up, you have less than 5% of your 5h limit left. Run /status for a breakdown.
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.130.0)                                                     │
+│                                                                                 │
+│ Visit https://chatgpt.com/codex/settings/usage for up-to-date                   │
+│ information on rate limits and credits                                          │
+│                                                                                 │
+│  Model:                gpt-5.5 (reasoning xhigh, summaries auto)                │
+│  Directory:            ~\flood-game\Assets                                      │
+│  Permissions:          Full Access                                              │
+│  Agents.md:            <none>                                                   │
+│  Account:              hnmarkin@crimson.ua.edu (Business)                       │
+│  Collaboration mode:   Default                                                  │
+│  Session:              019e1d18-a7e2-7bc2-b4ee-90d0481abd8c                     │
+│                                                                                 │
+│  Weekly limit:         [███████████████░░░░░] 74% left (resets 15:11 on 14 May) │
+╰─────────────────────────────────────────────────────────────────────────────────╯
+
+• I didn’t look at AGENTS.md during that pass; I followed Dev/AgentRef/guidelines.md after finding it in the referenced folder. I’m checking AGENTS.md now so I can tell you whether I missed any repo-specific instruction.
+
+• Running Get-ChildItem -Path 'C:\Users\hmark\flood-game' -Filter AGENTS.md -Recurse -Force
+
+• Ran rg --files -g AGENTS.md
+  └ (no output)
+
+• Ran Get-ChildItem -Path 'C:\Users\hmark\flood-game' -Filter AGENTS.md -Recurse -Force
+  └
+
+    … +6 lines (ctrl + t to view transcript)
+
+
+
+• Ran Get-Content -Path 'C:\Users\hmark\flood-game\AGENTS.md'
+    - Do not introduce new dependencies without explaining why. -->
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• AGENTS.md says I should also read Assets\Game\Core\Architecture\architecture.md before changes. Since I hadn’t done that, I’m reading it now to confirm the mockup didn’t conflict with project guidance.
+
+• Ran Get-Content -Path 'C:\Users\hmark\flood-game\Assets\Game\Core\Architecture\architecture.md'
+  └ # Flood Game Technical Architecture
+
+    ### Save/Load/Meta-Progression
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• No. I should have checked it first.
+
+  I read it now: it points to Assets\Dev\AgentRef\guidelines.md and Assets\Game\Core\Architecture\architecture.md. I had read the guidelines but not the architecture doc before editing. For this HTML-only mockup, the main
+  architecture guidance still lines up: UI should stay display-focused and avoid game logic. The mockup has simple fake interaction for review, but any Unity implementation should route enact/apply behavior through the
+  Preparation Action service/controller path, not the UI itself.
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.130.0)                                                     │
+│                                                                                 │
+│ Visit https://chatgpt.com/codex/settings/usage for up-to-date                   │
+│ information on rate limits and credits                                          │
+│                                                                                 │
+│  Model:                gpt-5.4-mini (reasoning medium, summaries auto)          │
+│  Directory:            ~\flood-game\Assets                                      │
+│  Permissions:          Full Access                                              │
+│  Agents.md:            <none>                                                   │
+│  Account:              hnmarkin@crimson.ua.edu (Business)                       │
+│  Collaboration mode:   Default                                                  │
+│  Session:              019e1d18-a7e2-7bc2-b4ee-90d0481abd8c                     │
+│                                                                                 │
+│  Context window:       60% left (111K used / 258K)                              │
+│  5h limit:             [█░░░░░░░░░░░░░░░░░░░] 3% left (resets 16:01)            │
+│  Weekly limit:         [███████████████░░░░░] 74% left (resets 15:11 on 14 May) │
+╰─────────────────────────────────────────────────────────────────────────────────╯
+
+
+› codex --help
+
+
+■ You've hit your usage limit. To get more access now, send a request to your admin or try again at 4:01 PM.
+
+
+› codex status
+
+
+■ You've hit your usage limit. To get more access now, send a request to your admin or try again at 4:01 PM.
+
+
+› quit
+
+
+■ You've hit your usage limit. To get more access now, send a request to your admin or try again at 4:01 PM.
+Token usage: total=493,850 input=454,108 (+ 5,595,648 cached) output=39,742 (reasoning 14,980)
+To continue this session, run codex resume 019e1d18-a7e2-7bc2-b4ee-90d0481abd8c
+
+C:\Users\hmark\flood-game\Assets>command > output.log
+'command' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\hmark\flood-game\Assets>                                                  
+
+
