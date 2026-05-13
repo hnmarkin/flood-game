@@ -82,8 +82,10 @@
     }
 
     .title-card {
-      padding: 0;
-      max-width: 440px;
+      padding: 14px 18px 16px;
+      max-width: 500px;
+      min-width: 340px;
+      background: rgba(18, 37, 52, 0.78);
     }
 
     .eyebrow {
@@ -111,9 +113,10 @@
     }
 
     .legend-card {
-      padding: 0;
+      padding: 14px 16px 16px;
       align-self: start;
-      min-width: 180px;
+      min-width: 220px;
+      background: rgba(18, 37, 52, 0.78);
     }
 
     .legend-list {
@@ -433,15 +436,15 @@
 </head>
 <body>
   <main class="screen">
-    <section class="map-shell frame" aria-label="Campaign world map">
+    <section class="map-shell" aria-label="Campaign world map">
       <div class="map-topbar">
-        <div class="title-card">
+        <div class="title-card frame">
           <span class="eyebrow">Campaign Select</span>
           <h1 class="title">World Map</h1>
           <p class="title-copy">Choose an active campaign point to inspect scenario details and launch a flood response operation.</p>
         </div>
 
-        <div class="legend-card">
+        <div class="legend-card frame">
           <span class="eyebrow">Map Key</span>
           <div class="legend-list">
             <div class="legend-row">

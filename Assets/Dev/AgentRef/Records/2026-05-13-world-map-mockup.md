@@ -9,3 +9,7 @@ Updated the mockup to zoom the background out slightly, replace the campaign poi
 Refined the layout by removing the tinted header-card containers, collapsing Mobile to a single map point, listing both Mobile hurricane campaigns in the side selection column, and adding a `BEGIN` button below the selected campaign description.
 
 Adjusted the world map behavior so the Mobile campaign list panel only appears when `Mobile, AL` is the active selected location.
+
+Restored the separate framed `World Map` title panel and `Map Key` panel after a later revert, while keeping the default font stack and removing the larger enclosing frame from the map area.
+
+Slightly increased the size of the `World Map` and `Map Key` header panels by adding internal padding and larger width bounds so they read more clearly over the map.
