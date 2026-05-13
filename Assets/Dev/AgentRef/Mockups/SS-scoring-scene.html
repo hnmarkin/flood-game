@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity Scoring Scene Mockup</title>
+  <style>
+    :root {
+      --bg-top: #8b71d4;
+      --bg-mid: #a78ce4;
+      --bg-bottom: #d7c2ff;
+      --panel: rgba(255, 245, 255, 0.86);
+      --panel-strong: rgba(255, 250, 255, 0.93);
+      --line: rgba(87, 54, 127, 0.34);
+      --line-strong: rgba(87, 54, 127, 0.56);
+      --text: #2b1945;
+      --muted: #6c578f;
+      --positive: #42824f;
+      --negative: #9a455f;
+      --accent: #7051ba;
+      --accent-soft: #c2a7ff;
+      --shadow: 0 20px 44px rgba(61, 34, 95, 0.22);
+      --font: "Trebuchet MS", "Verdana", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.34), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(243, 225, 255, 0.52), transparent 24%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 44%, var(--bg-bottom) 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      left: -8vw;
+      bottom: 12vh;
+      width: 34vw;
+      height: 34vw;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      filter: blur(4px);
+    }
+
+    body::after {
+      right: -10vw;
+      top: 10vh;
+      width: 42vw;
+      height: 42vw;
+      border-radius: 50%;
+      background: rgba(238, 221, 255, 0.16);
+      filter: blur(10px);
+    }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      width: min(1220px, calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 28px 0 34px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding: 20px 22px 18px;
+      border: 1px solid var(--line-strong);
+      background: linear-gradient(180deg, rgba(255, 246, 255, 0.88), rgba(248, 239, 255, 0.8));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(38px, 5.6vw, 72px);
+      line-height: 0.92;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      font-size: 17px;
+      line-height: 1.5;
+      color: #4a3669;
+    }
+
+    .score-chip {
+      min-width: 220px;
+      padding: 14px 18px;
+      border: 1px solid rgba(112, 81, 186, 0.4);
+      background: rgba(112, 81, 186, 0.12);
+      text-align: right;
+    }
+
+    .score-chip .label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .score-chip strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 54px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .judge-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .judge-card,
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .judge-card {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding: 20px 18px 18px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.82);
+      box-shadow:
+        inset 0 0 0 2px rgba(112, 81, 186, 0.18),
+        0 14px 24px rgba(63, 37, 93, 0.2);
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.72), transparent 22%),
+        linear-gradient(180deg, #bda0ff 0%, #8f72de 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      top: 22px;
+      border-radius: 50%;
+      background: rgba(255, 242, 230, 0.95);
+      box-shadow: 0 34px 0 18px rgba(54, 35, 84, 0.82);
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      width: 56px;
+      height: 24px;
+      bottom: 16px;
+      border-radius: 24px 24px 8px 8px;
+      background: rgba(255, 242, 230, 0.93);
+    }
+
+    .avatar-badge {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 250, 255, 0.94);
+      border: 1px solid rgba(112, 81, 186, 0.26);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .judge-name {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .judge-role {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .judge-note {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #523f73;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .panel-sub {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      border: 1px solid rgba(112, 81, 186, 0.18);
+      background: var(--panel-strong);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      margin-top: 10px;
+      font-size: 34px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .stat-detail {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #503d70;
+    }
+
+    .delta {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 5px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(112, 81, 186, 0.08);
+    }
+
+    .delta.positive {
+      color: var(--positive);
+      background: rgba(66, 130, 79, 0.12);
+    }
+
+    .delta.negative {
+      color: var(--negative);
+      background: rgba(154, 69, 95, 0.12);
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .reaction-list,
+    .status-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .reaction-item,
+    .status-item {
+      display: grid;
+      gap: 4px;
+      padding: 12px 13px;
+      border: 1px solid rgba(112, 81, 186, 0.16);
+      background: var(--panel-strong);
+    }
+
+    .reaction-item strong,
+    .status-item strong {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .reaction-item span,
+    .status-item span {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #564276;
+    }
+
+    .summary-band {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .summary-pill {
+      padding: 14px;
+      border: 1px solid rgba(112, 81, 186, 0.16);
+      background: rgba(255, 252, 255, 0.9);
+    }
+
+    .summary-pill .pill-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .summary-pill .pill-value {
+      margin-top: 8px;
+      font-size: 24px;
+      line-height: 1.05;
+      color: var(--accent);
+    }
+
+    @media (max-width: 980px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .judge-row,
+      .summary-band,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-chip {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <section class="hero" aria-label="Scoring scene header">
+      <div class="eyebrow">Scenario Debrief</div>
+      <div class="hero-main">
+        <div>
+          <h1>City Scoring Report</h1>
+          <div class="hero-copy">
+            Hurricane Sally has passed. Three judge AIs review the city response, infrastructure stability, and public consequences before the final campaign outcome is locked in.
+          </div>
+        </div>
+        <div class="score-chip" aria-label="Overall scenario grade">
+          <div class="label">Final City Grade</div>
+          <strong>B+</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="judge-row" aria-label="Judge AI avatars">
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-role">Resilience Judge</div>
+        <h2 class="judge-name">Dr. Vale</h2>
+        <p class="judge-note">Focuses on structural endurance, flood defense usage, and long-term damage containment.</p>
+      </article>
+
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-role">Public Trust Judge</div>
+        <h2 class="judge-name">Mira Quill</h2>
+        <p class="judge-note">Measures evacuation confidence, civilian impact, and the city’s social response under pressure.</p>
+      </article>
+
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-role">Systems Judge</div>
+        <h2 class="judge-name">Unit Sol-9</h2>
+        <p class="judge-note">Scores utility uptime, infrastructure survival, and operational efficiency during the crisis.</p>
+      </article>
+    </section>
+
+    <section class="results-grid" aria-label="Scoring details">
+      <div class="side-stack">
+        <article class="panel">
+          <h2>Scenario Outcome</h2>
+          <div class="panel-sub">The city prevented catastrophic collapse, but several districts still suffered visible flood damage and delayed service restoration.</div>
+          <div class="summary-band">
+            <div class="summary-pill">
+              <div class="pill-label">Districts Secured</div>
+              <div class="pill-value">8 / 11</div>
+            </div>
+            <div class="summary-pill">
+              <div class="pill-label">Emergency Funds Left</div>
+              <div class="pill-value">$1.2M</div>
+            </div>
+            <div class="summary-pill">
+              <div class="pill-label">Recovery Outlook</div>
+              <div class="pill-value">Stable</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>City Metrics</h2>
+          <div class="panel-sub">Core scoring categories for the end-of-scenario report. These panels lean into a report-style breakdown rather than in-map operational UI.</div>
+          <div class="stats-grid">
+            <section class="stat-card">
+              <div class="stat-label">Damage Stats</div>
+              <div class="stat-value">$48.6M</div>
+              <div class="stat-detail">Flooding damaged low-lying residential corridors and two industrial blocks, but downtown barriers prevented a full breach.</div>
+              <div class="delta negative">Damage Severity High</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Reputation Stats</div>
+              <div class="stat-value">+12</div>
+              <div class="stat-detail">Public approval rose after timely warnings, though business groups pushed back on late road closures.</div>
+              <div class="delta positive">Net Reputation Gain</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Infrastructure Survival</div>
+              <div class="stat-value">83%</div>
+              <div class="stat-detail">Power, pump, and transit assets held through the peak surge with only localized service interruptions.</div>
+              <div class="delta positive">Above Scenario Target</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Civilian Impact</div>
+              <div class="stat-value">Moderate</div>
+              <div class="stat-detail">Shelters remained functional and evacuation coverage was strong, but standing water extended neighborhood disruptions.</div>
+              <div class="delta">Recovery Strain Visible</div>
+            </section>
+          </div>
+        </article>
+      </div>
+
+      <div class="side-stack">
+        <article class="panel">
+          <h3>Faction Reactions</h3>
+          <div class="panel-sub">Political and community responses to the player’s crisis management choices.</div>
+          <div class="reaction-list">
+            <div class="reaction-item">
+              <strong>Residents</strong>
+              <span>Support improved thanks to fast alerts and visible emergency deployment.</span>
+            </div>
+            <div class="reaction-item">
+              <strong>Business Coalition</strong>
+              <span>Mixed response after logistics routes were cut to protect flood-prone corridors.</span>
+            </div>
+            <div class="reaction-item">
+              <strong>City Leadership</strong>
+              <span>Positive overall. The council views the response as competent, but not flawless.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3>Final City Status</h3>
+          <div class="panel-sub">A concise debrief block for the campaign flow before returning to map or progression screens.</div>
+          <div class="status-list">
+            <div class="status-item">
+              <strong>Grid Stability</strong>
+              <span>Maintained with emergency rerouting and backup generator coverage.</span>
+            </div>
+            <div class="status-item">
+              <strong>Drainage Network</strong>
+              <span>Overloaded in southern districts but recovered before total system failure.</span>
+            </div>
+            <div class="status-item">
+              <strong>Civic Confidence</strong>
+              <span>Trending upward, with strong trust in response crews and warning systems.</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
