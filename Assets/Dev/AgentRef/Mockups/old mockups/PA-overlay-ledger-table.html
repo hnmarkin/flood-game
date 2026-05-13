@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Prep Actions - Ledger Table</title>
+  <style>
+    :root {
+      --paper: #f2e8d7;
+      --paper-2: #e6d7bb;
+      --ink: #1f2428;
+      --muted: #646a6d;
+      --line: rgba(31, 36, 40, 0.12);
+      --shadow: rgba(66, 56, 40, 0.18);
+      --accent: #276d66;
+      --accent-2: #88594b;
+      --accent-3: #c49a3d;
+      --good: #2d8b4a;
+      --bad: #aa4a55;
+      --disabled: #8d8a82;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      min-width: 1220px;
+      min-height: 760px;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 78% 12%, rgba(39, 109, 102, 0.10), transparent 18%),
+        radial-gradient(circle at 18% 14%, rgba(136, 89, 75, 0.10), transparent 18%),
+        linear-gradient(180deg, #c8ae80, #917a57);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(31, 36, 40, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 36, 40, 0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      opacity: 0.58;
+    }
+
+    .page {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 68px 1fr 88px;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .top, .side, .ledger, .detail, .footer, .entry, .owned {
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px var(--shadow);
+      background: linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.18)), var(--paper);
+      border-radius: 18px;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+    }
+
+    .top h1 {
+      margin: 0;
+      font-size: 29px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .top .meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 360px;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .side {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      padding: 14px;
+      min-height: 0;
+      background:
+        linear-gradient(180deg, rgba(39,109,102,0.08), rgba(255,255,255,0.20)),
+        var(--paper);
+    }
+
+    .ledger {
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .detail {
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    .kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .owned {
+      padding: 12px 14px;
+      background: linear-gradient(180deg, rgba(39,109,102,0.12), rgba(255,255,255,0.22)), var(--paper);
+    }
+
+    .owned b {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+
+    .owned span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .stack {
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .entry {
+      position: relative;
+      padding: 12px 12px 12px 16px;
+      cursor: pointer;
+      transition: transform 120ms ease, filter 120ms ease, outline-color 120ms ease;
+      background: linear-gradient(180deg, rgba(255,255,255,0.46), rgba(255,255,255,0.20)), var(--paper);
+    }
+
+    .entry:hover,
+    .entry.hovered {
+      transform: translateX(3px);
+      filter: brightness(1.02);
+    }
+
+    .entry.selected {
+      outline: 3px solid var(--accent);
+      outline-offset: 0;
+      background: linear-gradient(180deg, rgba(39,109,102,0.10), rgba(255,255,255,0.24)), var(--paper);
+    }
+
+    .entry.disabled {
+      opacity: 0.55;
+      filter: grayscale(0.82);
+      cursor: not-allowed;
+    }
+
+    .entry.owned {
+      background: linear-gradient(180deg, rgba(39,109,102,0.12), rgba(255,255,255,0.20)), var(--paper);
+    }
+
+    .entry::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: rgba(39,109,102,0.22);
+      border-radius: 18px 0 0 18px;
+    }
+
+    .head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.08;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .metrics div,
+    .stamp,
+    .detail-box,
+    .footer-left,
+    .footer-center {
+      border-radius: 14px;
+      background: rgba(255,255,255,0.40);
+      border: 1px solid rgba(31, 36, 40, 0.08);
+    }
+
+    .metrics div {
+      padding: 8px 8px 7px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .metrics small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 2px;
+    }
+
+    .opinion {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .opinion div {
+      border-radius: 12px;
+      padding: 8px 8px 7px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .opinion .res { background: rgba(45, 139, 74, 0.12); }
+    .opinion .corp { background: rgba(39, 109, 102, 0.12); }
+    .opinion .pol { background: rgba(196, 154, 61, 0.16); }
+
+    .line {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #2b3135;
+    }
+
+    .line strong { color: var(--accent-2); }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .stamp.bad {
+      color: var(--bad);
+    }
+
+    .ledger-head {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr 0.85fr 1.05fr 1fr 0.6fr;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 0 4px;
+    }
+
+    .rows {
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      padding-right: 4px;
+      align-content: start;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr 0.85fr 1.05fr 1fr 0.6fr;
+      gap: 8px;
+      align-items: stretch;
+      padding: 10px 10px 10px 12px;
+      cursor: pointer;
+      transition: transform 120ms ease, filter 120ms ease, outline-color 120ms ease;
+      background: linear-gradient(180deg, rgba(255,255,255,0.44), rgba(255,255,255,0.2)), var(--paper);
+    }
+
+    .row:hover,
+    .row.hovered { transform: translateX(3px); filter: brightness(1.02); }
+    .row.selected { outline: 3px solid var(--accent); outline-offset: 0; }
+    .row.disabled { opacity: 0.55; filter: grayscale(0.82); cursor: not-allowed; }
+    .row.owned { background: linear-gradient(180deg, rgba(39,109,102,0.08), rgba(255,255,255,0.22)), var(--paper); }
+
+    .cell {
+      display: grid;
+      align-content: center;
+      min-height: 78px;
+      border-radius: 12px;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.30);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .cell b { display: block; margin-bottom: 3px; font-size: 18px; line-height: 1.08; }
+    .cell .muted { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+    .cell .cost { font-size: 15px; }
+
+    .detail h2 {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.05;
+    }
+
+    .detail .sub {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .detail-box {
+      padding: 12px;
+      background: rgba(255,255,255,0.42);
+    }
+
+    .detail-box h3 {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .detail-box p {
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 16px;
+    }
+
+    .footer-left {
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.36);
+    }
+
+    .footer-left strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .footer-left .muted,
+    .footer-center {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .footer-center {
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.36);
+    }
+
+    .action {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(180deg, #2b5b56, #17312f);
+    }
+
+    .action:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    @media (max-width: 1380px) {
+      .layout { grid-template-columns: 240px 1fr 320px; }
+      .ledger-head, .row { grid-template-columns: 1fr; }
+      .footer { grid-template-columns: 1fr; }
+      .action { justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <h1>Preparation Ledger</h1>
+      <div class="meta">Month 1 / Turn 1</div>
+      <div class="meta">Money 7 | AP 4 | Rows behave like a sortable docket</div>
+    </header>
+
+    <main class="layout">
+      <aside class="side">
+        <div>
+          <div class="kicker"><span>Owned docket</span><span id="ownedCount">2 files</span></div>
+          <div class="stack" id="ownedStack"></div>
+        </div>
+        <div class="detail-box">
+          <h3>Layout note</h3>
+          <p>This version treats prep actions like a ledger. The row structure makes cost, opinions, effects, and failure text scannable in one pass.</p>
+        </div>
+        <div class="detail-box">
+          <h3>Hover behavior</h3>
+          <p id="hoverNote">Hover updates the inspector and footer without losing the selected row.</p>
+        </div>
+      </aside>
+
+      <section class="ledger">
+        <div class="kicker"><span>Action rows</span><span>Selected / owned / disabled</span></div>
+        <div class="ledger-head">
+          <div>Action</div>
+          <div>Money / AP</div>
+          <div>Turns</div>
+          <div>Opinion impact</div>
+          <div>Mechanical effects / failure</div>
+          <div>Status</div>
+        </div>
+        <div class="rows" id="rows" aria-label="Preparation actions"></div>
+      </section>
+
+      <aside class="detail">
+        <h2 id="detailTitle"></h2>
+        <div class="sub" id="detailType"></div>
+        <div class="detail-box" id="detailCosts"></div>
+        <div class="detail-box" id="detailOpinions"></div>
+        <div class="detail-box" id="detailEffects"></div>
+        <div class="detail-box" id="detailBasis"></div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <strong id="footerTitle"></strong>
+        <div class="muted" id="footerType"></div>
+      </div>
+      <div class="footer-center" id="footerNote"></div>
+      <button class="action" id="enactButton" type="button">Enact</button>
+    </footer>
+  </div>
+
+  <script>
+    const actions = [
+      { id: 'drainage', title: 'Drainage Maintenance Blitz', type: 'Program / O&M', money: 2, ap: 2, turns: 1, res: '+', corp: '+', pol: '+', effects: ['Drainage Efficiency +2'], failure: 'Card fails', basis: 'Storm-drain cleaning, inlet clearing, debris removal, and emergency repairs recover capacity before the next rain window.', stacks: 3 },
+      { id: 'pump', title: 'Pump Stations + Backup Power', type: 'Project / Continuity', money: 5, ap: 5, turns: 2, res: '+', corp: '+', pol: '+', effects: ['Enables Pump Placement Menu', 'Drainage Efficiency +3'], failure: 'Pump failure chance in Crisis Phase', basis: 'Pumping assets with backup generators keep water moving when tides, surge, or outages block gravity drainage.', stacks: 2 },
+      { id: 'storage', title: 'Detention / Underground Storage', type: 'Project / Storage', money: 5, ap: 5, turns: 4, res: 'Mixed', corp: '+', pol: '+', effects: ['Drainage Efficiency +3', 'External Water Load -2', 'Event Pacing -2'], failure: 'Effects x 1/2', basis: 'Detention basins and storage tunnels temporarily hold runoff and flatten peak flow.', stacks: 2 },
+      { id: 'code', title: 'Flood-Resistant Building Code Upgrade', type: 'Policy / Standards', money: 2, ap: 3, turns: 4, res: 'Mixed / -', corp: '-', pol: 'Mixed', effects: ['Base Infrastructure Resilience +3', 'Wind Stress -1'], failure: 'Card fails', basis: 'Floodplain codes and elevation standards reduce future loss, but they raise development costs today.', stacks: 1 },
+      { id: 'warning', title: 'Early Warning & Risk Communication', type: 'Operations / Communication', money: 2, ap: 1, turns: 3, res: '+', corp: '+', pol: '+', effects: ['Communication +3', 'Event Pacing -3'], failure: 'N/A', basis: 'Forecasts, alert channels, trusted messengers, and multilingual messaging improve protective action.', stacks: 1 },
+      { id: 'tax', title: 'Municipal Tax Increase', type: 'Policy / Revenue', money: -3, ap: 1, turns: 1, res: '--', corp: '--', pol: '-', effects: ['Money +3', 'Outrage +1'], failure: 'Outrage +1 (2 total)', basis: 'Taxes, fees, and bonds fund resilience work, but the political cost is immediate.', stacks: 1 }
+    ];
+
+    const state = {
+      selected: 'code',
+      hover: 'warning',
+      money: 7,
+      ap: 4,
+      owned: ['drainage', 'warning']
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    function selectedAction() {
+      return actions.find((item) => item.id === state.selected) || actions[0];
+    }
+
+    function hoverAction() {
+      return actions.find((item) => item.id === state.hover) || selectedAction();
+    }
+
+    function ownedCount(id) {
+      return state.owned.filter((item) => item === id).length;
+    }
+
+    function canAfford(action) {
+      return state.money - Math.max(0, action.money) >= 0 && state.ap - action.ap >= 0 && ownedCount(action.id) < action.stacks;
+    }
+
+    function moneyLabel(action) {
+      return action.money < 0 ? `+$${Math.abs(action.money)}` : `-$${action.money}`;
+    }
+
+    function rowMarkup(action) {
+      const classes = [
+        'row',
+        action.id === state.selected ? 'selected' : '',
+        action.id === state.hover ? 'hovered' : '',
+        state.owned.includes(action.id) ? 'owned' : '',
+        canAfford(action) ? '' : 'disabled'
+      ].filter(Boolean).join(' ');
+      const status = ownedCount(action.id) >= action.stacks ? 'Stack cap' : state.owned.includes(action.id) ? 'Owned' : canAfford(action) ? 'Ready' : 'Blocked';
+      return `
+        <article class="${classes}" data-id="${action.id}">
+          <div class="cell">
+            <span class="muted">${action.type}</span>
+            <b>${action.title}</b>
+          </div>
+          <div class="cell">
+            <div class="cost">${moneyLabel(action)} / ${action.ap} AP</div>
+            <div class="muted">Budget + action points</div>
+          </div>
+          <div class="cell">
+            <div class="cost">${action.turns} turn${action.turns === 1 ? '' : 's'}</div>
+            <div class="muted">Preparation time</div>
+          </div>
+          <div class="cell">
+            <div>${action.res} Residential<br>${action.corp} Corporate<br>${action.pol} Political</div>
+          </div>
+          <div class="cell">
+            <div><b>Effects</b>${action.effects.join(' | ')}</div>
+            <div class="muted">Comms failure: ${action.failure}</div>
+          </div>
+          <div class="cell">
+            <div class="stamp ${status === 'Blocked' ? 'bad' : ''}">${status}</div>
+          </div>
+        </article>`;
+    }
+
+    function renderOwned() {
+      el('ownedCount').textContent = `${state.owned.length} files`;
+      el('ownedStack').innerHTML = state.owned.map((id) => {
+        const action = actions.find((item) => item.id === id);
+        return `
+          <div class="owned">
+            <b>${action.title}</b>
+            <span>${action.type}<br>${action.effects.join(' | ')}<br>${action.failure}</span>
+          </div>`;
+      }).join('');
+    }
+
+    function renderRows() {
+      el('rows').innerHTML = actions.map(rowMarkup).join('');
+      el('rows').querySelectorAll('.row').forEach((node) => {
+        node.addEventListener('click', () => {
+          state.selected = node.dataset.id;
+          render();
+        });
+        node.addEventListener('mouseenter', () => {
+          state.hover = node.dataset.id;
+          renderInspector();
+        });
+      });
+    }
+
+    function renderInspector() {
+      const action = hoverAction();
+      el('detailTitle').textContent = action.title;
+      el('detailType').textContent = action.type;
+      el('detailCosts').innerHTML = `<h3>Costs</h3><p>${moneyLabel(action)} money, ${action.ap} AP, ${action.turns} turn${action.turns === 1 ? '' : 's'}.</p>`;
+      el('detailOpinions').innerHTML = `<h3>Opinion / reputation</h3><p>Residential ${action.res}, Corporate ${action.corp}, Political ${action.pol}.</p>`;
+      el('detailEffects').innerHTML = `<h3>Mechanical effects and failure</h3><p>${action.effects.join('; ')}. Comms failure: ${action.failure}.</p>`;
+      el('detailBasis').innerHTML = `<h3>Real-world basis</h3><p>${action.basis}</p>`;
+      el('footerTitle').textContent = action.title;
+      el('footerType').textContent = action.type;
+      el('footerNote').textContent = state.hover === state.selected
+        ? 'Selected row is locked into the inspector.'
+        : `Hover is previewing ${action.title} in the ledger.`;
+      el('hoverNote').textContent = state.hover === state.selected
+        ? 'Hover and selection are aligned.'
+        : `Hover preview: ${action.title}`;
+      el('enactButton').disabled = !canAfford(selectedAction());
+    }
+
+    function enactSelected() {
+      const action = selectedAction();
+      if (!canAfford(action)) return;
+      state.money -= Math.max(0, action.money);
+      state.ap -= action.ap;
+      state.owned.unshift(action.id);
+      render();
+    }
+
+    function render() {
+      renderOwned();
+      renderRows();
+      renderInspector();
+    }
+
+    el('enactButton').addEventListener('click', enactSelected);
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Title: Drainage Maintenance Blitz
+Type: Program (Structural/O&M)
+Opinions: Residential: + | Corporate: + | Political: +
+Cost and Timing: Money: Low-Medium | Action Points: Medium | Turns: 1
+Prereqs and Stacking: Prereqs: None | Stacks: Yes, up to 3
+Effects: Drainage Efficiency ++
+Comms Failure: Card fails
+Description: Conduct intensive inspections, clear inlets and debris, remove channel obstructions, and complete urgent repairs to restore baseline drainage capacity before storm season.

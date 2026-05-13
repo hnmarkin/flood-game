@@ -1,10 +1,29 @@
 # Flood Game Agentic Coding Guidelines
 
 ## General Practices
-1. RECORD CHANGES: For code-changing tasks, create or update a markdown record in `flood-game\Assets\Game\Core\Architecture\Records`. After completing the changes, summarize them in 100 words or less.
+1. RECORD CHANGES: For code-changing tasks, create or update a markdown record in `flood-game\Assets\Dev\AgentRef\Records` if that is the repo's active records folder. Keep the record brief and summarize the change in 100 words or less.
 2. HUNT FOR EXAMPLES: Before implementing, look for existing code that solves a similar problem. If no clear reference exists, ask the developer whether they know of one.
 3. PLAN APPROPRIATELY: For substantial, risky, or architectural changes, propose a plan before editing code. For small obvious fixes, proceed with a brief explanation.
 4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
+
+## Token Economy And Verification Discipline
+1. Optimize for the lowest reasonable token cost, not the fewest turns. It is better to take multiple short prompts than one massive high-token pass.
+2. Prefer targeted reads over broad transcript ingestion. Summarize long outputs instead of replaying them back into the conversation.
+3. Do not echo raw tool output, browser snapshots, logs, or command transcripts unless those exact details are necessary to diagnose the issue.
+4. Cap expensive verification loops aggressively. Default to one implementation pass and one focused verification pass, then stop and report what remains uncertain.
+5. If additional verification would require repeated reloads, snapshots, browser clicks, or repeated status checks, pause and ask before continuing unless the developer explicitly asked for exhaustive verification.
+6. When a task is ambiguous, choose the narrower interpretation and ask for clarification rather than widening scope to "be safe."
+7. Prefer early stop conditions over completeness theater. If the answer is already clear enough, do not continue searching for marginal confidence gains.
+
+## Mockups
+1. If I ask you to prototype anything related to UI, first make an HTML mockup in `flood-game\Assets\Dev\AgentRef\Mockups`.
+2. Name mockups after the feature or screen being explored, such as `prep-phase-resource-panel.html`.
+3. Keep mockups self-contained unless there is a clear reason to share assets or scripts.
+4. Use mockups to resolve layout, interaction flow, copy, visual hierarchy, and state changes before editing Unity UI code or prefabs.
+5. Represent important UI states, including empty, disabled, selected, error, overflow, and active/in-progress states when relevant.
+6. Prefer existing game terminology, colors, icons, and layout patterns when they are known. If uncertain, leave a short note in the mockup explaining the assumption.
+7. After creating a mockup, summarize what production Unity files or systems would likely need to change if the mockup is approved.
+
 
 ## Event Subscription Rules
 

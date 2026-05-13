@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity World Map Mockup</title>
+  <style>
+    :root {
+      --ink: #2f3135;
+      --paper: #f3f6f7;
+      --panel: rgba(18, 37, 52, 0.9);
+      --panel-soft: rgba(31, 64, 89, 0.84);
+      --teal: #4eb9ac;
+      --aqua: #74d3d0;
+      --blue: #2c84c6;
+      --navy: #134a77;
+      --gold: #f2c14e;
+      --orange: #ef9a57;
+      --green: #55c96e;
+      --red: #d65353;
+      --frame: 3px solid var(--ink);
+      --font: "Trebuchet MS", "Verdana", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: var(--font);
+      background: #0f2f49;
+      color: var(--paper);
+      image-rendering: pixelated;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(9, 23, 34, 0.16), rgba(9, 23, 34, 0.72)),
+        url("../WorldMap.png");
+      background-size: auto, 100%;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+    }
+
+    .screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 20px;
+      padding: 20px;
+      background: linear-gradient(to bottom, rgba(11, 26, 37, 0.12), rgba(11, 26, 37, 0.3));
+    }
+
+    .frame {
+      border: var(--frame);
+      border-radius: 18px;
+      box-shadow:
+        0 0 0 4px rgba(243, 246, 247, 0.12) inset,
+        12px 12px 0 rgba(9, 19, 27, 0.28);
+    }
+
+    .map-shell {
+      position: relative;
+      overflow: hidden;
+      min-height: 680px;
+      background: linear-gradient(180deg, rgba(19, 74, 119, 0.12), rgba(19, 74, 119, 0.18));
+    }
+
+    .map-topbar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .title-card {
+      padding: 14px 18px 16px;
+      max-width: 500px;
+      min-width: 340px;
+      background: rgba(18, 37, 52, 0.78);
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #caeaf8;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 0.92;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0 rgba(19, 74, 119, 0.85);
+    }
+
+    .title-copy {
+      margin: 10px 0 0;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #e5f4fb;
+    }
+
+    .legend-card {
+      padding: 14px 16px 16px;
+      align-self: start;
+      min-width: 220px;
+      background: rgba(18, 37, 52, 0.78);
+    }
+
+    .legend-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border: 3px solid var(--paper);
+      border-radius: 999px;
+      background: var(--blue);
+    }
+
+    .legend-dot.selected {
+      background: var(--gold);
+      box-shadow: 0 0 0 4px rgba(242, 193, 78, 0.25);
+    }
+
+    .map-surface {
+      position: absolute;
+      inset: 0;
+    }
+
+    .map-surface::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(10, 20, 30, 0.34), transparent 34%),
+        radial-gradient(circle at 50% 50%, transparent 0 54%, rgba(255, 255, 255, 0.04) 54% 54.5%, transparent 54.5%);
+      pointer-events: none;
+    }
+
+    .point {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      margin: -13px 0 0 -13px;
+      border: 3px solid var(--paper);
+      border-radius: 999px;
+      background: var(--blue);
+      box-shadow:
+        0 0 0 4px rgba(44, 132, 198, 0.22),
+        0 0 18px rgba(71, 174, 233, 0.25);
+      cursor: pointer;
+      transition: transform 90ms steps(2), box-shadow 90ms steps(2), background-color 90ms steps(2);
+      z-index: 1;
+    }
+
+    .point:hover,
+    .point:focus-visible {
+      transform: scale(1.08);
+      outline: none;
+    }
+
+    .point.selected {
+      background: var(--gold);
+      box-shadow:
+        0 0 0 5px rgba(242, 193, 78, 0.28),
+        0 0 20px rgba(242, 193, 78, 0.45);
+    }
+
+    .point-label {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(18, 37, 52, 0.94);
+      border: 2px solid rgba(243, 246, 247, 0.18);
+      white-space: nowrap;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #ebf5fa;
+      pointer-events: none;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .campaign-list-panel,
+    .campaign-panel {
+      padding: 16px;
+      background: var(--panel);
+    }
+
+    .campaign-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .campaign-list-panel[hidden] {
+      display: none;
+    }
+
+    .campaign-entry {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 3px solid rgba(243, 246, 247, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--paper);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transition: transform 90ms steps(2), background-color 90ms steps(2);
+    }
+
+    .campaign-entry:hover,
+    .campaign-entry:focus-visible {
+      transform: translate(-2px, -2px);
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .campaign-entry.selected {
+      background: rgba(242, 193, 78, 0.18);
+      border-color: rgba(242, 193, 78, 0.42);
+    }
+
+    .campaign-entry-copy strong,
+    .campaign-entry-copy span {
+      display: block;
+    }
+
+    .campaign-entry-copy strong {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #caeaf8;
+    }
+
+    .campaign-entry-copy span {
+      margin-top: 4px;
+      font-size: 17px;
+      line-height: 1.1;
+      color: var(--paper);
+    }
+
+    .campaign-entry-tag {
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(19, 74, 119, 0.88);
+      border: 2px solid rgba(243, 246, 247, 0.16);
+      font-size: 11px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel-header strong,
+    .panel-header span {
+      display: block;
+    }
+
+    .panel-header strong {
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #caeaf8;
+    }
+
+    .panel-header span {
+      margin-top: 4px;
+      font-size: 28px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--paper);
+    }
+
+    .status-pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(78, 185, 172, 0.2);
+      border: 2px solid rgba(116, 211, 208, 0.45);
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #e8fcff;
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-card {
+      padding: 12px;
+      border-radius: 16px;
+      border: 3px solid rgba(243, 246, 247, 0.14);
+      background: var(--panel-soft);
+    }
+
+    .stat-card strong,
+    .stat-card span {
+      display: block;
+    }
+
+    .stat-card strong {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #caeaf8;
+    }
+
+    .stat-card span {
+      margin-top: 6px;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--gold);
+    }
+
+    .description {
+      margin: 0;
+      padding: 14px;
+      border-radius: 16px;
+      border: 3px solid rgba(243, 246, 247, 0.14);
+      background: rgba(10, 25, 36, 0.58);
+      font-size: 14px;
+      line-height: 1.5;
+      color: #e7f2f8;
+    }
+
+    .begin-button {
+      margin-top: 14px;
+      width: 100%;
+      padding: 16px;
+      border: var(--frame);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f2c14e 0%, #e3a631 100%);
+      color: var(--ink);
+      font: inherit;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 5px 0 rgba(47, 49, 53, 0.35);
+      transition: transform 90ms steps(2), filter 90ms steps(2);
+    }
+
+    .begin-button:hover,
+    .begin-button:focus-visible {
+      transform: translate(-2px, -2px);
+      filter: brightness(1.04);
+      outline: none;
+    }
+
+    @media (max-width: 960px) {
+      .screen {
+        grid-template-columns: 1fr;
+      }
+
+      .map-shell {
+        min-height: 560px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .screen {
+        padding: 14px;
+      }
+
+      .map-topbar {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .map-topbar {
+        position: static;
+        padding: 14px;
+      }
+
+      .map-shell {
+        min-height: 480px;
+      }
+
+      .point {
+        width: 22px;
+        height: 22px;
+        margin: -11px 0 0 -11px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <section class="map-shell" aria-label="Campaign world map">
+      <div class="map-topbar">
+        <div class="title-card frame">
+          <span class="eyebrow">Campaign Select</span>
+          <h1 class="title">World Map</h1>
+          <p class="title-copy">Choose an active campaign point to inspect scenario details and launch a flood response operation.</p>
+        </div>
+
+        <div class="legend-card frame">
+          <span class="eyebrow">Map Key</span>
+          <div class="legend-list">
+            <div class="legend-row">
+              <span class="legend-dot selected" aria-hidden="true"></span>
+              <span>Selected Campaign</span>
+            </div>
+            <div class="legend-row">
+              <span class="legend-dot" aria-hidden="true"></span>
+              <span>Available Campaign</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-surface">
+        <button
+          class="point selected"
+          style="left: 44%; top: 80%;"
+          data-title="Hurricane Sally"
+          data-location="Mobile, AL"
+          data-difficulty="4"
+          data-complexity="4"
+          data-description="A fast-moving Gulf Coast hurricane pushes storm surge and heavy rainfall into Mobile. Balance vulnerable neighborhoods, drainage pressure, and limited preparation time as the city braces for compounding flood impacts."
+          aria-pressed="true"
+          type="button"
+        >
+          <span class="point-label">Mobile, AL</span>
+        </button>
+
+        <button
+          class="point"
+          style="left: 54%; top: 83%;"
+          data-title="April 2014 Flash Flood"
+          data-location="Pensacola, FL"
+          data-difficulty="4"
+          data-complexity="3"
+          data-description="Extreme rainfall rapidly overwhelms low-lying corridors and transportation links, forcing fast tradeoffs under intense urban flash flooding."
+          aria-pressed="false"
+          type="button"
+        >
+          <span class="point-label">Pensacola, FL</span>
+        </button>
+
+        <button
+          class="point"
+          style="left: 62%; top: 87%;"
+          data-title="Hurricane Michael"
+          data-location="Panama City Beach, FL"
+          data-difficulty="5"
+          data-complexity="4"
+          data-description="A catastrophic landfall scenario built around extreme wind damage, surge exposure, and cascading infrastructure failure along the coast."
+          aria-pressed="false"
+          type="button"
+        >
+          <span class="point-label">Panama City Beach, FL</span>
+        </button>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <section class="campaign-list-panel frame" aria-label="Mobile campaign list">
+        <span class="eyebrow">Mobile, AL</span>
+        <div class="campaign-list">
+          <button
+            class="campaign-entry selected"
+            data-title="Hurricane Sally"
+            data-location="Mobile, AL"
+            data-difficulty="4"
+            data-complexity="4"
+            data-description="A fast-moving Gulf Coast hurricane pushes storm surge and heavy rainfall into Mobile. Balance vulnerable neighborhoods, drainage pressure, and limited preparation time as the city braces for compounding flood impacts."
+            type="button"
+          >
+            <span class="campaign-entry-copy">
+              <strong>Campaign</strong>
+              <span>Hurricane Sally</span>
+            </span>
+            <span class="campaign-entry-tag">Selected</span>
+          </button>
+
+          <button
+            class="campaign-entry"
+            data-title="Hurricane Danny"
+            data-location="Mobile, AL"
+            data-difficulty="2"
+            data-complexity="3"
+            data-description="A weaker but still dangerous coastal storm tests early preparedness, localized surge planning, and drainage coordination across Mobile."
+            type="button"
+          >
+            <span class="campaign-entry-copy">
+              <strong>Campaign</strong>
+              <span>Hurricane Danny</span>
+            </span>
+            <span class="campaign-entry-tag">Mobile</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="campaign-panel frame" aria-label="Selected campaign details">
+        <div class="panel-header">
+          <div>
+            <strong id="campaign-location">Mobile, AL</strong>
+            <span id="campaign-title">Hurricane Sally</span>
+          </div>
+          <div class="status-pill">Selected</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <strong>Difficulty</strong>
+            <span id="campaign-difficulty">4</span>
+          </div>
+          <div class="stat-card">
+            <strong>Complexity</strong>
+            <span id="campaign-complexity">4</span>
+          </div>
+        </div>
+
+        <p class="description" id="campaign-description">A fast-moving Gulf Coast hurricane pushes storm surge and heavy rainfall into Mobile. Balance vulnerable neighborhoods, drainage pressure, and limited preparation time as the city braces for compounding flood impacts.</p>
+        <button class="begin-button" type="button">Begin</button>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    const points = Array.from(document.querySelectorAll(".point"));
+    const entries = Array.from(document.querySelectorAll(".campaign-entry"));
+    const mobilePanelEl = document.querySelector(".campaign-list-panel");
+    const titleEl = document.getElementById("campaign-title");
+    const locationEl = document.getElementById("campaign-location");
+    const difficultyEl = document.getElementById("campaign-difficulty");
+    const complexityEl = document.getElementById("campaign-complexity");
+    const descriptionEl = document.getElementById("campaign-description");
+
+    function updateSelection(dataSource) {
+      titleEl.textContent = dataSource.dataset.title;
+      locationEl.textContent = dataSource.dataset.location;
+      difficultyEl.textContent = dataSource.dataset.difficulty;
+      complexityEl.textContent = dataSource.dataset.complexity;
+      descriptionEl.textContent = dataSource.dataset.description;
+    }
+
+    function syncEntries(activeTitle) {
+      for (const entry of entries) {
+        const isSelected = entry.dataset.title === activeTitle;
+        entry.classList.toggle("selected", isSelected);
+
+        const tag = entry.querySelector(".campaign-entry-tag");
+        if (tag) {
+          tag.textContent = isSelected ? "Selected" : "Mobile";
+        }
+      }
+    }
+
+    function syncLocationPanels(activeLocation) {
+      mobilePanelEl.hidden = activeLocation !== "Mobile, AL";
+    }
+
+    function selectPoint(point) {
+      for (const candidate of points) {
+        const isSelected = candidate === point;
+        candidate.classList.toggle("selected", isSelected);
+        candidate.setAttribute("aria-pressed", isSelected ? "true" : "false");
+      }
+
+      updateSelection(point);
+      syncEntries(point.dataset.title);
+      syncLocationPanels(point.dataset.location);
+    }
+
+    for (const point of points) {
+      point.addEventListener("click", () => selectPoint(point));
+    }
+
+    for (const entry of entries) {
+      entry.addEventListener("click", () => {
+        updateSelection(entry);
+        syncEntries(entry.dataset.title);
+        syncLocationPanels(entry.dataset.location);
+      });
+    }
+  </script>
+</body>
+</html>

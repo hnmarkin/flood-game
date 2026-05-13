@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity Scoring Scene Mockup</title>
+  <style>
+    :root {
+      --bg-base: #0a1c31;
+      --bg-deep: #123b63;
+      --bg-light: #4fa0ef;
+      --panel: rgba(14, 39, 67, 0.82);
+      --panel-strong: rgba(20, 56, 93, 0.9);
+      --line: rgba(110, 179, 241, 0.28);
+      --line-strong: rgba(141, 203, 255, 0.5);
+      --text: #eef7ff;
+      --muted: #b6cde2;
+      --positive: #7bdd9b;
+      --negative: #ff8da2;
+      --accent: #65b7ff;
+      --accent-soft: #b2dbff;
+      --shadow: 0 20px 44px rgba(2, 15, 28, 0.34);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font: "Trebuchet MS", "Verdana", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background-color: var(--bg-base);
+      background-image:
+        linear-gradient(180deg, rgba(6, 19, 34, 0.38) 0%, rgba(9, 32, 58, 0.52) 100%),
+        url("../Scoring_Background.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      left: -8vw;
+      bottom: 12vh;
+      width: 34vw;
+      height: 34vw;
+      border-radius: 50%;
+      background: rgba(101, 183, 255, 0.12);
+      filter: blur(4px);
+    }
+
+    body::after {
+      right: -10vw;
+      top: 10vh;
+      width: 42vw;
+      height: 42vw;
+      border-radius: 50%;
+      background: rgba(63, 132, 215, 0.16);
+      filter: blur(10px);
+    }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      width: min(1220px, calc(100vw - 40px));
+      margin: 0 auto;
+      height: 100vh;
+      padding: 18px 0 18px;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 10px;
+      padding: 14px 18px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(10, 34, 58, 0.78), rgba(18, 58, 96, 0.7));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 4.4vw, 48px);
+      line-height: 0.96;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .score-chip {
+      min-width: 180px;
+      padding: 10px 14px;
+      border: 1px solid rgba(101, 183, 255, 0.4);
+      border-radius: var(--radius-md);
+      background: rgba(101, 183, 255, 0.12);
+      text-align: right;
+    }
+
+    .score-chip .label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .score-chip strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 40px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .judge-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .judge-card,
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .judge-card {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      text-align: left;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.82);
+      box-shadow:
+        inset 0 0 0 2px rgba(101, 183, 255, 0.18),
+        0 14px 24px rgba(63, 37, 93, 0.2);
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.72), transparent 22%),
+        linear-gradient(180deg, #8fd0ff 0%, #4a93de 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      top: 14px;
+      border-radius: 50%;
+      background: rgba(255, 242, 230, 0.95);
+      box-shadow: 0 22px 0 12px rgba(54, 35, 84, 0.82);
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      width: 38px;
+      height: 16px;
+      bottom: 10px;
+      border-radius: 24px 24px 8px 8px;
+      background: rgba(255, 242, 230, 0.93);
+    }
+
+    .avatar-badge {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 250, 255, 0.94);
+      border: 1px solid rgba(101, 183, 255, 0.26);
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .judge-meta {
+      min-width: 0;
+    }
+
+    .judge-rating {
+      display: grid;
+      justify-items: end;
+      gap: 0;
+      align-self: center;
+      min-width: 72px;
+      text-align: right;
+    }
+
+    .judge-rating .stars {
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--accent-soft);
+      text-shadow: 0 0 12px rgba(101, 183, 255, 0.3);
+    }
+
+    .judge-name {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .judge-role {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .tab-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .panel {
+      padding: 16px;
+      border-radius: var(--radius-lg);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .panel-sub {
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: 1px solid rgba(101, 183, 255, 0.22);
+      background: rgba(15, 43, 73, 0.62);
+      color: var(--muted);
+      padding: 9px 12px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 999px;
+    }
+
+    .tab-button.active {
+      background: rgba(101, 183, 255, 0.18);
+      color: var(--accent);
+      border-color: rgba(101, 183, 255, 0.42);
+    }
+
+    .tab-content {
+      min-height: 0;
+      margin-top: 14px;
+    }
+
+    .tab-view {
+      display: none;
+      height: 100%;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      padding: 13px;
+      border: 1px solid rgba(101, 183, 255, 0.18);
+      background: var(--panel-strong);
+      border-radius: var(--radius-md);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .stat-detail {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #d3e7f8;
+    }
+
+    .delta {
+      margin-top: 8px;
+      display: inline-block;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      background: rgba(101, 183, 255, 0.08);
+    }
+
+    .delta.positive {
+      color: var(--positive);
+      background: rgba(66, 130, 79, 0.12);
+    }
+
+    .delta.negative {
+      color: var(--negative);
+      background: rgba(154, 69, 95, 0.12);
+    }
+
+    .reaction-list,
+    .status-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .reaction-item,
+    .status-item {
+      display: grid;
+      gap: 4px;
+      padding: 12px 13px;
+      border: 1px solid rgba(101, 183, 255, 0.16);
+      background: var(--panel-strong);
+      border-radius: var(--radius-md);
+    }
+
+    .reaction-item strong,
+    .status-item strong {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .reaction-item span,
+    .status-item span {
+      font-size: 13px;
+      line-height: 1.35;
+      color: #d6e8f7;
+    }
+
+    .summary-band {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .summary-pill {
+      padding: 12px;
+      border: 1px solid rgba(101, 183, 255, 0.16);
+      background: rgba(15, 43, 73, 0.78);
+      border-radius: var(--radius-md);
+    }
+
+    .summary-pill .pill-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .summary-pill .pill-value {
+      margin-top: 6px;
+      font-size: 21px;
+      line-height: 1.05;
+      color: var(--accent);
+    }
+
+    .tab-view h3 {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 860px) {
+      .judge-row,
+      .summary-band,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-chip {
+        width: 100%;
+        text-align: left;
+      }
+
+      .judge-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .judge-rating {
+        justify-items: center;
+        text-align: center;
+      }
+
+      .screen {
+        height: auto;
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <section class="hero" aria-label="Scoring scene header">
+      <div class="eyebrow">Scenario Debrief</div>
+      <div class="hero-main">
+        <div>
+          <h1>City Scoring Report</h1>
+        </div>
+        <div class="score-chip" aria-label="Overall scenario grade">
+          <div class="label">Final City Grade</div>
+          <strong>B+</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="judge-row" aria-label="Judge AI avatars">
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-meta">
+          <div class="judge-role">Resilience Judge</div>
+          <h2 class="judge-name">Dr. Vale</h2>
+        </div>
+        <div class="judge-rating" aria-label="Resilience Judge rating 2 out of 4">
+          <div class="stars" aria-hidden="true">★★☆☆</div>
+        </div>
+      </article>
+
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-meta">
+          <div class="judge-role">Public Trust Judge</div>
+          <h2 class="judge-name">Mira Quill</h2>
+        </div>
+        <div class="judge-rating" aria-label="Public Trust Judge rating 3 out of 4">
+          <div class="stars" aria-hidden="true">★★★☆</div>
+        </div>
+      </article>
+
+      <article class="judge-card">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-badge">AI</div>
+        </div>
+        <div class="judge-meta">
+          <div class="judge-role">Systems Judge</div>
+          <h2 class="judge-name">Unit Sol-9</h2>
+        </div>
+        <div class="judge-rating" aria-label="Systems Judge rating 4 out of 4">
+          <div class="stars" aria-hidden="true">★★★★</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel tab-panel" aria-label="Scoring details">
+      <div>
+        <h2>Scenario Debrief</h2>
+        <div class="panel-sub">Tabbed scoring categories keep the whole scene inside a single game screen while preserving report-style detail.</div>
+        <div class="tabs" role="tablist" aria-label="Scoring tabs">
+          <button class="tab-button active" type="button" role="tab" aria-selected="true" aria-controls="tab-outcome" data-tab="outcome">Outcome</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-metrics" data-tab="metrics">Metrics</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-reactions" data-tab="reactions">Reactions</button>
+        </div>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-view active" id="tab-outcome" role="tabpanel">
+          <h3>Scenario Outcome</h3>
+          <div class="panel-sub">The city prevented catastrophic collapse, but several districts still suffered visible flood damage and delayed service restoration.</div>
+          <div class="summary-band">
+            <div class="summary-pill">
+              <div class="pill-label">Districts Secured</div>
+              <div class="pill-value">8 / 11</div>
+            </div>
+            <div class="summary-pill">
+              <div class="pill-label">Emergency Funds Left</div>
+              <div class="pill-value">$1.2M</div>
+            </div>
+            <div class="summary-pill">
+              <div class="pill-label">Recovery Outlook</div>
+              <div class="pill-value">Stable</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-view" id="tab-metrics" role="tabpanel">
+          <h3>City Metrics</h3>
+          <div class="panel-sub">Core end-of-scenario scoring categories presented in a compact, game-friendly overview.</div>
+          <div class="stats-grid">
+            <section class="stat-card">
+              <div class="stat-label">Damage Stats</div>
+              <div class="stat-value">$48.6M</div>
+              <div class="stat-detail">Low-lying residential corridors and two industrial blocks flooded, but downtown barriers prevented a full breach.</div>
+              <div class="delta negative">Damage Severity High</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Reputation Stats</div>
+              <div class="stat-value">+12</div>
+              <div class="stat-detail">Public approval rose after timely warnings, though business groups pushed back on late road closures.</div>
+              <div class="delta positive">Net Reputation Gain</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Infrastructure Survival</div>
+              <div class="stat-value">83%</div>
+              <div class="stat-detail">Power, pump, and transit assets held through the peak surge with localized service interruptions.</div>
+              <div class="delta positive">Above Scenario Target</div>
+            </section>
+
+            <section class="stat-card">
+              <div class="stat-label">Civilian Impact</div>
+              <div class="stat-value">Moderate</div>
+              <div class="stat-detail">Shelters remained functional and evacuation coverage stayed strong despite prolonged standing water.</div>
+              <div class="delta">Recovery Strain Visible</div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-view" id="tab-reactions" role="tabpanel">
+          <h3>Faction Reactions And Final Status</h3>
+          <div class="panel-sub">Political reaction and city condition share one switchable debrief tab to reduce panel clutter.</div>
+          <div class="stats-grid">
+            <div>
+              <div class="reaction-list">
+                <div class="reaction-item">
+                  <strong>Residents</strong>
+                  <span>Support improved thanks to fast alerts and visible emergency deployment.</span>
+                </div>
+                <div class="reaction-item">
+                  <strong>Business Coalition</strong>
+                  <span>Mixed response after logistics routes were cut to protect flood-prone corridors.</span>
+                </div>
+                <div class="reaction-item">
+                  <strong>City Leadership</strong>
+                  <span>Positive overall. The council views the response as competent, but not flawless.</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="status-list">
+                <div class="status-item">
+                  <strong>Grid Stability</strong>
+                  <span>Maintained with emergency rerouting and backup generator coverage.</span>
+                </div>
+                <div class="status-item">
+                  <strong>Drainage Network</strong>
+                  <span>Overloaded in southern districts but recovered before total system failure.</span>
+                </div>
+                <div class="status-item">
+                  <strong>Civic Confidence</strong>
+                  <span>Trending upward, with strong trust in response crews and warning systems.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabViews = document.querySelectorAll(".tab-view");
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.tab;
+
+        tabButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        tabViews.forEach((view) => {
+          view.classList.toggle("active", view.id === `tab-${target}`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

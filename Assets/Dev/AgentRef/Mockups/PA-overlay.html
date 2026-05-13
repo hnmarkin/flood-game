@@ -1,0 +1,1226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Preparation Actions Overlay Mockup</title>
+  <!--
+    Static UI mockup for the Preparation Actions overlay.
+    Source values are transcribed from Dev/AgentRef/PrepActionLib.md.
+    Draft right-panel basis/tooltip copy is included for layout pressure testing.
+  -->
+  <style>
+    :root {
+      --bg: #49b9ac;
+      --bg-soft: #9ccac6;
+      --blue: #2f8dcc;
+      --blue-mid: #5f9ccc;
+      --blue-dark: #064f86;
+      --slot: #328c7d;
+      --slot-dark: #2a776b;
+      --card: #bed6e9;
+      --card-lit: #d7e9f6;
+      --ink: #ffffff;
+      --text-dark: #2d4050;
+      --shadow: rgba(16, 64, 80, 0.42);
+      --res: #06ad11;
+      --corp: #0066ec;
+      --pol: #8800e8;
+      --money: #3b4652;
+      --ap: #48515b;
+      --muted: #7e929f;
+      --danger: #c34e57;
+      --good: #62f336;
+      --left-col: clamp(330px, 25vw, 480px);
+      --right-col: clamp(340px, 25vw, 480px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-width: 1220px;
+      min-height: 720px;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Courier New", Courier, monospace;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: stretch;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 720px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.23) 0 var(--left-col),
+          transparent var(--left-col) calc(100% - var(--right-col)),
+          rgba(255, 255, 255, 0.23) calc(100% - var(--right-col)) 100%
+        ),
+        var(--bg);
+      overflow: hidden;
+    }
+
+    .hud-left,
+    .hud-right,
+    .title-ribbon,
+    .bottom-left,
+    .enact-panel {
+      background: var(--blue);
+      box-shadow: inset 0 -7px 0 var(--blue-dark);
+    }
+
+    .hud-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 600px;
+      height: 58px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 74px 86px;
+      align-items: center;
+      padding: 0 10px;
+      gap: 18px;
+      font-size: clamp(24px, 2vw, 34px);
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .hud-left .money-readout {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hud-left .cash-symbol {
+      font-size: 44px;
+      line-height: 0.8;
+    }
+
+    .hud-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 600px;
+      height: 58px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      padding: 0 18px 0 42px;
+      gap: 14px;
+      font-size: clamp(24px, 2vw, 34px);
+      line-height: 1;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .hud-resource {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      min-width: 0;
+    }
+
+    .hud-resource svg {
+      width: 42px;
+      height: 42px;
+      color: white;
+      flex: 0 0 auto;
+      shape-rendering: crispEdges;
+    }
+
+    .hud-resource .value {
+      color: var(--good);
+      min-width: 34px;
+      text-align: left;
+    }
+
+    .title-ribbon {
+      position: absolute;
+      z-index: 5;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(710px, 44vw);
+      height: 122px;
+      display: grid;
+      place-items: center;
+      font-size: clamp(38px, 3.2vw, 60px);
+      line-height: 1;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .title-ribbon::before,
+    .title-ribbon::after {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      width: 8px;
+      height: 70px;
+      background: var(--blue-dark);
+    }
+
+    .title-ribbon::before {
+      left: -8px;
+    }
+
+    .title-ribbon::after {
+      right: -8px;
+    }
+
+    .layout {
+      position: absolute;
+      inset: 130px 0 118px;
+      display: grid;
+      grid-template-columns: var(--left-col) minmax(560px, 1fr) var(--right-col);
+      gap: 0;
+      padding: 0 0 10px;
+    }
+
+    .column {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: 106px 1fr;
+    }
+
+    .column-heading {
+      display: grid;
+      place-items: center;
+      font-size: clamp(42px, 3.1vw, 58px);
+      line-height: 1;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.16);
+    }
+
+    .enacted-list {
+      padding: 20px 8px 0;
+      display: grid;
+      align-content: start;
+      gap: 24px;
+      overflow: hidden auto;
+      scrollbar-color: rgba(6, 79, 134, 0.7) transparent;
+      scrollbar-width: thin;
+    }
+
+    .enacted-slot {
+      width: 100%;
+      min-height: 186px;
+      background: var(--slot);
+      box-shadow:
+        inset 16px 0 0 rgba(255, 255, 255, 0.08),
+        inset -16px 0 0 rgba(0, 0, 0, 0.08),
+        0 7px 0 var(--slot-dark);
+      clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px);
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+
+    .enacted-card {
+      width: 100%;
+      align-self: stretch;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      background: rgba(190, 214, 233, 0.98);
+      color: var(--text-dark);
+      box-shadow: 0 7px 0 rgba(35, 63, 76, 0.55);
+      clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+      overflow: hidden;
+    }
+
+    .enacted-card .mini-title {
+      min-height: 45px;
+      display: grid;
+      place-items: center;
+      padding: 6px 12px;
+      color: white;
+      background: var(--blue);
+      font-size: 22px;
+      line-height: 1.05;
+      text-align: center;
+      text-wrap: balance;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .enacted-card .mini-body {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 12px;
+      align-content: center;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .empty-label {
+      opacity: 0.12;
+      font-size: 34px;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .available-shell {
+      min-height: 0;
+      padding: 20px 16px 0;
+      overflow: hidden auto;
+      scrollbar-color: rgba(6, 79, 134, 0.7) rgba(255, 255, 255, 0.18);
+      scrollbar-width: thin;
+    }
+
+    .available-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 14px;
+      align-items: start;
+      max-width: 940px;
+      margin: 0 auto;
+      padding-bottom: 24px;
+    }
+
+    .action-card {
+      position: relative;
+      min-height: clamp(160px, 18vh, 196px);
+      border: 0;
+      padding: 0;
+      background: var(--card);
+      color: var(--text-dark);
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 7px 0 rgba(40, 58, 68, 0.52);
+      clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+      overflow: hidden;
+      transition: transform 80ms linear, filter 80ms linear;
+    }
+
+    .action-card:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    .action-card.selected {
+      outline: 6px solid rgba(255, 255, 255, 0.72);
+      outline-offset: -10px;
+    }
+
+    .action-card.disabled {
+      cursor: default;
+      filter: saturate(0.48) brightness(0.87);
+    }
+
+    .action-card.disabled:hover {
+      transform: none;
+    }
+
+    .card-header {
+      position: relative;
+      min-height: clamp(54px, 6vh, 62px);
+      display: grid;
+      place-items: center;
+      padding: 7px 42px 8px;
+      background: var(--blue);
+      color: white;
+      font-size: clamp(18px, 1.35vw, 27px);
+      line-height: 1.06;
+      text-align: center;
+      text-wrap: balance;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .card-header .turn-pill {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      min-width: 36px;
+      padding: 3px 5px;
+      color: #d8edff;
+      background: rgba(0, 0, 0, 0.15);
+      font-size: 17px;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .badge-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 12px 18px 8px;
+    }
+
+    .opinion-badge {
+      min-width: 0;
+      height: 44px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px 0 8px;
+      color: white;
+      font-size: 24px;
+      line-height: 1;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.22);
+      box-shadow: 8px 7px 0 rgba(0, 0, 0, 0.24);
+      clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+    }
+
+    .opinion-badge.res {
+      background: var(--res);
+    }
+
+    .opinion-badge.corp {
+      background: var(--corp);
+    }
+
+    .opinion-badge.pol {
+      background: var(--pol);
+    }
+
+    .opinion-badge svg {
+      width: 34px;
+      height: 34px;
+      color: white;
+      shape-rendering: crispEdges;
+    }
+
+    .opinion-badge .value {
+      min-width: 0;
+      display: block;
+      overflow: hidden;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0 22px 14px;
+    }
+
+    .cost-line {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .cost-icon {
+      color: var(--money);
+      font-size: 40px;
+      line-height: 1;
+      text-align: center;
+      text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .cost-icon svg {
+      width: 36px;
+      height: 36px;
+      color: var(--ap);
+      shape-rendering: crispEdges;
+    }
+
+    .pips {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .pip {
+      aspect-ratio: 1;
+      max-width: 31px;
+      min-width: 14px;
+      background: #8fa0ad;
+      box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.12);
+      clip-path: polygon(50% 0, 62% 30%, 94% 30%, 68% 51%, 79% 83%, 50% 64%, 21% 83%, 32% 51%, 6% 30%, 38% 30%);
+    }
+
+    .pip.filled {
+      background: white;
+    }
+
+    .pip.gain {
+      background: var(--good);
+    }
+
+    .card-note {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 8px;
+      display: none;
+      color: #6b1f28;
+      font-size: 16px;
+      line-height: 1.05;
+      text-align: center;
+    }
+
+    .action-card.disabled .card-note {
+      display: block;
+    }
+
+    .info-body {
+      min-height: 0;
+      padding: 20px clamp(24px, 3.1vw, 60px) 0;
+      overflow: hidden auto;
+      scrollbar-color: rgba(6, 79, 134, 0.7) transparent;
+      scrollbar-width: thin;
+      color: white;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .info-title {
+      margin: 0 0 18px;
+      font-size: clamp(28px, 2vw, 39px);
+      line-height: 1.1;
+      text-wrap: balance;
+    }
+
+    .info-section {
+      margin: 0 0 22px;
+    }
+
+    .info-section h3 {
+      margin: 0 0 7px;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .info-section p {
+      margin: 0;
+      font-size: clamp(21px, 1.55vw, 29px);
+      line-height: 1.28;
+    }
+
+    .bottom-left {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: var(--left-col);
+      height: 110px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      justify-items: center;
+      font-size: 58px;
+      line-height: 1;
+    }
+
+    .bottom-icon {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      color: white;
+      text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.16);
+    }
+
+    .bottom-icon svg {
+      width: 72px;
+      height: 72px;
+      color: white;
+      shape-rendering: crispEdges;
+    }
+
+    .enact-panel {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: var(--right-col);
+      height: 110px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      cursor: pointer;
+      font-size: clamp(42px, 3vw, 60px);
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.14);
+    }
+
+    .enact-panel:disabled {
+      cursor: default;
+      color: rgba(255, 255, 255, 0.42);
+      filter: saturate(0.45);
+    }
+
+    .selected-strip {
+      position: absolute;
+      bottom: 0;
+      left: var(--left-col);
+      right: var(--right-col);
+      height: 110px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+      color: white;
+      font-size: 24px;
+      line-height: 1.12;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.11);
+    }
+
+    .selected-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .resource-change {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .change-pill {
+      padding: 7px 10px;
+      min-width: 70px;
+      text-align: center;
+      background: rgba(6, 79, 134, 0.35);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);
+      font-size: 19px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .change-pill.negative {
+      color: #ffd6dd;
+    }
+
+    .change-pill.positive {
+      color: #c8ffad;
+    }
+
+    @media (max-width: 1400px) {
+      .hud-left,
+      .hud-right {
+        width: 400px;
+        gap: 10px;
+        font-size: 24px;
+      }
+
+      .hud-left {
+        grid-template-columns: minmax(92px, 1fr) minmax(112px, 1fr) 38px 52px;
+      }
+
+      .hud-right {
+        padding-left: 24px;
+        padding-right: 8px;
+      }
+
+      .hud-resource {
+        gap: 12px;
+      }
+
+      .title-ribbon {
+        width: min(610px, 44vw);
+        font-size: 36px;
+      }
+
+      .column-heading {
+        font-size: 42px;
+      }
+
+      .badge-row {
+        padding-left: 14px;
+        padding-right: 14px;
+        gap: 8px;
+      }
+
+      .opinion-badge {
+        height: 40px;
+        grid-template-columns: 30px minmax(0, 1fr);
+        font-size: 20px;
+      }
+
+      .opinion-badge svg {
+        width: 30px;
+        height: 30px;
+      }
+
+      .cost-grid {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Preparation Actions overlay mockup">
+    <section class="hud-left" aria-label="Preparation turn status">
+      <div>Month 1</div>
+      <div>Turn 1/3</div>
+      <div class="cash-symbol">$</div>
+      <div id="moneyTop">13</div>
+    </section>
+
+    <section class="title-ribbon">Preparation Actions</section>
+
+    <section class="hud-right" aria-label="Opinion and action point status">
+      <div class="hud-resource"><span data-icon="res"></span><span id="resTop" class="value">6</span></div>
+      <div class="hud-resource"><span data-icon="corp"></span><span id="corpTop" class="value">6</span></div>
+      <div class="hud-resource"><span data-icon="pol"></span><span id="polTop" class="value">6</span></div>
+    </section>
+
+    <section class="layout">
+      <aside class="column enacted-column">
+        <h2 class="column-heading">Enacted</h2>
+        <div id="enactedList" class="enacted-list" aria-label="Enacted preparation actions"></div>
+      </aside>
+
+      <section class="column available-column">
+        <h2 class="column-heading">Available</h2>
+        <div class="available-shell">
+          <div id="availableGrid" class="available-grid" aria-label="Available preparation actions"></div>
+        </div>
+      </section>
+
+      <aside class="column info-column">
+        <h2 class="column-heading">Info</h2>
+        <div id="infoBody" class="info-body"></div>
+      </aside>
+    </section>
+
+    <section class="bottom-left" aria-label="Lower resource controls">
+      <div class="bottom-icon" data-icon="refresh"></div>
+      <div class="bottom-icon">$</div>
+    </section>
+
+    <section class="selected-strip" aria-live="polite">
+      <div id="selectedName" class="selected-name"></div>
+      <div id="resourceChange" class="resource-change"></div>
+    </section>
+
+    <button id="enactButton" class="enact-panel" type="button">Enact</button>
+  </main>
+
+  <script>
+    const iconSvg = {
+      res: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M2 15 16 3l14 12v3h-3v11h-8v-9h-6v9H5V18H2zM8 14v11h3v-9h10v9h3V14l-8-7z"/></svg>',
+      corp: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M7 3h18v26H7zM10 7v4h4V7zm8 0v4h4V7zm-8 7v4h4v-4zm8 0v4h4v-4zm-8 7v5h4v-5zm8 0v5h4v-5zM4 27h24v3H4z"/></svg>',
+      pol: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3 3 9v3h26V9zm-9 11v10h4V14zm7 0v10h4V14zm7 0v10h4V14zM4 26v3h24v-3z"/></svg>',
+      ap: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M22 4h5v10H17l4-4a9 9 0 0 0-14 6H3A13 13 0 0 1 22 4zm7 12a13 13 0 0 1-19 12H5V18h10l-4 4a9 9 0 0 0 14-6z"/></svg>',
+      refresh: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M23 4h5v10H18l4-4a10 10 0 0 0-16 8H2A14 14 0 0 1 23 4zm7 10a14 14 0 0 1-21 14H4V18h10l-4 4a10 10 0 0 0 16-8z"/></svg>'
+    };
+
+    const actions = [
+      {
+        id: 'drainage-maintenance-blitz',
+        title: 'Drainage Maintenance Blitz',
+        type: 'Program (Structural/O&M)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'Low-Medium',
+        actionPoints: 'Medium',
+        turns: '1',
+        prereqs: 'None',
+        stacks: 'Yes (up to 3)',
+        effects: ['Drainage Efficiency +2'],
+        commsFailure: 'Card Failure',
+        description: 'Intensive inspection, inlet clearing, channel/debris removal, and urgent repairs to restore baseline capacity before storm season.',
+        basis: 'Cities routinely schedule storm-drain cleaning, culvert inspections, and emergency debris removal before heavy-rain seasons to recover capacity that already exists on paper.',
+        tooltip: 'Fast, practical capacity recovery. Useful when existing drainage is weak, but it fails if crews cannot coordinate.'
+      },
+      {
+        id: 'pump-stations-backup-power',
+        title: 'Pump Stations + Backup Power',
+        type: 'Project (Structural/Continuity)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'High',
+        actionPoints: 'High',
+        turns: '2',
+        prereqs: 'None',
+        stacks: 'Yes (up to 2)',
+        effects: ['Enables Pump Placement Menu', 'Drainage Efficiency +3'],
+        commsFailure: 'Pump failure chance in Crisis Phase',
+        description: 'Construct or upgrade pump stations with redundancy and backup power systems to maintain drainage during extreme rainfall and grid outages.',
+        basis: 'Low-lying communities use pumps and backup generators to move water when gravity drainage is blocked by tides, surge, or saturated receiving waters.',
+        tooltip: 'Expensive but powerful. Adds crisis-phase pump options and protects drainage during outages.'
+      },
+      {
+        id: 'detention-underground-storage',
+        title: 'Detention / Underground Storage',
+        type: 'Project (Structural/Storage)',
+        residential: 'Mixed',
+        corporate: '+',
+        political: '+',
+        money: 'High',
+        actionPoints: 'High',
+        turns: '4',
+        prereqs: 'None',
+        stacks: 'Yes (up to 2)',
+        effects: ['Drainage Efficiency +3', 'External Water Load -2', 'Event Pacing -2'],
+        commsFailure: 'Effects x 1/2',
+        description: 'Construct detention basins, underground tanks, or storage tunnels to absorb and delay peak runoff during prolonged rainfall events.',
+        basis: 'Regional detention basins and tunnel systems temporarily store stormwater, lowering peak flows and buying time for downstream networks.',
+        tooltip: 'Long build time and high cost, but it reduces peak flood load and slows the event curve.'
+      },
+      {
+        id: 'levee-floodwall-construction',
+        title: 'Levee / Floodwall Construction',
+        type: 'Project (Structural/Barrier)',
+        residential: '+ / Mixed',
+        corporate: '+',
+        political: 'Mixed',
+        money: 'High',
+        actionPoints: 'High',
+        turns: '4',
+        prereqs: 'None',
+        stacks: 'Yes (up to 2)',
+        effects: ['Enables Levee Placement Menu', 'Base Infrastructure Resilience +3', 'External Water Load -3'],
+        commsFailure: '+2 Turns (6 total)',
+        description: 'Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk.',
+        basis: 'Levees and floodwalls are common perimeter defenses, but they introduce residual risk and can shift consequences when overtopped or poorly maintained.',
+        tooltip: 'Creates a placement decision. Strong protection, high political visibility, and slower completion if communication breaks down.'
+      },
+      {
+        id: 'critical-facility-utility-hardening',
+        title: 'Critical Facility Utility Hardening',
+        type: 'Project (Structural/Critical Infrastructure)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'High',
+        actionPoints: 'Medium-High',
+        turns: '3',
+        prereqs: 'None',
+        stacks: 'No',
+        effects: ['Base Infrastructure Resilience +3', 'Event Pacing -1'],
+        commsFailure: 'Card Failure',
+        description: 'Elevate and floodproof electrical and mechanical systems at hospitals, water plants, and other essential facilities to prevent cascading failures.',
+        basis: 'Hospitals, pump stations, water plants, and emergency operations centers often elevate generators, switchgear, and controls after major flood losses.',
+        tooltip: 'Protects services that keep the city functioning. Strong resilience value, but only once.'
+      },
+      {
+        id: 'green-streets-urban-trees',
+        title: 'Green Streets & Urban Trees',
+        type: 'Project (Nature-Based/Distributed GI)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'Medium',
+        actionPoints: 'Medium',
+        turns: '2',
+        prereqs: 'None',
+        stacks: 'Yes (up to 3)',
+        effects: ['Drainage Efficiency +2', 'External Water Load -1'],
+        commsFailure: 'Effects x 1/2',
+        description: 'Install bioswales, rain gardens, permeable corridors, and expanded tree canopy to reduce runoff and strain on stormwater systems.',
+        basis: 'Green infrastructure spreads small storage and infiltration across streets, parcels, and corridors, reducing runoff before it reaches pipes.',
+        tooltip: 'Moderate, popular, and stackable. Best as distributed pressure relief rather than a single hard barrier.'
+      },
+      {
+        id: 'flood-resistant-building-code',
+        title: 'Higher Flood-Resistant Building Code Upgrade',
+        type: 'Policy (Codes/Standards)',
+        residential: 'Mixed / -',
+        corporate: '-',
+        political: 'Mixed',
+        money: 'Low-Medium',
+        actionPoints: 'Medium',
+        turns: '4',
+        prereqs: 'None',
+        stacks: 'No (replaces prior code level)',
+        effects: ['Base Infrastructure Resilience +3', 'Wind Stress -1'],
+        commsFailure: 'Card Failure',
+        description: 'Adopt and enforce modern flood-resistant construction standards, including elevation requirements and strengthened structural provisions.',
+        basis: 'Floodplain building codes, freeboard requirements, and resilient construction standards reduce future damage but can raise development costs.',
+        tooltip: 'Slow policy payoff. Reduces future vulnerability, but some residents and builders object to stricter requirements.'
+      },
+      {
+        id: 'early-warning-risk-communication',
+        title: 'Early Warning & Risk Communication',
+        type: 'Operations (Public Communication)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'Low-Medium',
+        actionPoints: 'Low-Medium',
+        turns: '3',
+        prereqs: 'None',
+        stacks: 'No',
+        effects: ['Communication +3', 'Event Pacing -3'],
+        commsFailure: 'N/A',
+        description: 'Implement integrated alert systems, multilingual communication, and coordinated public messaging to accelerate protective action.',
+        basis: 'Warning systems combine forecasts, alert channels, trusted messengers, and accessible language so people can act before conditions worsen.',
+        tooltip: 'Improves public response and slows the crisis tempo. It is not vulnerable to the communications-failure penalty.'
+      },
+      {
+        id: 'evacuation-shelter-ops',
+        title: 'EOP Annex: Evacuation + Shelter Ops',
+        type: 'Operations (Planning)',
+        residential: '+',
+        corporate: '-',
+        political: 'Mixed',
+        money: 'Low-Medium',
+        actionPoints: 'Medium',
+        turns: '2',
+        prereqs: 'None',
+        stacks: 'Yes (up to 2)',
+        effects: ['Communication +1', 'Evacuation Speed +2', 'Shelter Capacity +1'],
+        commsFailure: 'N/A',
+        description: 'Develop and exercise evacuation routes, shelter agreements, and continuity planning to reduce casualties and cascading disruptions.',
+        basis: 'Emergency operations plans define evacuation routes, shelter operations, transportation support, and agency roles before a warning is issued.',
+        tooltip: 'Improves life-safety operations. Corporate opinion can dip because closures and evacuation orders disrupt business.'
+      },
+      {
+        id: 'sandbag-temporary-barrier-stockpile',
+        title: 'Sandbag & Temporary Barrier Stockpile',
+        type: 'Operations (Temporary Defense)',
+        residential: '+',
+        corporate: '+',
+        political: '+',
+        money: 'Low-Medium',
+        actionPoints: 'Medium',
+        turns: '1',
+        prereqs: 'None',
+        stacks: 'Yes (event-limited)',
+        effects: ['Enables Sandbags in Crisis Phase', 'External Water Load -2 temporary'],
+        commsFailure: 'Sandbags failure chance in Crisis Phase',
+        description: 'Pre-position sandbags and temporary barriers to divert floodwaters, recognizing labor intensity and potential interior drainage challenges.',
+        basis: 'Temporary barriers can protect doors, roads, and critical assets when staged early, but deployment depends on crews, timing, and local drainage.',
+        tooltip: 'Unlocks crisis-phase temporary defense. Useful and cheap, but not a substitute for permanent protection.'
+      },
+      {
+        id: 'municipal-tax-increase',
+        title: 'Municipal Tax Increase',
+        type: 'Policy (Revenue/Finance)',
+        residential: '--',
+        corporate: '--',
+        political: '-',
+        money: '+++',
+        actionPoints: 'Low',
+        turns: '1',
+        prereqs: 'None',
+        stacks: 'Limited (once every 2 Preparation Turns; escalating penalties)',
+        effects: ['Money +3', 'Outrage +1 stochastic'],
+        commsFailure: 'Outrage +1 (2 total)',
+        description: 'Raise municipal taxes to increase available funding for resilience and infrastructure investments; repeated increases raise Outrage risk and can trigger political pushback.',
+        basis: 'Local resilience programs often require new revenue, bonds, fees, or tax adjustments; the tradeoff is political and public tolerance.',
+        tooltip: 'Generates money now, but opinion drops and outrage risk rises. Repetition makes the political cost worse.'
+      },
+      {
+        id: 'flood-defense-department-expansion',
+        title: 'Flood Defense Department Expansion',
+        type: 'Program (Capacity/Operations)',
+        residential: '- (placement-weighted)',
+        corporate: '- (placement-weighted)',
+        political: 'Mixed',
+        money: 'Medium',
+        actionPoints: 'Medium',
+        turns: '2',
+        prereqs: 'None',
+        stacks: 'Yes (up to 3; diminishing returns)',
+        effects: ['Action Point Generation +1', 'Project Efficiency +1', 'Outrage +1 placement-weighted'],
+        commsFailure: 'Outrage +1 (2 total)',
+        description: 'Expand the flood defense department by hiring staff, improving logistics, and increasing operational capacity; placement determines which constituency bears the opinion cost and Outrage risk.',
+        basis: 'Dedicated staffing and logistics improve project delivery and response capacity, but new facilities or disruption can concentrate local opposition.',
+        tooltip: 'Builds long-term operating capacity. Placement should determine who bears the opinion penalty.'
+      }
+    ];
+
+    const state = {
+      selectedId: actions[0].id,
+      money: 13,
+      residential: 6,
+      corporate: 6,
+      political: 6,
+      actionPoints: 6,
+      enacted: []
+    };
+
+    function injectIcons() {
+      document.querySelectorAll('[data-icon]').forEach((node) => {
+        node.innerHTML = iconSvg[node.dataset.icon] || '';
+      });
+    }
+
+    function scoreCost(value) {
+      if (value === 'Low') return 1;
+      if (value === 'Low-Medium') return 2;
+      if (value === 'Medium') return 3;
+      if (value === 'Medium-High') return 4;
+      if (value === 'High') return 5;
+      return 0;
+    }
+
+    function opinionDelta(value) {
+      if (!value || value === 'Mixed') return 0;
+      if (value.startsWith('--')) return -2;
+      if (value.startsWith('-')) return -1;
+      if (value.startsWith('+++')) return 3;
+      if (value.startsWith('++')) return 2;
+      if (value.startsWith('+ / Mixed')) return 1;
+      if (value.startsWith('Mixed / -')) return -1;
+      if (value.startsWith('+')) return 1;
+      return 0;
+    }
+
+    function maxStacks(card) {
+      const match = card.stacks.match(/up to (\d+)/i);
+      if (match) return Number(match[1]);
+      if (card.stacks.startsWith('No')) return 1;
+      if (card.stacks.startsWith('Limited')) return 1;
+      if (card.stacks.includes('event-limited')) return 1;
+      return 1;
+    }
+
+    function enactedCount(id) {
+      return state.enacted.filter((itemId) => itemId === id).length;
+    }
+
+    function getCard(id) {
+      return actions.find((card) => card.id === id);
+    }
+
+    function moneyDelta(card) {
+      if (card.money === '+++') return 3;
+      return -scoreCost(card.money);
+    }
+
+    function actionPointDelta(card) {
+      return -scoreCost(card.actionPoints);
+    }
+
+    function pendingDeltas(card) {
+      return {
+        money: moneyDelta(card),
+        actionPoints: actionPointDelta(card),
+        residential: opinionDelta(card.residential),
+        corporate: opinionDelta(card.corporate),
+        political: opinionDelta(card.political)
+      };
+    }
+
+    function canEnact(card) {
+      const deltas = pendingDeltas(card);
+      const hasStack = enactedCount(card.id) < maxStacks(card);
+      const hasMoney = state.money + deltas.money >= 0;
+      const hasAp = state.actionPoints + deltas.actionPoints >= 0;
+      return hasStack && hasMoney && hasAp;
+    }
+
+    function disabledReason(card) {
+      const deltas = pendingDeltas(card);
+      if (enactedCount(card.id) >= maxStacks(card)) return 'Stack limit reached';
+      if (state.actionPoints + deltas.actionPoints < 0) return 'Not enough AP';
+      if (state.money + deltas.money < 0) return 'Not enough money';
+      return '';
+    }
+
+    function compactOpinion(value) {
+      return value
+        .replace('Mixed', 'Mix')
+        .replace('placement-weighted', 'place')
+        .replace(' / ', '/')
+        .replace(/\s*\(.+\)/, '');
+    }
+
+    function pips(count, mode) {
+      const filled = Math.max(0, Math.min(5, count));
+      return Array.from({ length: 5 }, (_, index) => {
+        const cls = index < filled ? (mode === 'gain' ? 'pip gain' : 'pip filled') : 'pip';
+        return `<span class="${cls}"></span>`;
+      }).join('');
+    }
+
+    function costLine(label, score, mode) {
+      const icon = label === 'money' ? '<span class="cost-icon">$</span>' : `<span class="cost-icon">${iconSvg.ap}</span>`;
+      return `<div class="cost-line">${icon}<div class="pips">${pips(score, mode)}</div></div>`;
+    }
+
+    function opinionBadge(kind, value) {
+      return `
+        <div class="opinion-badge ${kind}" title="${escapeHtml(value)}">
+          ${iconSvg[kind]}
+          <span class="value">${escapeHtml(compactOpinion(value))}</span>
+        </div>`;
+    }
+
+    function cardButton(card) {
+      const selected = state.selectedId === card.id ? ' selected' : '';
+      const disabled = canEnact(card) ? '' : ' disabled';
+      const moneyScore = card.money === '+++' ? 3 : scoreCost(card.money);
+      const moneyMode = card.money === '+++' ? 'gain' : 'cost';
+      return `
+        <button class="action-card${selected}${disabled}" type="button" data-card-id="${card.id}" aria-pressed="${state.selectedId === card.id}">
+          <div class="card-header">
+            <span>${escapeHtml(card.title)}</span>
+            <span class="turn-pill">${escapeHtml(card.turns)}T</span>
+          </div>
+          <div class="badge-row">
+            ${opinionBadge('res', card.residential)}
+            ${opinionBadge('corp', card.corporate)}
+            ${opinionBadge('pol', card.political)}
+          </div>
+          <div class="cost-grid">
+            ${costLine('money', moneyScore, moneyMode)}
+            ${costLine('ap', scoreCost(card.actionPoints), 'cost')}
+          </div>
+          <div class="card-note">${escapeHtml(disabledReason(card))}</div>
+        </button>`;
+    }
+
+    function renderAvailable() {
+      const grid = document.getElementById('availableGrid');
+      grid.innerHTML = actions.map(cardButton).join('');
+      grid.querySelectorAll('.action-card').forEach((button) => {
+        button.addEventListener('click', () => {
+          state.selectedId = button.dataset.cardId;
+          render();
+        });
+      });
+    }
+
+    function renderEnacted() {
+      const list = document.getElementById('enactedList');
+      const cards = state.enacted.map((id, index) => {
+        const card = getCard(id);
+        const deltas = pendingDeltas(card);
+        return `
+          <div class="enacted-slot">
+            <article class="enacted-card">
+              <div class="mini-title">${escapeHtml(card.title)}</div>
+              <div class="mini-body">
+                <span>Turns</span><strong>${escapeHtml(card.turns)}</strong>
+                <span>Cost</span><strong>${formatDelta(deltas.money, '$')} / ${formatDelta(deltas.actionPoints, 'AP')}</strong>
+                <span>Stack</span><strong>${enactedCountUntil(id, index)} / ${maxStacks(card)}</strong>
+              </div>
+            </article>
+          </div>`;
+      });
+      while (cards.length < 3) {
+        cards.push('<div class="enacted-slot"><span class="empty-label">Empty</span></div>');
+      }
+      list.innerHTML = cards.join('');
+    }
+
+    function enactedCountUntil(id, index) {
+      return state.enacted.slice(0, index + 1).filter((itemId) => itemId === id).length;
+    }
+
+    function renderInfo() {
+      const card = getCard(state.selectedId) || actions[0];
+      document.getElementById('infoBody').innerHTML = `
+        <h3 class="info-title">${escapeHtml(card.title)}</h3>
+
+        <section class="info-section">
+          <h3>Description</h3>
+          <p>${escapeHtml(card.description)}</p>
+        </section>
+
+        <section class="info-section">
+          <h3>Real-Life Basis</h3>
+          <p>${escapeHtml(card.basis)}</p>
+        </section>
+
+        <section class="info-section">
+          <h3>Tooltip</h3>
+          <p>${escapeHtml(card.tooltip)}</p>
+        </section>`;
+    }
+
+    function renderHud() {
+      document.getElementById('moneyTop').textContent = state.money;
+      document.getElementById('resTop').textContent = state.residential;
+      document.getElementById('corpTop').textContent = state.corporate;
+      document.getElementById('polTop').textContent = state.political;
+    }
+
+    function renderSelectedStrip() {
+      const card = getCard(state.selectedId) || actions[0];
+      const deltas = pendingDeltas(card);
+      document.getElementById('selectedName').textContent = card.title;
+      document.getElementById('resourceChange').innerHTML = [
+        ['Money', deltas.money, '$'],
+        ['AP', deltas.actionPoints, 'plain'],
+        ['Home', deltas.residential, ''],
+        ['Biz', deltas.corporate, ''],
+        ['Gov', deltas.political, '']
+      ].map(([label, value, format]) => {
+        const tone = value < 0 ? 'negative' : value > 0 ? 'positive' : '';
+        const text = format === 'plain' ? formatDelta(value) : formatDelta(value, format);
+        return `<span class="change-pill ${tone}">${label} ${text}</span>`;
+      }).join('');
+
+      const button = document.getElementById('enactButton');
+      button.disabled = !canEnact(card);
+    }
+
+    function enactSelected() {
+      const card = getCard(state.selectedId);
+      if (!card || !canEnact(card)) return;
+      const deltas = pendingDeltas(card);
+      state.money += deltas.money;
+      state.actionPoints += deltas.actionPoints;
+      state.residential = clampResource(state.residential + deltas.residential);
+      state.corporate = clampResource(state.corporate + deltas.corporate);
+      state.political = clampResource(state.political + deltas.political);
+      state.enacted.push(card.id);
+      render();
+    }
+
+    function clampResource(value) {
+      return Math.max(0, Math.min(9, value));
+    }
+
+    function formatDelta(value, label) {
+      const prefix = value > 0 ? '+' : '';
+      if (label === '$') return value >= 0 ? `+$${value}` : `-$${Math.abs(value)}`;
+      if (label === 'AP') return value >= 0 ? `+${value} AP` : `-${Math.abs(value)} AP`;
+      return `${prefix}${value}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function render() {
+      renderHud();
+      renderAvailable();
+      renderEnacted();
+      renderInfo();
+      renderSelectedStrip();
+    }
+
+    document.getElementById('enactButton').addEventListener('click', enactSelected);
+    injectIcons();
+    render();
+  </script>
+</body>
+</html>
