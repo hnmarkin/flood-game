@@ -7,33 +7,34 @@
   <title>Prep Actions - Lane Map</title>
   <style>
     :root {
-      --bg: #0d1319;
-      --ink: #edf4f7;
-      --muted: #90a0aa;
-      --panel: #121b22;
-      --panel-2: #18242d;
-      --teal: #57c4bf;
-      --blue: #6a9cff;
-      --gold: #efc15b;
-      --red: #f07c7c;
-      --line: rgba(237, 244, 247, .09);
-      --shadow: rgba(0, 0, 0, .34);
+      --bg: #f5efe5;
+      --ink: #24303a;
+      --muted: #6f7480;
+      --panel: #fff8ee;
+      --panel-2: #f6eedd;
+      --teal: #79cfc6;
+      --blue: #9db7ff;
+      --gold: #f0c98a;
+      --red: #ee8f98;
+      --line: rgba(58, 67, 77, .11);
+      --shadow: rgba(95, 80, 61, .16);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; height: 100%; min-width: 1180px; min-height: 760px; overflow: hidden; color: var(--ink); font-family: "Trebuchet MS", "Segoe UI", sans-serif; background:
-      radial-gradient(circle at 16% 14%, rgba(87,196,191,.12), transparent 24%),
-      radial-gradient(circle at 82% 18%, rgba(106,156,255,.12), transparent 24%),
-      linear-gradient(180deg, #111a20, #0d1319); }
+      radial-gradient(circle at 16% 14%, rgba(121,207,198,.24), transparent 24%),
+      radial-gradient(circle at 82% 18%, rgba(157,183,255,.22), transparent 24%),
+      radial-gradient(circle at 72% 78%, rgba(240,201,138,.18), transparent 22%),
+      linear-gradient(180deg, #f8f2e9, #efe4d1); }
     body::before {
       content: ""; position: fixed; inset: 0; background-image:
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 32px 32px; opacity: .35; pointer-events: none;
+        linear-gradient(rgba(96, 88, 78,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 88, 78,.05) 1px, transparent 1px);
+      background-size: 32px 32px; opacity: .55; pointer-events: none;
     }
     .frame { height: 100vh; display: grid; grid-template-rows: 66px 1fr 94px; gap: 14px; padding: 14px; }
-    .top, .side, .lane, .summary, .status, .chip, .action { background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)), var(--panel); border: 1px solid var(--line); box-shadow: 0 12px 30px var(--shadow); border-radius: 18px; }
+    .top, .side, .lane, .summary, .status, .chip, .action { background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.2)), var(--panel); border: 1px solid var(--line); box-shadow: 0 12px 30px var(--shadow); border-radius: 18px; }
     .top { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 10px 16px; }
-    .top h1 { margin: 0; font-size: 28px; letter-spacing: .14em; text-transform: uppercase; }
+    .top h1 { margin: 0; font-size: 28px; letter-spacing: .14em; text-transform: uppercase; color: #33424d; }
     .top .meta { color: var(--muted); font-size: 13px; }
     .layout { display: grid; grid-template-columns: 290px 1fr 340px; gap: 14px; min-height: 0; }
     .side, .lane, .summary { min-height: 0; }
@@ -42,39 +43,39 @@
     .summary { padding: 14px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 14px; }
     .kicker { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .18em; display: flex; justify-content: space-between; }
     .owned { display: grid; gap: 10px; overflow: auto; padding-right: 4px; }
-    .chip { padding: 11px 12px; background: linear-gradient(180deg, rgba(87,196,191,.11), rgba(255,255,255,.03)), var(--panel); }
+    .chip { padding: 11px 12px; background: linear-gradient(180deg, rgba(121,207,198,.14), rgba(255,255,255,.25)), var(--panel); }
     .chip b { display: block; margin-bottom: 4px; }
     .chip span { color: var(--muted); font-size: 12px; line-height: 1.4; }
     .lanes { display: grid; gap: 12px; overflow: auto; padding-right: 4px; }
     .lane-group { display: grid; gap: 10px; }
     .lane-label { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
     .lane-track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .action-card { position: relative; min-height: 160px; padding: 12px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)), var(--panel-2); border: 1px solid var(--line); cursor: pointer; transition: transform .12s ease, filter .12s ease, outline-color .12s ease; }
-    .action-card:hover, .action-card.hovered { transform: translateY(-2px); filter: brightness(1.03); }
+    .action-card { position: relative; min-height: 160px; padding: 12px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25)), var(--panel-2); border: 1px solid var(--line); cursor: pointer; transition: transform .12s ease, filter .12s ease, outline-color .12s ease; }
+    .action-card:hover, .action-card.hovered { transform: translateY(-2px); filter: brightness(1.02); }
     .action-card.selected { outline: 3px solid var(--teal); outline-offset: 0; }
     .action-card.disabled { opacity: .5; filter: grayscale(.9); cursor: not-allowed; }
-    .action-card.owned { background: linear-gradient(180deg, rgba(87,196,191,.10), rgba(255,255,255,.02)), var(--panel-2); }
-    .badge { position: absolute; right: 12px; top: 12px; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+    .action-card.owned { background: linear-gradient(180deg, rgba(121,207,198,.12), rgba(255,255,255,.22)), var(--panel-2); }
+    .badge { position: absolute; right: 12px; top: 12px; padding: 4px 8px; border-radius: 999px; background: rgba(157,183,255,.18); color: #516079; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
     .title { font-size: 20px; line-height: 1.08; padding-right: 72px; margin: 0 0 8px; }
     .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
-    .meta div { background: rgba(255,255,255,.05); border-radius: 12px; padding: 8px 9px; font-size: 12px; }
+    .meta div { background: rgba(255,255,255,.45); border-radius: 12px; padding: 8px 9px; font-size: 12px; }
     .meta small { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
     .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
     .flow div { text-align: center; padding: 9px 8px; border-radius: 12px; font-size: 13px; font-weight: 700; }
-    .flow .res { background: rgba(87,196,191,.10); }
-    .flow .corp { background: rgba(106,156,255,.10); }
-    .flow .pol { background: rgba(239,193,91,.10); }
+    .flow .res { background: rgba(121,207,198,.18); }
+    .flow .corp { background: rgba(157,183,255,.20); }
+    .flow .pol { background: rgba(240,201,138,.22); }
     .effects, .fail, .source { margin: 0; font-size: 13px; line-height: 1.45; color: #dce6ea; }
     .effects strong, .fail strong, .source strong { color: var(--gold); }
     .summary h2 { margin: 0; font-size: 30px; line-height: 1.05; }
     .summary .sub { color: var(--muted); font-size: 15px; line-height: 1.45; }
-    .panel { padding: 12px; border-radius: 16px; background: rgba(255,255,255,.04); }
+    .panel { padding: 12px; border-radius: 16px; background: rgba(255,255,255,.5); }
     .panel h3 { margin: 0 0 8px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
     .panel p { margin: 0; line-height: 1.55; }
     .status { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; gap: 12px; padding: 12px 16px; }
-    .status strong { display: block; font-size: 18px; }
+    .status strong { display: block; font-size: 18px; color: #33424d; }
     .status .muted { color: var(--muted); font-size: 13px; }
-    .action { border: 0; border-radius: 999px; padding: 14px 22px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: #092026; background: linear-gradient(180deg, #57c4bf, #3e8f8a); }
+    .action { border: 0; border-radius: 999px; padding: 14px 22px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: #24303a; background: linear-gradient(180deg, #f4cfa0, #e8b77a); }
     .action:disabled { opacity: .45; }
     @media (max-width: 1380px) { .layout { grid-template-columns: 240px 1fr 300px; } .lane-track { grid-template-columns: 1fr; } .status { grid-template-columns: 1fr; } .action { justify-self: start; } }
   </style>
