@@ -29,7 +29,7 @@
 
     body {
       margin: 0;
-      min-height: 100vh;
+      height: 100vh;
       font-family: var(--font);
       color: var(--text);
       background:
@@ -73,14 +73,17 @@
       z-index: 1;
       width: min(1220px, calc(100vw - 40px));
       margin: 0 auto;
-      padding: 28px 0 34px;
+      height: 100vh;
+      padding: 18px 0 18px;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 14px;
     }
 
     .hero {
       display: grid;
-      gap: 16px;
-      margin-bottom: 22px;
-      padding: 20px 22px 18px;
+      gap: 10px;
+      padding: 14px 18px 12px;
       border: 1px solid var(--line-strong);
       background: linear-gradient(180deg, rgba(255, 246, 255, 0.88), rgba(248, 239, 255, 0.8));
       box-shadow: var(--shadow);
@@ -104,22 +107,15 @@
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(38px, 5.6vw, 72px);
-      line-height: 0.92;
+      font-size: clamp(28px, 4.4vw, 48px);
+      line-height: 0.96;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
-    .hero-copy {
-      max-width: 700px;
-      font-size: 17px;
-      line-height: 1.5;
-      color: #4a3669;
-    }
-
     .score-chip {
-      min-width: 220px;
-      padding: 14px 18px;
+      min-width: 180px;
+      padding: 10px 14px;
       border: 1px solid rgba(112, 81, 186, 0.4);
       background: rgba(112, 81, 186, 0.12);
       text-align: right;
@@ -135,7 +131,7 @@
     .score-chip strong {
       display: block;
       margin-top: 4px;
-      font-size: 54px;
+      font-size: 40px;
       line-height: 1;
       color: var(--accent);
     }
@@ -144,7 +140,6 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
-      margin-bottom: 22px;
     }
 
     .judge-card,
@@ -157,15 +152,16 @@
 
     .judge-card {
       display: grid;
-      justify-items: center;
+      grid-template-columns: 72px minmax(0, 1fr);
+      align-items: center;
       gap: 12px;
-      padding: 20px 18px 18px;
-      text-align: center;
+      padding: 12px 14px;
+      text-align: left;
     }
 
     .avatar {
-      width: 110px;
-      height: 110px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       border: 4px solid rgba(255, 255, 255, 0.82);
       box-shadow:
@@ -183,20 +179,20 @@
     .avatar::before {
       content: "";
       position: absolute;
-      width: 48px;
-      height: 48px;
-      top: 22px;
+      width: 30px;
+      height: 30px;
+      top: 14px;
       border-radius: 50%;
       background: rgba(255, 242, 230, 0.95);
-      box-shadow: 0 34px 0 18px rgba(54, 35, 84, 0.82);
+      box-shadow: 0 22px 0 12px rgba(54, 35, 84, 0.82);
     }
 
     .avatar::after {
       content: "";
       position: absolute;
-      width: 56px;
-      height: 24px;
-      bottom: 16px;
+      width: 38px;
+      height: 16px;
+      bottom: 10px;
       border-radius: 24px 24px 8px 8px;
       background: rgba(255, 242, 230, 0.93);
     }
@@ -205,22 +201,26 @@
       position: absolute;
       right: 6px;
       bottom: 6px;
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: rgba(255, 250, 255, 0.94);
       border: 1px solid rgba(112, 81, 186, 0.26);
       display: grid;
       place-items: center;
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
       color: var(--accent);
       letter-spacing: 0.06em;
     }
 
+    .judge-meta {
+      min-width: 0;
+    }
+
     .judge-name {
       margin: 0;
-      font-size: 21px;
+      font-size: 18px;
       line-height: 1.1;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -233,21 +233,14 @@
       color: var(--muted);
     }
 
-    .judge-note {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #523f73;
-    }
-
-    .results-grid {
+    .tab-panel {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
     }
 
     .panel {
-      padding: 18px;
+      padding: 16px;
     }
 
     .panel h2,
@@ -259,19 +252,59 @@
 
     .panel-sub {
       margin-top: 6px;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.35;
       color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: 1px solid rgba(112, 81, 186, 0.22);
+      background: rgba(255, 252, 255, 0.58);
+      color: var(--muted);
+      padding: 9px 12px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: rgba(112, 81, 186, 0.16);
+      color: var(--accent);
+      border-color: rgba(112, 81, 186, 0.4);
+    }
+
+    .tab-content {
+      min-height: 0;
+      margin-top: 14px;
+    }
+
+    .tab-view {
+      display: none;
+      height: 100%;
+    }
+
+    .tab-view.active {
+      display: block;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 12px;
     }
 
     .stat-card {
-      padding: 16px;
+      padding: 13px;
       border: 1px solid rgba(112, 81, 186, 0.18);
       background: var(--panel-strong);
     }
@@ -284,24 +317,24 @@
     }
 
     .stat-value {
-      margin-top: 10px;
-      font-size: 34px;
+      margin-top: 8px;
+      font-size: 28px;
       line-height: 1;
       color: var(--accent);
     }
 
     .stat-detail {
-      margin-top: 10px;
-      font-size: 14px;
-      line-height: 1.5;
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.35;
       color: #503d70;
     }
 
     .delta {
-      margin-top: 10px;
+      margin-top: 8px;
       display: inline-block;
       padding: 5px 8px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -318,16 +351,11 @@
       background: rgba(154, 69, 95, 0.12);
     }
 
-    .side-stack {
-      display: grid;
-      gap: 18px;
-    }
-
     .reaction-list,
     .status-list {
       display: grid;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .reaction-item,
@@ -348,20 +376,20 @@
 
     .reaction-item span,
     .status-item span {
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 13px;
+      line-height: 1.35;
       color: #564276;
     }
 
     .summary-band {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 12px;
     }
 
     .summary-pill {
-      padding: 14px;
+      padding: 12px;
       border: 1px solid rgba(112, 81, 186, 0.16);
       background: rgba(255, 252, 255, 0.9);
     }
@@ -374,16 +402,10 @@
     }
 
     .summary-pill .pill-value {
-      margin-top: 8px;
-      font-size: 24px;
+      margin-top: 6px;
+      font-size: 21px;
       line-height: 1.05;
       color: var(--accent);
-    }
-
-    @media (max-width: 980px) {
-      .results-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media (max-width: 860px) {
@@ -397,6 +419,17 @@
         width: 100%;
         text-align: left;
       }
+
+      .judge-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .screen {
+        height: auto;
+        min-height: 100vh;
+      }
     }
   </style>
 </head>
@@ -407,9 +440,6 @@
       <div class="hero-main">
         <div>
           <h1>City Scoring Report</h1>
-          <div class="hero-copy">
-            Hurricane Sally has passed. Three judge AIs review the city response, infrastructure stability, and public consequences before the final campaign outcome is locked in.
-          </div>
         </div>
         <div class="score-chip" aria-label="Overall scenario grade">
           <div class="label">Final City Grade</div>
@@ -423,34 +453,47 @@
         <div class="avatar" aria-hidden="true">
           <div class="avatar-badge">AI</div>
         </div>
-        <div class="judge-role">Resilience Judge</div>
-        <h2 class="judge-name">Dr. Vale</h2>
-        <p class="judge-note">Focuses on structural endurance, flood defense usage, and long-term damage containment.</p>
+        <div class="judge-meta">
+          <div class="judge-role">Resilience Judge</div>
+          <h2 class="judge-name">Dr. Vale</h2>
+        </div>
       </article>
 
       <article class="judge-card">
         <div class="avatar" aria-hidden="true">
           <div class="avatar-badge">AI</div>
         </div>
-        <div class="judge-role">Public Trust Judge</div>
-        <h2 class="judge-name">Mira Quill</h2>
-        <p class="judge-note">Measures evacuation confidence, civilian impact, and the city’s social response under pressure.</p>
+        <div class="judge-meta">
+          <div class="judge-role">Public Trust Judge</div>
+          <h2 class="judge-name">Mira Quill</h2>
+        </div>
       </article>
 
       <article class="judge-card">
         <div class="avatar" aria-hidden="true">
           <div class="avatar-badge">AI</div>
         </div>
-        <div class="judge-role">Systems Judge</div>
-        <h2 class="judge-name">Unit Sol-9</h2>
-        <p class="judge-note">Scores utility uptime, infrastructure survival, and operational efficiency during the crisis.</p>
+        <div class="judge-meta">
+          <div class="judge-role">Systems Judge</div>
+          <h2 class="judge-name">Unit Sol-9</h2>
+        </div>
       </article>
     </section>
 
-    <section class="results-grid" aria-label="Scoring details">
-      <div class="side-stack">
-        <article class="panel">
-          <h2>Scenario Outcome</h2>
+    <section class="panel tab-panel" aria-label="Scoring details">
+      <div>
+        <h2>Scenario Debrief</h2>
+        <div class="panel-sub">Tabbed scoring categories keep the whole scene inside a single game screen while preserving report-style detail.</div>
+        <div class="tabs" role="tablist" aria-label="Scoring tabs">
+          <button class="tab-button active" type="button" role="tab" aria-selected="true" aria-controls="tab-outcome" data-tab="outcome">Outcome</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-metrics" data-tab="metrics">Metrics</button>
+          <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-reactions" data-tab="reactions">Reactions</button>
+        </div>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-view active" id="tab-outcome" role="tabpanel">
+          <h3>Scenario Outcome</h3>
           <div class="panel-sub">The city prevented catastrophic collapse, but several districts still suffered visible flood damage and delayed service restoration.</div>
           <div class="summary-band">
             <div class="summary-pill">
@@ -466,16 +509,16 @@
               <div class="pill-value">Stable</div>
             </div>
           </div>
-        </article>
+        </div>
 
-        <article class="panel">
-          <h2>City Metrics</h2>
-          <div class="panel-sub">Core scoring categories for the end-of-scenario report. These panels lean into a report-style breakdown rather than in-map operational UI.</div>
+        <div class="tab-view" id="tab-metrics" role="tabpanel">
+          <h3>City Metrics</h3>
+          <div class="panel-sub">Core end-of-scenario scoring categories presented in a compact, game-friendly overview.</div>
           <div class="stats-grid">
             <section class="stat-card">
               <div class="stat-label">Damage Stats</div>
               <div class="stat-value">$48.6M</div>
-              <div class="stat-detail">Flooding damaged low-lying residential corridors and two industrial blocks, but downtown barriers prevented a full breach.</div>
+              <div class="stat-detail">Low-lying residential corridors and two industrial blocks flooded, but downtown barriers prevented a full breach.</div>
               <div class="delta negative">Damage Severity High</div>
             </section>
 
@@ -489,60 +532,79 @@
             <section class="stat-card">
               <div class="stat-label">Infrastructure Survival</div>
               <div class="stat-value">83%</div>
-              <div class="stat-detail">Power, pump, and transit assets held through the peak surge with only localized service interruptions.</div>
+              <div class="stat-detail">Power, pump, and transit assets held through the peak surge with localized service interruptions.</div>
               <div class="delta positive">Above Scenario Target</div>
             </section>
 
             <section class="stat-card">
               <div class="stat-label">Civilian Impact</div>
               <div class="stat-value">Moderate</div>
-              <div class="stat-detail">Shelters remained functional and evacuation coverage was strong, but standing water extended neighborhood disruptions.</div>
+              <div class="stat-detail">Shelters remained functional and evacuation coverage stayed strong despite prolonged standing water.</div>
               <div class="delta">Recovery Strain Visible</div>
             </section>
           </div>
-        </article>
-      </div>
+        </div>
 
-      <div class="side-stack">
-        <article class="panel">
-          <h3>Faction Reactions</h3>
-          <div class="panel-sub">Political and community responses to the player’s crisis management choices.</div>
-          <div class="reaction-list">
-            <div class="reaction-item">
-              <strong>Residents</strong>
-              <span>Support improved thanks to fast alerts and visible emergency deployment.</span>
+        <div class="tab-view" id="tab-reactions" role="tabpanel">
+          <h3>Faction Reactions And Final Status</h3>
+          <div class="panel-sub">Political reaction and city condition share one switchable debrief tab to reduce panel clutter.</div>
+          <div class="stats-grid">
+            <div>
+              <div class="reaction-list">
+                <div class="reaction-item">
+                  <strong>Residents</strong>
+                  <span>Support improved thanks to fast alerts and visible emergency deployment.</span>
+                </div>
+                <div class="reaction-item">
+                  <strong>Business Coalition</strong>
+                  <span>Mixed response after logistics routes were cut to protect flood-prone corridors.</span>
+                </div>
+                <div class="reaction-item">
+                  <strong>City Leadership</strong>
+                  <span>Positive overall. The council views the response as competent, but not flawless.</span>
+                </div>
+              </div>
             </div>
-            <div class="reaction-item">
-              <strong>Business Coalition</strong>
-              <span>Mixed response after logistics routes were cut to protect flood-prone corridors.</span>
-            </div>
-            <div class="reaction-item">
-              <strong>City Leadership</strong>
-              <span>Positive overall. The council views the response as competent, but not flawless.</span>
+            <div>
+              <div class="status-list">
+                <div class="status-item">
+                  <strong>Grid Stability</strong>
+                  <span>Maintained with emergency rerouting and backup generator coverage.</span>
+                </div>
+                <div class="status-item">
+                  <strong>Drainage Network</strong>
+                  <span>Overloaded in southern districts but recovered before total system failure.</span>
+                </div>
+                <div class="status-item">
+                  <strong>Civic Confidence</strong>
+                  <span>Trending upward, with strong trust in response crews and warning systems.</span>
+                </div>
+              </div>
             </div>
           </div>
-        </article>
-
-        <article class="panel">
-          <h3>Final City Status</h3>
-          <div class="panel-sub">A concise debrief block for the campaign flow before returning to map or progression screens.</div>
-          <div class="status-list">
-            <div class="status-item">
-              <strong>Grid Stability</strong>
-              <span>Maintained with emergency rerouting and backup generator coverage.</span>
-            </div>
-            <div class="status-item">
-              <strong>Drainage Network</strong>
-              <span>Overloaded in southern districts but recovered before total system failure.</span>
-            </div>
-            <div class="status-item">
-              <strong>Civic Confidence</strong>
-              <span>Trending upward, with strong trust in response crews and warning systems.</span>
-            </div>
-          </div>
-        </article>
+        </div>
       </div>
     </section>
   </main>
+  <script>
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabViews = document.querySelectorAll(".tab-view");
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.tab;
+
+        tabButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        tabViews.forEach((view) => {
+          view.classList.toggle("active", view.id === `tab-${target}`);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
