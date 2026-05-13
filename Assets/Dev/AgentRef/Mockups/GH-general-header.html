@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity General Header Mockup</title>
+  <style>
+    :root {
+      --ink: #2f3135;
+      --paper: #f3f6f7;
+      --paper-soft: #dce7f0;
+      --line: #7f97ad;
+      --shadow: rgba(17, 31, 45, 0.32);
+      --header-blue: #9ec6ea;
+      --header-blue-deep: #6d9ec8;
+      --header-blue-dark: #3c6d96;
+      --header-blue-dusk: rgba(76, 110, 145, 0.86);
+      --gold: #f2c14e;
+      --green: #55c96e;
+      --red: #d65353;
+      --water: #47aee9;
+      --pixel-shadow: 4px 4px 0 rgba(26, 46, 68, 0.2);
+      --font-main: "Trebuchet MS", "Verdana", sans-serif;
+      --font-pixel: "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #183249;
+      color: var(--paper);
+      font-family: var(--font-main);
+      image-rendering: pixelated;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(11, 23, 34, 0.28), rgba(11, 23, 34, 0.78)),
+        url("../Background_Image.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .screen {
+      min-height: 100vh;
+      padding: 20px;
+      background:
+        linear-gradient(to bottom, rgba(243, 246, 247, 0.05), rgba(243, 246, 247, 0.02)),
+        linear-gradient(to top, rgba(9, 20, 28, 0.36), transparent 38%);
+    }
+
+    .toolbar-shell {
+      border: 3px solid var(--ink);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 4px rgba(243, 246, 247, 0.12) inset,
+        12px 12px 0 var(--shadow);
+      background: rgba(12, 27, 39, 0.22);
+      backdrop-filter: blur(2px);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.1fr) minmax(420px, 1.6fr) minmax(260px, 1fr);
+      align-items: stretch;
+      gap: 14px;
+      padding: 14px;
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent 34%),
+        linear-gradient(to bottom, var(--header-blue), var(--header-blue-deep));
+      border-bottom: 4px solid var(--header-blue-dark);
+    }
+
+    .toolbar-block {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .panel {
+      min-height: 72px;
+      padding: 10px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 12px;
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.16), transparent 40%),
+        rgba(243, 246, 247, 0.2);
+      box-shadow: inset 0 -4px 0 rgba(60, 109, 150, 0.34);
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #234765;
+      font-weight: 700;
+    }
+
+    .scenario-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 0.96;
+      text-transform: uppercase;
+      text-shadow: var(--pixel-shadow);
+    }
+
+    .scenario-subtitle {
+      margin: 6px 0 0;
+      color: #25435e;
+      font-size: 13px;
+      line-height: 1.35;
+      max-width: 34ch;
+    }
+
+    .phase-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: start;
+      padding: 8px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      background: rgba(243, 246, 247, 0.84);
+      color: #21425f;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .phase-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--green);
+      border: 2px solid var(--ink);
+      box-shadow: 0 0 0 3px rgba(85, 201, 110, 0.18);
+    }
+
+    .time-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .time-card,
+    .resource-card,
+    .utility-card {
+      display: grid;
+      gap: 4px;
+      align-content: center;
+      min-height: 72px;
+      padding: 10px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 12px;
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.18), transparent 46%),
+        rgba(243, 246, 247, 0.3);
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2c5272;
+    }
+
+    .value {
+      color: var(--ink);
+      font-family: var(--font-pixel);
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1;
+      font-weight: 700;
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.28);
+      white-space: nowrap;
+    }
+
+    .support {
+      color: #3e617e;
+      font-size: 12px;
+    }
+
+    .resource-grid,
+    .utility-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .resource-card {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .resource-card::before {
+      content: "";
+      position: absolute;
+      top: 11px;
+      left: 10px;
+      bottom: 11px;
+      width: 5px;
+      border-radius: 6px;
+      background: var(--water);
+    }
+
+    .resource-card.money::before {
+      background: var(--gold);
+    }
+
+    .resource-card.trust::before {
+      background: var(--green);
+    }
+
+    .resource-card.personnel::before {
+      background: var(--red);
+    }
+
+    .utility-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: start;
+    }
+
+    .icon-button-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tool-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 74px;
+      min-height: 72px;
+      padding: 10px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 12px;
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent 46%),
+        rgba(243, 246, 247, 0.34);
+      color: var(--ink);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: center;
+      box-shadow: inset 0 -4px 0 rgba(60, 109, 150, 0.34);
+    }
+
+    .tool-button.primary {
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent 46%),
+        rgba(242, 193, 78, 0.62);
+    }
+
+    .tool-button.alert {
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.16), transparent 46%),
+        rgba(214, 83, 83, 0.38);
+    }
+
+    .tool-glyph {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border: 2px solid currentColor;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .state-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px 16px;
+      background: rgba(24, 43, 59, 0.88);
+      border-top: 3px solid rgba(243, 246, 247, 0.12);
+    }
+
+    .state-stack {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .state-chip {
+      padding: 8px 12px;
+      border: 2px solid rgba(243, 246, 247, 0.22);
+      border-radius: 999px;
+      background: rgba(243, 246, 247, 0.1);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d9ebf6;
+    }
+
+    .state-chip.active {
+      background: rgba(85, 201, 110, 0.2);
+      border-color: rgba(85, 201, 110, 0.56);
+      color: #d9f8df;
+    }
+
+    .state-chip.warning {
+      background: rgba(242, 193, 78, 0.18);
+      border-color: rgba(242, 193, 78, 0.48);
+      color: #ffeabc;
+    }
+
+    .state-chip.muted {
+      opacity: 0.72;
+    }
+
+    .state-copy {
+      max-width: 48ch;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e3f1f9;
+      text-align: right;
+    }
+
+    .notes {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .note-card {
+      padding: 14px 16px;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      background: rgba(15, 31, 44, 0.78);
+      box-shadow: 8px 8px 0 rgba(10, 18, 26, 0.22);
+    }
+
+    .note-card h2 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      line-height: 1.2;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a9d4f0;
+    }
+
+    .note-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #eef7fc;
+    }
+
+    @media (max-width: 1180px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .notes {
+        grid-template-columns: 1fr;
+      }
+
+      .state-bar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .state-copy {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .screen {
+        padding: 12px;
+      }
+
+      .time-strip,
+      .resource-grid,
+      .utility-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .icon-button-row {
+        justify-content: stretch;
+      }
+
+      .tool-button {
+        flex: 1 1 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <section class="toolbar-shell" aria-label="General header toolbar mockup">
+      <div class="toolbar">
+        <div class="toolbar-block">
+          <section class="panel">
+            <div class="meta-row">
+              <span>Active Scenario</span>
+              <span>Persistent Header</span>
+            </div>
+            <h1 class="scenario-title">Mobile, Alabama</h1>
+            <p class="scenario-subtitle">Hurricane Sally response window with compact at-a-glance city status and map-safe footprint.</p>
+          </section>
+          <div class="phase-pill">
+            <span class="phase-dot" aria-hidden="true"></span>
+            Preparation Phase
+          </div>
+        </div>
+
+        <div class="toolbar-block">
+          <div class="time-strip">
+            <article class="time-card">
+              <span class="label">Day</span>
+              <span class="value">03</span>
+              <span class="support">Storm arrival in 2 turns</span>
+            </article>
+            <article class="time-card">
+              <span class="label">Clock</span>
+              <span class="value">06:40</span>
+              <span class="support">Morning briefing</span>
+            </article>
+            <article class="time-card">
+              <span class="label">Forecast</span>
+              <span class="value">Rising</span>
+              <span class="support">Coastal surge +18%</span>
+            </article>
+          </div>
+
+          <div class="resource-grid">
+            <article class="resource-card money">
+              <span class="label">Budget</span>
+              <span class="value">$12,450</span>
+              <span class="support">+250 this turn</span>
+            </article>
+            <article class="resource-card trust">
+              <span class="label">Public Trust</span>
+              <span class="value">74%</span>
+              <span class="support">Stable sentiment</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="toolbar-block">
+          <div class="utility-grid">
+            <article class="utility-card">
+              <span class="label">Response Teams</span>
+              <span class="value">18 Ready</span>
+              <span class="support">3 in reserve</span>
+            </article>
+            <article class="utility-card">
+              <span class="label">Comms</span>
+              <span class="value">Good</span>
+              <span class="support">91% coverage</span>
+            </article>
+          </div>
+
+          <div class="icon-button-row" aria-label="Header actions">
+            <button class="tool-button" type="button">
+              <span class="tool-glyph">II</span>
+              Pause
+            </button>
+            <button class="tool-button primary" type="button">
+              <span class="tool-glyph">!</span>
+              Alerts
+            </button>
+            <button class="tool-button alert" type="button">
+              <span class="tool-glyph">=</span>
+              Menu
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-bar">
+        <div class="state-stack" aria-label="State coverage callouts">
+          <span class="state-chip active">Default Visible</span>
+          <span class="state-chip warning">Alert Ready</span>
+          <span class="state-chip muted">Can Grey Out During Interruptions</span>
+        </div>
+        <div class="state-copy">
+          The header stays readable over the map backdrop, keeps the footprint narrow, and groups scenario, time, economy, trust, and control access into modular panels for later UXML splits.
+        </div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Mockup notes">
+      <article class="note-card">
+        <h2>Visual Direction</h2>
+        <p>Pastel blue framing keeps the header softer than crisis UI while preserving the civic, retro-sim tone from the style reference.</p>
+      </article>
+      <article class="note-card">
+        <h2>Modularity</h2>
+        <p>Each block reads as a separate production panel: scenario info, time and resources, and utility controls with state messaging below.</p>
+      </article>
+      <article class="note-card">
+        <h2>Asset Assumption</h2>
+        <p>This mockup points to <code>../Background_Image.png</code> to match the requested backdrop name. The file was not present during implementation.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
