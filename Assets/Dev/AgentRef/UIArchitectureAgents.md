@@ -1,575 +1,442 @@
-# SurgeCity UI Style Reference
+# SurgeCity UI Architecture Reference
 
 ## Overview
+SurgeCity uses a layered hybrid UI architecture composed of:
 
-SurgeCity uses a retro-inspired pixel UI aesthetic influenced by:
+1. **Full-Screen UI** — menus and scenario flow  
+2. **Persistent Toolkit UI** — management/interface layer  
+3. **Contextual Toolkit UI** — gameplay-mode controls  
+4. **World-Space Canvas UI** — spatial simulation feedback and previews  
+5. **Messaging Layers** — alerts and attention management  
 
-* Classic city builders (SimCity 2000, SimCity 3000)
-* Retro management and strategy games
-* Modern indie pixel-art titles
-* GIS/map visualization software
-* Emergency management dashboards
+The entire UI is built around a shared forecast simulation backend that powers both global flood overlays and localized infrastructure previews.
 
-The visual direction should feel:
-
-* readable
-* simulation-oriented
-* nostalgic but modernized
-* highly spatial
-* clean rather than noisy
-* mechanically informative
-
-The UI should communicate serious systems and disaster management while still retaining warmth and charm through stylized pixel presentation.
+The overall design philosophy is:
+- visually driven
+- spatially readable
+- simulation-focused
+- forecast-centric
+- low on excessive numerical clutter
 
 ---
 
-# 1. Core Visual Identity
+# 1. Full-Screen UI
 
-## Pixel-Driven Presentation
+## Main Menu
+Primary entry screen for the game.
 
-All UI should maintain:
+Example contents:
+- New Game
+- Load Game
+- Options
+- Quit
 
-* crisp pixel edges
-* intentional low-resolution styling
-* limited anti-aliasing
-* bold readable silhouettes
-* strong icon readability
-
-Avoid:
-
-* glossy AAA-style gradients
-* photorealistic UI
-* excessive blur
-* ultra-thin typography
-* overly flat corporate UI styling
-
-The interface should feel handcrafted and systemic rather than cinematic.
+Visual direction:
+- atmospheric flood/disaster presentation
+- strong environmental backdrop
+- clear, minimal navigation hierarchy
 
 ---
 
-## Modern Retro Direction
+## Campaign Selection Screen
+Scenario and region selection interface.
 
-The game should not look like a strict 1990s recreation.
+Example contents:
+- Stylized map of the U.S. Southeast
+- Highlightable/selectable regions
+- Scenario cards tied to regions
+- Campaign descriptions and difficulty indicators
 
-Instead:
+Example campaigns:
+- Mobile, Alabama — Hurricane Sally
+- New Orleans — Storm Surge Scenario
+- Appalachian Flash Flooding
 
-* combine retro pixel structure with modern usability
-* maintain clean spacing and hierarchy
-* use restrained animation and transitions
-* preserve strong accessibility/readability
-
-The target feel is:
-
-> “A modern indie city-builder inspired by late-90s simulation games.”
-
----
-
-# 2. Primary Inspirations
-
-## SimCity 2000 / Classic City Builders
-
-Strong inspiration sources:
-
-* SimCity 2000
-* SimCity 3000
-* Caesar III
-* RollerCoaster Tycoon
-* Transport Tycoon
-
-Key takeaways:
-
-* information-dense interfaces
-* colorful but organized systems
-* strong iconography
-* readable overlays
-* management-dashboard feel
-* map-first presentation
+Visual direction:
+- map-centric
+- geographic storytelling
+- regions feel distinct and vulnerable
 
 ---
 
-## Modern Indie Retro Games
+## Scoring Scene
+Post-scenario evaluation and summary scene.
 
-Modern inspirations include:
+Example contents:
+- Damage statistics
+- Reputation changes
+- Infrastructure survival rates
+- Civilian impact summaries
+- Faction reactions
+- Final city status
 
-* pixel-art strategy games
-* retro management sims
-* modern low-resolution indie interfaces
-
-Key takeaways:
-
-* cleaner hierarchy
-* stronger usability
-* restrained color usage
-* modern UX conventions layered onto retro aesthetics
-
----
-
-# 3. Color Palette
-
-## Working Palette Reference
-
-Primary working palette hex values:
-
-### Neutrals
-
-* `#F3F6F7` — bright UI text/light surfaces
-* `#D3D9DE` — secondary light panel tone
-* `#7D8690` — muted neutral UI elements
-* `#2F3135` — dark outlines/background contrast
-
-### Civic / Infrastructure Colors
-
-* `#4EB9AC` — primary teal panel color
-* `#74D3D0` — light aqua highlight
-* `#2C84C6` — primary interface blue
-* `#134A77` — deep structural/navy blue
-
-### Accent / System Colors
-
-* `#F2C14E` — warning gold
-* `#EF9A57` — orange alert/accent
-* `#55C96E` — positive/system-safe green
-* `#A48CEB` — institutional/infrastructure purple
-
-### Gameplay State Colors
-
-* `#48B663` — positive placement/approval green
-* `#FFCB47` — caution state yellow
-* `#D65353` — danger/failure red
-* `#47AEE9` — informational/water-system blue
-
-These colors should serve as the primary reference palette for:
-
-* UI panels
-* overlays
-* alerts
-* faction indicators
-* forecast visualization
-* infrastructure systems
-* map highlights
-
-The palette intentionally balances:
-
-* civic infrastructure aesthetics
-* emergency management readability
-* retro pixel-art clarity
-* modern usability
-
-Avoid introducing large numbers of additional colors unless mechanically necessary.
+Visual direction:
+- report/debrief style
+- layered overlays and animated summaries
+- communicates consequences clearly
 
 ---
 
-## Base Palette Direction
+# 2. Persistent In-Game UI
 
-The UI uses a civic/emergency-management inspired palette built around:
+## General Header
+Persistent top-bar UI used during gameplay.
 
-* teal/aqua infrastructure tones
-* municipal blues
-* warning greens
-* emergency reds
-* infrastructure purples
-* muted warm neutrals
+Example contents:
+- Current time/day
+- Money/budget
+- Reputation/public trust
+- Scenario name
+- Pause/settings button
 
-The palette should feel:
+Behavior:
+- almost always visible
+- may grey out during interruptions or transitions
 
-* civic
-* infrastructural
-* readable
-* optimistic but serious
-
----
-
-## Palette Philosophy
-
-Colors should generally remain:
-
-* flat
-* bold
-* readable
-* low-noise
-* highly distinguishable
-
-Avoid:
-
-* excessive gradients
-* muddy desaturation
-* hyper-neon palettes
-* visually noisy combinations
-
-Accent colors should be used sparingly to preserve hierarchy.
+Visual direction:
+- compact and readable
+- strategy-game inspired
+- minimal obstruction of map view
 
 ---
 
-## Example Palette Roles
+## Right Sidebar
+Primary information and alert feed.
 
-### Teal / Aqua
+Example contents:
+- Active flood alerts
+- Infrastructure failures
+- Faction notifications
+- Selected tile information
+- Pump/power status details
 
-Primary environmental and panel coloration.
+Behavior:
+- updates dynamically
+- supports expandable alerts
+- contextual based on player selection
+
+Visual direction:
+- dense but scannable
+- warning-focused
+- operational command-center feel
+
+---
+
+## Left Sidebar
+Collapsible strategic overlay and management panel.
+
+Example contents:
+- Drainage overlay
+- Electrical grid overlay
+- Levee integrity view
+- Flood forecast filter toggle
+- Faction overview panel
+
+Behavior:
+- controls strategic map visualizations
+- supports switching between infrastructure layers
+
+Visual direction:
+- utility-focused
+- map-analysis oriented
+- GIS-inspired hierarchy
+
+---
+
+# 3. Contextual In-Game UI
+
+## Crisis Footer
+Quick-response gameplay controls shown during crisis phases.
+
+Example contents:
+- Sandbags
+- Temporary barriers
+- Emergency pumps
+- Evacuation tools
+- Rapid deployment actions
+
+Behavior:
+- optimized for rapid interaction
+- appears primarily during active flooding
+
+Visual direction:
+- urgent/emergency-management tone
+- high readability under pressure
+
+---
+
+## Placement Footer
+Context-sensitive infrastructure placement controls.
+
+Example contents:
+- Levee placement tool
+- Pump placement tool
+- Demolition tool
+- Water tower placement
+- Infrastructure upgrade tools
+
+Behavior:
+- changes based on current placement mode
+- unified system rather than separate tool interfaces
+
+Visual direction:
+- construction/planning focused
+- highly tool-oriented
+
+---
+
+## Preparation Actions Screen
+Unified strategic planning and policy management screen.
+
+Example contents:
+- Drainage Maintenance Blitz
+- Pump Station Upgrades
+- Floodwall Construction
+- Building Code Improvements
+- Early Warning Systems
+
+Includes:
+- available actions
+- active actions
+- action effects
+- costs and tradeoffs
+- faction reactions/opinion shifts
+
+Visual direction:
+- policy/planning dashboard
+- emphasizes strategic tradeoffs
+
+---
+
+# 4. Messaging / Attention Systems
+
+## Faction Message Pop-up
+High-priority center-screen interruption system.
+
+Purpose:
+- major player mistakes
+- critical infrastructure failures
+- faction outrage/support
+- major escalation moments
+
+Example contents:
+- Mayor warning player about public anger
+- Utility director warning about grid collapse
+- Emergency manager urging evacuation
+
+May include:
+- character portrait/avatar
+- dialogue text
+- emotional reaction indicators
+
+Behavior:
+- intentionally disruptive
+- designed to immediately capture attention
+
+Visual direction:
+- dramatic but readable
+- emergency broadcast feel
+
+---
+
+## Alert Variant
+Lower-priority non-blocking messaging system.
+
+Example contents:
+- “Hospital district flooding increasing”
+- “Drainage capacity exceeded”
+- “Citizens responding positively to evacuation order”
+
+Behavior:
+- appears in sidebar alert feed
+- accumulates over time
+- expandable for details
+
+Visual direction:
+- operational notification style
+- lightweight and persistent
+
+---
+
+# 5. World-Space / Canvas UI Systems
+
+## Flood Forecast System
+Global forecast visualization overlay.
+
+Features:
+- map-wide flood vulnerability shading
+- projected flood depth/intensity
+- infrastructure vulnerability indicators
+- forecast visualization tilemap
+
+Example visualizations:
+- blue-to-red flood severity shading
+- flashing danger zones
+- projected overtopping regions
+
+Behavior:
+- fully togglable
+- persistent strategic analysis layer
+
+Visual direction:
+- GIS/weather-radar inspired
+- readable at multiple zoom levels
+
+---
+
+## Critical Site Alert Markers
+World-space warning icons for vulnerable critical infrastructure.
+
+Example contents:
+- hospital danger markers
+- power plant warnings
+- fire station flooding alerts
+- water treatment risk icons
+
+Behavior:
+- spawned dynamically from forecast thresholds
+- tied to forecast and infrastructure state
+
+Visual direction:
+- highly visible
+- minimal but urgent
+
+---
+
+## Placement Visualization System
+Localized infrastructure preview and simulation system.
 
 Used for:
+- levees
+- pumps
+- power infrastructure
+- future mitigation systems
 
-* backgrounds
-* management panels
-* neutral infrastructure UI
+Example contents:
+- projected flood reduction
+- water flow rerouting arrows
+- affected tile highlighting
+- cost/effectiveness popup
+- placement validity indicators
 
-Communicates:
+Behavior:
+- reuses Flood Forecast logic locally
+- previews changes before placement confirmation
 
-* water
-* planning
-* civic systems
+Includes:
+- ghost placement objects
+- valid/invalid placement coloring
+- localized simulation previews
 
----
-
-### Blue
-
-Primary interaction and navigation color.
-
-Used for:
-
-* headers
-* buttons
-* tabs
-* selectable UI regions
-
-Communicates:
-
-* structure
-* governance
-* interface clarity
+Visual direction:
+- highly spatial
+- simulation-focused
+- communicates impact visually first
 
 ---
 
-### Green
+# 6. Shared Forecast Architecture
 
-Positive or residential/community-oriented systems.
+## Forecast Preview Engine
+Shared backend simulation and prediction system.
 
-Used for:
+Responsibilities:
+- flood prediction
+- vulnerability calculation
+- infrastructure risk estimation
+- localized forecast simulation
 
-* residential faction indicators
-* successful actions
-* valid placements
-* positive outcomes
+Feeds:
+- Flood Forecast System
+- Placement Visualization System
+- Critical Site Alert Markers
 
-Communicates:
-
-* stability
-* approval
-* safety
-
----
-
-### Purple
-
-Institutional/infrastructure emphasis color.
-
-Used sparingly for:
-
-* policy emphasis
-* government systems
-* infrastructure categories
-* special modifiers
-
-Communicates:
-
-* authority
-* systems complexity
-* infrastructure administration
-
-Purple should remain an accent color rather than dominating the palette.
+Architectural rule:
+- forecast logic must remain independent from UI presentation systems
 
 ---
 
-### Red / Orange
+# 7. Architectural Principles
 
-Warning and crisis coloration.
+## Separation of Concerns
+Keep distinct:
+- simulation logic
+- forecast evaluation
+- tile visualization
+- world-space UI spawning
+- UI Toolkit presentation
 
-Used for:
-
-* flood danger
-* failing infrastructure
-* severe alerts
-* invalid placement
-* escalating disasters
-
-Communicates:
-
-* urgency
-* instability
-* danger
-
-These colors should escalate in intensity alongside gameplay severity.
+Avoid tightly coupling gameplay logic to visual systems.
 
 ---
 
-# 4. Typography
-
-## Typography Direction
-
-Typography should remain:
-
-* pixel-based or pixel-inspired
-* bold and readable
-* mechanically clear
-* high-contrast
-
-The current policy UI demonstrates the desired direction well.
-
----
-
-## Text Priorities
-
-The interface prioritizes:
-
-1. readability
-2. rapid scanning
-3. information hierarchy
-4. icon-supported communication
-
-Avoid:
-
-* tiny unreadable text
-* decorative script fonts
-* thin typography
-* excessive text density without spacing
-
----
-
-# 5. Layout Philosophy
-
-## Map-First Design
-
-The map is the primary gameplay surface.
-
-UI should:
-
-* support the map
-* frame the map
-* enhance readability of the map
-* avoid overwhelming the play area
-
-The player should always feel connected to the city simulation.
-
----
-
-## Structured Density
-
-The UI may be information-dense, but should remain:
-
-* organized
-* compartmentalized
-* color-coded
-* spatially readable
-
-Panels should use:
-
-* strong borders
-* clear grouping
-* obvious hierarchy
-* modular sections
-
----
-
-## Operational Dashboard Feel
-
-The interface should often resemble:
-
-* emergency management software
-* infrastructure dashboards
-* municipal planning systems
-* GIS viewers
-
-This should be stylized through pixel-art presentation rather than realism.
-
----
-
-# 6. Panels and Windows
-
-## Panel Styling
-
-Panels should generally feature:
-
-* solid-color backgrounds
-* strong borders
-* beveled or pixel-framed edges
-* limited transparency
-* high readability
-
-Panels should feel tactile and modular.
-
----
-
-## Window Behavior
-
-Windows and overlays should:
-
-* snap cleanly into layout regions
-* avoid excessive overlap
-* preserve map readability
-* animate minimally and quickly
-
-Transitions should feel responsive and systemic.
-
----
-
-# 7. Iconography
-
-## Icon Style
-
-Icons should be:
-
-* pixel-based
-* silhouette-readable
-* simple at small sizes
-* color-supported
+## Unified Systems
+Prefer reusable generalized systems over one-off implementations.
 
 Examples:
-
-* hospitals
-* pumps
-* levees
-* power plants
-* residential/commercial/government factions
+- single Placement Footer
+- single Placement Visualization System
+- shared Forecast Preview Engine
 
 ---
 
-## Icon Function
+## Information Escalation Hierarchy
+Communicate urgency in escalating layers:
 
-Icons should communicate information instantly.
+1. Passive overlays  
+2. Sidebar alerts  
+3. Center-screen interruptions  
 
-Priority order:
-
-1. silhouette
-2. color
-3. supporting text
-
-Players should understand many systems without needing tooltips.
+Critical events should escalate visually and spatially.
 
 ---
 
-# 8. World-Space Visualization
+# 8. Technical Direction
 
-## Forecast Visualization
-
-Flood forecasting should visually resemble:
-
-* weather radar
-* GIS flood maps
-* emergency response overlays
-
-But interpreted through:
-
-* pixel shading
-* stylized tile overlays
-* readable color ramps
+## UI Toolkit
+Recommended for:
+- menus
+- sidebars
+- headers/footers
+- planning screens
+- structured management UI
 
 ---
 
-## Placement Visualization
-
-Placement previews should emphasize:
-
-* spatial consequence
-* flood redirection
-* vulnerability reduction
-* infrastructure influence
-
-Use:
-
-* ghost objects
-* overlay highlights
-* directional indicators
-* tile coloration
-
-The player should visually understand projected impact before placement.
+## Canvas / World-Space UI
+Recommended for:
+- placement previews
+- forecast indicators
+- map warnings
+- spatial simulation feedback
 
 ---
 
-# 9. Animation and Feedback
-
-## Animation Philosophy
-
-Animation should remain:
-
-* restrained
-* responsive
-* readable
-* functional
-
-Avoid:
-
-* excessive cinematic motion
-* long transitions
-* distracting particle overload
+## Tilemap Layering
+Recommended separate tilemaps/layers for:
+- terrain
+- active flooding
+- forecast overlay
+- infrastructure networks
+- placement previews
+- critical warnings
 
 ---
 
-## Feedback Hierarchy
+# 9. Core UX Philosophy
 
-Use escalating visual intensity:
+Players should primarily understand the disaster through:
+- map state
+- flood forecasts
+- world-space indicators
+- visualized infrastructure impacts
+- escalating alerts
 
-### Low Priority
+The interface should communicate:
+- consequence
+- vulnerability
+- urgency
+- cascading failure
+- mitigation effectiveness
 
-* sidebar notifications
-* subtle pulses
-* small icon changes
-
-### Medium Priority
-
-* highlighted overlays
-* flashing warnings
-* color escalation
-
-### High Priority
-
-* faction popups
-* screen interruptions
-* strong danger coloration
-* audio/visual emphasis
-
----
-
-# 10. Desired Emotional Tone
-
-The UI should make the player feel:
-
-* responsible
-* informed
-* pressured
-* strategic
-* capable
-* reactive to escalating systems
-
-The city should feel alive and vulnerable.
-
-The interface should reinforce:
-
-* cascading consequences
-* infrastructure fragility
-* flood prediction
-* disaster preparedness
-* civic management
-
-without becoming visually oppressive or overly realistic.
-
----
-
-# 11. Current Reference Direction
-
-The current policy overlay screen is considered a strong reference point for:
-
-* typography
-* panel styling
-* palette usage
-* information density
-* retro-modern balance
-* pixel readability
-
-Particularly successful elements include:
-
-* large readable headers
-* color-coded faction indicators
-* strong panel framing
-* clean tile-like card layouts
-* readable spacing despite dense information
-
-Future UI work should generally align with and evolve from this direction rather than replacing it entirely.
+primarily through spatial visualization rather than dense statistics.
