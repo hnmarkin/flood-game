@@ -81,14 +81,8 @@
       z-index: 2;
     }
 
-    .title-card,
-    .legend-card {
-      padding: 14px 16px;
-      background: var(--panel);
-      backdrop-filter: none;
-    }
-
     .title-card {
+      padding: 0;
       max-width: 440px;
     }
 
@@ -117,6 +111,7 @@
     }
 
     .legend-card {
+      padding: 0;
       align-self: start;
       min-width: 180px;
     }
@@ -214,9 +209,77 @@
       gap: 14px;
     }
 
+    .campaign-list-panel,
     .campaign-panel {
       padding: 16px;
       background: var(--panel);
+    }
+
+    .campaign-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .campaign-list-panel[hidden] {
+      display: none;
+    }
+
+    .campaign-entry {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 3px solid rgba(243, 246, 247, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--paper);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transition: transform 90ms steps(2), background-color 90ms steps(2);
+    }
+
+    .campaign-entry:hover,
+    .campaign-entry:focus-visible {
+      transform: translate(-2px, -2px);
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .campaign-entry.selected {
+      background: rgba(242, 193, 78, 0.18);
+      border-color: rgba(242, 193, 78, 0.42);
+    }
+
+    .campaign-entry-copy strong,
+    .campaign-entry-copy span {
+      display: block;
+    }
+
+    .campaign-entry-copy strong {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #caeaf8;
+    }
+
+    .campaign-entry-copy span {
+      margin-top: 4px;
+      font-size: 17px;
+      line-height: 1.1;
+      color: var(--paper);
+    }
+
+    .campaign-entry-tag {
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(19, 74, 119, 0.88);
+      border: 2px solid rgba(243, 246, 247, 0.16);
+      font-size: 11px;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .panel-header {
@@ -302,6 +365,31 @@
       color: #e7f2f8;
     }
 
+    .begin-button {
+      margin-top: 14px;
+      width: 100%;
+      padding: 16px;
+      border: var(--frame);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f2c14e 0%, #e3a631 100%);
+      color: var(--ink);
+      font: inherit;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 5px 0 rgba(47, 49, 53, 0.35);
+      transition: transform 90ms steps(2), filter 90ms steps(2);
+    }
+
+    .begin-button:hover,
+    .begin-button:focus-visible {
+      transform: translate(-2px, -2px);
+      filter: brightness(1.04);
+      outline: none;
+    }
+
     @media (max-width: 960px) {
       .screen {
         grid-template-columns: 1fr;
@@ -347,13 +435,13 @@
   <main class="screen">
     <section class="map-shell frame" aria-label="Campaign world map">
       <div class="map-topbar">
-        <div class="title-card frame">
+        <div class="title-card">
           <span class="eyebrow">Campaign Select</span>
           <h1 class="title">World Map</h1>
           <p class="title-copy">Choose an active campaign point to inspect scenario details and launch a flood response operation.</p>
         </div>
 
-        <div class="legend-card frame">
+        <div class="legend-card">
           <span class="eyebrow">Map Key</span>
           <div class="legend-list">
             <div class="legend-row">
@@ -385,21 +473,7 @@
 
         <button
           class="point"
-          style="left: 31%; top: 52%;"
-          data-title="Hurricane Danny"
-          data-location="Mobile, AL"
-          data-difficulty="2"
-          data-complexity="3"
-          data-description="A weaker but still dangerous coastal storm tests early preparedness, localized surge planning, and drainage coordination across Mobile."
-          aria-pressed="false"
-          type="button"
-        >
-          <span class="point-label">Mobile, AL</span>
-        </button>
-
-        <button
-          class="point"
-          style="left: 25.5%; top: 45.5%;"
+          style="left: 54%; top: 83%;"
           data-title="April 2014 Flash Flood"
           data-location="Pensacola, FL"
           data-difficulty="4"
@@ -413,7 +487,7 @@
 
         <button
           class="point"
-          style="left: 38%; top: 51.5%;"
+          style="left: 62%; top: 87%;"
           data-title="Hurricane Michael"
           data-location="Panama City Beach, FL"
           data-difficulty="5"
@@ -428,6 +502,43 @@
     </section>
 
     <aside class="side-panel">
+      <section class="campaign-list-panel frame" aria-label="Mobile campaign list">
+        <span class="eyebrow">Mobile, AL</span>
+        <div class="campaign-list">
+          <button
+            class="campaign-entry selected"
+            data-title="Hurricane Sally"
+            data-location="Mobile, AL"
+            data-difficulty="4"
+            data-complexity="4"
+            data-description="A fast-moving Gulf Coast hurricane pushes storm surge and heavy rainfall into Mobile. Balance vulnerable neighborhoods, drainage pressure, and limited preparation time as the city braces for compounding flood impacts."
+            type="button"
+          >
+            <span class="campaign-entry-copy">
+              <strong>Campaign</strong>
+              <span>Hurricane Sally</span>
+            </span>
+            <span class="campaign-entry-tag">Selected</span>
+          </button>
+
+          <button
+            class="campaign-entry"
+            data-title="Hurricane Danny"
+            data-location="Mobile, AL"
+            data-difficulty="2"
+            data-complexity="3"
+            data-description="A weaker but still dangerous coastal storm tests early preparedness, localized surge planning, and drainage coordination across Mobile."
+            type="button"
+          >
+            <span class="campaign-entry-copy">
+              <strong>Campaign</strong>
+              <span>Hurricane Danny</span>
+            </span>
+            <span class="campaign-entry-tag">Mobile</span>
+          </button>
+        </div>
+      </section>
+
       <section class="campaign-panel frame" aria-label="Selected campaign details">
         <div class="panel-header">
           <div>
@@ -449,17 +560,44 @@
         </div>
 
         <p class="description" id="campaign-description">A fast-moving Gulf Coast hurricane pushes storm surge and heavy rainfall into Mobile. Balance vulnerable neighborhoods, drainage pressure, and limited preparation time as the city braces for compounding flood impacts.</p>
+        <button class="begin-button" type="button">Begin</button>
       </section>
     </aside>
   </main>
 
   <script>
     const points = Array.from(document.querySelectorAll(".point"));
+    const entries = Array.from(document.querySelectorAll(".campaign-entry"));
+    const mobilePanelEl = document.querySelector(".campaign-list-panel");
     const titleEl = document.getElementById("campaign-title");
     const locationEl = document.getElementById("campaign-location");
     const difficultyEl = document.getElementById("campaign-difficulty");
     const complexityEl = document.getElementById("campaign-complexity");
     const descriptionEl = document.getElementById("campaign-description");
+
+    function updateSelection(dataSource) {
+      titleEl.textContent = dataSource.dataset.title;
+      locationEl.textContent = dataSource.dataset.location;
+      difficultyEl.textContent = dataSource.dataset.difficulty;
+      complexityEl.textContent = dataSource.dataset.complexity;
+      descriptionEl.textContent = dataSource.dataset.description;
+    }
+
+    function syncEntries(activeTitle) {
+      for (const entry of entries) {
+        const isSelected = entry.dataset.title === activeTitle;
+        entry.classList.toggle("selected", isSelected);
+
+        const tag = entry.querySelector(".campaign-entry-tag");
+        if (tag) {
+          tag.textContent = isSelected ? "Selected" : "Mobile";
+        }
+      }
+    }
+
+    function syncLocationPanels(activeLocation) {
+      mobilePanelEl.hidden = activeLocation !== "Mobile, AL";
+    }
 
     function selectPoint(point) {
       for (const candidate of points) {
@@ -468,15 +606,21 @@
         candidate.setAttribute("aria-pressed", isSelected ? "true" : "false");
       }
 
-      titleEl.textContent = point.dataset.title;
-      locationEl.textContent = point.dataset.location;
-      difficultyEl.textContent = point.dataset.difficulty;
-      complexityEl.textContent = point.dataset.complexity;
-      descriptionEl.textContent = point.dataset.description;
+      updateSelection(point);
+      syncEntries(point.dataset.title);
+      syncLocationPanels(point.dataset.location);
     }
 
     for (const point of points) {
       point.addEventListener("click", () => selectPoint(point));
+    }
+
+    for (const entry of entries) {
+      entry.addEventListener("click", () => {
+        updateSelection(entry);
+        syncEntries(entry.dataset.title);
+        syncLocationPanels(entry.dataset.location);
+      });
     }
   </script>
 </body>
