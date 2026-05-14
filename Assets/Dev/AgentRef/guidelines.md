@@ -6,6 +6,17 @@
 3. PLAN APPROPRIATELY: For substantial, risky, or architectural changes, propose a plan before editing code. For small obvious fixes, proceed with a brief explanation.
 4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
 
+## Dev Folder Policy
+Codex should only write to `AgentRef` when working on agent support material. The other shared `Dev` folders are read-only for Codex.
+
+When developing a new feature, create a dedicated folder named `Dev_FEATURE` under `Dev`, where `FEATURE` is the new feature name. Put that feature's unfinished work there instead of the shared folders.
+
+1. `AgentRef` - reference material for agents, rapid prototypes, and AI usage logs.
+2. `Prefabs` - read-only; use `Dev_FEATURE/Prefabs` for unfinished-feature prefabs.
+3. `Scripts` - read-only; use `Dev_FEATURE/Scripts` for unfinished-feature scripts.
+4. `PrototypeScenes` - read-only; use `Dev_FEATURE/PrototypeScenes` for unfinished-feature scenes.
+5. `Tilemaps` - read-only; use `Dev_FEATURE/Tilemaps` for unfinished-feature tilemaps.
+
 ## Token Economy And Verification Discipline
 1. Optimize for the lowest reasonable token cost, not the fewest turns. It is better to take multiple short prompts than one massive high-token pass.
 2. Prefer targeted reads over broad transcript ingestion. Summarize long outputs instead of replaying them back into the conversation.
