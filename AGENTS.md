@@ -4,18 +4,15 @@
 
 Before making changes, read and follow:
 
-- `Assets\Game\Core\Architecture\architecture.md`
-- `Assets\Dev\AgentRef\guidelines.md`
+- `Assets\Dev\AgentRef\guidelines.md` for the general rules.
 
 ## Working rules
 
-- Always follow the general guidelines in `Assets\Dev\AgentRef\guidelines.md`.
-- Follow the architecture described in `Assets\Game\Core\Architecture\architecture.md`.
+- NEVER write to `Assets\Game`. EVER. Do all work in `Assets\Dev`!
 
-## Deprecated/Ignore
-DISREGARD EVERYTHING BELOW HERE!
+## Task Routing
 
-<!-- - Match the style conventions in `docs/code-style.md`.
-- When editing gameplay systems, check `docs/game-design-guidelines.md`.
-- Run the relevant tests described in `docs/testing-guidelines.md` before considering work complete.
-- Do not introduce new dependencies without explaining why. -->
+- Drafting / mockups: use a lightweight prompt only.
+- Development / coding: read `Assets\README.md` and `Assets\Game\Core\Architecture\architecture.md`.
+  - UI development: also read `Assets\Dev\AgentRef\UIArchitectureReference.md` and `Assets\Dev\AgentRef\UIArchitectureReference.md`.
+  - Water system work: also read `Assets\Game\Features\WaterSystem\README.md`.

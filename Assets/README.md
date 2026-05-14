@@ -19,7 +19,7 @@ Example:
 
 You will remove this when merging to main.
 
-## Game
+## Game (if you are AI, do not touch this)
 The home for completed, shippable features.
 
 When making a pull request to merge with main:
