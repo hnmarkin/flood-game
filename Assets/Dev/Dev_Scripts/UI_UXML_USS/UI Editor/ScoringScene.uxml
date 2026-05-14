@@ -1,5 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/ScoringScene.uss?fileID=7433441132597879392&amp;guid=7d1f3e6b9a824c2da6f4b5c1e1a0d8c7&amp;type=3#ScoringScene" />
+    <ui:Style src="ScoringScene.uss" />
+
     <ui:VisualElement name="screen_root" class="screen-root">
         <ui:VisualElement class="screen-overlay" />
         <ui:VisualElement class="bg-glow bg-glow-left" />
@@ -18,7 +19,7 @@
             </ui:VisualElement>
 
             <ui:VisualElement name="judge_row" class="judge-row">
-                <ui:VisualElement name="judge_card_resilience" class="judge-card">
+                <ui:VisualElement name="judge_card_resilience" class="judge-card judge-card-first">
                     <ui:VisualElement class="avatar">
                         <ui:Label text="AI" class="avatar-label" />
                         <ui:Label text="AI" class="avatar-badge" />
@@ -28,7 +29,12 @@
                         <ui:Label text="Dr. Vale" class="judge-name" />
                     </ui:VisualElement>
                     <ui:VisualElement class="judge-rating">
-                        <ui:Label text="★★☆☆" class="stars" />
+                        <ui:VisualElement class="rating-dots">
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot" />
+                            <ui:VisualElement class="rating-dot" />
+                        </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
 
@@ -42,11 +48,16 @@
                         <ui:Label text="Mira Quill" class="judge-name" />
                     </ui:VisualElement>
                     <ui:VisualElement class="judge-rating">
-                        <ui:Label text="★★★☆" class="stars" />
+                        <ui:VisualElement class="rating-dots">
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot" />
+                        </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
 
-                <ui:VisualElement name="judge_card_systems" class="judge-card">
+                <ui:VisualElement name="judge_card_systems" class="judge-card judge-card-last">
                     <ui:VisualElement class="avatar">
                         <ui:Label text="AI" class="avatar-label" />
                         <ui:Label text="AI" class="avatar-badge" />
@@ -56,15 +67,21 @@
                         <ui:Label text="Unit Sol-9" class="judge-name" />
                     </ui:VisualElement>
                     <ui:VisualElement class="judge-rating">
-                        <ui:Label text="★★★★" class="stars" />
+                        <ui:VisualElement class="rating-dots">
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                            <ui:VisualElement class="rating-dot active" />
+                        </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
 
             <ui:VisualElement name="tab_panel" class="tab-panel">
-                <ui:VisualElement name="panel_header">
+                <ui:VisualElement name="panel_header" class="panel-header">
                     <ui:Label text="Scenario Debrief" class="panel-title" />
                     <ui:Label text="Tabbed scoring categories keep the whole scene inside a single game screen while preserving report-style detail." class="panel-subtitle" />
+
                     <ui:VisualElement name="tabs" class="tabs">
                         <ui:Button text="Outcome" name="tab-outcome-btn" class="tab-button active" />
                         <ui:Button text="Metrics" name="tab-metrics-btn" class="tab-button" />
@@ -92,7 +109,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
 
-                    <ui:VisualElement name="tab-metrics" class="tab-view" style="display: none;">
+                    <ui:VisualElement name="tab-metrics" class="tab-view hidden">
                         <ui:Label text="City Metrics" class="panel-title" />
                         <ui:Label text="Core end-of-scenario scoring categories presented in a compact, game-friendly overview." class="panel-subtitle" />
                         <ui:VisualElement class="stats-grid">
@@ -123,7 +140,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
 
-                    <ui:VisualElement name="tab-reactions" class="tab-view" style="display: none;">
+                    <ui:VisualElement name="tab-reactions" class="tab-view hidden">
                         <ui:Label text="Faction Reactions And Final Status" class="panel-title" />
                         <ui:Label text="Political reaction and city condition share one switchable debrief tab to reduce panel clutter." class="panel-subtitle" />
                         <ui:VisualElement class="reaction-columns">
@@ -143,6 +160,7 @@
                                     </ui:VisualElement>
                                 </ui:VisualElement>
                             </ui:VisualElement>
+
                             <ui:VisualElement class="status-column">
                                 <ui:VisualElement class="status-list">
                                     <ui:VisualElement class="status-item">

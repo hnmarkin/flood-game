@@ -1,0 +1,2 @@
+# 2026-05-14 Dev Codex Scoring UI Toolkit
+Implemented a UI Toolkit version of the scoring scene mockup for `Dev_Codex`. The scene now builds its scoring overlay directly in `ScoringSceneController`, with a hero strip, three judge cards, and a tabbed debrief panel that matches the mockup layout more closely. I also widened the responsive frame, updated the shared `PanelSettings` reference resolution for better scaling, and gave the tab buttons a more retro beveled treatment.

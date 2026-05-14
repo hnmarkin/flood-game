@@ -3,6 +3,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    flex-direction: column;
     background-color: #0a1c31;
     background-image: url("project://database/Assets/Dev/AgentRef/Scoring_Background.png?fileID=2800000&guid=f113d2b142f2efb45bf1668c6ad4c7e7&type=3#Scoring_Background");
     background-size: cover;
@@ -54,6 +55,7 @@
     padding-right: 20px;
     gap: 14px;
     flex-grow: 1;
+    flex-direction: column;
 }
 
 .hero {
@@ -123,6 +125,11 @@
 .judge-row {
     flex-direction: row;
     gap: 18px;
+}
+
+.judge-card-first,
+.judge-card-last {
+    margin-right: 0;
 }
 
 .judge-card {
@@ -203,11 +210,22 @@
     align-items: flex-end;
 }
 
-.stars {
-    font-size: 26px;
-    line-height: 1;
-    color: #b2dbff;
-    letter-spacing: 0.04em;
+.rating-dots {
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.rating-dot {
+    width: 10px;
+    height: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    border-radius: 999px;
+    background-color: rgba(182, 205, 226, 0.35);
+}
+
+.rating-dot.active {
+    background-color: #65b7ff;
 }
 
 .tab-panel {
@@ -221,6 +239,11 @@
     border-color: rgba(110, 179, 241, 0.28);
     border-radius: 18px;
     background-color: rgba(14, 39, 67, 0.82);
+    flex-direction: column;
+}
+
+.panel-header {
+    flex-direction: column;
 }
 
 .panel-title {
@@ -271,12 +294,17 @@
     margin-top: 14px;
     flex-grow: 1;
     min-height: 0;
+    flex-direction: column;
 }
 
 .tab-view {
     flex-grow: 1;
     flex-direction: column;
     gap: 12px;
+}
+
+.hidden {
+    display: none;
 }
 
 .summary-band {
@@ -397,13 +425,6 @@
     flex-grow: 1;
 }
 
-.reaction-column,
-.status-column {
-    flex-grow: 1;
-    flex-basis: 0;
-    min-width: 0;
-}
-
 .reaction-item,
 .status-item {
     padding-top: 12px;
@@ -433,4 +454,3 @@
     color: #d6e8f7;
     white-space: normal;
 }
-
