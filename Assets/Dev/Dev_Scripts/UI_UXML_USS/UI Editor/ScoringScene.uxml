@@ -1,0 +1,168 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/ScoringScene.uss?fileID=7433441132597879392&amp;guid=7d1f3e6b9a824c2da6f4b5c1e1a0d8c7&amp;type=3#ScoringScene" />
+    <ui:VisualElement name="screen_root" class="screen-root">
+        <ui:VisualElement class="screen-overlay" />
+        <ui:VisualElement class="bg-glow bg-glow-left" />
+        <ui:VisualElement class="bg-glow bg-glow-right" />
+
+        <ui:VisualElement name="screen_frame" class="screen-frame">
+            <ui:VisualElement name="hero" class="hero">
+                <ui:Label text="Scenario Debrief" class="eyebrow" />
+                <ui:VisualElement name="hero_main" class="hero-main">
+                    <ui:Label text="City Scoring Report" class="hero-title" />
+                    <ui:VisualElement name="score_chip" class="score-chip">
+                        <ui:Label text="Final City Grade" class="score-chip-label" />
+                        <ui:Label text="B+" class="score-chip-value" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="judge_row" class="judge-row">
+                <ui:VisualElement name="judge_card_resilience" class="judge-card">
+                    <ui:VisualElement class="avatar">
+                        <ui:Label text="AI" class="avatar-label" />
+                        <ui:Label text="AI" class="avatar-badge" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-meta">
+                        <ui:Label text="Resilience Judge" class="judge-role" />
+                        <ui:Label text="Dr. Vale" class="judge-name" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-rating">
+                        <ui:Label text="★★☆☆" class="stars" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement name="judge_card_trust" class="judge-card">
+                    <ui:VisualElement class="avatar">
+                        <ui:Label text="AI" class="avatar-label" />
+                        <ui:Label text="AI" class="avatar-badge" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-meta">
+                        <ui:Label text="Public Trust Judge" class="judge-role" />
+                        <ui:Label text="Mira Quill" class="judge-name" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-rating">
+                        <ui:Label text="★★★☆" class="stars" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement name="judge_card_systems" class="judge-card">
+                    <ui:VisualElement class="avatar">
+                        <ui:Label text="AI" class="avatar-label" />
+                        <ui:Label text="AI" class="avatar-badge" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-meta">
+                        <ui:Label text="Systems Judge" class="judge-role" />
+                        <ui:Label text="Unit Sol-9" class="judge-name" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="judge-rating">
+                        <ui:Label text="★★★★" class="stars" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="tab_panel" class="tab-panel">
+                <ui:VisualElement name="panel_header">
+                    <ui:Label text="Scenario Debrief" class="panel-title" />
+                    <ui:Label text="Tabbed scoring categories keep the whole scene inside a single game screen while preserving report-style detail." class="panel-subtitle" />
+                    <ui:VisualElement name="tabs" class="tabs">
+                        <ui:Button text="Outcome" name="tab-outcome-btn" class="tab-button active" />
+                        <ui:Button text="Metrics" name="tab-metrics-btn" class="tab-button" />
+                        <ui:Button text="Reactions" name="tab-reactions-btn" class="tab-button" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement name="tab_content" class="tab-content">
+                    <ui:VisualElement name="tab-outcome" class="tab-view">
+                        <ui:Label text="Scenario Outcome" class="panel-title" />
+                        <ui:Label text="The city prevented catastrophic collapse, but several districts still suffered visible flood damage and delayed service restoration." class="panel-subtitle" />
+                        <ui:VisualElement class="summary-band">
+                            <ui:VisualElement class="summary-pill">
+                                <ui:Label text="Districts Secured" class="pill-label" />
+                                <ui:Label text="8 / 11" class="pill-value" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="summary-pill">
+                                <ui:Label text="Emergency Funds Left" class="pill-label" />
+                                <ui:Label text="$1.2M" class="pill-value" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="summary-pill">
+                                <ui:Label text="Recovery Outlook" class="pill-label" />
+                                <ui:Label text="Stable" class="pill-value" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="tab-metrics" class="tab-view" style="display: none;">
+                        <ui:Label text="City Metrics" class="panel-title" />
+                        <ui:Label text="Core end-of-scenario scoring categories presented in a compact, game-friendly overview." class="panel-subtitle" />
+                        <ui:VisualElement class="stats-grid">
+                            <ui:VisualElement class="stat-card">
+                                <ui:Label text="Damage Stats" class="stat-label" />
+                                <ui:Label text="$48.6M" class="stat-value" />
+                                <ui:Label text="Low-lying residential corridors and two industrial blocks flooded, but downtown barriers prevented a full breach." class="stat-detail" />
+                                <ui:Label text="Damage Severity High" class="delta negative" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="stat-card">
+                                <ui:Label text="Reputation Stats" class="stat-label" />
+                                <ui:Label text="+12" class="stat-value" />
+                                <ui:Label text="Public approval rose after timely warnings, though business groups pushed back on late road closures." class="stat-detail" />
+                                <ui:Label text="Net Reputation Gain" class="delta positive" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="stat-card">
+                                <ui:Label text="Infrastructure Survival" class="stat-label" />
+                                <ui:Label text="83%" class="stat-value" />
+                                <ui:Label text="Power, pump, and transit assets held through the peak surge with localized service interruptions." class="stat-detail" />
+                                <ui:Label text="Above Scenario Target" class="delta positive" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="stat-card">
+                                <ui:Label text="Civilian Impact" class="stat-label" />
+                                <ui:Label text="Moderate" class="stat-value" />
+                                <ui:Label text="Shelters remained functional and evacuation coverage stayed strong despite prolonged standing water." class="stat-detail" />
+                                <ui:Label text="Recovery Strain Visible" class="delta" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="tab-reactions" class="tab-view" style="display: none;">
+                        <ui:Label text="Faction Reactions And Final Status" class="panel-title" />
+                        <ui:Label text="Political reaction and city condition share one switchable debrief tab to reduce panel clutter." class="panel-subtitle" />
+                        <ui:VisualElement class="reaction-columns">
+                            <ui:VisualElement class="reaction-column">
+                                <ui:VisualElement class="reaction-list">
+                                    <ui:VisualElement class="reaction-item">
+                                        <ui:Label text="Residents" class="reaction-item-title" />
+                                        <ui:Label text="Support improved thanks to fast alerts and visible emergency deployment." class="reaction-item-text" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="reaction-item">
+                                        <ui:Label text="Business Coalition" class="reaction-item-title" />
+                                        <ui:Label text="Mixed response after logistics routes were cut to protect flood-prone corridors." class="reaction-item-text" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="reaction-item">
+                                        <ui:Label text="City Leadership" class="reaction-item-title" />
+                                        <ui:Label text="Positive overall. The council views the response as competent, but not flawless." class="reaction-item-text" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement class="status-column">
+                                <ui:VisualElement class="status-list">
+                                    <ui:VisualElement class="status-item">
+                                        <ui:Label text="Grid Stability" class="status-item-title" />
+                                        <ui:Label text="Maintained with emergency rerouting and backup generator coverage." class="status-item-text" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="status-item">
+                                        <ui:Label text="Drainage Network" class="status-item-title" />
+                                        <ui:Label text="Overloaded in southern districts but recovered before total system failure." class="status-item-text" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="status-item">
+                                        <ui:Label text="Civic Confidence" class="status-item-title" />
+                                        <ui:Label text="Trending upward, with strong trust in response crews and warning systems." class="status-item-text" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
