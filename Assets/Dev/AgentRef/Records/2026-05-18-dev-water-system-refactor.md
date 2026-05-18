@@ -8,5 +8,16 @@
   - `Dev_WaterRuntimeState`: runtime grid state.
   - `Dev_WaterTilemapRenderer`: TileMapData visual bridge.
   - Provider adapters: barrier and modifier hooks.
+- Added `Dev_WaterRefactorSceneBootstrapper` for deterministic Dev test-map generation.
+- Created Dev scene assets for `RefactorScene`:
+  - `Dev_RefactorScene_TileMapData.asset`
+  - `Dev_RefactorScene_WaterScenario.asset`
+- Populated `RefactorScene` with:
+  - isometric `Grid`
+  - `GroundTilemap` and `OverlayTilemap`
+  - `TileManagerRoot`
+  - `WaterSystemRoot`
+  - 20x20 uneven basin test map with seeded water-body tiles
 - Preserved `BeginSimulationFromUI()` plug-in path.
 - Verified with normal build plus temp compile-check including new files.
+- Verified Unity scene wiring in edit mode and play mode.

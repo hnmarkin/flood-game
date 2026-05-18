@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de3e7a398d59084c91021f2806840bc, type: 3}
+  m_Name: Dev_RefactorScene_WaterScenario
+  m_EditorClassIdentifier: 
+  simulationSettings:
+    dx: 1
+    dy: 1
+    dt: 0.25
+    gravity: 9.81
+    friction: 0.02
+    maxWaterDepth: 100
+    useBoundaryWalls: 1
+    boundaryHeightPadding: 2
+    useSpreadGating: 1
+    spreadInterval: 2
+    spreadLayersPerTick: 1
+    expandFromWaterThreshold: 0.001
+    expandOnceImmediatelyOnStart: 1
+    baseDrainageDepthPerSecond: 0
+    windForceScale: 0
+    overtopDepthForFullFlow: 1
+  initialSources:
+  - kind: 3
+    depth: 10
+    waterTileType: {fileID: 0}
+    scaleByRainfallRate: 0
+    scaleByExternalWaterLoad: 1
+    scaleByAntecedentWetness: 0
+  continuousSources: []
+  waterTileType: {fileID: 0}
