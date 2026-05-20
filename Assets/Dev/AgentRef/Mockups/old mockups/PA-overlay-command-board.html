@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Prep Actions - Command Board</title>
+  <style>
+    :root {
+      --bg: #0e1a22;
+      --panel: #122732;
+      --panel-2: #173242;
+      --line: rgba(214, 238, 247, 0.12);
+      --text: #e9f5fb;
+      --muted: #8ba1af;
+      --accent: #7fd5c7;
+      --accent-2: #f0c86b;
+      --bad: #ff7b86;
+      --good: #97e49b;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --selected: #d9f4ff;
+      --disabled: #6a7880;
+      --owned: #58c6a9;
+      font-synthesis-weight: none;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 760px; height: 100%; background:
+      radial-gradient(circle at 20% 10%, rgba(127, 213, 199, 0.12), transparent 30%),
+      radial-gradient(circle at 80% 0%, rgba(240, 200, 107, 0.09), transparent 24%),
+      linear-gradient(180deg, #15242d 0%, #0e1a22 100%);
+      color: var(--text); font-family: "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 44px 44px; mask-image: linear-gradient(180deg, rgba(0,0,0,.7), transparent 95%);
+      pointer-events: none;
+    }
+    .shell { height: 100vh; display: grid; grid-template-rows: 72px 1fr 92px; gap: 14px; padding: 14px; }
+    .topbar, .footer, .inspector, .board-card, .owned-card { background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)), var(--panel); box-shadow: 0 12px 30px var(--shadow); border: 1px solid var(--line); border-radius: 18px; }
+    .topbar { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; align-items: center; gap: 12px; padding: 12px 16px; }
+    .title { font-size: 28px; letter-spacing: .12em; text-transform: uppercase; }
+    .status { color: var(--muted); font-size: 14px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .pill { padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+    .main { display: grid; grid-template-columns: 260px 1fr 380px; gap: 14px; min-height: 0; }
+    .rail, .board, .inspector { min-height: 0; }
+    .section-label { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 12px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .18em; }
+    .rail { display: grid; grid-template-rows: 1fr auto; gap: 12px; min-height: 0; }
+    .owned-stack { display: grid; gap: 12px; overflow: auto; padding-right: 4px; }
+    .owned-card { padding: 14px; background: linear-gradient(180deg, rgba(88,198,169,.16), rgba(255,255,255,.02)), var(--panel); }
+    .owned-card .name { font-size: 17px; margin-bottom: 8px; }
+    .owned-card .small { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .legend { display: grid; gap: 8px; }
+    .legend-row { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
+    .legend-swatch { height: 10px; border-radius: 999px; background: rgba(255,255,255,.08); position: relative; overflow: hidden; }
+    .legend-swatch::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--good), var(--accent), var(--accent-2)); opacity: .9; }
+    .board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; overflow: auto; padding-right: 4px; }
+    .board-card { position: relative; min-height: 200px; padding: 14px; transition: transform .12s ease, filter .12s ease, outline-color .12s ease; cursor: pointer; }
+    .board-card:hover, .board-card.hovered { transform: translateY(-2px); filter: brightness(1.03); }
+    .board-card.selected { outline: 3px solid var(--selected); outline-offset: 0; }
+    .board-card.disabled { filter: grayscale(.8) brightness(.75); cursor: not-allowed; opacity: .9; }
+    .board-card.owned { background: linear-gradient(180deg, rgba(88,198,169,.14), rgba(255,255,255,.02)), var(--panel); }
+    .card-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+    .card-title { font-size: 21px; line-height: 1.1; font-family: Georgia, "Times New Roman", serif; }
+    .badge { padding: 6px 9px; border-radius: 999px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; background: rgba(255,255,255,.08); color: var(--muted); white-space: nowrap; }
+    .meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; font-size: 13px; }
+    .meta div { padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,.05); }
+    .meta b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 4px; }
+    .opinions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+    .opinion { padding: 8px 10px; border-radius: 12px; font-size: 13px; text-align: center; font-weight: 600; }
+    .opinion.res { background: rgba(151, 228, 155, .16); }
+    .opinion.corp { background: rgba(127, 213, 199, .14); }
+    .opinion.pol { background: rgba(240, 200, 107, .14); }
+    .effects, .fail { font-size: 13px; line-height: 1.45; color: #dceaf0; margin: 0 0 10px; }
+    .effects strong, .fail strong { color: var(--accent); }
+    .footer { display: grid; grid-template-columns: 1.1fr 1fr auto; align-items: center; gap: 12px; padding: 12px 16px; }
+    .info { display: grid; gap: 6px; }
+    .info .kicker { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
+    .info .value { font-size: 18px; line-height: 1.2; }
+    .inspiration { color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .enact { justify-self: end; border: 0; border-radius: 999px; padding: 14px 22px; background: linear-gradient(180deg, #7fd5c7, #4b8f89); color: #082028; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+    .enact:disabled { opacity: .45; }
+    .inspector { padding: 16px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 14px; overflow: hidden; }
+    .inspector h2 { margin: 0; font-size: 28px; line-height: 1.05; font-family: Georgia, "Times New Roman", serif; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .info-card { padding: 10px; border-radius: 14px; background: rgba(255,255,255,.05); }
+    .info-card span { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 4px; }
+    .inspector-body { overflow: auto; padding-right: 4px; display: grid; gap: 12px; align-content: start; }
+    .panel { padding: 12px; border-radius: 16px; background: rgba(255,255,255,.04); }
+    .panel h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+    .panel p { margin: 0; line-height: 1.55; color: #d8e6ec; }
+    .selected-slate { padding: 12px 14px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border: 1px solid var(--line); }
+    .selected-slate .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; }
+    .selected-slate .text { margin-top: 6px; font-size: 15px; line-height: 1.45; }
+    @media (max-width: 1380px) { .main { grid-template-columns: 230px 1fr 330px; } .board { grid-template-columns: 1fr; } .footer { grid-template-columns: 1fr; } .enact { justify-self: start; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="title">Preparation Actions</div>
+      <div class="status"><span class="pill">Month 1</span><span class="pill">Turn 1 / 3</span></div>
+      <div class="status"><span class="pill">Money 13</span><span class="pill">AP 6</span></div>
+      <div class="status"><span class="pill">Res 6</span><span class="pill">Corp 6</span><span class="pill">Pol 6</span></div>
+    </header>
+    <main class="main">
+      <aside class="rail">
+        <section>
+          <div class="section-label"><span>Owned / Enacted</span><span id="ownedCount">2 active</span></div>
+          <div class="owned-stack" id="ownedStack"></div>
+        </section>
+        <section>
+          <div class="section-label"><span>Legend</span><span>Board language</span></div>
+          <div class="legend">
+            <div class="legend-row"><div>Active</div><div class="legend-swatch"></div></div>
+            <div class="legend-row"><div>Disabled</div><div style="height:10px;border-radius:999px;background:rgba(255,255,255,.08);"></div></div>
+            <div class="legend-row"><div>Hover</div><div style="height:10px;border-radius:999px;background:rgba(255,255,255,.08);outline:1px solid rgba(255,255,255,.45);"></div></div>
+          </div>
+        </section>
+      </aside>
+      <section class="board" id="board" aria-label="Preparation actions"></section>
+      <aside class="inspector">
+        <h2 id="detailTitle"></h2>
+        <div class="info-grid" id="detailMeta"></div>
+        <div class="inspector-body" id="detailBody"></div>
+        <div class="selected-slate">
+          <div class="label">Selected / Info</div>
+          <div class="text" id="detailFooter"></div>
+        </div>
+      </aside>
+    </main>
+    <footer class="footer">
+      <div class="info">
+        <div class="kicker">Selected action</div>
+        <div class="value" id="footerName"></div>
+      </div>
+      <div class="inspiration" id="footerInspiration"></div>
+      <button class="enact" id="enactButton" type="button">Enact</button>
+    </footer>
+  </div>
+  <script>
+    const actions = [
+      { id:'drainage', title:'Drainage Maintenance Blitz', type:'Program / O&M', money:'Low-Medium', ap:'Medium', turns:1, res:'+', corp:'+', pol:'+', effects:'Drainage Efficiency ++', fail:'Card fails', basis:'Storm-drain cleaning, culvert inspections, debris removal, and emergency repairs before peak rain.' },
+      { id:'pump', title:'Pump Stations + Backup Power', type:'Project / Continuity', money:'High', ap:'High', turns:2, res:'+', corp:'+', pol:'+', effects:'Enables pump placement; Drainage Efficiency +++', fail:'Pump failure chance in Crisis Phase', basis:'Drainage pumping and emergency generators keep water moving when gravity systems fail.' },
+      { id:'storage', title:'Detention / Underground Storage', type:'Project / Storage', money:'High', ap:'High', turns:4, res:'Mixed', corp:'+', pol:'+', effects:'Drainage Efficiency +++; External Water Load --; Event Pacing --', fail:'Effects x 1/2', basis:'Detention basins and storage tunnels temporarily hold runoff to reduce peak flow.' },
+      { id:'code', title:'Flood-Resistant Building Code Upgrade', type:'Policy / Standards', money:'Low-Medium', ap:'Medium', turns:4, res:'Mixed / -', corp:'-', pol:'Mixed', effects:'Base Infrastructure Resilience +++; Wind Stress -', fail:'Card fails', basis:'Floodplain building codes and freeboard rules reduce future losses but raise development costs.' },
+      { id:'warning', title:'Early Warning & Risk Communication', type:'Operations / Communication', money:'Low-Medium', ap:'Low-Medium', turns:3, res:'+', corp:'+', pol:'+', effects:'Communication +++; Event Pacing ---', fail:'N/A', basis:'Forecasts, alerts, multilingual messaging, and trusted messengers improve protective action.' },
+      { id:'tax', title:'Municipal Tax Increase', type:'Policy / Revenue', money:'+++', ap:'Low', turns:1, res:'--', corp:'--', pol:'-', effects:'Money +++; Outrage +', fail:'Outrage +1', basis:'Municipal taxes, fees, or bonds fund resilience work, but the political cost is immediate.' }
+    ];
+    const state = { selected:'storage', hover:'warning', enacted:['drainage','warning'], money:13, ap:6 };
+    const el = (id) => document.getElementById(id);
+    const costScore = (s) => ({'Low':1,'Low-Medium':2,'Medium':3,'Medium-High':4,'High':5,'+++':-3}[s] ?? 0);
+    const sign = (n) => n > 0 ? `+${n}` : `${n}`;
+    const opinionTone = (s) => s.includes('--') ? 'bad' : s.includes('-') && !s.includes('+') ? 'bad' : s.includes('+') ? 'good' : 'muted';
+    function badge(label, value, cls='') { return `<div class="info-card ${cls}"><span>${label}</span><strong>${value}</strong></div>`; }
+    function selectedCard() { return actions.find(a => a.id === state.selected) || actions[0]; }
+    function renderBoard() {
+      el('board').innerHTML = actions.map(a => {
+        const disabled = a.money !== '+++' && state.money - costScore(a.money) < 0 || state.ap - costScore(a.ap) < 0;
+        const classes = ['board-card', a.id === state.selected ? 'selected' : '', a.id === state.hover ? 'hovered' : '', disabled ? 'disabled' : '', state.enacted.includes(a.id) ? 'owned' : ''].filter(Boolean).join(' ');
+        return `<article class="${classes}" data-id="${a.id}">
+          <div class="card-head">
+            <div class="card-title">${a.title}</div>
+            <div class="badge">${a.type}</div>
+          </div>
+          <div class="meta">
+            <div><b>Cost</b>${a.money} money</div>
+            <div><b>AP / Turns</b>${a.ap} / ${a.turns}T</div>
+          </div>
+          <div class="opinions">
+            <div class="opinion res">${a.res}</div>
+            <div class="opinion corp">${a.corp}</div>
+            <div class="opinion pol">${a.pol}</div>
+          </div>
+          <p class="effects"><strong>Effects:</strong> ${a.effects}</p>
+          <p class="fail"><strong>Comms failure:</strong> ${a.fail}</p>
+        </article>`;
+      }).join('');
+      el('board').querySelectorAll('.board-card').forEach(node => {
+        node.addEventListener('click', () => { state.selected = node.dataset.id; render(); });
+        node.addEventListener('mouseenter', () => { state.hover = node.dataset.id; renderDetails(); });
+      });
+    }
+    function renderOwned() {
+      el('ownedCount').textContent = `${state.enacted.length} active`;
+      el('ownedStack').innerHTML = state.enacted.map(id => {
+        const a = actions.find(x => x.id === id);
+        return `<div class="owned-card"><div class="name">${a.title}</div><div class="small">${a.type}<br>Effects: ${a.effects}<br>Comms failure: ${a.fail}</div></div>`;
+      }).join('');
+    }
+    function renderDetails() {
+      const a = actions.find(x => x.id === state.hover) || selectedCard();
+      el('detailTitle').textContent = a.title;
+      el('detailMeta').innerHTML = [
+        badge('Type', a.type),
+        badge('Money', a.money),
+        badge('AP / Turns', `${a.ap} / ${a.turns}`),
+      ].join('');
+      el('detailBody').innerHTML = `
+        <div class="panel"><h3>Opinion / Reputation</h3><p>${a.res} Residential, ${a.corp} Corporate, ${a.pol} Political</p></div>
+        <div class="panel"><h3>Mechanical Effects</h3><p>${a.effects}</p></div>
+        <div class="panel"><h3>Communication Failure</h3><p>${a.fail}</p></div>
+        <div class="panel"><h3>Real-world inspiration</h3><p>${a.basis}</p></div>`;
+      el('detailFooter').textContent = state.hover === state.selected ? 'Selected card is active in the command queue.' : 'Hover preview is overriding the inspector.';
+      el('footerName').textContent = a.title;
+      el('footerInspiration').textContent = a.basis;
+      el('enactButton').disabled = a.money !== '+++' && state.money - costScore(a.money) < 0;
+    }
+    function render() { renderBoard(); renderOwned(); renderDetails(); }
+    el('enactButton').addEventListener('click', () => { const a = selectedCard(); if (!state.enacted.includes(a.id)) state.enacted.unshift(a.id); render(); });
+    render();
+  </script>
+</body>
+</html>

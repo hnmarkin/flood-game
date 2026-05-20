@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity Main Menu Mockup B</title>
+  <style>
+    :root {
+      --ink: #2f3135;
+      --paper: #f3f6f7;
+      --panel: #d3d9de;
+      --teal: #4eb9ac;
+      --aqua: #74d3d0;
+      --blue: #2c84c6;
+      --navy: #134a77;
+      --gold: #f2c14e;
+      --orange: #ef9a57;
+      --green: #55c96e;
+      --red: #d65353;
+      --purple: #a48ceb;
+      --water: #47aee9;
+      --frame: 3px solid var(--ink);
+      --pixel: 4px;
+      --font: "Trebuchet MS", "Verdana", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: var(--font);
+      color: var(--paper);
+      image-rendering: pixelated;
+      background: #0f3656;
+    }
+
+    body {
+      background-image:
+        linear-gradient(to bottom, rgba(14, 50, 79, 0.16), rgba(14, 50, 79, 0.82)),
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        url("../Background_Graphic.png");
+      background-size: auto, 28px 28px, 28px 28px, cover;
+      background-position: center, center, center, center;
+      background-repeat: no-repeat, repeat, repeat, no-repeat;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 20px;
+      isolation: isolate;
+    }
+
+    .skyline {
+      position: absolute;
+      inset: auto 0 18% 0;
+      height: 34%;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      gap: 10px;
+      padding: 0 24px;
+      z-index: -1;
+      opacity: 0.96;
+    }
+
+    .tower {
+      width: var(--w);
+      height: var(--h);
+      border: var(--frame);
+      border-bottom-width: 0;
+      background:
+        linear-gradient(180deg, rgba(116, 211, 208, 0.12), transparent 45%),
+        linear-gradient(180deg, #194b77 0%, #0e2f4b 100%);
+      box-shadow: inset 0 0 0 var(--pixel) rgba(243, 246, 247, 0.08);
+    }
+
+    .menu-shell {
+      width: min(100%, 620px);
+      background: rgba(17, 34, 48, 0.82);
+      border: var(--frame);
+      border-radius: 20px;
+      box-shadow:
+        0 0 0 var(--pixel) rgba(243, 246, 247, 0.12) inset,
+        12px 12px 0 rgba(9, 19, 27, 0.34);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .brand {
+      margin-bottom: 18px;
+      padding: 18px 16px 16px;
+      background:
+        linear-gradient(180deg, rgba(78, 185, 172, 0.92), rgba(24, 107, 126, 0.96));
+      border: var(--frame);
+      border-radius: 16px;
+      box-shadow: inset 0 0 0 var(--pixel) rgba(243, 246, 247, 0.14);
+    }
+
+    .brand-tag {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(243, 246, 247, 0.9);
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: clamp(42px, 9vw, 76px);
+      line-height: 0.9;
+      text-transform: uppercase;
+      text-shadow: 4px 4px 0 rgba(19, 74, 119, 0.9);
+    }
+
+    .menu-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .menu-button {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px;
+      border: var(--frame);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #d3d9de 0%, #b8c2c9 100%);
+      color: var(--ink);
+      text-align: left;
+      font: inherit;
+      box-shadow: 0 5px 0 rgba(47, 49, 53, 0.35);
+      cursor: pointer;
+      transition: transform 90ms steps(2), filter 90ms steps(2);
+    }
+
+    .menu-button:hover,
+    .menu-button:focus-visible {
+      transform: translate(-2px, -2px);
+      filter: brightness(1.04);
+      outline: none;
+    }
+
+    .menu-button.primary {
+      background: linear-gradient(180deg, #f2c14e 0%, #e3a631 100%);
+    }
+
+    .menu-button.continue {
+      background: linear-gradient(180deg, #74d3d0 0%, #42aa9e 100%);
+    }
+
+    .menu-button.load {
+      background: linear-gradient(180deg, #82a7d8 0%, #5a77b7 100%);
+      color: var(--paper);
+    }
+
+    .menu-button.options {
+      background: linear-gradient(180deg, #a48ceb 0%, #7f6cc0 100%);
+      color: var(--paper);
+    }
+
+    .icon-box {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border: 3px solid currentColor;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .menu-copy strong,
+    .menu-copy span {
+      display: block;
+    }
+
+    .menu-copy strong {
+      font-size: 22px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .menu-copy span {
+      margin-top: 4px;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .button-tag {
+      padding: 7px 8px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(19, 74, 119, 0.9);
+      color: var(--paper);
+      border: 2px solid rgba(243, 246, 247, 0.18);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 720px) {
+      .scene {
+        padding: 16px;
+      }
+
+      .menu-shell {
+        padding: 14px;
+      }
+
+      .menu-button {
+        grid-template-columns: 44px 1fr;
+      }
+
+      .button-tag {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .icon-box {
+        width: 44px;
+        height: 44px;
+      }
+
+      .brand-title {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <div class="skyline" aria-hidden="true">
+      <div class="tower" style="--w: 64px; --h: 150px;"></div>
+      <div class="tower" style="--w: 92px; --h: 238px;"></div>
+      <div class="tower" style="--w: 56px; --h: 182px;"></div>
+      <div class="tower" style="--w: 126px; --h: 286px;"></div>
+      <div class="tower" style="--w: 68px; --h: 210px;"></div>
+      <div class="tower" style="--w: 82px; --h: 260px;"></div>
+      <div class="tower" style="--w: 58px; --h: 170px;"></div>
+    </div>
+    <section class="menu-shell" aria-label="Main menu">
+      <header class="brand">
+        <span class="brand-tag">City Operations Main Terminal</span>
+        <h1 class="brand-title">SurgeCity</h1>
+      </header>
+
+      <div class="menu-list">
+        <button class="menu-button primary" type="button">
+          <span class="icon-box" aria-hidden="true">N</span>
+          <span class="menu-copy">
+            <strong>New Campaign</strong>
+            <span>Found a new city and build your first line of defense.</span>
+          </span>
+          <span class="button-tag">Primary</span>
+        </button>
+
+        <button class="menu-button continue" type="button">
+          <span class="icon-box" aria-hidden="true">C</span>
+          <span class="menu-copy">
+            <strong>Continue</strong>
+            <span>Return to your most recent active district.</span>
+          </span>
+          <span class="button-tag">Recent</span>
+        </button>
+
+        <button class="menu-button load" type="button">
+          <span class="icon-box" aria-hidden="true">L</span>
+          <span class="menu-copy">
+            <strong>Load Campaign</strong>
+            <span>Open another city file from the operations archive.</span>
+          </span>
+          <span class="button-tag">Archive</span>
+        </button>
+
+        <button class="menu-button options" type="button">
+          <span class="icon-box" aria-hidden="true">O</span>
+          <span class="menu-copy">
+            <strong>Options</strong>
+            <span>Adjust display scale, audio, and input preferences.</span>
+          </span>
+          <span class="button-tag">System</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+</body>
+</html>

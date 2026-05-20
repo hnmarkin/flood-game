@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Prep Actions - Dossier</title>
+  <style>
+    :root {
+      --paper: #efe4cf;
+      --paper-2: #e4d4b5;
+      --ink: #1c2224;
+      --muted: #5d625f;
+      --accent: #1f6c63;
+      --accent-2: #7d2f2f;
+      --line: rgba(28, 34, 36, .12);
+      --shadow: rgba(23, 25, 24, .2);
+      --selected: #f8f0de;
+      --disabled: #9b9485;
+      --owned: #d6eadb;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; min-width: 1160px; min-height: 760px; overflow: hidden; background:
+      linear-gradient(180deg, rgba(255,255,255,.2), transparent 35%),
+      radial-gradient(circle at 75% 12%, rgba(31,108,99,.10), transparent 22%),
+      linear-gradient(180deg, #b79e72, #8f7650); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(0deg, rgba(28,34,36,.045) 0 1px, transparent 1px 20px), repeating-linear-gradient(90deg, rgba(28,34,36,.03) 0 1px, transparent 1px 24px);
+      pointer-events: none; opacity: .6;
+    }
+    .page { height: 100vh; display: grid; grid-template-rows: 68px 1fr 88px; gap: 14px; padding: 14px; }
+    .masthead, .tray, .doc-list, .detail, .statusbar, .action-card { background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.2)), var(--paper); border: 1px solid var(--line); box-shadow: 0 12px 30px var(--shadow); }
+    .masthead { display: grid; grid-template-columns: 1.1fr 1fr 1fr; align-items: center; border-radius: 18px; padding: 10px 16px; }
+    .masthead h1 { margin: 0; font-size: 30px; letter-spacing: .12em; text-transform: uppercase; }
+    .masthead .meta { text-align: right; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .layout { display: grid; grid-template-columns: 360px 1fr 340px; gap: 14px; min-height: 0; }
+    .tray, .detail, .doc-list { border-radius: 18px; min-height: 0; }
+    .tray { padding: 14px; display: grid; grid-template-rows: auto 1fr; gap: 10px; }
+    .doc-list { padding: 14px; overflow: auto; display: grid; gap: 12px; }
+    .detail { padding: 16px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 14px; }
+    .section-kicker { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .18em; display: flex; justify-content: space-between; }
+    .owned { display: grid; gap: 10px; overflow: auto; padding-right: 4px; }
+    .owned-chip { padding: 12px 14px; border-radius: 14px; background: linear-gradient(180deg, rgba(31,108,99,.12), rgba(255,255,255,.25)); border: 1px solid rgba(31,108,99,.16); }
+    .owned-chip b { display: block; font-size: 15px; margin-bottom: 6px; }
+    .owned-chip span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .action-card { border-radius: 16px; padding: 14px; cursor: pointer; transition: transform .12s ease, filter .12s ease, outline-color .12s ease; }
+    .action-card:hover, .action-card.hovered { transform: translateX(3px); filter: brightness(1.02); }
+    .action-card.selected { outline: 3px solid var(--accent); outline-offset: 0; background: linear-gradient(180deg, rgba(31,108,99,.09), rgba(255,255,255,.25)), var(--selected); }
+    .action-card.disabled { opacity: .55; filter: grayscale(.85); cursor: not-allowed; }
+    .action-card.owned { background: linear-gradient(180deg, rgba(31,108,99,.10), rgba(255,255,255,.25)), var(--owned); }
+    .row { display: grid; grid-template-columns: 1.3fr .8fr; gap: 12px; align-items: start; }
+    .title { font-size: 22px; line-height: 1.08; margin: 0 0 6px; }
+    .tag { display: inline-block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); border: 1px solid currentColor; padding: 4px 8px; border-radius: 999px; }
+    .micro { color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 12px; }
+    .box { padding: 9px 10px; border-radius: 12px; background: rgba(0,0,0,.035); border: 1px solid rgba(0,0,0,.06); }
+    .box small { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 3px; }
+    .opinions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .op { padding: 10px 8px; text-align: center; border-radius: 12px; font-size: 13px; font-weight: 700; }
+    .op.res { background: rgba(31,108,99,.10); }
+    .op.corp { background: rgba(125,47,47,.10); }
+    .op.pol { background: rgba(123,99,28,.10); }
+    .detail h2 { margin: 0; font-size: 32px; line-height: 1.05; }
+    .detail .summary { color: var(--muted); font-size: 15px; line-height: 1.45; }
+    .detail section { padding: 12px; border-radius: 16px; background: rgba(255,255,255,.28); border: 1px solid rgba(0,0,0,.07); }
+    .detail h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--accent-2); }
+    .detail p { margin: 0; line-height: 1.55; }
+    .statusbar { border-radius: 18px; display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; }
+    .statusbar .left { display: grid; gap: 4px; }
+    .statusbar .left strong { font-size: 18px; }
+    .statusbar .foot { color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .action { border: 0; border-radius: 999px; padding: 14px 22px; background: linear-gradient(180deg, #264c48, #17312f); color: #fff; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; }
+    .action:disabled { opacity: .45; }
+    @media (max-width: 1380px) { .layout { grid-template-columns: 300px 1fr 300px; } .row { grid-template-columns: 1fr; } .stats, .opinions { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <h1>Preparation Dossier</h1>
+      <div class="meta">Month 1 / Turn 1<br>Money 13 | AP 6</div>
+      <div class="meta">Residential 6 | Corporate 6 | Political 6</div>
+    </header>
+    <main class="layout">
+      <aside class="tray">
+        <div class="section-kicker"><span>Filed / Owned</span><span id="ownedLabel">2 entries</span></div>
+        <div class="owned" id="owned"></div>
+      </aside>
+      <section class="doc-list" id="list" aria-label="Preparation actions"></section>
+      <aside class="detail">
+        <h2 id="detailTitle"></h2>
+        <div class="summary" id="detailSummary"></div>
+        <section>
+          <h3>Costs and timing</h3>
+          <p id="detailCosts"></p>
+        </section>
+        <section>
+          <h3>Effects, failure, and source</h3>
+          <p id="detailEffects"></p>
+        </section>
+        <section>
+          <h3>Hover / info state</h3>
+          <p id="detailHover"></p>
+        </section>
+      </aside>
+    </main>
+    <footer class="statusbar">
+      <div class="left">
+        <strong id="footerName"></strong>
+        <div class="foot" id="footerSub"></div>
+      </div>
+      <div class="foot" id="footerBasis"></div>
+      <button class="action" id="actionButton" type="button">Enact</button>
+    </footer>
+  </div>
+  <script>
+    const actions = [
+      { id:'drainage', title:'Drainage Maintenance Blitz', type:'Program / O&M', money:'Low-Medium', ap:'Medium', turns:1, res:'+', corp:'+', pol:'+', effects:'Drainage Efficiency ++', fail:'Card fails', basis:'Routine storm-drain cleaning, inlet clearing, and emergency repair work.', summary:'Fast maintenance that restores existing capacity before the next storm window.' },
+      { id:'storage', title:'Detention / Underground Storage', type:'Project / Storage', money:'High', ap:'High', turns:4, res:'Mixed', corp:'+', pol:'+', effects:'Drainage Efficiency +++; External Water Load --; Event Pacing --', fail:'Effects x 1/2', basis:'Detention basins and storage tunnels absorb and slow peak runoff.', summary:'A slow, expensive build that pays off by flattening flood peaks.' },
+      { id:'code', title:'Flood-Resistant Building Code Upgrade', type:'Policy / Standards', money:'Low-Medium', ap:'Medium', turns:4, res:'Mixed / -', corp:'-', pol:'Mixed', effects:'Base Infrastructure Resilience +++; Wind Stress -', fail:'Card fails', basis:'Elevated standards, freeboard rules, and retrofit requirements shape future risk.', summary:'Policy-led resilience with visible political friction.' },
+      { id:'warning', title:'Early Warning & Risk Communication', type:'Operations / Communication', money:'Low-Medium', ap:'Low-Medium', turns:3, res:'+', corp:'+', pol:'+', effects:'Communication +++; Event Pacing ---', fail:'N/A', basis:'Alert systems, trusted messengers, and multilingual public messaging.', summary:'Speeds public response and slows the crisis tempo.' },
+      { id:'tax', title:'Municipal Tax Increase', type:'Policy / Revenue', money:'+++', ap:'Low', turns:1, res:'--', corp:'--', pol:'-', effects:'Money +++; Outrage +', fail:'Outrage +1', basis:'Taxes, fees, or bonds fund resilience, but the cost lands in public opinion.', summary:'Converts political capital into budget room.' },
+      { id:'dept', title:'Flood Defense Department Expansion', type:'Program / Capacity', money:'Medium', ap:'Medium', turns:2, res:'- (placement-weighted)', corp:'- (placement-weighted)', pol:'Mixed', effects:'AP Generation +; Project Efficiency +; Outrage +', fail:'Outrage +1', basis:'Dedicated staff and logistics improve response capacity.', summary:'Builds operating capacity, but placement determines who absorbs the backlash.' }
+    ];
+    const state = { selected:'dept', hover:'warning', enacted:['drainage','warning'], money:13, ap:6 };
+    const el = (id) => document.getElementById(id);
+    const value = (s) => ({'Low':1,'Low-Medium':2,'Medium':3,'Medium-High':4,'High':5,'+++':-3}[s] ?? 0);
+    const canPay = (a) => state.money - Math.max(0, value(a.money)) >= 0 && state.ap - value(a.ap) >= 0;
+    const fmt = (a) => `${a.money} money | ${a.ap} AP | ${a.turns} turn${a.turns > 1 ? 's' : ''}`;
+    function card(a) {
+      const cls = ['action-card', a.id === state.selected ? 'selected' : '', a.id === state.hover ? 'hovered' : '', state.enacted.includes(a.id) ? 'owned' : '', canPay(a) ? '' : 'disabled'].filter(Boolean).join(' ');
+      return `<article class="${cls}" data-id="${a.id}">
+        <div class="row">
+          <div>
+            <div class="tag">${a.type}</div>
+            <h3 class="title">${a.title}</h3>
+            <div class="micro">${a.summary}</div>
+          </div>
+          <div class="micro" style="text-align:right">Costs<br><strong>${a.money}</strong><br>AP ${a.ap}<br>${a.turns}T</div>
+        </div>
+        <div class="stats">
+          <div class="box"><small>Residential</small>${a.res}</div>
+          <div class="box"><small>Corporate</small>${a.corp}</div>
+          <div class="box"><small>Political</small>${a.pol}</div>
+        </div>
+        <div class="micro"><strong>Effects:</strong> ${a.effects}</div>
+        <div class="micro"><strong>Comms failure:</strong> ${a.fail}</div>
+      </article>`;
+    }
+    function render() {
+      el('list').innerHTML = actions.map(card).join('');
+      el('owned').innerHTML = state.enacted.map(id => {
+        const a = actions.find(x => x.id === id);
+        return `<div class="owned-chip"><b>${a.title}</b><span>${a.type}<br>${a.effects}<br>${a.fail}</span></div>`;
+      }).join('');
+      el('ownedLabel').textContent = `${state.enacted.length} entries`;
+      const a = actions.find(x => x.id === state.hover) || actions.find(x => x.id === state.selected);
+      el('detailTitle').textContent = a.title;
+      el('detailSummary').textContent = a.summary;
+      el('detailCosts').textContent = fmt(a);
+      el('detailEffects').textContent = `${a.effects}. Comms failure: ${a.fail}. Real-world basis: ${a.basis}`;
+      el('detailHover').textContent = state.hover === state.selected ? 'Selected state and hover state are aligned.' : 'Hover state is overriding the inspector selection preview.';
+      el('footerName').textContent = a.title;
+      el('footerSub').textContent = `${a.type} | ${a.money} money | ${a.ap} AP | ${a.turns} turns`;
+      el('footerBasis').textContent = a.basis;
+      el('actionButton').disabled = !canPay(a);
+      el('list').querySelectorAll('.action-card').forEach(node => {
+        node.addEventListener('click', () => { state.selected = node.dataset.id; render(); });
+        node.addEventListener('mouseenter', () => { state.hover = node.dataset.id; render(); });
+      });
+    }
+    el('actionButton').addEventListener('click', () => {
+      const a = actions.find(x => x.id === state.selected);
+      if (!state.enacted.includes(a.id)) state.enacted.unshift(a.id);
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>

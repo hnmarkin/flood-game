@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurgeCity Main Menu Mockup</title>
+  <style>
+    :root {
+      --ink: #2f3135;
+      --paper: #f3f6f7;
+      --panel: #d3d9de;
+      --muted: #7d8690;
+      --teal: #4eb9ac;
+      --aqua: #74d3d0;
+      --blue: #2c84c6;
+      --navy: #134a77;
+      --gold: #f2c14e;
+      --orange: #ef9a57;
+      --green: #55c96e;
+      --red: #d65353;
+      --purple: #a48ceb;
+      --water: #47aee9;
+      --shadow: rgba(20, 34, 45, 0.28);
+      --pixel: 4px;
+      --frame: 3px solid var(--ink);
+      --font: "Trebuchet MS", "Verdana", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #7eb7c8;
+      color: var(--paper);
+      font-family: var(--font);
+      image-rendering: pixelated;
+    }
+
+    body {
+      background-image:
+        linear-gradient(to bottom, rgba(19, 74, 119, 0.2), rgba(19, 74, 119, 0.55)),
+        linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at top, rgba(116, 211, 208, 0.35), transparent 32%);
+      background-size: auto, 24px 24px, 24px 24px, auto;
+    }
+
+    .screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .frame {
+      border: var(--frame);
+      box-shadow:
+        0 0 0 var(--pixel) rgba(243, 246, 247, 0.16) inset,
+        8px 8px 0 var(--shadow);
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1.2fr auto auto;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .topbar-panel {
+      background: linear-gradient(180deg, #4eb9ac 0%, #2f8f99 100%);
+      padding: 12px 14px;
+    }
+
+    .topbar-panel strong,
+    .topbar-panel span {
+      display: block;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(243, 246, 247, 0.82);
+    }
+
+    .headline {
+      margin-top: 4px;
+      font-size: clamp(28px, 5vw, 52px);
+      line-height: 0.95;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0 rgba(19, 74, 119, 0.75);
+    }
+
+    .subhead {
+      margin-top: 8px;
+      color: #e5fbff;
+      font-size: 14px;
+      max-width: 42rem;
+    }
+
+    .statusbox,
+    .buildbox {
+      min-width: 180px;
+      padding: 12px;
+      background: linear-gradient(180deg, #134a77 0%, #0d314f 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #d8edf9;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: rgba(243, 246, 247, 0.1);
+      color: var(--paper);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--green);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 2px rgba(85, 201, 110, 0.25);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(19, 74, 119, 0.1), rgba(19, 74, 119, 0.5)),
+        linear-gradient(180deg, #91d6df 0%, #65bac8 35%, #2c84c6 100%);
+      min-height: 520px;
+      padding: 20px;
+    }
+
+    .citybackdrop {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 52%;
+      background:
+        linear-gradient(to top, rgba(19, 74, 119, 0.36), transparent 55%),
+        repeating-linear-gradient(
+          to right,
+          rgba(243, 246, 247, 0.16) 0 16px,
+          transparent 16px 40px
+        );
+      pointer-events: none;
+    }
+
+    .waterline {
+      position: absolute;
+      inset: auto 0 18% 0;
+      height: 20%;
+      background:
+        linear-gradient(180deg, rgba(71, 174, 233, 0.12), rgba(71, 174, 233, 0.55)),
+        repeating-linear-gradient(
+          to right,
+          rgba(243, 246, 247, 0.14) 0 10px,
+          rgba(243, 246, 247, 0) 10px 20px
+        );
+      border-top: 3px solid rgba(243, 246, 247, 0.4);
+      border-bottom: 3px solid rgba(19, 74, 119, 0.5);
+      pointer-events: none;
+    }
+
+    .skyline {
+      position: absolute;
+      inset: auto 18px 18% 18px;
+      height: 40%;
+      display: flex;
+      align-items: end;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .tower {
+      background: var(--navy);
+      border: 3px solid var(--ink);
+      border-bottom-width: 0;
+      width: var(--w);
+      height: var(--h);
+      box-shadow: inset 0 0 0 3px rgba(243, 246, 247, 0.08);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 240px;
+      gap: 18px;
+      height: 100%;
+    }
+
+    .menu-panel {
+      align-self: end;
+      max-width: 480px;
+      padding: 16px;
+      background: rgba(19, 30, 39, 0.84);
+      backdrop-filter: none;
+    }
+
+    .menu-title {
+      margin: 0 0 8px;
+      color: var(--gold);
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .menu-copy {
+      margin: 0 0 16px;
+      color: #dbe6ea;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .menu-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu-button {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      border: var(--frame);
+      background: #d3d9de;
+      color: var(--ink);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 0 rgba(47, 49, 53, 0.35);
+      transition: transform 90ms steps(2), background-color 90ms steps(2);
+    }
+
+    .menu-button:hover,
+    .menu-button:focus-visible {
+      transform: translate(-2px, -2px);
+      background: #edf2f4;
+      outline: none;
+    }
+
+    .menu-button.primary {
+      background: linear-gradient(180deg, #f2c14e 0%, #e1a834 100%);
+    }
+
+    .menu-button.primary .button-tag {
+      background: var(--red);
+      color: var(--paper);
+    }
+
+    .menu-button.secondary {
+      background: linear-gradient(180deg, #74d3d0 0%, #4eb9ac 100%);
+    }
+
+    .menu-button.utility {
+      background: linear-gradient(180deg, #8ba8bd 0%, #6b7a89 100%);
+      color: var(--paper);
+    }
+
+    .button-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 3px solid currentColor;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .button-text strong,
+    .button-text span {
+      display: block;
+    }
+
+    .button-text strong {
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .button-text span {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .button-tag {
+      padding: 6px 8px;
+      background: var(--navy);
+      color: var(--paper);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .aside {
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel {
+      background: rgba(19, 74, 119, 0.92);
+      padding: 14px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .panel-header strong {
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      color: var(--paper);
+    }
+
+    .panel-header span {
+      font-size: 11px;
+      color: #b9ddf5;
+    }
+
+    .forecast-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .forecast-cell {
+      padding: 10px 6px;
+      text-align: center;
+      background: rgba(243, 246, 247, 0.1);
+      border: 3px solid rgba(243, 246, 247, 0.18);
+    }
+
+    .forecast-cell strong,
+    .forecast-cell span {
+      display: block;
+    }
+
+    .forecast-cell strong {
+      font-size: 12px;
+      color: #d7eef8;
+    }
+
+    .forecast-bar {
+      height: 12px;
+      margin: 8px 0;
+      border: 2px solid var(--ink);
+      background:
+        linear-gradient(
+          to right,
+          var(--green) 0 35%,
+          var(--gold) 35% 65%,
+          var(--orange) 65% 82%,
+          var(--red) 82% 100%
+        );
+    }
+
+    .city-stats,
+    .quick-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stat-row,
+    .link-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      background: rgba(243, 246, 247, 0.09);
+      border: 3px solid rgba(243, 246, 247, 0.16);
+    }
+
+    .mini-icon {
+      width: 26px;
+      height: 26px;
+      border: 3px solid var(--paper);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--paper);
+    }
+
+    .link-row strong,
+    .link-row span,
+    .stat-row strong,
+    .stat-row span {
+      display: block;
+    }
+
+    .link-row strong,
+    .stat-row strong {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--paper);
+    }
+
+    .link-row span,
+    .stat-row span {
+      font-size: 12px;
+      color: #c2dced;
+    }
+
+    .badge {
+      padding: 5px 7px;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: var(--gold);
+    }
+
+    .badge.safe {
+      background: var(--green);
+    }
+
+    .badge.alert {
+      background: var(--orange);
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      background: rgba(47, 49, 53, 0.82);
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #d8dfe4;
+    }
+
+    .footer strong {
+      color: var(--aqua);
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 1040px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aside {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .screen {
+        padding: 12px;
+      }
+
+      .topbar,
+      .aside,
+      .footer {
+        grid-template-columns: 1fr;
+      }
+
+      .headline {
+        font-size: 34px;
+      }
+
+      .hero {
+        min-height: 640px;
+      }
+
+      .forecast-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <section class="topbar-panel frame">
+        <span class="eyebrow">Municipal Flood Command Simulator</span>
+        <strong class="headline">SurgeCity</strong>
+        <p class="subhead">Hold the waterline, stabilize public confidence, and grow a city that survives the next storm.</p>
+      </section>
+
+      <section class="statusbox frame" aria-label="Build status">
+        <div class="status-row">
+          <span>Forecast</span>
+          <span>5-Day</span>
+        </div>
+        <div class="status-pill">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Conditions Stable</span>
+        </div>
+        <div class="status-row">
+          <span>Tide Gate</span>
+          <span>Ready</span>
+        </div>
+      </section>
+
+      <section class="buildbox frame" aria-label="Session summary">
+        <div class="status-row">
+          <span>Profile</span>
+          <span>Mayor-01</span>
+        </div>
+        <div class="status-pill">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Last Save: Harbor Ward</span>
+        </div>
+        <div class="status-row">
+          <span>Build</span>
+          <span>Mockup</span>
+        </div>
+      </section>
+    </header>
+
+    <section class="content">
+      <section class="hero frame" aria-label="Main menu hero">
+        <div class="hero-grid">
+          <article class="menu-panel frame">
+            <h1 class="menu-title">City Operations</h1>
+            <p class="menu-copy">A clear opening hierarchy with one dominant action, framed like a municipal control board instead of a generic launcher.</p>
+
+            <div class="menu-list">
+              <button class="menu-button primary" type="button">
+                <span class="button-icon" aria-hidden="true">N</span>
+                <span class="button-text">
+                  <strong>New Campaign</strong>
+                  <span>Start a fresh city and establish your first flood defenses.</span>
+                </span>
+                <span class="button-tag">Primary</span>
+              </button>
+
+              <button class="menu-button secondary" type="button">
+                <span class="button-icon" aria-hidden="true">C</span>
+                <span class="button-text">
+                  <strong>Continue</strong>
+                  <span>Resume Harbor Ward at the start of the autumn rain cycle.</span>
+                </span>
+                <span class="button-tag">Recent</span>
+              </button>
+
+              <button class="menu-button secondary" type="button">
+                <span class="button-icon" aria-hidden="true">S</span>
+                <span class="button-text">
+                  <strong>Scenarios</strong>
+                  <span>Jump into curated crisis maps with unique terrain and objectives.</span>
+                </span>
+                <span class="button-tag">Mode</span>
+              </button>
+
+              <button class="menu-button utility" type="button">
+                <span class="button-icon" aria-hidden="true">O</span>
+                <span class="button-text">
+                  <strong>Options</strong>
+                  <span>Adjust display scale, audio mix, and accessibility settings.</span>
+                </span>
+                <span class="button-tag">System</span>
+              </button>
+            </div>
+          </article>
+
+          <aside class="panel frame" aria-label="Main menu emphasis panel">
+            <div class="panel-header">
+              <strong>Tonight's Risk</strong>
+              <span>River District</span>
+            </div>
+            <div class="forecast-bar" aria-hidden="true"></div>
+            <div class="city-stats">
+              <div class="stat-row">
+                <span class="mini-icon" aria-hidden="true">WL</span>
+                <span>
+                  <strong>Waterline Pressure</strong>
+                  <span>Heavy runoff expected after midnight.</span>
+                </span>
+                <span class="badge alert">High</span>
+              </div>
+              <div class="stat-row">
+                <span class="mini-icon" aria-hidden="true">PW</span>
+                <span>
+                  <strong>Pump Network</strong>
+                  <span>Primary stations online across the north basin.</span>
+                </span>
+                <span class="badge safe">Ready</span>
+              </div>
+              <div class="stat-row">
+                <span class="mini-icon" aria-hidden="true">CT</span>
+                <span>
+                  <strong>Civic Trust</strong>
+                  <span>Strong public support if outages stay contained.</span>
+                </span>
+                <span class="badge">72%</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="citybackdrop" aria-hidden="true"></div>
+        <div class="waterline" aria-hidden="true"></div>
+        <div class="skyline" aria-hidden="true">
+          <div class="tower" style="--w: 52px; --h: 150px;"></div>
+          <div class="tower" style="--w: 84px; --h: 210px;"></div>
+          <div class="tower" style="--w: 60px; --h: 130px;"></div>
+          <div class="tower" style="--w: 104px; --h: 250px;"></div>
+          <div class="tower" style="--w: 54px; --h: 160px;"></div>
+          <div class="tower" style="--w: 72px; --h: 220px;"></div>
+          <div class="tower" style="--w: 96px; --h: 182px;"></div>
+          <div class="tower" style="--w: 68px; --h: 146px;"></div>
+        </div>
+      </section>
+
+      <aside class="aside" aria-label="Supporting information">
+        <section class="panel frame">
+          <div class="panel-header">
+            <strong>Storm Outlook</strong>
+            <span>5 Day Radar</span>
+          </div>
+          <div class="forecast-strip">
+            <div class="forecast-cell">
+              <strong>Mon</strong>
+              <div class="forecast-bar" aria-hidden="true"></div>
+              <span>Low</span>
+            </div>
+            <div class="forecast-cell">
+              <strong>Tue</strong>
+              <div class="forecast-bar" aria-hidden="true"></div>
+              <span>Guarded</span>
+            </div>
+            <div class="forecast-cell">
+              <strong>Wed</strong>
+              <div class="forecast-bar" aria-hidden="true"></div>
+              <span>Rising</span>
+            </div>
+            <div class="forecast-cell">
+              <strong>Thu</strong>
+              <div class="forecast-bar" aria-hidden="true"></div>
+              <span>High</span>
+            </div>
+            <div class="forecast-cell">
+              <strong>Fri</strong>
+              <div class="forecast-bar" aria-hidden="true"></div>
+              <span>Peak</span>
+            </div>
+          </div>
+          <p class="menu-copy">Forecast blocks reinforce the dashboard tone and keep the city/flood premise visible before entering play.</p>
+        </section>
+
+        <section class="panel frame">
+          <div class="panel-header">
+            <strong>Command Links</strong>
+            <span>Fast Access</span>
+          </div>
+          <div class="quick-links">
+            <div class="link-row">
+              <span class="mini-icon" aria-hidden="true">TR</span>
+              <span>
+                <strong>Tutorial Briefing</strong>
+                <span>Learn zoning, pumps, levees, and forecast overlays.</span>
+              </span>
+              <span class="badge">Start</span>
+            </div>
+            <div class="link-row">
+              <span class="mini-icon" aria-hidden="true">LG</span>
+              <span>
+                <strong>Records</strong>
+                <span>Inspect city medals, crisis clears, and longest holds.</span>
+              </span>
+              <span class="badge">View</span>
+            </div>
+            <div class="link-row">
+              <span class="mini-icon" aria-hidden="true">EX</span>
+              <span>
+                <strong>Exit Terminal</strong>
+                <span>Close the command console and return to desktop.</span>
+              </span>
+              <span class="badge alert">Quit</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="footer frame">
+      <span><strong>Operator Note</strong> Main menu mockup only. Focused on hierarchy, civic color coding, and pixel-framed modular panels.</span>
+      <span>Arrow Keys / Pointer Ready</span>
+    </footer>
+  </main>
+</body>
+</html>
