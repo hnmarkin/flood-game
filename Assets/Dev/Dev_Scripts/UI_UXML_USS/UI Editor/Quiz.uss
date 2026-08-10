@@ -1,0 +1,42 @@
+.quiz-option {
+    margin-top: 6px;
+
+    background-image: url("/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI Panels/UI_Flat_Frame01a.png");
+    -unity-background-scale-mode: stretch-to-fill;
+
+    background-color: transparent;
+    color: white;
+    font-size: 14px;
+    -unity-font-style: bold;
+
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+
+    transition-property: scale, translate;
+    transition-duration: 100ms;
+}
+
+.quiz-option:hover {
+    background-image: url("/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI Panels/UI_Flat_Frame_DarkGrey.png");
+    -unity-background-scale-mode: stretch-to-fill;
+
+    scale: 1.04 1.04;
+    translate: 0 -2px;
+}
+
+.quiz-option.correct {
+    background-image: url("/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI Panels/UI_Flat_Frame_Green.png");
+    -unity-background-scale-mode: stretch-to-fill;
+    scale: 1.04 1.04;
+}
+
+.quiz-option.wrong {
+    background-image: url("/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI Panels/UI_Flat_Frame_Red.png");
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.quiz-option.locked {
+    opacity: 0.65;
+}
