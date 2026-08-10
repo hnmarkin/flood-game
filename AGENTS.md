@@ -9,6 +9,8 @@ Before making changes, read and follow:
 ## Working rules
 
 - NEVER write to `Assets\Game`. EVER. Do all work in `Assets\Dev`!
+- Do NOT deviate from user instructions without notifying the user. If the user gives bad/incomplete instructions, stop before doing the task and clarify with the user.
+- For large tasks, especially involving creation of new files or editing of mostly empty files, default to planning mode with the user before attempting implementation.
 
 ## Task Routing
 
