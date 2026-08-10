@@ -5,7 +5,7 @@
     overflow: hidden;
     flex-direction: column;
     background-color: #0a1c31;
-    background-image: url("project://database/Assets/Dev/AgentRef/Scoring_Background.png?fileID=2800000&guid=f113d2b142f2efb45bf1668c6ad4c7e7&type=3#Scoring_Background");
+     background-image: url("project://database/Assets/Dev/AgentRef/Scoring_Background.png?fileID=2800000&guid=071d0f7ab79b7430ca249aeddf36c850&type=3#Scoring_Background");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
