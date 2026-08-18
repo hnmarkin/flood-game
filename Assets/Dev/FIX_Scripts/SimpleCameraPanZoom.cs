@@ -157,6 +157,16 @@ public class SimpleCameraPanZoom : MonoBehaviour
         transform.position = position;
     }
 
+    public void FocusOnWorldPosition(Vector3 worldPosition)
+    {
+        Vector3 position = transform.position;
+        position.x = worldPosition.x;
+        position.y = worldPosition.y;
+
+        transform.position = position;
+        ClampCameraToBounds();
+    }
+
     private void ClampCameraToBounds()
     {
         Bounds bounds = GetCameraBounds();

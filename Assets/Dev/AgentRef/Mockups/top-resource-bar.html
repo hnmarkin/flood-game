@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flood Game Top Resource Bar Mockup</title>
+  <style>
+    :root {
+      --bg-deep: #071321;
+      --bg-panel: rgba(8, 22, 38, 0.96);
+      --bg-cell: rgba(15, 34, 56, 0.92);
+      --bg-cell-muted: rgba(10, 25, 42, 0.95);
+      --line-strong: #58c8e8;
+      --line-soft: rgba(88, 200, 232, 0.28);
+      --text-main: #ebf8ff;
+      --text-muted: #89a8bb;
+      --text-phase: #ffbf53;
+      --text-budget: #79e57b;
+      --text-storm: #90e6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Trebuchet MS", "Verdana", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at top, rgba(21, 62, 99, 0.5), transparent 42%),
+        linear-gradient(180deg, #10263d 0%, #06111b 70%);
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .frame {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .resource-bar {
+      width: min(1380px, 100%);
+      display: flex;
+      align-items: stretch;
+      border: 2px solid var(--line-strong);
+      border-radius: 16px;
+      background: var(--bg-panel);
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .cell {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-right: 1px solid var(--line-soft);
+      background: var(--bg-cell);
+    }
+
+    .cell.phase { width: 148px; }
+    .cell.budget { width: 172px; }
+    .cell.turn { width: 136px; }
+    .cell.population { width: 160px; }
+    .cell.zones { width: 128px; }
+    .cell.storm {
+      flex: 1 1 auto;
+      min-width: 320px;
+      border-right: 0;
+      background: var(--bg-cell-muted);
+    }
+
+    .icon {
+      width: 26px;
+      height: 26px;
+      flex: 0 0 26px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(12, 32, 52, 0.92);
+      position: relative;
+    }
+
+    .icon.phase::before,
+    .icon.budget::before,
+    .icon.turn::before,
+    .icon.population::before,
+    .icon.zones::before,
+    .icon.storm::before,
+    .icon.settings::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 4px;
+      background: var(--line-strong);
+    }
+
+    .icon.budget::before {
+      inset: 4px;
+      border-radius: 999px;
+      background: #84dd89;
+    }
+
+    .icon.turn::before {
+      inset: 6px 10px 6px 10px;
+      border-radius: 1px;
+    }
+
+    .icon.population::before {
+      inset: 6px 6px 11px 6px;
+      border-radius: 999px;
+    }
+
+    .icon.population::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      height: 7px;
+      border-radius: 999px 999px 4px 4px;
+      background: var(--line-strong);
+    }
+
+    .icon.zones::before {
+      inset: 6px;
+      border-radius: 2px;
+      background:
+        linear-gradient(90deg, var(--line-strong) 0 30%, transparent 30% 35%, var(--line-strong) 35% 65%, transparent 65% 70%, var(--line-strong) 70% 100%),
+        linear-gradient(180deg, transparent 0 30%, rgba(12, 32, 52, 0) 30% 35%, transparent 35% 65%, rgba(12, 32, 52, 0) 65% 70%, transparent 70% 100%);
+    }
+
+    .icon.settings::before {
+      inset: 5px;
+      clip-path: polygon(50% 0%, 64% 14%, 83% 17%, 86% 36%, 100% 50%, 86% 64%, 83% 83%, 64% 86%, 50% 100%, 36% 86%, 17% 83%, 14% 64%, 0% 50%, 14% 36%, 17% 17%, 36% 14%);
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .text.turn-copy {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .value {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .value.phase {
+      color: var(--text-phase);
+    }
+
+    .value.budget {
+      color: var(--text-budget);
+    }
+
+    .subvalue {
+      font-size: 11px;
+      color: #8eb4c8;
+    }
+
+    .storm-copy {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    .storm-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .storm-value {
+      color: var(--text-storm);
+      min-width: 52px;
+    }
+
+    .storm-gauge {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(3, 14, 27, 0.95);
+    }
+
+    .segment {
+      height: 10px;
+      border-radius: 3px;
+      background: #1a2e41;
+    }
+
+    .segment.filled {
+      background: #64d7ee;
+    }
+
+    .settings-btn {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: rgba(5, 17, 30, 0.98);
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <section class="resource-bar" aria-label="Top resource bar mockup">
+      <div class="cell phase">
+        <div class="icon phase" aria-hidden="true"></div>
+        <div class="text">
+          <div class="label">Phase</div>
+          <div class="value phase">Crisis</div>
+        </div>
+      </div>
+      <div class="cell budget">
+        <div class="icon budget" aria-hidden="true"></div>
+        <div class="text">
+          <div class="label">Budget</div>
+          <div class="value budget">$200</div>
+          <div class="subvalue">/ $1,500</div>
+        </div>
+      </div>
+      <div class="cell turn">
+        <div class="text turn-copy">
+          <div class="label">Turn</div>
+          <div class="value">1 / 8</div>
+        </div>
+        <div class="icon turn" aria-hidden="true"></div>
+      </div>
+      <div class="cell population">
+        <div class="icon population" aria-hidden="true"></div>
+        <div class="text">
+          <div class="label">Population</div>
+          <div class="value">2000</div>
+        </div>
+      </div>
+      <div class="cell zones">
+        <div class="icon zones" aria-hidden="true"></div>
+        <div class="text">
+          <div class="label">Zones</div>
+          <div class="value">6</div>
+        </div>
+      </div>
+      <div class="cell storm">
+        <div class="icon storm" aria-hidden="true"></div>
+        <div class="text storm-copy">
+          <div class="label">Storm Intensity</div>
+          <div class="storm-row">
+            <div class="value storm-value">70%</div>
+            <div class="storm-gauge" aria-hidden="true">
+              <div class="segment filled"></div>
+              <div class="segment filled"></div>
+              <div class="segment filled"></div>
+              <div class="segment filled"></div>
+              <div class="segment filled"></div>
+              <div class="segment"></div>
+              <div class="segment"></div>
+            </div>
+            <div class="settings-btn" aria-label="Settings">
+              <div class="icon settings" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/UI_HUD/AlertsPanel.uss?fileID=7433441132597879392&amp;guid=4e28d6831e2034757b9fa3120b24558c&amp;type=3#AlertsPanel" />
+    <ui:VisualElement name="alert_root" style="flex-grow: 0; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; width: auto; top: 12%;">
+        <ui:VisualElement name="alert_full_panel" style="flex-grow: 0;">
+            <ui:VisualElement name="alert_box" style="flex-grow: 0; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); font-size: 5px; color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/05_RedFrame.png?fileID=21300000&amp;guid=83fbe76f2c3ca4afeb4aa2df7799aba7&amp;type=3#05_RedFrame&quot;); padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 120px; height: 75px; align-self: flex-end;">
+                <ui:VisualElement name="alert_header" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="alert_icon_box" style="flex-grow: 0; width: auto;">
+                        <ui:VisualElement name="alert_icon" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/warning_icon.png?fileID=21300000&amp;guid=9e84fcc63d09d4ac78a84ed7e8753cd5&amp;type=3#warning_icon&quot;); margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 15px; height: 16px;" />
+                    </ui:VisualElement>
+                    <ui:Label text="ACTIVE ALERTS" name="alert_header_label" style="color: rgb(212, 0, 0); width: auto; font-size: 4px; -unity-text-align: middle-left; flex-grow: 1;" />
+                    <ui:VisualElement name="alert_minimize" style="flex-grow: 0; flex-direction: column-reverse; align-self: flex-end;">
+                        <ui:Button name="alert_minimize_btn" style="padding-left: 6px; padding-right: 6px; padding-top: 5px; padding-bottom: 5px; background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/next_icon.png?fileID=21300000&amp;guid=f6cf130116c904069a18da160cf27c9b&amp;type=3#next_icon&quot;); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-left: 2px; margin-right: 2px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="alert_msgs" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/LightBlueFrame.png?fileID=21300000&amp;guid=960a683356ff747fc9927cd951d9a29e&amp;type=3#LightBlueFrame&quot;); margin-top: 2px; margin-right: 3px; margin-bottom: 2px; margin-left: 3px; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px; font-size: 4px;">
+                    <ui:VisualElement name="msg1" style="flex-grow: 0; flex-direction: row; border-bottom-width: 1px; border-bottom-color: rgb(44, 19, 161);">
+                        <ui:VisualElement name="caution_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/red_caution_icon.png?fileID=21300000&amp;guid=1f43391b31c924bd3a2797722f06d467&amp;type=3#red_caution_icon&quot;); margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; width: 15px; height: auto;" />
+                        <ui:Label text="High flood risk in 3 zones" name="high_risk_zones_alert_label" style="border-bottom-width: 0; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); width: auto; font-size: 3px; white-space: normal; -unity-text-align: middle-left; flex-grow: 1; flex-shrink: 1; align-self: center;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="msg2" style="flex-grow: 0; flex-direction: row; border-bottom-color: rgb(44, 19, 161); border-bottom-width: 1px; -unity-text-align: middle-left;">
+                        <ui:VisualElement name="caution_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/red_caution_icon.png?fileID=21300000&amp;guid=1f43391b31c924bd3a2797722f06d467&amp;type=3#red_caution_icon&quot;); margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; width: 15px; height: auto;" />
+                        <ui:Label text="Hospital at risk" name="barrier_units_alert_label" style="border-bottom-width: 0; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); width: auto; font-size: 3px; white-space: normal; flex-grow: 1; flex-shrink: 1; align-self: center;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="msg3" style="flex-grow: 0; flex-direction: row;">
+                        <ui:VisualElement name="caution_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/red_caution_icon.png?fileID=21300000&amp;guid=1f43391b31c924bd3a2797722f06d467&amp;type=3#red_caution_icon&quot;); margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; width: 15px; height: auto;" />
+                        <ui:Label text="River level rising rapidly" name="time_before_flood_alert_label" style="border-bottom-width: 0; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); width: auto; font-size: 3px; white-space: normal; -unity-text-align: middle-left; flex-grow: 1; flex-shrink: 1; align-self: center;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="view_alerts" style="flex-grow: 0; flex-direction: row;">
+                    <ui:Label text="VIEW ALL ALERTS" double-click-selects-word="false" name="view_alert_label" style="font-size: 3px; width: auto;" />
+                    <ui:VisualElement name="view_icon_box" style="flex-grow: 1;">
+                        <ui:VisualElement name="view_icon" style="flex-grow: 1; margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/next_icon.png?fileID=21300000&amp;guid=f6cf130116c904069a18da160cf27c9b&amp;type=3#next_icon&quot;); align-self: flex-end; width: 16px; height: 16px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="alert_box_collapsed" style="flex-grow: 0; align-self: flex-end; display: none;">
+            <ui:Button text="ACTIVE ALERTS" name="alert_box_collapse_btn" style="width: 67px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); font-size: 4px; color: rgb(212, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/05_RedFrame.png?fileID=21300000&amp;guid=83fbe76f2c3ca4afeb4aa2df7799aba7&amp;type=3#05_RedFrame&quot;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

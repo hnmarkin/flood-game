@@ -1,0 +1,24 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/PreparationCards/PreparationCardsUI.uss?fileID=7433441132597879392&amp;guid=6a436d3c07fc44c268a600a72c4a0c83&amp;type=3#PreparationCardsUI" />
+    <ui:VisualElement name="prep_card_root" class="prep-card-root" style="font-size: 4px; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); color: rgb(255, 255, 255);">
+        <ui:VisualElement name="prep_card_container" class="prep-card-container">
+            <ui:ScrollView name="prep_card_scroll" mode="Vertical" class="prep-card-scroll">
+                <ui:VisualElement name="prep_card_grid" class="prep-card-grid">
+                    <ui:VisualElement name="card_col1" class="prep-card prep-card-template">
+                        <ui:VisualElement name="card_col_container" class="prep-card-content">
+                            <ui:Label text="Label" name="title_label" class="prep-card-title" />
+                            <ui:Label text="Label" name="type_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="residential_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="money_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="action_points_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="prereqs_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="effects_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="commsfailure_label" class="prep-card-field" />
+                            <ui:Label text="Label" name="description_label" class="prep-card-description" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,1 @@
+Added polished retro minimap styling in `MiniMapPanel.uss`, cleaned the minimap UXML overlay elements, created `MiniMapController.cs` for UI Toolkit hover/click camera navigation and current-camera tracking, and added `FocusOnWorldPosition()` to `SimpleCameraPanZoom.cs` so the minimap can reposition the existing camera system without duplicating movement logic.
