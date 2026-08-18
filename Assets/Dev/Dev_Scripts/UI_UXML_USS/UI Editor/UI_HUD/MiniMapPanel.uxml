@@ -1,0 +1,21 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/MiniMapPanel.uss?fileID=7433441132597879392&amp;guid=bbd4a18e8bb9a47beae6e850aa35a092&amp;type=3#MiniMapPanel" />
+    <ui:VisualElement name="MiniMap_root" style="flex-grow: 1;">
+        <ui:VisualElement name="MiniMapBox" style="flex-grow: 0; flex-direction: column; width: auto; height: auto; align-self: flex-end; top: 60%; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/03_DarkBlueFrame.png?fileID=21300000&amp;guid=e79c60e1e975641c7827d2ae9c7da75a&amp;type=3#03_DarkBlueFrame&quot;); margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;">
+            <ui:VisualElement name="MiniMapPanel" class="minimap-panel" style="flex-grow: 0; flex-wrap: wrap; max-height: 90px; max-width: 90px; min-width: 50px; position: relative; align-self: auto; left: auto; bottom: auto; top: auto; background-color: rgba(255, 255, 255, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-image: none; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); height: 100px;">
+                <ui:VisualElement name="MiniMapHeader" class="minimap-header" style="padding-bottom: 2px; padding-top: 2px; padding-left: 2px; padding-right: 2px; border-bottom-color: rgba(21, 39, 77, 0); border-bottom-width: 0;">
+                    <ui:Label text="MiniMap" name="MiniMapTitle" class="minimap-title" style="padding-bottom: 2px; padding-top: 2px; font-size: 3px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MiniMapViewport" class="minimap-viewport" style="border-bottom-width: 0; border-right-width: 0; border-top-width: 0; border-left-width: 0; flex-grow: 1;">
+                    <ui:VisualElement name="MiniMapImage" class="minimap-image" />
+                    <ui:VisualElement name="CurrentCameraRect" class="minimap-current-camera-rect" style="display: flex; visibility: hidden;" />
+                    <ui:VisualElement name="HoverSelectionRect" class="minimap-hover-selection-rect" />
+                    <ui:VisualElement name="ClickMarker" class="minimap-click-marker" />
+                </ui:VisualElement>
+                <ui:VisualElement name="MiniMapFooter" class="minimap-footer" style="padding-top: 1px; padding-bottom: 1px; padding-right: 1px; padding-left: 1px; border-top-width: 0; height: auto; flex-grow: 0;">
+                    <ui:Label text="Click minimap to move camera" name="MiniMapHintText" class="minimap-hint-text" style="padding-left: 2px; font-size: 3px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

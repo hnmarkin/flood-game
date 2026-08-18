@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 {
     public static event Action OnAllZoneBarriersPlaced;
+    public event Action<bool> ZoneBoundaryModeChanged;
 
     [Header("References")]
     [SerializeField] private TileMapData tileMapData;
@@ -107,7 +108,7 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 
     private void OnDisable()
     {
-        zoneBoundaryMode = false;
+        SetZoneBoundaryModeActive(false);
         ClearHoverAndPreview();
 
         if (_enterZoneModeCoroutine != null)
@@ -133,22 +134,43 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
     {
         if (zoneBoundaryMode || _enterZoneModeCoroutine != null)
         {
-            ExitZoneBoundaryPlacementMode();
+            DisablePlaceBarrierMode();
         }
         else
         {
-            EnterZoneBoundaryPlacementMode();
+            EnablePlaceBarrierMode();
         }
     }
 
     public void EnterBuildModeFromUI()
     {
-        EnterZoneBoundaryPlacementMode();
+        EnablePlaceBarrierMode();
     }
 
     public void ExitBuildModeFromUI()
     {
+        DisablePlaceBarrierMode();
+    }
+
+    public void EnablePlaceBarrierMode()
+    {
+        if (zoneBoundaryMode || _enterZoneModeCoroutine != null)
+            return;
+
+        EnterZoneBoundaryPlacementMode();
+    }
+
+    public void DisablePlaceBarrierMode()
+    {
         ExitZoneBoundaryPlacementMode();
+    }
+
+    public void SetPlaceBarrierMode(bool enabled)
+    {
+        if (enabled)
+            EnablePlaceBarrierMode();
+        else
+            DisablePlaceBarrierMode();
     }
 
     public void EnterZoneBoundaryPlacementMode()
@@ -167,7 +189,7 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
             yield break;
         }
 
-        zoneBoundaryMode = false;
+        SetZoneBoundaryModeActive(false);
         ClearHoverAndPreview();
 
         int attempts = 0;
@@ -196,7 +218,7 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
             yield break;
         }
 
-        zoneBoundaryMode = true;
+        SetZoneBoundaryModeActive(true);
         ClearHoverAndPreview();
 
         Debug.Log($"[FloodDefenseBoxStamp] Zone boundary mode ON. Hover a zone and left-click to barricade. " +
@@ -213,7 +235,7 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
             _enterZoneModeCoroutine = null;
         }
 
-        zoneBoundaryMode = false;
+        SetZoneBoundaryModeActive(false);
         ClearHoverAndPreview();
 
         Debug.Log("[FloodDefenseBoxStamp] Zone boundary mode OFF.");
@@ -234,6 +256,15 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
             return false;
 
         return true;
+    }
+
+    private void SetZoneBoundaryModeActive(bool isActive)
+    {
+        if (zoneBoundaryMode == isActive)
+            return;
+
+        zoneBoundaryMode = isActive;
+        ZoneBoundaryModeChanged?.Invoke(zoneBoundaryMode);
     }
 
     private bool ValidateRequiredReferences()
@@ -701,6 +732,91 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
     }
 
     // ---------- IBarrierProvider ----------
+
+    public bool IsZoneBoundaryModeActive => zoneBoundaryMode;
+
+    public TileMapData MapData => tileMapData;
+
+    public Vector2Int TileOrigin => _tileOrigin;
+
+    public Tilemap TerrainTilemap => terrainTilemap;
+
+    public bool EnsureZoneIndexReadyForExternalUse()
+    {
+        if (!IsZoneLoaderReady())
+            return false;
+
+        if (_geoidToTiles.Count == 0)
+        {
+            BuildZoneIndex();
+        }
+
+        return _geoidToTiles.Count > 0;
+    }
+
+    public bool TryGetZoneTiles(string geoid, out HashSet<Vector2Int> zoneTiles)
+    {
+        zoneTiles = null;
+
+        if (string.IsNullOrEmpty(geoid))
+            return false;
+
+        if (!EnsureZoneIndexReadyForExternalUse())
+            return false;
+
+        return _geoidToTiles.TryGetValue(geoid, out zoneTiles);
+    }
+
+    public IReadOnlyDictionary<string, HashSet<Vector2Int>> GetAllZoneTiles()
+    {
+        if (!EnsureZoneIndexReadyForExternalUse())
+            return null;
+
+        return _geoidToTiles;
+    }
+
+    public bool TryGetZoneTilesAtWorld(
+        Vector3 world,
+        out string geoid,
+        out HashSet<Vector2Int> zoneTiles
+    )
+    {
+        geoid = null;
+        zoneTiles = null;
+
+        if (!EnsureZoneIndexReadyForExternalUse())
+            return false;
+
+        world.z = 0f;
+
+        int r;
+        int c;
+        int pop;
+        string category;
+
+        bool hit = jsonMapLoader.TryGetTileInfoAtWorld(
+            world,
+            out r,
+            out c,
+            out category,
+            out geoid,
+            out pop
+        );
+
+        if (!hit || string.IsNullOrEmpty(geoid))
+            return false;
+
+        return _geoidToTiles.TryGetValue(geoid, out zoneTiles);
+    }
+
+    public Vector3Int NormalizedTileToCell(Vector2Int tile)
+    {
+        return new Vector3Int(
+            tile.x + _tileOrigin.x,
+            tile.y + _tileOrigin.y,
+            0
+        );
+    }
 
     public bool IsBlockedX(int x, int y)
     {

@@ -1,0 +1,72 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="phase_selection_root" style="flex-grow: 0; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); font-size: 8px; -unity-font-style: bold; color: rgb(255, 255, 255);">
+        <ui:VisualElement name="ps_container" style="flex-grow: 0;">
+            <ui:VisualElement name="ps_header_box" style="flex-grow: 0; flex-direction: row; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;">
+                <ui:VisualElement name="ps_header_icon_box" style="flex-grow: 0; width: 12%; align-self: center;">
+                    <ui:VisualElement name="ps_header_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/storm_icon.png?fileID=21300000&amp;guid=1d16932f06cbe48f4912efb98f9ffb4d&amp;type=3#storm_icon&quot;); height: 25px; width: 28px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="ps_header_label_box" style="flex-grow: 0;">
+                    <ui:Label text="SELECT A PHASE&#x9;" name="ps_header_label" style="font-size: 10px;" />
+                    <ui:Label text="Review each phase and select where to begin." name="ps_header_label" style="font-size: 4px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; white-space: normal;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="ps_header_info_box" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/03_DarkBlueFrame.png?fileID=21300000&amp;guid=e79c60e1e975641c7827d2ae9c7da75a&amp;type=3#03_DarkBlueFrame&quot;); flex-direction: row; width: 35%; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px;">
+                    <ui:VisualElement name="ps_header_info_icon_box" style="flex-grow: 0; width: 20%;">
+                        <ui:VisualElement name="ps_header_info_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/Info_icon_blue.png?fileID=21300000&amp;guid=eaa25ebce363d4a1db3040481a8a85e3&amp;type=3#Info_icon_blue&quot;); height: 100%; margin-bottom: 12px; margin-top: 12px; margin-left: 4px; margin-right: 4px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ps_header_info_label_box" style="flex-grow: 0; font-size: 4px; align-self: center;">
+                        <ui:Label text="Build flood defenses, protect critical zones, save lives." name="ps_header_info_label" style="font-size: 3px; flex-grow: 0; flex-wrap: wrap; white-space: normal;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="ps_cards_container" style="flex-grow: 0; flex-direction: row;">
+                <ui:VisualElement name="ps_phase_box" style="flex-grow: 0; width: 124px; flex-shrink: 0;">
+                    <ui:VisualElement name="ps_card_1" style="flex-grow: 0; flex-direction: row; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; height: 40px; width: 100px; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; background-color: rgb(17, 12, 55); flex-shrink: 0;">
+                        <ui:VisualElement name="ps_card_no_container" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; align-self: center;">
+                            <ui:Label text="01" name="ps_card_no" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 6px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="ps_card_header_box" style="flex-grow: 0; flex-direction: row; align-content: flex-end; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px;">
+                            <ui:VisualElement name="ps_card_header_title" style="flex-grow: 0; height: 14px;">
+                                <ui:Label text="PRE-CRISIS" name="ps_card_header_label" style="font-size: 5px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; height: 8px;" />
+                                <ui:Label text="Prepare and plan before the storm hits" name="pa_card_text" style="font-size: 3px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; white-space: normal; width: 68px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="ps_card_header_icon_box" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; width: 28px; align-self: center;">
+                                <ui:VisualElement name="ps_card_header_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/pre_crisis_icon.png?fileID=21300000&amp;guid=89bf8d6c10e9d4578a4d2cfb85744030&amp;type=3#pre_crisis_icon&quot;); width: 12px; height: 12px; margin-top: 1px; margin-right: 2px; margin-bottom: 1px; margin-left: 2px;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ps_card_2" style="flex-grow: 0; flex-direction: row; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; height: 40px; width: 100px; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; background-color: rgb(17, 12, 55);">
+                        <ui:VisualElement name="ps_card_no_container" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; align-self: center;">
+                            <ui:Label text="02" name="ps_card_no" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 6px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="ps_card_header_box" style="flex-grow: 0; flex-direction: row; align-content: flex-end; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px;">
+                            <ui:VisualElement name="ps_card_header_title" style="flex-grow: 0; height: 14px;">
+                                <ui:Label text="FLOOD-CRISIS" name="ps_card_header_label" style="font-size: 5px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; height: 8px;" />
+                                <ui:Label text="Active flooding. Protect critical zones and reduce damage" name="pa_card_text" style="font-size: 3px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; white-space: normal; width: 70px; height: 18px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="ps_card_header_icon_box" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; width: 28px; align-self: center;">
+                                <ui:VisualElement name="ps_card_header_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/storm_icon.png?fileID=21300000&amp;guid=1d16932f06cbe48f4912efb98f9ffb4d&amp;type=3#storm_icon&quot;); width: 15px; height: 12px; margin-top: 1px; margin-right: 2px; margin-bottom: 1px; margin-left: 2px;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ps_card_3" style="flex-grow: 0; flex-direction: row; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; height: 40px; width: 100px; border-left-color: rgb(45, 45, 135); border-right-color: rgb(45, 45, 135); border-top-color: rgb(45, 45, 135); border-bottom-color: rgb(45, 45, 135); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; background-color: rgb(17, 12, 55);">
+                        <ui:VisualElement name="ps_card_no_container" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; align-self: center;">
+                            <ui:Label text="03" name="ps_card_no" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 6px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="ps_card_header_box" style="flex-grow: 0; flex-direction: row; align-content: flex-end; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px;">
+                            <ui:VisualElement name="ps_card_header_title" style="flex-grow: 0; height: 14px;">
+                                <ui:Label text="POST-FLOOD CRISIS" name="ps_card_header_label" style="font-size: 5px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; height: 12px; width: 56px; white-space: normal;" />
+                                <ui:Label text="Recover, restore and rebuild the affected areas" name="pa_card_text" style="font-size: 3px; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; white-space: normal; width: 50px; height: 16px;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="ps_card_header_icon_box" style="flex-grow: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; width: 28px; align-self: center;">
+                                <ui:VisualElement name="ps_card_header_icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/rain_cloud_icon.png?fileID=21300000&amp;guid=190acbff5746b404293301b2559fe7e2&amp;type=3#rain_cloud_icon&quot;); width: 14px; height: 14px; margin-top: 1px; margin-right: 2px; margin-bottom: 1px; margin-left: 2px;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="ps_main_info_box" style="flex-grow: 0;">
+                    <ui:VisualElement name="ps_card_1" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

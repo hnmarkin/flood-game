@@ -1,0 +1,13 @@
+.advisor-popup-hidden {
+    opacity: 0;
+    scale: 0.98;
+    translate: 14px 0;
+    transition-property: opacity, scale, translate;
+    transition-duration: 0.22s;
+}
+
+.advisor-popup-visible {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+}

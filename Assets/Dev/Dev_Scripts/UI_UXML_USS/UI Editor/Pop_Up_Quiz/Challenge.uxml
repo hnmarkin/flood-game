@@ -1,0 +1,22 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dev/Dev_Scripts/UI_UXML_USS/UI%20Editor/Challenge/Challenge.uss?fileID=7433441132597879392&amp;guid=f59a2c56c3367405c857355a39be7792&amp;type=3#Challenge" />
+    <ui:VisualElement name="challenge_root" style="flex-grow: 0; -unity-font-definition: url(&quot;project://database/Assets/Dev/Ash_dev/Pixel_Font/PublicPixel.ttf?fileID=12800000&amp;guid=29da3f0434479411c8f4a5469b7d44d9&amp;type=3#PublicPixel&quot;); font-size: 4px; color: rgb(255, 255, 255);">
+        <ui:VisualElement name="challenge_container" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/03_DarkBlueFrame.png?fileID=21300000&amp;guid=e79c60e1e975641c7827d2ae9c7da75a&amp;type=3#03_DarkBlueFrame&quot;); margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;">
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                <ui:Label text="Flood warning issued" style="font-size: 4.5px; width: 90%;" />
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:Button style="background-color: rgba(0, 0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; background-image: url(&quot;project://database/Assets/Dev/Ash_dev/dev_imgs/UI_Icons/Close_icon_01.png?fileID=21300000&amp;guid=eddc0942af9ab40aeb80755bdd0f86e9&amp;type=3#Close_icon_01&quot;); width: auto; margin-top: 1px; margin-right: 1px; margin-bottom: 1px; margin-left: 1px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="challenge_list" style="flex-grow: 0; -unity-text-align: upper-center; border-left-color: rgb(52, 58, 154); border-right-color: rgb(52, 58, 154); border-top-color: rgb(52, 58, 154); border-bottom-color: rgb(52, 58, 154); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+                <ui:Label text="3 critical zones identified" name="Label" style="border-bottom-color: rgb(52, 58, 154); border-bottom-width: 1px; border-top-color: rgb(52, 58, 154); border-top-width: 0;" />
+                <ui:Label text="Budget available: $60,000" name="Label" style="border-bottom-width: 1px; border-bottom-color: rgb(52, 58, 154); border-left-color: rgb(52, 58, 154); border-right-color: rgb(52, 58, 154);" />
+                <ui:Label text="Barrier units available: 8" name="Label" style="border-bottom-width: 1px; border-bottom-color: rgb(52, 58, 154);" />
+                <ui:Label text="Time before flood: 3 turns." name="Label" style="border-bottom-color: rgb(52, 58, 154); border-bottom-width: 1px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label text="Choose which zones to protect" name="Label" style="font-size: 4.5px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
