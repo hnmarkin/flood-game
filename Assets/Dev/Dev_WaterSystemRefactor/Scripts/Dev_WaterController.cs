@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Public entry point for the Dev Water System. It owns the live runtime state,
+/// coordinates simulation and rendering, and prevents other systems from reaching into water state directly.
+/// </summary>
 public class Dev_WaterController : MonoBehaviour
 {
-    [Header("Compatibility Inputs")]
+    [Header("Map Input")]
     [SerializeField] private TileMapData tileMapData;
-    [SerializeField] private TileType waterTileType;
 
     [Header("Scenario Config")]
     [SerializeField] private Dev_WaterScenarioConfig scenarioConfig;
@@ -28,9 +31,8 @@ public class Dev_WaterController : MonoBehaviour
     [Header("Rendering")]
     [SerializeField] private Dev_WaterTilemapRenderer waterRenderer;
 
-    [Header("External Providers")]
-    [SerializeField] private MonoBehaviour barrierProviderBehaviour;
-    [SerializeField] private MonoBehaviour modifierProviderBehaviour;
+    [Header("Barrier Data")]
+    [SerializeField] private Dev_WaterBarrierGrid barrierGrid;
 
     [Header("Lifecycle")]
     [SerializeField] private bool initializeOnStart = true;
@@ -40,16 +42,14 @@ public class Dev_WaterController : MonoBehaviour
     [SerializeField] private Dev_WaterStepMode stepMode = Dev_WaterStepMode.Automatic;
     [Min(0.05f)]
     [SerializeField] private float autoStepInterval = 0.5f;
+    [Tooltip("Dev-only test input until the project input system exists.")]
     [SerializeField] private bool spaceKeyStepsWhenManual = true;
 
     private Dev_WaterRuntimeState _runtimeState;
     private Dev_WaterSimulationEngine _engine;
-    private Dev_IWaterBarrierProvider _barrierProvider;
-    private Dev_IWaterModifierProvider _modifierProvider;
     private Dev_WaterSimulationSettings _resolvedSettings;
     private Dev_WaterSourceSpec[] _resolvedInitialSources = Array.Empty<Dev_WaterSourceSpec>();
     private Dev_WaterSourceSpec[] _resolvedContinuousSources = Array.Empty<Dev_WaterSourceSpec>();
-    private TileType _resolvedWaterTileType;
     private float _autoStepTimer;
     private bool _initialized;
     private bool _sourcesApplied;
@@ -64,12 +64,6 @@ public class Dev_WaterController : MonoBehaviour
 
     public bool IsInitialized => _initialized;
     public bool IsSimulationRunning => _simulationRunning;
-    public Dev_WaterRuntimeState RuntimeState => _runtimeState;
-
-    private void Awake()
-    {
-        BindProviders();
-    }
 
     private void Start()
     {
@@ -111,7 +105,7 @@ public class Dev_WaterController : MonoBehaviour
 
     public bool CanStartSimulation()
     {
-        return tileMapData != null;
+        return tileMapData != null && barrierGrid != null;
     }
 
     public void BeginSimulationFromUI()
@@ -177,8 +171,7 @@ public class Dev_WaterController : MonoBehaviour
 
         ApplyInitialSourcesIfNeeded();
 
-        Dev_WaterModifierSnapshot modifiers = GetModifierSnapshot();
-        _lastSummary = _engine.Step(_resolvedContinuousSources, _resolvedWaterTileType, modifiers);
+        _lastSummary = _engine.Step(_resolvedContinuousSources, Dev_WaterModifierSnapshot.Defaults());
         waterRenderer?.ApplyDirty();
 
         OnWaterSimulationStepped?.Invoke(_lastSummary);
@@ -198,10 +191,26 @@ public class Dev_WaterController : MonoBehaviour
     public bool TrySetWaterDepth(Vector2Int tileCell, float depth)
     {
         if (_runtimeState == null)
+        {
+            Debug.LogWarning("[Dev_WaterController] Cannot set water depth before runtime state is initialized.");
             return false;
+        }
 
-        if (!_runtimeState.TrySetWaterDepth(tileCell, depth))
+        if (float.IsNaN(depth) || float.IsInfinity(depth))
+        {
+            Debug.LogWarning("[Dev_WaterController] Water depth must be a finite value.");
             return false;
+        }
+
+        float clampedDepth = Mathf.Max(0f, depth);
+        if (_resolvedSettings != null && _resolvedSettings.maxWaterDepth > 0f)
+            clampedDepth = Mathf.Min(clampedDepth, _resolvedSettings.maxWaterDepth);
+
+        if (!_runtimeState.TrySetWaterDepth(tileCell, clampedDepth))
+        {
+            Debug.LogWarning($"[Dev_WaterController] Cannot set water depth at invalid tile cell {tileCell}.");
+            return false;
+        }
 
         waterRenderer?.ApplyDirty();
         return true;
@@ -216,17 +225,29 @@ public class Dev_WaterController : MonoBehaviour
             return false;
         }
 
-        BindProviders();
         ResolveConfiguration();
 
-        _runtimeState = Dev_WaterTileMapDataAdapter.CreateRuntimeState(tileMapData, _resolvedWaterTileType);
+        _runtimeState = Dev_WaterTileMapDataAdapter.CreateRuntimeState(tileMapData);
         if (_runtimeState == null)
         {
             _initialized = false;
             return false;
         }
 
-        _engine = new Dev_WaterSimulationEngine(_barrierProvider);
+        if (barrierGrid == null)
+        {
+            Debug.LogError("[Dev_WaterController] Cannot initialize: Dev_WaterBarrierGrid is not assigned.");
+            _initialized = false;
+            return false;
+        }
+
+        if (!barrierGrid.InitializeForSimulation(_runtimeState.GridWidth, _runtimeState.GridHeight))
+        {
+            _initialized = false;
+            return false;
+        }
+
+        _engine = new Dev_WaterSimulationEngine(barrierGrid);
         _engine.Initialize(_runtimeState, _resolvedSettings);
 
         if (waterRenderer != null)
@@ -256,18 +277,10 @@ public class Dev_WaterController : MonoBehaviour
         if (_sourcesApplied)
             return;
 
-        Dev_WaterModifierSnapshot modifiers = GetModifierSnapshot();
-        _engine.ApplyInitialSources(_resolvedInitialSources, _resolvedWaterTileType, modifiers);
+        _engine.ApplyInitialSources(_resolvedInitialSources, Dev_WaterModifierSnapshot.Defaults());
         _engine.InitializeActiveRegion();
         waterRenderer?.ApplyDirty();
         _sourcesApplied = true;
-    }
-
-    private void BindProviders()
-    {
-        var barrierAdapter = new Dev_WaterBarrierProviderAdapter(barrierProviderBehaviour);
-        _barrierProvider = barrierAdapter.HasProvider ? barrierAdapter : null;
-        _modifierProvider = new Dev_WaterModifierProviderAdapter(modifierProviderBehaviour);
     }
 
     private void ResolveConfiguration()
@@ -277,7 +290,6 @@ public class Dev_WaterController : MonoBehaviour
             _resolvedSettings = scenarioConfig.CreateSettingsInstance();
             _resolvedInitialSources = scenarioConfig.CreateInitialSourceInstances();
             _resolvedContinuousSources = scenarioConfig.CreateContinuousSourceInstances();
-            _resolvedWaterTileType = scenarioConfig.WaterTileType != null ? scenarioConfig.WaterTileType : waterTileType;
             return;
         }
 
@@ -287,14 +299,6 @@ public class Dev_WaterController : MonoBehaviour
         _resolvedSettings.Sanitize();
         _resolvedInitialSources = CloneSources(initialSources);
         _resolvedContinuousSources = CloneSources(continuousSources);
-        _resolvedWaterTileType = waterTileType;
-    }
-
-    private Dev_WaterModifierSnapshot GetModifierSnapshot()
-    {
-        return _modifierProvider != null
-            ? _modifierProvider.GetWaterModifierSnapshot()
-            : Dev_WaterModifierSnapshot.Defaults();
     }
 
     private static Dev_WaterSourceSpec[] CloneSources(Dev_WaterSourceSpec[] sources)

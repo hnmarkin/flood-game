@@ -1,8 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// Imports the legacy TileMapData layout into Dev_WaterRuntimeState at initialization time.
+/// It is the compatibility boundary between the old tile asset model and the refactor's runtime simulation model.
+/// </summary>
 public static class Dev_WaterTileMapDataAdapter
 {
-    public static Dev_WaterRuntimeState CreateRuntimeState(TileMapData tileMapData, TileType fallbackWaterTileType)
+    public static Dev_WaterRuntimeState CreateRuntimeState(TileMapData tileMapData)
     {
         if (tileMapData == null)
         {
@@ -34,7 +38,7 @@ public static class Dev_WaterTileMapDataAdapter
                 state.HasTile[simX, simY] = true;
                 state.Terrain[simX, simY] = tile.elevation;
                 state.Water[simX, simY] = Mathf.Max(0f, tile.waterHeight);
-                state.IsWaterBody[simX, simY] = IsWaterBodyTile(tile, fallbackWaterTileType);
+                state.IsWaterBody[simX, simY] = IsWaterBodyTile(tile);
             }
         }
 
@@ -80,18 +84,13 @@ public static class Dev_WaterTileMapDataAdapter
         origin = new Vector2Int(xMin, yMin);
     }
 
-    private static bool IsWaterBodyTile(TileInstance tile, TileType fallbackWaterTileType)
+    private static bool IsWaterBodyTile(TileInstance tile)
     {
         if (tile == null || tile.tileType == null)
             return false;
 
-        if (fallbackWaterTileType != null && tile.tileType == fallbackWaterTileType)
-            return true;
-
-        if (tile.tileType.isWater)
-            return true;
-
-        return !string.IsNullOrWhiteSpace(tile.tileType.tileName)
-            && tile.tileType.tileName.ToLowerInvariant().Contains("water");
+        // ExistingWaterBodies currently means every tile explicitly marked as water.
+        // Selective source categories can be added later when the game has a real need for them.
+        return tile.tileType.isWater;
     }
 }

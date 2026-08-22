@@ -332,6 +332,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1094801123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094801124}
+  - component: {fileID: 1094801125}
+  m_Layer: 0
+  m_Name: Dev_TestMapBootstrapper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1094801124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094801123}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1094801125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094801123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1fd20db7135974eb83c0b93efd8e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileMapData: {fileID: 11400000, guid: ee6dc5064a6404247b249bd5ae5d29fc, type: 2}
+  terrainTilemap: {fileID: 1269378859}
+  groundTileType: {fileID: 11400000, guid: ebf4329403c5d485ba3b45750a8dab86, type: 2}
+  waterTileType: {fileID: 11400000, guid: 8f8f193412445453db541a34e65dc85d, type: 2}
+  groundDynamicTile: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
+  waterDynamicTile: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
+  width: 20
+  height: 20
+  origin: {x: 0, y: 0}
+  rimHeight: 8
+  basinDepth: 3
+  channelDepth: 2
+  createWaterBody: 1
+  initialWaterBodyDepth: 10
+  rebuildOnEnable: 0
+  lastGeneratedOrigin: {x: 0, y: 0}
+  lastGeneratedWidth: 20
+  lastGeneratedHeight: 20
 --- !u!1 &1269378858
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,6 +4650,7 @@ GameObject:
   - component: {fileID: 1946108816}
   - component: {fileID: 1946108815}
   - component: {fileID: 1946108814}
+  - component: {fileID: 1946108817}
   m_Layer: 0
   m_Name: WaterSystemRoot
   m_TagString: Untagged
@@ -4610,8 +4673,6 @@ MonoBehaviour:
   tileMapData: {fileID: 11400000, guid: ee6dc5064a6404247b249bd5ae5d29fc, type: 2}
   tilemaps:
   - {fileID: 1269378859}
-  persistentFloodVisuals: 1
-  visualWaterChangePerStep: 0.75
   depthForDeepColor: 1
   shallowWaterColor: {r: 0.7, g: 0.85, b: 1, a: 1}
   deepWaterColor: {r: 0.1, g: 0.25, b: 0.5, a: 1}
@@ -4628,7 +4689,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileMapData: {fileID: 11400000, guid: ee6dc5064a6404247b249bd5ae5d29fc, type: 2}
-  waterTileType: {fileID: 11400000, guid: 8f8f193412445453db541a34e65dc85d, type: 2}
   scenarioConfig: {fileID: 11400000, guid: a1cc30db8ec74d143bc5433c27359b82, type: 2}
   simulationSettings:
     dx: 1
@@ -4650,14 +4710,12 @@ MonoBehaviour:
   initialSources:
   - kind: 3
     depth: 10
-    waterTileType: {fileID: 0}
     scaleByRainfallRate: 0
     scaleByExternalWaterLoad: 1
     scaleByAntecedentWetness: 0
   continuousSources: []
   waterRenderer: {fileID: 1946108814}
-  barrierProviderBehaviour: {fileID: 0}
-  modifierProviderBehaviour: {fileID: 0}
+  barrierGrid: {fileID: 1946108817}
   initializeOnStart: 1
   startOnPlay: 1
   stepMode: 1
@@ -4678,6 +4736,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1946108817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946108813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23dc5c574b546e8a6e9f5e701c9f3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2043742591
 GameObject:
   m_ObjectHideFlags: 0
@@ -4810,3 +4880,4 @@ SceneRoots:
   - {fileID: 1432230497}
   - {fileID: 1555351890}
   - {fileID: 1946108816}
+  - {fileID: 1094801124}

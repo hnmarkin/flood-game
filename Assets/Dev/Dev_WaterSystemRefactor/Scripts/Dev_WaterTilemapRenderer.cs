@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Projects authoritative WaterRuntimeState depths onto the existing tile visuals.
+/// It deliberately owns no visual water history or interpolation, so rendered depth always matches simulation truth.
+/// </summary>
 public class Dev_WaterTilemapRenderer : MonoBehaviour
 {
     [SerializeField] private TileMapData tileMapData;
@@ -8,21 +12,12 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
     [Header("Tilemaps to Refresh")]
     [SerializeField] private Tilemap[] tilemaps;
 
-    [Header("Visual Flood Persistence")]
-    [SerializeField] private bool persistentFloodVisuals = true;
-
-    [Header("Visual Water Transition")]
-    [Min(0f)]
-    [SerializeField] private float visualWaterChangePerStep = 1f;
-
     [Header("Tint")]
     [SerializeField] private float depthForDeepColor = 1f;
     [SerializeField] private Color shallowWaterColor = new Color(0.70f, 0.85f, 1.00f, 1f);
     [SerializeField] private Color deepWaterColor = new Color(0.10f, 0.25f, 0.50f, 1f);
 
     private Dev_WaterRuntimeState _state;
-    private float[,] _visualWater;
-    private float[,] _visualTargetWater;
 
     public void SetTileMapData(TileMapData value)
     {
@@ -40,28 +35,13 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
         if (_state == null)
             return;
 
-        _visualWater = new float[_state.GridWidth, _state.GridHeight];
-        _visualTargetWater = new float[_state.GridWidth, _state.GridHeight];
-
-        for (int y = 1; y <= _state.Height; y++)
-        {
-            for (int x = 1; x <= _state.Width; x++)
-            {
-                if (!_state.HasTile[x, y])
-                    continue;
-
-                _visualWater[x, y] = _state.Water[x, y];
-                _visualTargetWater[x, y] = _state.Water[x, y];
-            }
-        }
-
         _state.MarkAllExistingDirty();
         ApplyDirty();
     }
 
     public void ApplyDirty()
     {
-        if (_state == null || tileMapData == null || _visualWater == null || _visualTargetWater == null)
+        if (_state == null || tileMapData == null)
             return;
 
         foreach (Vector2Int tileCell in _state.DirtyCells)
@@ -89,26 +69,7 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
         if (!Dev_WaterTileMapDataAdapter.TryGetTile(tileMapData, tileCell, out TileInstance tile))
             return;
 
-        float logicalDepth = Mathf.Max(0f, _state.Water[simX, simY]);
-        float targetDepth = persistentFloodVisuals
-            ? Mathf.Max(_visualTargetWater[simX, simY], logicalDepth)
-            : logicalDepth;
-
-        _visualTargetWater[simX, simY] = targetDepth;
-
-        if (visualWaterChangePerStep <= 0f)
-        {
-            _visualWater[simX, simY] = targetDepth;
-        }
-        else
-        {
-            _visualWater[simX, simY] = Mathf.MoveTowards(
-                _visualWater[simX, simY],
-                targetDepth,
-                visualWaterChangePerStep);
-        }
-
-        float visualDepth = _visualWater[simX, simY];
+        float visualDepth = Mathf.Max(0f, _state.Water[simX, simY]);
         tile.waterHeight = visualDepth;
         tile.tint = Color.Lerp(
             shallowWaterColor,

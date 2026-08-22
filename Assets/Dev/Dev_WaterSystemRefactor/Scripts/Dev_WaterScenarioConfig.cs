@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Stores reusable Dev Water System simulation settings and source definitions.
+/// The controller clones this asset at initialization so the running simulation owns its mutable configuration.
+/// </summary>
 [CreateAssetMenu(fileName = "Dev_WaterScenarioConfig", menuName = "Dev/Water System/Scenario Config")]
 public class Dev_WaterScenarioConfig : ScriptableObject
 {
@@ -17,11 +21,6 @@ public class Dev_WaterScenarioConfig : ScriptableObject
     };
 
     [SerializeField] private Dev_WaterSourceSpec[] continuousSources;
-
-    [Header("Tile Type Fallbacks")]
-    [SerializeField] private TileType waterTileType;
-
-    public TileType WaterTileType => waterTileType;
 
     public Dev_WaterSimulationSettings CreateSettingsInstance()
     {

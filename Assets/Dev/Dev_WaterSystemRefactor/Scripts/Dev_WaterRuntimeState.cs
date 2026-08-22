@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Holds the authoritative mutable grid data for one initialized Dev Water System run.
+/// Only Dev_WaterController and its internal collaborators should read or change it during simulation.
+/// </summary>
 public sealed class Dev_WaterRuntimeState
 {
     private readonly HashSet<Vector2Int> _dirtyCells = new HashSet<Vector2Int>();

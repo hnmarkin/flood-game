@@ -32,9 +32,7 @@ MonoBehaviour:
   initialSources:
   - kind: 3
     depth: 10
-    waterTileType: {fileID: 0}
     scaleByRainfallRate: 0
     scaleByExternalWaterLoad: 1
     scaleByAntecedentWetness: 0
   continuousSources: []
-  waterTileType: {fileID: 0}

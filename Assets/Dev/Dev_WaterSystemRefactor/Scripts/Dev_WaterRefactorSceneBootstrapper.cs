@@ -1,6 +1,15 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
+
+/// <summary>
+/// Generates the deterministic hard-coded map used to exercise the Dev Water System in RefactorScene.
+/// It is editor-only prototype tooling: rebuilding replaces the prior generated layout before writing the same test map again.
+/// </summary>
 [ExecuteAlways]
 public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
 {
@@ -30,6 +39,10 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
     [Header("Editor Behavior")]
     [SerializeField] private bool rebuildOnEnable;
 
+    [SerializeField, HideInInspector] private Vector2Int lastGeneratedOrigin;
+    [SerializeField, HideInInspector] private int lastGeneratedWidth;
+    [SerializeField, HideInInspector] private int lastGeneratedHeight;
+
     private void OnEnable()
     {
         if (!Application.isPlaying && rebuildOnEnable)
@@ -39,10 +52,17 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
     [ContextMenu("Rebuild Scene")]
     public void RebuildScene()
     {
+        if (Application.isPlaying)
+        {
+            Debug.LogWarning("[Dev_WaterRefactorSceneBootstrapper] Rebuild the Dev test map from edit mode, not during play mode.");
+            return;
+        }
+
         if (!ValidateReferences())
             return;
 
         ConfigureTileMapData();
+        ClearGeneratedTileData();
         terrainTilemap.ClearAllTiles();
 
         for (int y = 0; y < height; y++)
@@ -73,13 +93,21 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
                     tint = Color.white
                 };
 
-                tileMapData.SetTileInstanceAt(logical, tile);
+                tileMapData.Set(logical, tile);
                 terrainTilemap.SetTile(new Vector3Int(logical.x, logical.y, 0), dynamicTile);
             }
         }
 
+        lastGeneratedOrigin = origin;
+        lastGeneratedWidth = width;
+        lastGeneratedHeight = height;
         terrainTilemap.RefreshAllTiles();
         TileManager.Instance?.RefreshAll();
+
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(tileMapData);
+        EditorSceneManager.MarkSceneDirty(gameObject.scene);
+#endif
     }
 
     private bool ValidateReferences()
@@ -121,6 +149,36 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
         tileMapData.rangeZ = new Vector2Int(0, tileMapData.sizeZ);
         tileMapData.N = width;
         tileMapData.simInitialized = false;
+    }
+
+    private void ClearGeneratedTileData()
+    {
+        ClearTileData(lastGeneratedOrigin, lastGeneratedWidth, lastGeneratedHeight);
+
+        if (lastGeneratedOrigin != origin
+            || lastGeneratedWidth != width
+            || lastGeneratedHeight != height)
+        {
+            ClearTileData(origin, width, height);
+        }
+    }
+
+    private void ClearTileData(Vector2Int boundsOrigin, int boundsWidth, int boundsHeight)
+    {
+        if (boundsWidth <= 0 || boundsHeight <= 0)
+            return;
+
+        for (int y = 0; y < boundsHeight; y++)
+        {
+            for (int x = 0; x < boundsWidth; x++)
+            {
+                Vector2Int cell = new Vector2Int(boundsOrigin.x + x, boundsOrigin.y + y);
+                if (cell.x < 0 || cell.y < 0 || cell.x >= tileMapData.sizeX || cell.y >= tileMapData.sizeY)
+                    continue;
+
+                tileMapData.Set(cell, null);
+            }
+        }
     }
 
     private int ComputeElevation(int x, int y)

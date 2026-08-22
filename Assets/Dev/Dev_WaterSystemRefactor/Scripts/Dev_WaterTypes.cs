@@ -1,12 +1,16 @@
 using System;
 using UnityEngine;
 
+// Shared configuration and value types used by the Dev Water System's controller and simulation engine.
+
+/// <summary>Chooses whether the Dev Water System advances manually for testing or on an automatic interval.</summary>
 public enum Dev_WaterStepMode
 {
     Manual,
     Automatic
 }
 
+/// <summary>Identifies the map region that a configured water source affects.</summary>
 public enum Dev_WaterSourceKind
 {
     FullMap,
@@ -17,6 +21,7 @@ public enum Dev_WaterSourceKind
     Boundary
 }
 
+/// <summary>Contains validated numerical settings for one Dev Water System simulation run.</summary>
 [Serializable]
 public class Dev_WaterSimulationSettings
 {
@@ -74,6 +79,7 @@ public class Dev_WaterSimulationSettings
     }
 }
 
+/// <summary>Describes one initial or continuous water source used by the simulation engine.</summary>
 [Serializable]
 public class Dev_WaterSourceSpec
 {
@@ -81,9 +87,6 @@ public class Dev_WaterSourceSpec
 
     [Tooltip("Initial sources use this as absolute depth. Continuous sources use this as depth per second.")]
     [Min(0f)] public float depth = 10f;
-
-    [Tooltip("Optional explicit Water TileType for ExistingWaterBodies. Controller fallback is used when null.")]
-    public TileType waterTileType;
 
     public bool scaleByRainfallRate;
     public bool scaleByExternalWaterLoad = true;
@@ -95,6 +98,7 @@ public class Dev_WaterSourceSpec
     }
 }
 
+/// <summary>Captures external modifier values for a water step; defaults are used until the real modifier system exists.</summary>
 [Serializable]
 public struct Dev_WaterModifierSnapshot
 {
@@ -136,6 +140,7 @@ public struct Dev_WaterModifierSnapshot
     }
 }
 
+/// <summary>Reports the aggregate result of the most recent Dev Water System simulation step.</summary>
 public struct Dev_WaterStepSummary
 {
     public int StepIndex;
@@ -144,19 +149,4 @@ public struct Dev_WaterStepSummary
     public int DirtyTileCount;
     public float TotalWater;
     public float MaxDepth;
-}
-
-public interface Dev_IWaterBarrierProvider
-{
-    float GetBarrierHeightX(int x, int y);
-    float GetSeepageX(int x, int y);
-    float GetBarrierHeightY(int x, int y);
-    float GetSeepageY(int x, int y);
-    bool IsBlockedX(int x, int y);
-    bool IsBlockedY(int x, int y);
-}
-
-public interface Dev_IWaterModifierProvider
-{
-    Dev_WaterModifierSnapshot GetWaterModifierSnapshot();
 }

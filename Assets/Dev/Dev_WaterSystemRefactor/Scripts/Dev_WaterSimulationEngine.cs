@@ -1,17 +1,21 @@
 using UnityEngine;
 
+/// <summary>
+/// Performs the Water System's step-by-step flow calculations against runtime state.
+/// It has no scene or UI responsibilities and reads barrier behavior from the concrete Dev barrier grid.
+/// </summary>
 public sealed class Dev_WaterSimulationEngine
 {
-    private readonly Dev_IWaterBarrierProvider _barrierProvider;
+    private readonly Dev_WaterBarrierGrid _barrierGrid;
 
     private Dev_WaterRuntimeState _state;
     private Dev_WaterSimulationSettings _settings;
     private float _spreadTimer;
     private int _stepIndex;
 
-    public Dev_WaterSimulationEngine(Dev_IWaterBarrierProvider barrierProvider)
+    public Dev_WaterSimulationEngine(Dev_WaterBarrierGrid barrierGrid)
     {
-        _barrierProvider = barrierProvider;
+        _barrierGrid = barrierGrid;
     }
 
     public Dev_WaterStepSummary LastSummary { get; private set; }
@@ -29,7 +33,7 @@ public sealed class Dev_WaterSimulationEngine
             SetupBoundaryWalls();
     }
 
-    public void ApplyInitialSources(Dev_WaterSourceSpec[] sources, TileType fallbackWaterTileType, Dev_WaterModifierSnapshot modifiers)
+    public void ApplyInitialSources(Dev_WaterSourceSpec[] sources, Dev_WaterModifierSnapshot modifiers)
     {
         if (_state == null)
             return;
@@ -40,7 +44,7 @@ public sealed class Dev_WaterSimulationEngine
             return;
 
         foreach (Dev_WaterSourceSpec source in sources)
-            ApplySource(source, fallbackWaterTileType, modifiers, 0f, false);
+            ApplySource(source, modifiers, 0f, false);
     }
 
     public void InitializeActiveRegion()
@@ -78,7 +82,7 @@ public sealed class Dev_WaterSimulationEngine
         ExpandActiveRegion();
     }
 
-    public Dev_WaterStepSummary Step(Dev_WaterSourceSpec[] continuousSources, TileType fallbackWaterTileType, Dev_WaterModifierSnapshot modifiers)
+    public Dev_WaterStepSummary Step(Dev_WaterSourceSpec[] continuousSources, Dev_WaterModifierSnapshot modifiers)
     {
         if (_state == null)
             return default;
@@ -86,7 +90,7 @@ public sealed class Dev_WaterSimulationEngine
         modifiers.Sanitize();
 
         float dt = Mathf.Max(0.001f, _settings.dt * modifiers.EventPacing);
-        ApplyContinuousSources(continuousSources, fallbackWaterTileType, modifiers, dt);
+        ApplyContinuousSources(continuousSources, modifiers, dt);
 
         AccelerateFlows(dt, modifiers);
         ScaleOutflows(dt);
@@ -146,18 +150,17 @@ public sealed class Dev_WaterSimulationEngine
         }
     }
 
-    private void ApplyContinuousSources(Dev_WaterSourceSpec[] sources, TileType fallbackWaterTileType, Dev_WaterModifierSnapshot modifiers, float dt)
+    private void ApplyContinuousSources(Dev_WaterSourceSpec[] sources, Dev_WaterModifierSnapshot modifiers, float dt)
     {
         if (sources == null || sources.Length == 0)
             return;
 
         foreach (Dev_WaterSourceSpec source in sources)
-            ApplySource(source, fallbackWaterTileType, modifiers, dt, true);
+            ApplySource(source, modifiers, dt, true);
     }
 
     private void ApplySource(
         Dev_WaterSourceSpec source,
-        TileType fallbackWaterTileType,
         Dev_WaterModifierSnapshot modifiers,
         float dt,
         bool continuous)
@@ -327,10 +330,10 @@ public sealed class Dev_WaterSimulationEngine
 
     private float GetBarrierTransmissionX(int x, int y)
     {
-        if (_barrierProvider == null || !_barrierProvider.IsBlockedX(x, y))
+        if (_barrierGrid == null || !_barrierGrid.IsBlockedX(x, y))
             return 1f;
 
-        float barrierHeight = _barrierProvider.GetBarrierHeightX(x, y);
+        float barrierHeight = _barrierGrid.GetBarrierHeightX(x, y);
         if (barrierHeight <= 0f)
             return 0f;
 
@@ -343,10 +346,10 @@ public sealed class Dev_WaterSimulationEngine
 
     private float GetBarrierTransmissionY(int x, int y)
     {
-        if (_barrierProvider == null || !_barrierProvider.IsBlockedY(x, y))
+        if (_barrierGrid == null || !_barrierGrid.IsBlockedY(x, y))
             return 1f;
 
-        float barrierHeight = _barrierProvider.GetBarrierHeightY(x, y);
+        float barrierHeight = _barrierGrid.GetBarrierHeightY(x, y);
         if (barrierHeight <= 0f)
             return 0f;
 
@@ -359,7 +362,7 @@ public sealed class Dev_WaterSimulationEngine
 
     private void ApplyXSeepage(int x, int y, float dt)
     {
-        float seepage = _barrierProvider != null ? _barrierProvider.GetSeepageX(x, y) : 0f;
+        float seepage = _barrierGrid != null ? _barrierGrid.GetSeepageX(x, y) : 0f;
         if (seepage <= 0f)
         {
             _state.FlowX[x, y] = 0f;
@@ -373,7 +376,7 @@ public sealed class Dev_WaterSimulationEngine
 
     private void ApplyYSeepage(int x, int y, float dt)
     {
-        float seepage = _barrierProvider != null ? _barrierProvider.GetSeepageY(x, y) : 0f;
+        float seepage = _barrierGrid != null ? _barrierGrid.GetSeepageY(x, y) : 0f;
         if (seepage <= 0f)
         {
             _state.FlowY[x, y] = 0f;
@@ -396,7 +399,12 @@ public sealed class Dev_WaterSimulationEngine
 
                 if (_settings.useSpreadGating && !_state.Active[x, y])
                 {
-                    _state.Water[x, y] = 0f;
+                    if (_state.Water[x, y] > 0f)
+                    {
+                        _state.Water[x, y] = 0f;
+                        _state.MarkDirtyBySim(x, y);
+                    }
+
                     _state.FlowX[x, y] = 0f;
                     _state.FlowY[x, y] = 0f;
                     continue;
