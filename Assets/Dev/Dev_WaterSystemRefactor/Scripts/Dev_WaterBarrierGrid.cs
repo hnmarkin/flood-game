@@ -1,10 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Stores the Dev Water System's concrete barrier edges for one simulation run.
-/// Dev_WaterController owns this component and Dev_WaterSimulationEngine reads it directly; future barrier tools will write through its explicit methods.
+/// Runtime barrier edge data owned by the water controller and engine.
+/// It is deliberately not a scene component or a swappable provider.
 /// </summary>
-public sealed class Dev_WaterBarrierGrid : MonoBehaviour
+public sealed class Dev_WaterBarrierGrid
 {
     private bool[,] _blockedX;
     private bool[,] _blockedY;
@@ -100,7 +100,7 @@ public sealed class Dev_WaterBarrierGrid : MonoBehaviour
 
         if (!IsFiniteNonNegative(height) || !IsFiniteNonNegative(seepage))
         {
-            Debug.LogWarning($"[Dev_WaterBarrierGrid] Barrier height and seepage must be finite, non-negative values.");
+            Debug.LogWarning("[Dev_WaterBarrierGrid] Barrier height and seepage must be finite, non-negative values.");
             return false;
         }
 

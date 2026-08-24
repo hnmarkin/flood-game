@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public sealed class Dev_WaterSimulationEngine
 {
+    private readonly Dev_WaterMapAccessor _map;
     private readonly Dev_WaterBarrierGrid _barrierGrid;
 
     private Dev_WaterRuntimeState _state;
@@ -13,12 +14,11 @@ public sealed class Dev_WaterSimulationEngine
     private float _spreadTimer;
     private int _stepIndex;
 
-    public Dev_WaterSimulationEngine(Dev_WaterBarrierGrid barrierGrid)
+    public Dev_WaterSimulationEngine(Dev_WaterMapAccessor map, Dev_WaterBarrierGrid barrierGrid)
     {
+        _map = map;
         _barrierGrid = barrierGrid;
     }
-
-    public Dev_WaterStepSummary LastSummary { get; private set; }
 
     public void Initialize(Dev_WaterRuntimeState state, Dev_WaterSimulationSettings settings)
     {
@@ -52,17 +52,18 @@ public sealed class Dev_WaterSimulationEngine
         if (_state == null)
             return;
 
-        _state.Active = new bool[_state.GridWidth, _state.GridHeight];
+        bool[,] active = new bool[_state.GridWidth, _state.GridHeight];
 
         for (int y = 1; y <= _state.Height; y++)
         {
             for (int x = 1; x <= _state.Width; x++)
             {
-                _state.Active[x, y] = _state.HasTile[x, y]
+                active[x, y] = _state.HasMapCellAtSim(x, y)
                     && _state.Water[x, y] > _settings.expandFromWaterThreshold;
             }
         }
 
+        _state.ReplaceActiveGrid(active);
         _spreadTimer = 0f;
 
         if (_settings.useSpreadGating && _settings.expandOnceImmediatelyOnStart)
@@ -98,8 +99,7 @@ public sealed class Dev_WaterSimulationEngine
         KeepBoundaryDry();
 
         _stepIndex++;
-        LastSummary = BuildSummary(dt);
-        return LastSummary;
+        return BuildSummary(dt);
     }
 
     private void ClearFlow()
@@ -123,7 +123,7 @@ public sealed class Dev_WaterSimulationEngine
         {
             for (int x = 1; x <= _state.Width; x++)
             {
-                if (!_state.HasTile[x, y])
+                if (!_state.HasMapCellAtSim(x, y))
                     continue;
 
                 maxTerrain = foundTerrain ? Mathf.Max(maxTerrain, _state.Terrain[x, y]) : _state.Terrain[x, y];
@@ -247,13 +247,13 @@ public sealed class Dev_WaterSimulationEngine
     {
         for (int y = 1; y <= _state.Height; y++)
             for (int x = 1; x <= _state.Width; x++)
-                if (_state.IsWaterBody[x, y])
-                    AddOrSetWaterAtSim(x, y, depth, additive);
+                    if (_map != null && _map.IsInitialWaterSource(x, y))
+                        AddOrSetWaterAtSim(x, y, depth, additive);
     }
 
     private void AddOrSetWaterAtSim(int simX, int simY, float depth, bool additive)
     {
-        if (!_state.HasTileAtSim(simX, simY))
+        if (!_state.HasMapCellAtSim(simX, simY))
             return;
 
         float next = additive
@@ -320,17 +320,17 @@ public sealed class Dev_WaterSimulationEngine
 
     private bool CanFlowAcrossX(int x, int y)
     {
-        return _state.HasTileAtSim(x - 1, y) && _state.HasTileAtSim(x, y);
+        return _state.HasMapCellAtSim(x - 1, y) && _state.HasMapCellAtSim(x, y);
     }
 
     private bool CanFlowAcrossY(int x, int y)
     {
-        return _state.HasTileAtSim(x, y - 1) && _state.HasTileAtSim(x, y);
+        return _state.HasMapCellAtSim(x, y - 1) && _state.HasMapCellAtSim(x, y);
     }
 
     private float GetBarrierTransmissionX(int x, int y)
     {
-        if (_barrierGrid == null || !_barrierGrid.IsBlockedX(x, y))
+        if (!_barrierGrid.IsBlockedX(x, y))
             return 1f;
 
         float barrierHeight = _barrierGrid.GetBarrierHeightX(x, y);
@@ -346,7 +346,7 @@ public sealed class Dev_WaterSimulationEngine
 
     private float GetBarrierTransmissionY(int x, int y)
     {
-        if (_barrierGrid == null || !_barrierGrid.IsBlockedY(x, y))
+        if (!_barrierGrid.IsBlockedY(x, y))
             return 1f;
 
         float barrierHeight = _barrierGrid.GetBarrierHeightY(x, y);
@@ -362,7 +362,7 @@ public sealed class Dev_WaterSimulationEngine
 
     private void ApplyXSeepage(int x, int y, float dt)
     {
-        float seepage = _barrierGrid != null ? _barrierGrid.GetSeepageX(x, y) : 0f;
+        float seepage = _barrierGrid.GetSeepageX(x, y);
         if (seepage <= 0f)
         {
             _state.FlowX[x, y] = 0f;
@@ -376,7 +376,7 @@ public sealed class Dev_WaterSimulationEngine
 
     private void ApplyYSeepage(int x, int y, float dt)
     {
-        float seepage = _barrierGrid != null ? _barrierGrid.GetSeepageY(x, y) : 0f;
+        float seepage = _barrierGrid.GetSeepageY(x, y);
         if (seepage <= 0f)
         {
             _state.FlowY[x, y] = 0f;
@@ -394,7 +394,7 @@ public sealed class Dev_WaterSimulationEngine
         {
             for (int x = 1; x <= _state.Width; x++)
             {
-                if (!_state.HasTile[x, y])
+                if (!_state.HasMapCellAtSim(x, y))
                     continue;
 
                 if (_settings.useSpreadGating && !_state.Active[x, y])
@@ -441,9 +441,9 @@ public sealed class Dev_WaterSimulationEngine
             return false;
 
         if (!_settings.useSpreadGating)
-            return _state.HasTileAtSim(simX, simY);
+            return _state.HasMapCellAtSim(simX, simY);
 
-        return _state.HasTileAtSim(simX, simY) && _state.Active[simX, simY];
+        return _state.HasMapCellAtSim(simX, simY) && _state.Active[simX, simY];
     }
 
     private void UpdateWaterDepths(float dt, Dev_WaterModifierSnapshot modifiers)
@@ -454,7 +454,7 @@ public sealed class Dev_WaterSimulationEngine
         {
             for (int x = 1; x <= _state.Width; x++)
             {
-                if (!_state.HasTile[x, y])
+                if (!_state.HasMapCellAtSim(x, y))
                     continue;
 
                 if (_settings.useSpreadGating && !_state.Active[x, y])
@@ -500,9 +500,6 @@ public sealed class Dev_WaterSimulationEngine
 
     private void ExpandActiveRegion()
     {
-        if (_state.Active == null)
-            return;
-
         for (int layer = 0; layer < _settings.spreadLayersPerTick; layer++)
         {
             bool[,] next = (bool[,])_state.Active.Clone();
@@ -511,7 +508,7 @@ public sealed class Dev_WaterSimulationEngine
             {
                 for (int x = 1; x <= _state.Width; x++)
                 {
-                    if (!_state.HasTile[x, y])
+                    if (!_state.HasMapCellAtSim(x, y))
                         continue;
 
                     if (!_state.Active[x, y])
@@ -527,13 +524,13 @@ public sealed class Dev_WaterSimulationEngine
                 }
             }
 
-            _state.Active = next;
+            _state.ReplaceActiveGrid(next);
         }
     }
 
     private void ActivateIfTile(bool[,] active, int simX, int simY)
     {
-        if (_state.HasTileAtSim(simX, simY))
+        if (_state.HasMapCellAtSim(simX, simY))
             active[simX, simY] = true;
     }
 
@@ -560,7 +557,7 @@ public sealed class Dev_WaterSimulationEngine
         {
             for (int x = 1; x <= _state.Width; x++)
             {
-                if (!_state.HasTile[x, y])
+                if (!_state.HasMapCellAtSim(x, y))
                     continue;
 
                 float depth = _state.Water[x, y];

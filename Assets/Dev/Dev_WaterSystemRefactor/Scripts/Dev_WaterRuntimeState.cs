@@ -2,18 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Holds the authoritative mutable grid data for one initialized Dev Water System run.
-/// Only Dev_WaterController and its internal collaborators should read or change it during simulation.
+/// Mutable simulation state for one initialized map run. Static map information is
+/// supplied by Dev_WaterMapAccessor; this object owns only live simulation values.
 /// </summary>
 public sealed class Dev_WaterRuntimeState
 {
+    private readonly Dev_WaterMapAccessor _map;
     private readonly HashSet<Vector2Int> _dirtyCells = new HashSet<Vector2Int>();
 
-    public Dev_WaterRuntimeState(int width, int height, Vector2Int origin)
+    public Dev_WaterRuntimeState(Dev_WaterMapAccessor map)
     {
-        Width = Mathf.Max(0, width);
-        Height = Mathf.Max(0, height);
-        Origin = origin;
+        _map = map;
+        Width = Mathf.Max(0, map != null ? map.Width : 0);
+        Height = Mathf.Max(0, map != null ? map.Height : 0);
+        Origin = map != null ? map.Origin : default;
 
         GridWidth = Width + 2;
         GridHeight = Height + 2;
@@ -23,8 +25,8 @@ public sealed class Dev_WaterRuntimeState
         FlowX = new float[GridWidth, GridHeight];
         FlowY = new float[GridWidth, GridHeight];
         Active = new bool[GridWidth, GridHeight];
-        HasTile = new bool[GridWidth, GridHeight];
-        IsWaterBody = new bool[GridWidth, GridHeight];
+
+        LoadMapSnapshot();
     }
 
     public int Width { get; }
@@ -33,13 +35,12 @@ public sealed class Dev_WaterRuntimeState
     public int GridHeight { get; }
     public Vector2Int Origin { get; }
 
+    // Terrain is an immutable runtime cache copied from the persistent map.
     public float[,] Terrain { get; }
     public float[,] Water { get; }
     public float[,] FlowX { get; }
     public float[,] FlowY { get; }
-    public bool[,] Active { get; set; }
-    public bool[,] HasTile { get; }
-    public bool[,] IsWaterBody { get; }
+    public bool[,] Active { get; }
 
     public IReadOnlyCollection<Vector2Int> DirtyCells => _dirtyCells;
 
@@ -53,9 +54,9 @@ public sealed class Dev_WaterRuntimeState
         return simX >= 1 && simY >= 1 && simX <= Width && simY <= Height;
     }
 
-    public bool HasTileAtSim(int simX, int simY)
+    public bool HasMapCellAtSim(int simX, int simY)
     {
-        return IsLogicalSimCell(simX, simY) && HasTile[simX, simY];
+        return IsLogicalSimCell(simX, simY) && _map != null && _map.IsSimulationCell(simX, simY);
     }
 
     public bool TryTileToSim(Vector2Int tileCell, out int simX, out int simY)
@@ -75,15 +76,12 @@ public sealed class Dev_WaterRuntimeState
         if (!TryTileToSim(tileCell, out int simX, out int simY))
             return 0f;
 
-        return HasTile[simX, simY] ? Water[simX, simY] : 0f;
+        return HasMapCellAtSim(simX, simY) ? Water[simX, simY] : 0f;
     }
 
     public bool TrySetWaterDepth(Vector2Int tileCell, float depth)
     {
-        if (!TryTileToSim(tileCell, out int simX, out int simY))
-            return false;
-
-        if (!HasTile[simX, simY])
+        if (!TryTileToSim(tileCell, out int simX, out int simY) || !HasMapCellAtSim(simX, simY))
             return false;
 
         Water[simX, simY] = Mathf.Max(0f, depth);
@@ -93,7 +91,7 @@ public sealed class Dev_WaterRuntimeState
 
     public void MarkDirtyBySim(int simX, int simY)
     {
-        if (!HasTileAtSim(simX, simY))
+        if (!HasMapCellAtSim(simX, simY))
             return;
 
         _dirtyCells.Add(SimToTile(simX, simY));
@@ -105,7 +103,7 @@ public sealed class Dev_WaterRuntimeState
         {
             for (int x = 1; x <= Width; x++)
             {
-                if (HasTile[x, y])
+                if (HasMapCellAtSim(x, y))
                     _dirtyCells.Add(SimToTile(x, y));
             }
         }
@@ -114,5 +112,35 @@ public sealed class Dev_WaterRuntimeState
     public void ClearDirty()
     {
         _dirtyCells.Clear();
+    }
+
+    public void ReplaceActiveGrid(bool[,] active)
+    {
+        if (active == null || active.GetLength(0) != GridWidth || active.GetLength(1) != GridHeight)
+            return;
+
+        for (int y = 0; y < GridHeight; y++)
+        {
+            for (int x = 0; x < GridWidth; x++)
+                Active[x, y] = active[x, y];
+        }
+    }
+
+    private void LoadMapSnapshot()
+    {
+        if (_map == null)
+            return;
+
+        for (int y = 1; y <= Height; y++)
+        {
+            for (int x = 1; x <= Width; x++)
+            {
+                if (!_map.TryGetCell(x, y, out Dev_WaterMapCell cell))
+                    continue;
+
+                Terrain[x, y] = cell.Elevation;
+                Water[x, y] = cell.InitialWaterDepth;
+            }
+        }
     }
 }

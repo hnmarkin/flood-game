@@ -2,37 +2,27 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// Projects authoritative WaterRuntimeState depths onto the existing tile visuals.
-/// It deliberately owns no visual water history or interpolation, so rendered depth always matches simulation truth.
+/// Projects new map visual definitions and authoritative runtime depths onto Unity tilemaps.
+/// It has no dependency on the former water-map model.
 /// </summary>
 public class Dev_WaterTilemapRenderer : MonoBehaviour
 {
-    [SerializeField] private TileMapData tileMapData;
-
     [Header("Tilemaps to Refresh")]
     [SerializeField] private Tilemap[] tilemaps;
 
-    [Header("Tint")]
+    [Header("Fallback Water Tint")]
     [SerializeField] private float depthForDeepColor = 1f;
     [SerializeField] private Color shallowWaterColor = new Color(0.70f, 0.85f, 1.00f, 1f);
     [SerializeField] private Color deepWaterColor = new Color(0.10f, 0.25f, 0.50f, 1f);
 
     private Dev_WaterRuntimeState _state;
+    private Dev_WaterMapAccessor _map;
 
-    public void SetTileMapData(TileMapData value)
-    {
-        tileMapData = value;
-    }
-
-    public void SetTilemaps(Tilemap[] value)
-    {
-        tilemaps = value;
-    }
-
-    public void Initialize(Dev_WaterRuntimeState state)
+    public void Initialize(Dev_WaterRuntimeState state, Dev_WaterMapAccessor map)
     {
         _state = state;
-        if (_state == null)
+        _map = map;
+        if (_state == null || _map == null)
             return;
 
         _state.MarkAllExistingDirty();
@@ -41,7 +31,7 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
 
     public void ApplyDirty()
     {
-        if (_state == null || tileMapData == null)
+        if (_state == null || _map == null)
             return;
 
         foreach (Vector2Int tileCell in _state.DirtyCells)
@@ -55,55 +45,40 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
         _state.ClearDirty();
     }
 
-    public void ApplyAll()
-    {
-        if (_state == null)
-            return;
-
-        _state.MarkAllExistingDirty();
-        ApplyDirty();
-    }
-
     private void ApplyCell(Vector2Int tileCell, int simX, int simY)
     {
-        if (!Dev_WaterTileMapDataAdapter.TryGetTile(tileMapData, tileCell, out TileInstance tile))
+        if (!_map.TryGetCell(simX, simY, out Dev_WaterMapCell cell))
             return;
 
         float visualDepth = Mathf.Max(0f, _state.Water[simX, simY]);
-        tile.waterHeight = visualDepth;
-        tile.tint = Color.Lerp(
-            shallowWaterColor,
-            deepWaterColor,
-            Mathf.InverseLerp(0f, Mathf.Max(0.0001f, depthForDeepColor), visualDepth));
+        Dev_WaterVisualDefinition visual = cell.Terrain != null ? cell.Terrain.VisualDefinition : null;
+        TileBase tile = visual != null ? visual.ResolveTile(visualDepth) : null;
+        Color tint = visual != null
+            ? visual.ResolveTint(visualDepth)
+            : Color.Lerp(
+                shallowWaterColor,
+                deepWaterColor,
+                Mathf.InverseLerp(0f, Mathf.Max(0.0001f, depthForDeepColor), visualDepth));
 
-        if (tile.tileType != null && !(tile.tileType.isWater && tile.tileType.isAnimated))
-        {
-            Sprite sprite = tile.tileType.GetTileForWaterHeight(visualDepth);
-            if (sprite != null)
-                tile.sprite = sprite;
-        }
-
-        Refresh(tileCell);
+        Refresh(tileCell, tile, tint);
     }
 
-    private void Refresh(Vector2Int tileCell)
+    private void Refresh(Vector2Int tileCell, TileBase tile, Color tint)
     {
-        var cell = new Vector3Int(tileCell.x, tileCell.y, 0);
+        Vector3Int cell = new Vector3Int(tileCell.x, tileCell.y, 0);
+        if (tilemaps == null)
+            return;
 
-        bool refreshed = false;
-        if (tilemaps != null)
+        foreach (Tilemap tilemap in tilemaps)
         {
-            foreach (Tilemap tilemap in tilemaps)
-            {
-                if (tilemap == null)
-                    continue;
+            if (tilemap == null)
+                continue;
 
-                tilemap.RefreshTile(cell);
-                refreshed = true;
-            }
+            if (tile != null)
+                tilemap.SetTile(cell, tile);
+
+            tilemap.SetColor(cell, tint);
+            tilemap.RefreshTile(cell);
         }
-
-        if (!refreshed)
-            TileManager.Instance?.RefreshAt(cell);
     }
 }
