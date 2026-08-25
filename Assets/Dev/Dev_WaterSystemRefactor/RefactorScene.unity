@@ -4597,6 +4597,8 @@ GameObject:
   - component: {fileID: 1946108816}
   - component: {fileID: 1946108815}
   - component: {fileID: 1946108814}
+  - component: {fileID: 1946108817}
+  - component: {fileID: 1946108818}
   m_Layer: 0
   m_Name: WaterSystemRoot
   m_TagString: Untagged
@@ -4635,12 +4637,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapData: {fileID: 11400000, guid: 6c1e5e8b1bb54f3e9cd5d6bb4c901201, type: 2}
   scenarioConfig: {fileID: 11400000, guid: a1cc30db8ec74d143bc5433c27359b82, type: 2}
+  configurationMode: 1
+  modifierProviderBehaviour: {fileID: 0}
   waterRenderer: {fileID: 1946108814}
   initializeOnStart: 1
-  startOnPlay: 1
+  startOnPlay: 0
   stepMode: 1
   autoStepInterval: 0.35
   spaceKeyStepsWhenManual: 1
+--- !u!114 &1946108817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946108813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d187f4911d84df8b493ccd2ae1f226d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  waterController: {fileID: 1946108815}
+--- !u!114 &1946108818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946108813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e72c912b45243b5b8c3a4fda09e64f1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  waterController: {fileID: 1946108815}
+  forecastSimulatedDuration: 5
 --- !u!4 &1946108816
 Transform:
   m_ObjectHideFlags: 0
