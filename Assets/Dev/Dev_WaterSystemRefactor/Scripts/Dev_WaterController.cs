@@ -280,7 +280,7 @@ public class Dev_WaterController : MonoBehaviour
     public bool TryBuildProjection(float simulatedDuration, out Dev_WaterProjection projection)
     {
         projection = null;
-        if (!EnsureInitialized() || !IsFiniteNonNegative(simulatedDuration) ||
+        if (!_initialized || _runtimeState == null || _engine == null || !IsFiniteNonNegative(simulatedDuration) ||
             !TryResolveModifiers(out Dev_WaterModifierSnapshot modifiers))
             return false;
 
