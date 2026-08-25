@@ -17,4 +17,18 @@ Before making changes, read and follow:
 - Drafting / mockups: use a lightweight prompt only.
 - Development / coding: read `Assets\README.md` and `Assets\Game\Core\Architecture\architecture.md`.
   - UI development: also read `Assets\Dev\AgentRef\UIArchitectureReference.md` and `Assets\Dev\AgentRef\UIArchitectureReference.md`.
-  - Water system work: also read `Assets\Game\Features\WaterSystem\README.md`.
+- Water system work: also read `Assets\Game\Features\WaterSystem\README.md`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues, managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical triage labels use the defaults; `waiting-on-other-system` is an auxiliary dependency label. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repo using root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.

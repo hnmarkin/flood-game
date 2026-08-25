@@ -114,4 +114,8 @@ Advances phases, responds to Event Pacing changes, subscribes to the Game Phase 
 
 #### [ ] Water System Rework
 
+##### [ ] Water profile and modifier integration
+
+Scenario data must provide persistent baseline, preliminary-time-skip, and Crisis water profiles. On a profile transition, replace the scenario baseline and resolve a fresh water modifier snapshot by reapplying the active, sourced contribution history from `ModifierTracker`; never compound values from an already modified profile. The one optional preliminary time-skip uses the active profile to advance normal water physics. Water must fail production loading when its Scenario/Game State/Modifier contracts are unavailable; Dev defaults require loud diagnostics.
+
 #### [ ] New Water System Testing
