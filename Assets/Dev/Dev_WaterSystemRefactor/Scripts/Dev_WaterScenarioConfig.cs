@@ -1,15 +1,18 @@
 using UnityEngine;
 
 /// <summary>
-/// Stores reusable Dev Water System simulation settings and source definitions.
-/// The controller clones this asset at initialization so the running simulation owns its mutable configuration.
+/// Persistent, scenario-owned water profiles and the optional preliminary flooding batch.
+/// The controller clones this data; live simulation never writes back to this asset.
 /// </summary>
 [CreateAssetMenu(fileName = "Dev_WaterScenarioConfig", menuName = "Dev/Water System/Scenario Config")]
 public class Dev_WaterScenarioConfig : ScriptableObject
 {
-    [SerializeField] private Dev_WaterSimulationSettings simulationSettings = new Dev_WaterSimulationSettings();
+    [Header("Storm Profiles")]
+    [SerializeField] private Dev_WaterStormProfile baselineProfile = new Dev_WaterStormProfile();
+    [SerializeField] private Dev_WaterStormProfile preliminaryProfile = new Dev_WaterStormProfile();
+    [SerializeField] private Dev_WaterStormProfile crisisProfile = new Dev_WaterStormProfile();
 
-    [Header("Water Sources")]
+    [Header("Baseline Initial Water")]
     [SerializeField] private Dev_WaterSourceSpec[] initialSources =
     {
         new Dev_WaterSourceSpec
@@ -20,37 +23,103 @@ public class Dev_WaterScenarioConfig : ScriptableObject
         }
     };
 
-    [SerializeField] private Dev_WaterSourceSpec[] continuousSources;
+    [Header("Optional Preliminary Flooding")]
+    [SerializeField] private bool hasPreliminaryFlooding;
+    [SerializeField] private Dev_WaterPreliminaryFloodingConfig preliminaryFlooding = new Dev_WaterPreliminaryFloodingConfig();
 
-    public Dev_WaterSimulationSettings CreateSettingsInstance()
+    public bool TryCreateProfile(
+        Dev_WaterProfileStage stage,
+        out Dev_WaterSimulationSettings settings,
+        out Dev_WaterSourceSpec[] continuousSources,
+        out string error)
     {
-        Dev_WaterSimulationSettings clone = simulationSettings != null
-            ? simulationSettings.Clone()
-            : new Dev_WaterSimulationSettings();
+        Dev_WaterStormProfile profile = GetProfile(stage);
+        settings = null;
+        continuousSources = System.Array.Empty<Dev_WaterSourceSpec>();
 
-        clone.Sanitize();
-        return clone;
+        if (profile == null)
+        {
+            error = $"The {stage} water profile is missing.";
+            return false;
+        }
+
+        if (!profile.IsValid(out error))
+        {
+            error = $"The {stage} water profile is invalid: {error}";
+            return false;
+        }
+
+        settings = profile.CreateSettingsInstance();
+        continuousSources = profile.CreateContinuousSourceInstances();
+        error = null;
+        return true;
     }
 
     public Dev_WaterSourceSpec[] CreateInitialSourceInstances()
     {
-        return CloneSources(initialSources);
+        return Dev_WaterStormProfile.CloneSources(initialSources);
     }
 
-    public Dev_WaterSourceSpec[] CreateContinuousSourceInstances()
+    public bool TryGetPreliminaryFlooding(out Dev_WaterPreliminaryFloodingConfig configuration, out string error)
     {
-        return CloneSources(continuousSources);
+        configuration = preliminaryFlooding;
+        if (!hasPreliminaryFlooding)
+        {
+            error = "This scenario does not configure preliminary flooding.";
+            return false;
+        }
+
+        if (configuration == null)
+        {
+            error = "Preliminary flooding configuration is missing.";
+            return false;
+        }
+
+        if (!configuration.IsValid(out error))
+            return false;
+
+        error = null;
+        return true;
     }
 
-    private static Dev_WaterSourceSpec[] CloneSources(Dev_WaterSourceSpec[] sources)
+    public bool IsValidForProduction(out string error)
     {
-        if (sources == null || sources.Length == 0)
-            return System.Array.Empty<Dev_WaterSourceSpec>();
+        foreach (Dev_WaterProfileStage stage in System.Enum.GetValues(typeof(Dev_WaterProfileStage)))
+        {
+            if (!TryCreateProfile(stage, out _, out _, out error))
+                return false;
+        }
 
-        Dev_WaterSourceSpec[] clones = new Dev_WaterSourceSpec[sources.Length];
-        for (int i = 0; i < sources.Length; i++)
-            clones[i] = sources[i] != null ? sources[i].Clone() : null;
+        if (initialSources != null)
+        {
+            foreach (Dev_WaterSourceSpec source in initialSources)
+            {
+                if (source == null)
+                {
+                    error = "An initial water source is missing.";
+                    return false;
+                }
 
-        return clones;
+                if (!source.IsValid(out error))
+                    return false;
+            }
+        }
+
+        if (hasPreliminaryFlooding && !TryGetPreliminaryFlooding(out _, out error))
+            return false;
+
+        error = null;
+        return true;
+    }
+
+    private Dev_WaterStormProfile GetProfile(Dev_WaterProfileStage stage)
+    {
+        switch (stage)
+        {
+            case Dev_WaterProfileStage.Baseline: return baselineProfile;
+            case Dev_WaterProfileStage.Preliminary: return preliminaryProfile;
+            case Dev_WaterProfileStage.Crisis: return crisisProfile;
+            default: return null;
+        }
     }
 }

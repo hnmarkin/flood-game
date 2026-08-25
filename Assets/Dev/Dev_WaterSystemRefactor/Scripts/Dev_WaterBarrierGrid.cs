@@ -52,6 +52,21 @@ public sealed class Dev_WaterBarrierGrid
         return TryClearBarrier(simX, simY, _blockedY, _barrierHeightY, _seepageY, "Y");
     }
 
+    internal Dev_WaterBarrierGrid Clone()
+    {
+        Dev_WaterBarrierGrid clone = new Dev_WaterBarrierGrid();
+        if (!IsInitialized || !clone.InitializeForSimulation(_blockedX.GetLength(0), _blockedX.GetLength(1)))
+            return clone;
+
+        CopyGrid(_blockedX, clone._blockedX);
+        CopyGrid(_blockedY, clone._blockedY);
+        CopyGrid(_barrierHeightX, clone._barrierHeightX);
+        CopyGrid(_barrierHeightY, clone._barrierHeightY);
+        CopyGrid(_seepageX, clone._seepageX);
+        CopyGrid(_seepageY, clone._seepageY);
+        return clone;
+    }
+
     public bool IsBlockedX(int simX, int simY)
     {
         return IsInBounds(simX, simY) && _blockedX[simX, simY];
@@ -142,5 +157,14 @@ public sealed class Dev_WaterBarrierGrid
     private static bool IsFiniteNonNegative(float value)
     {
         return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
+    }
+
+    private static void CopyGrid<T>(T[,] source, T[,] destination)
+    {
+        for (int y = 0; y < source.GetLength(1); y++)
+        {
+            for (int x = 0; x < source.GetLength(0); x++)
+                destination[x, y] = source[x, y];
+        }
     }
 }

@@ -10,6 +10,38 @@ public enum Dev_WaterStepMode
     Automatic
 }
 
+/// <summary>Lifecycle values supplied by Game State to the Dev water lifecycle seam.</summary>
+public enum Dev_WaterGameFlow
+{
+    Loading,
+    Gameplay,
+    Pause,
+    MainMenu
+}
+
+/// <summary>Phase values supplied by Game State to the Dev water lifecycle seam.</summary>
+public enum Dev_WaterGamePhase
+{
+    Preparation,
+    Crisis,
+    Scoring
+}
+
+/// <summary>Identifies the scenario-owned storm profile currently driving water physics.</summary>
+public enum Dev_WaterProfileStage
+{
+    Baseline,
+    Preliminary,
+    Crisis
+}
+
+/// <summary>Controls whether missing integration contracts are fatal or explicitly Dev-only.</summary>
+public enum Dev_WaterConfigurationMode
+{
+    Production,
+    DevDefaultsWithWarnings
+}
+
 /// <summary>Identifies the map region that a configured water source affects.</summary>
 public enum Dev_WaterSourceKind
 {
@@ -77,6 +109,38 @@ public class Dev_WaterSimulationSettings
         windForceScale = Mathf.Max(0f, windForceScale);
         overtopDepthForFullFlow = Mathf.Max(0.01f, overtopDepthForFullFlow);
     }
+
+    public bool IsValid(out string error)
+    {
+        if (!IsFinitePositive(dx) || !IsFinitePositive(dy) || !IsFinitePositive(dt))
+        {
+            error = "dx, dy, and dt must be finite positive values.";
+            return false;
+        }
+
+        if (!IsFiniteNonNegative(gravity) || !IsFiniteNonNegative(friction) ||
+            !IsFiniteNonNegative(maxWaterDepth) || !IsFiniteNonNegative(boundaryHeightPadding) ||
+            !IsFinitePositive(spreadInterval) || !IsFiniteNonNegative(expandFromWaterThreshold) ||
+            !IsFiniteNonNegative(baseDrainageDepthPerSecond) || !IsFiniteNonNegative(windForceScale) ||
+            !IsFinitePositive(overtopDepthForFullFlow) || spreadLayersPerTick < 1)
+        {
+            error = "Simulation settings contain an invalid finite value.";
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
+
+    private static bool IsFinitePositive(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value) && value > 0f;
+    }
+
+    private static bool IsFiniteNonNegative(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
+    }
 }
 
 /// <summary>Describes one initial or continuous water source used by the simulation engine.</summary>
@@ -95,6 +159,102 @@ public class Dev_WaterSourceSpec
     public Dev_WaterSourceSpec Clone()
     {
         return (Dev_WaterSourceSpec)MemberwiseClone();
+    }
+
+    public bool IsValid(out string error)
+    {
+        if (float.IsNaN(depth) || float.IsInfinity(depth) || depth < 0f)
+        {
+            error = "Source depth must be finite and non-negative.";
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
+}
+
+/// <summary>Complete persistent water behavior for one scenario storm stage.</summary>
+[Serializable]
+public class Dev_WaterStormProfile
+{
+    [SerializeField] private string profileName;
+    [SerializeField] private Dev_WaterSimulationSettings simulationSettings = new Dev_WaterSimulationSettings();
+    [SerializeField] private Dev_WaterSourceSpec[] continuousSources = Array.Empty<Dev_WaterSourceSpec>();
+
+    public string ProfileName => string.IsNullOrWhiteSpace(profileName) ? "Unnamed profile" : profileName;
+
+    public Dev_WaterSimulationSettings CreateSettingsInstance()
+    {
+        return simulationSettings != null ? simulationSettings.Clone() : null;
+    }
+
+    public Dev_WaterSourceSpec[] CreateContinuousSourceInstances()
+    {
+        return CloneSources(continuousSources);
+    }
+
+    public bool IsValid(out string error)
+    {
+        if (simulationSettings == null)
+        {
+            error = "Simulation settings are missing.";
+            return false;
+        }
+
+        if (!simulationSettings.IsValid(out error))
+            return false;
+
+        if (continuousSources != null)
+        {
+            foreach (Dev_WaterSourceSpec source in continuousSources)
+            {
+                if (source == null || !source.IsValid(out error))
+                {
+                    error = source == null ? "A continuous source is missing." : error;
+                    return false;
+                }
+            }
+        }
+
+        error = null;
+        return true;
+    }
+
+    internal static Dev_WaterSourceSpec[] CloneSources(Dev_WaterSourceSpec[] sources)
+    {
+        if (sources == null || sources.Length == 0)
+            return Array.Empty<Dev_WaterSourceSpec>();
+
+        Dev_WaterSourceSpec[] clones = new Dev_WaterSourceSpec[sources.Length];
+        for (int i = 0; i < sources.Length; i++)
+            clones[i] = sources[i] != null ? sources[i].Clone() : null;
+
+        return clones;
+    }
+}
+
+/// <summary>One optional, scenario-authored preliminary flooding batch.</summary>
+[Serializable]
+public class Dev_WaterPreliminaryFloodingConfig
+{
+    [Min(1)] [SerializeField] private int completedPreparationTurnThreshold = 1;
+    [Min(0.001f)] [SerializeField] private float simulatedDuration = 1f;
+
+    public int CompletedPreparationTurnThreshold => completedPreparationTurnThreshold;
+    public float SimulatedDuration => simulatedDuration;
+
+    public bool IsValid(out string error)
+    {
+        if (completedPreparationTurnThreshold < 1 || float.IsNaN(simulatedDuration) ||
+            float.IsInfinity(simulatedDuration) || simulatedDuration <= 0f)
+        {
+            error = "The preliminary flooding threshold and simulated duration must be positive.";
+            return false;
+        }
+
+        error = null;
+        return true;
     }
 }
 
@@ -140,6 +300,12 @@ public struct Dev_WaterModifierSnapshot
     }
 }
 
+/// <summary>Adapter implemented by the public modifier controller used by water.</summary>
+public interface IDev_WaterModifierProvider
+{
+    bool TryGetResolvedWaterModifiers(out Dev_WaterModifierSnapshot modifiers, out string error);
+}
+
 /// <summary>Reports the aggregate result of the most recent Dev Water System simulation step.</summary>
 public struct Dev_WaterStepSummary
 {
@@ -149,4 +315,42 @@ public struct Dev_WaterStepSummary
     public int DirtyTileCount;
     public float TotalWater;
     public float MaxDepth;
+}
+
+/// <summary>Immutable water result produced for projection consumers.</summary>
+public sealed class Dev_WaterProjection
+{
+    private readonly float[] _waterDepths;
+
+    public Dev_WaterProjection(
+        Vector2Int origin,
+        int width,
+        int height,
+        Dev_WaterProfileStage profileStage,
+        float simulatedDuration,
+        float[] waterDepths)
+    {
+        Origin = origin;
+        Width = width;
+        Height = height;
+        ProfileStage = profileStage;
+        SimulatedDuration = simulatedDuration;
+        _waterDepths = waterDepths != null ? (float[])waterDepths.Clone() : Array.Empty<float>();
+    }
+
+    public Vector2Int Origin { get; }
+    public int Width { get; }
+    public int Height { get; }
+    public Dev_WaterProfileStage ProfileStage { get; }
+    public float SimulatedDuration { get; }
+
+    public float GetWaterDepth(Vector2Int tileCell)
+    {
+        int x = tileCell.x - Origin.x;
+        int y = tileCell.y - Origin.y;
+        if (x < 0 || y < 0 || x >= Width || y >= Height)
+            return 0f;
+
+        return _waterDepths[y * Width + x];
+    }
 }

@@ -12,27 +12,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de3e7a398d59084c91021f2806840bc, type: 3}
   m_Name: Dev_RefactorScene_WaterScenario
   m_EditorClassIdentifier: 
-  simulationSettings:
-    dx: 1
-    dy: 1
-    dt: 0.25
-    gravity: 9.81
-    friction: 0.02
-    maxWaterDepth: 100
-    useBoundaryWalls: 1
-    boundaryHeightPadding: 2
-    useSpreadGating: 1
-    spreadInterval: 2
-    spreadLayersPerTick: 1
-    expandFromWaterThreshold: 0.001
-    expandOnceImmediatelyOnStart: 1
-    baseDrainageDepthPerSecond: 0
-    windForceScale: 0
-    overtopDepthForFullFlow: 1
+  baselineProfile:
+    profileName: Baseline
+    simulationSettings:
+      dx: 1
+      dy: 1
+      dt: 0.25
+      gravity: 9.81
+      friction: 0.02
+      maxWaterDepth: 100
+      useBoundaryWalls: 1
+      boundaryHeightPadding: 2
+      useSpreadGating: 1
+      spreadInterval: 2
+      spreadLayersPerTick: 1
+      expandFromWaterThreshold: 0.001
+      expandOnceImmediatelyOnStart: 1
+      baseDrainageDepthPerSecond: 0
+      windForceScale: 0
+      overtopDepthForFullFlow: 1
+    continuousSources: []
+  preliminaryProfile:
+    profileName: Preliminary
+    simulationSettings:
+      dx: 1
+      dy: 1
+      dt: 0.25
+      gravity: 9.81
+      friction: 0.02
+      maxWaterDepth: 100
+      useBoundaryWalls: 1
+      boundaryHeightPadding: 2
+      useSpreadGating: 1
+      spreadInterval: 2
+      spreadLayersPerTick: 1
+      expandFromWaterThreshold: 0.001
+      expandOnceImmediatelyOnStart: 1
+      baseDrainageDepthPerSecond: 0
+      windForceScale: 0
+      overtopDepthForFullFlow: 1
+    continuousSources: []
+  crisisProfile:
+    profileName: Crisis
+    simulationSettings:
+      dx: 1
+      dy: 1
+      dt: 0.25
+      gravity: 9.81
+      friction: 0.02
+      maxWaterDepth: 100
+      useBoundaryWalls: 1
+      boundaryHeightPadding: 2
+      useSpreadGating: 1
+      spreadInterval: 2
+      spreadLayersPerTick: 1
+      expandFromWaterThreshold: 0.001
+      expandOnceImmediatelyOnStart: 1
+      baseDrainageDepthPerSecond: 0
+      windForceScale: 0
+      overtopDepthForFullFlow: 1
+    continuousSources: []
   initialSources:
   - kind: 3
     depth: 10
     scaleByRainfallRate: 0
     scaleByExternalWaterLoad: 1
     scaleByAntecedentWetness: 0
-  continuousSources: []
+  hasPreliminaryFlooding: 1
+  preliminaryFlooding:
+    completedPreparationTurnThreshold: 2
+    simulatedDuration: 5

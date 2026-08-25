@@ -33,6 +33,31 @@ public sealed class Dev_WaterSimulationEngine
             SetupBoundaryWalls();
     }
 
+    public void Reconfigure(Dev_WaterSimulationSettings settings)
+    {
+        _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
+        _settings.Sanitize();
+
+        if (_settings.useBoundaryWalls)
+            SetupBoundaryWalls();
+    }
+
+    /// <summary>Configures a cloned projection state without clearing its live flow history.</summary>
+    public void InitializeProjection(Dev_WaterRuntimeState state, Dev_WaterSimulationSettings settings)
+    {
+        _state = state;
+        _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
+        _settings.Sanitize();
+        _stepIndex = 0;
+        _spreadTimer = 0f;
+    }
+
+    public float GetSimulationStepDuration(Dev_WaterModifierSnapshot modifiers)
+    {
+        modifiers.Sanitize();
+        return Mathf.Max(0.001f, _settings.dt * modifiers.EventPacing);
+    }
+
     public void ApplyInitialSources(Dev_WaterSourceSpec[] sources, Dev_WaterModifierSnapshot modifiers)
     {
         if (_state == null)
@@ -90,13 +115,27 @@ public sealed class Dev_WaterSimulationEngine
 
         modifiers.Sanitize();
 
-        float dt = Mathf.Max(0.001f, _settings.dt * modifiers.EventPacing);
+        return Step(continuousSources, modifiers, GetSimulationStepDuration(modifiers));
+    }
+
+    public Dev_WaterStepSummary Step(
+        Dev_WaterSourceSpec[] continuousSources,
+        Dev_WaterModifierSnapshot modifiers,
+        float simulatedDeltaTime)
+    {
+        if (_state == null)
+            return default;
+
+        modifiers.Sanitize();
+
+        float dt = Mathf.Max(0.0001f, simulatedDeltaTime);
         ApplyContinuousSources(continuousSources, modifiers, dt);
 
         AccelerateFlows(dt, modifiers);
         ScaleOutflows(dt);
         UpdateWaterDepths(dt, modifiers);
         KeepBoundaryDry();
+        TickSpreadGate(dt);
 
         _stepIndex++;
         return BuildSummary(dt);

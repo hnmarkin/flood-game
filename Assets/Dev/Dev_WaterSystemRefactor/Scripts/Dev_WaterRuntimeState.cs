@@ -114,6 +114,33 @@ public sealed class Dev_WaterRuntimeState
         _dirtyCells.Clear();
     }
 
+    internal Dev_WaterRuntimeState Clone()
+    {
+        Dev_WaterRuntimeState clone = new Dev_WaterRuntimeState(_map);
+        CopyGrid(Terrain, clone.Terrain);
+        CopyGrid(Water, clone.Water);
+        CopyGrid(FlowX, clone.FlowX);
+        CopyGrid(FlowY, clone.FlowY);
+        CopyGrid(Active, clone.Active);
+
+        foreach (Vector2Int dirtyCell in _dirtyCells)
+            clone._dirtyCells.Add(dirtyCell);
+
+        return clone;
+    }
+
+    internal float[] CopyLogicalWaterDepths()
+    {
+        float[] depths = new float[Width * Height];
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+                depths[y * Width + x] = Water[x + 1, y + 1];
+        }
+
+        return depths;
+    }
+
     public void ReplaceActiveGrid(bool[,] active)
     {
         if (active == null || active.GetLength(0) != GridWidth || active.GetLength(1) != GridHeight)
@@ -141,6 +168,15 @@ public sealed class Dev_WaterRuntimeState
                 Terrain[x, y] = cell.Elevation;
                 Water[x, y] = cell.InitialWaterDepth;
             }
+        }
+    }
+
+    private static void CopyGrid<T>(T[,] source, T[,] destination)
+    {
+        for (int y = 0; y < source.GetLength(1); y++)
+        {
+            for (int x = 0; x < source.GetLength(0); x++)
+                destination[x, y] = source[x, y];
         }
     }
 }
