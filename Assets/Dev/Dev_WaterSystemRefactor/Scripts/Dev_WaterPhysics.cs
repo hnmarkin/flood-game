@@ -4,23 +4,23 @@ using UnityEngine;
 /// Performs the Water System's step-by-step flow calculations against runtime state.
 /// It has no scene or UI responsibilities and reads barrier behavior from the concrete Dev barrier grid.
 /// </summary>
-public sealed class Dev_WaterSimulationEngine
+public sealed class Dev_WaterPhysics
 {
-    private readonly Dev_WaterMapAccessor _map;
-    private readonly Dev_WaterBarrierGrid _barrierGrid;
+    private readonly Dev_MapAccessor _map;
+    private readonly Dev_WaterPhysicsBarrier _barrierGrid;
 
-    private Dev_WaterRuntimeState _state;
+    private Dev_WaterState _state;
     private Dev_WaterSimulationSettings _settings;
     private float _spreadTimer;
     private int _stepIndex;
 
-    public Dev_WaterSimulationEngine(Dev_WaterMapAccessor map, Dev_WaterBarrierGrid barrierGrid)
+    public Dev_WaterPhysics(Dev_MapAccessor map, Dev_WaterPhysicsBarrier barrierGrid)
     {
         _map = map;
         _barrierGrid = barrierGrid;
     }
 
-    public void Initialize(Dev_WaterRuntimeState state, Dev_WaterSimulationSettings settings)
+    public void Initialize(Dev_WaterState state, Dev_WaterSimulationSettings settings)
     {
         _state = state;
         _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
@@ -43,7 +43,7 @@ public sealed class Dev_WaterSimulationEngine
     }
 
     /// <summary>Configures a cloned projection state without clearing its live flow history.</summary>
-    public void InitializeProjection(Dev_WaterRuntimeState state, Dev_WaterSimulationSettings settings)
+    public void InitializeProjection(Dev_WaterState state, Dev_WaterSimulationSettings settings)
     {
         _state = state;
         _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
@@ -286,7 +286,7 @@ public sealed class Dev_WaterSimulationEngine
     {
         for (int y = 1; y <= _state.Height; y++)
             for (int x = 1; x <= _state.Width; x++)
-                    if (_map != null && _map.IsInitialWaterSource(x, y))
+                    if (_map != null && _map.IsInitialWaterBody(x, y))
                         AddOrSetWaterAtSim(x, y, depth, additive);
     }
 

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1f5e8b1bb54f3e9cd5d6bb4c901102, type: 3}
-  m_Name: Dev_RefactorScene_WaterMapData
+  m_Script: {fileID: 11500000, guid: 5b1f5e8b1bb54f3e9cd5d6bb4c901103, type: 3}
+  m_Name: Dev_RefactorScene_GroundTerrainTypeDef
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0}
-  width: 20
-  height: 20
-  cells: []
+  terrainId: ground
+  participatesInSimulation: 1
+  drainageMultiplier: 1
+  visualDefinition: {fileID: 11400000, guid: 6c1e5e8b1bb54f3e9cd5d6bb4c901207, type: 2}

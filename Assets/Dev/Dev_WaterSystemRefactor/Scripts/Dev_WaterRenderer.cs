@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// Projects new map visual definitions and authoritative runtime depths onto Unity tilemaps.
+/// Projects renderer definitions and authoritative water depths onto Unity tilemaps.
 /// It has no dependency on the former water-map model.
 /// </summary>
-public class Dev_WaterTilemapRenderer : MonoBehaviour
+public class Dev_WaterRenderer : MonoBehaviour
 {
     [Header("Tilemaps to Refresh")]
     [SerializeField] private Tilemap[] tilemaps;
@@ -15,10 +15,10 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
     [SerializeField] private Color shallowWaterColor = new Color(0.70f, 0.85f, 1.00f, 1f);
     [SerializeField] private Color deepWaterColor = new Color(0.10f, 0.25f, 0.50f, 1f);
 
-    private Dev_WaterRuntimeState _state;
-    private Dev_WaterMapAccessor _map;
+    private Dev_WaterState _state;
+    private Dev_MapAccessor _map;
 
-    public void Initialize(Dev_WaterRuntimeState state, Dev_WaterMapAccessor map)
+    public void Initialize(Dev_WaterState state, Dev_MapAccessor map)
     {
         _state = state;
         _map = map;
@@ -47,14 +47,14 @@ public class Dev_WaterTilemapRenderer : MonoBehaviour
 
     private void ApplyCell(Vector2Int tileCell, int simX, int simY)
     {
-        if (!_map.TryGetCell(simX, simY, out Dev_WaterMapCell cell))
+        if (!_map.TryGetCell(simX, simY, out Dev_MapCellDef cell))
             return;
 
         float visualDepth = Mathf.Max(0f, _state.Water[simX, simY]);
-        Dev_WaterVisualDefinition visual = cell.Terrain != null ? cell.Terrain.VisualDefinition : null;
-        TileBase tile = visual != null ? visual.ResolveTile(visualDepth) : null;
-        Color tint = visual != null
-            ? visual.ResolveTint(visualDepth)
+        Dev_RendererDef renderer = cell.Terrain != null ? cell.Terrain.RendererDefinition : null;
+        TileBase tile = renderer != null ? renderer.ResolveTile(visualDepth) : null;
+        Color tint = renderer != null
+            ? renderer.ResolveTint(visualDepth)
             : Color.Lerp(
                 shallowWaterColor,
                 deepWaterColor,

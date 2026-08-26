@@ -4,7 +4,7 @@ using UnityEngine;
 /// Runtime barrier edge data owned by the water controller and engine.
 /// It is deliberately not a scene component or a swappable provider.
 /// </summary>
-public sealed class Dev_WaterBarrierGrid
+public sealed class Dev_WaterPhysicsBarrier
 {
     private bool[,] _blockedX;
     private bool[,] _blockedY;
@@ -19,7 +19,7 @@ public sealed class Dev_WaterBarrierGrid
     {
         if (gridWidth <= 0 || gridHeight <= 0)
         {
-            Debug.LogError("[Dev_WaterBarrierGrid] Cannot initialize with non-positive grid dimensions.");
+            Debug.LogError("[Dev_WaterPhysicsBarrier] Cannot initialize with non-positive grid dimensions.");
             return false;
         }
 
@@ -52,9 +52,9 @@ public sealed class Dev_WaterBarrierGrid
         return TryClearBarrier(simX, simY, _blockedY, _barrierHeightY, _seepageY, "Y");
     }
 
-    internal Dev_WaterBarrierGrid Clone()
+    internal Dev_WaterPhysicsBarrier Clone()
     {
-        Dev_WaterBarrierGrid clone = new Dev_WaterBarrierGrid();
+        Dev_WaterPhysicsBarrier clone = new Dev_WaterPhysicsBarrier();
         if (!IsInitialized || !clone.InitializeForSimulation(_blockedX.GetLength(0), _blockedX.GetLength(1)))
             return clone;
 
@@ -109,13 +109,13 @@ public sealed class Dev_WaterBarrierGrid
     {
         if (!IsInBounds(simX, simY))
         {
-            Debug.LogWarning($"[Dev_WaterBarrierGrid] Cannot set {axis}-edge barrier outside the initialized grid.");
+            Debug.LogWarning($"[Dev_WaterPhysicsBarrier] Cannot set {axis}-edge barrier outside the initialized grid.");
             return false;
         }
 
         if (!IsFiniteNonNegative(height) || !IsFiniteNonNegative(seepage))
         {
-            Debug.LogWarning("[Dev_WaterBarrierGrid] Barrier height and seepage must be finite, non-negative values.");
+            Debug.LogWarning("[Dev_WaterPhysicsBarrier] Barrier height and seepage must be finite, non-negative values.");
             return false;
         }
 
@@ -135,7 +135,7 @@ public sealed class Dev_WaterBarrierGrid
     {
         if (!IsInBounds(simX, simY))
         {
-            Debug.LogWarning($"[Dev_WaterBarrierGrid] Cannot clear {axis}-edge barrier outside the initialized grid.");
+            Debug.LogWarning($"[Dev_WaterPhysicsBarrier] Cannot clear {axis}-edge barrier outside the initialized grid.");
             return false;
         }
 

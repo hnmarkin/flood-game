@@ -27,11 +27,11 @@ public static class Dev_WaterLegacyMapConverter
 
         string legacyPath = AssetDatabase.GetAssetPath(legacyMap);
         string folder = Path.GetDirectoryName(legacyPath)?.Replace('\\', '/');
-        string mapName = legacyMap.name.Replace("TileMapData", "WaterMapData");
+        string mapName = legacyMap.name.Replace("TileMapData", "MapDef");
         if (string.IsNullOrWhiteSpace(mapName))
-            mapName = "Dev_WaterMapData";
+            mapName = "Dev_MapDef";
 
-        if (TryConvert(legacyMap, folder, mapName, out Dev_WaterMapData convertedMap))
+        if (TryConvert(legacyMap, folder, mapName, out Dev_MapDef convertedMap))
         {
             Selection.activeObject = convertedMap;
             EditorGUIUtility.PingObject(convertedMap);
@@ -46,7 +46,7 @@ public static class Dev_WaterLegacyMapConverter
         TileMapData legacyMap,
         string outputFolder,
         string mapName,
-        out Dev_WaterMapData convertedMap)
+        out Dev_MapDef convertedMap)
     {
         convertedMap = null;
 
@@ -63,7 +63,7 @@ public static class Dev_WaterLegacyMapConverter
             return false;
         }
 
-        var terrainByLegacyType = new Dictionary<TileType, Dev_WaterTerrainDefinition>();
+        var terrainByLegacyType = new Dictionary<TileType, Dev_TerrainTypeDef>();
         var cells = new List<LegacyCell>(width * height);
 
         for (int y = 0; y < height; y++)
@@ -83,13 +83,13 @@ public static class Dev_WaterLegacyMapConverter
                 if (!terrainByLegacyType.ContainsKey(legacyCell.tileType))
                 {
                     string baseName = SanitizeAssetName(legacyCell.tileType.name);
-                    Dev_WaterVisualDefinition visual = CreateVisualDefinition(
+                    Dev_RendererDef renderer = CreateRendererDefinition(
                         legacyCell.tileType,
                         outputFolder,
                         baseName);
-                    Dev_WaterTerrainDefinition terrain = CreateTerrainDefinition(
+                    Dev_TerrainTypeDef terrain = CreateTerrainTypeDef(
                         legacyCell.tileType,
-                        visual,
+                        renderer,
                         outputFolder,
                         baseName);
 
@@ -110,12 +110,12 @@ public static class Dev_WaterLegacyMapConverter
 
         string mapPath = AssetDatabase.GenerateUniqueAssetPath(
             $"{outputFolder}/{SanitizeAssetName(mapName)}.asset");
-        convertedMap = ScriptableObject.CreateInstance<Dev_WaterMapData>();
+        convertedMap = ScriptableObject.CreateInstance<Dev_MapDef>();
         convertedMap.Configure(origin, width, height);
 
         foreach (LegacyCell source in cells)
         {
-            Dev_WaterTerrainDefinition terrain = terrainByLegacyType[source.Cell.tileType];
+            Dev_TerrainTypeDef terrain = terrainByLegacyType[source.Cell.tileType];
             convertedMap.TryConfigureCell(
                 source.Position,
                 source.Cell.elevation,
@@ -131,7 +131,7 @@ public static class Dev_WaterLegacyMapConverter
         return true;
     }
 
-    private static Dev_WaterVisualDefinition CreateVisualDefinition(
+    private static Dev_RendererDef CreateRendererDefinition(
         TileType legacyType,
         string outputFolder,
         string baseName)
@@ -159,29 +159,28 @@ public static class Dev_WaterLegacyMapConverter
         }
 
         string path = AssetDatabase.GenerateUniqueAssetPath(
-            $"{outputFolder}/{baseName}_VisualDefinition.asset");
-        var visual = ScriptableObject.CreateInstance<Dev_WaterVisualDefinition>();
-        visual.Configure(dryTile, Color.white, bands.ToArray());
-        AssetDatabase.CreateAsset(visual, path);
-        EditorUtility.SetDirty(visual);
-        return visual;
+            $"{outputFolder}/{baseName}_RendererDef.asset");
+        var renderer = ScriptableObject.CreateInstance<Dev_RendererDef>();
+        renderer.Configure(dryTile, Color.white, bands.ToArray());
+        AssetDatabase.CreateAsset(renderer, path);
+        EditorUtility.SetDirty(renderer);
+        return renderer;
     }
 
-    private static Dev_WaterTerrainDefinition CreateTerrainDefinition(
+    private static Dev_TerrainTypeDef CreateTerrainTypeDef(
         TileType legacyType,
-        Dev_WaterVisualDefinition visual,
+        Dev_RendererDef renderer,
         string outputFolder,
         string baseName)
     {
         string path = AssetDatabase.GenerateUniqueAssetPath(
-            $"{outputFolder}/{baseName}_TerrainDefinition.asset");
-        var terrain = ScriptableObject.CreateInstance<Dev_WaterTerrainDefinition>();
+            $"{outputFolder}/{baseName}_TerrainTypeDef.asset");
+        var terrain = ScriptableObject.CreateInstance<Dev_TerrainTypeDef>();
         terrain.Configure(
             string.IsNullOrWhiteSpace(legacyType.tileName) ? legacyType.name : legacyType.tileName,
             true,
-            legacyType.isWater,
             1f,
-            visual);
+            renderer);
         AssetDatabase.CreateAsset(terrain, path);
         EditorUtility.SetDirty(terrain);
         return terrain;

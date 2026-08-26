@@ -4,8 +4,8 @@ using UnityEngine;
 /// Persistent, scenario-owned water profiles and the optional preliminary flooding batch.
 /// The controller clones this data; live simulation never writes back to this asset.
 /// </summary>
-[CreateAssetMenu(fileName = "Dev_WaterScenarioConfig", menuName = "Dev/Water System/Scenario Config")]
-public class Dev_WaterScenarioConfig : ScriptableObject
+[CreateAssetMenu(fileName = "Dev_ScenarioDef", menuName = "Dev/Water System/Scenario Definition")]
+public class Dev_ScenarioDef : ScriptableObject
 {
     [Header("Storm Profiles")]
     [SerializeField] private Dev_WaterStormProfile baselineProfile = new Dev_WaterStormProfile();

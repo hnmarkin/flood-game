@@ -3,14 +3,14 @@ using UnityEngine;
 
 /// <summary>
 /// Mutable simulation state for one initialized map run. Static map information is
-/// supplied by Dev_WaterMapAccessor; this object owns only live simulation values.
+/// supplied by Dev_MapAccessor; this object owns only live simulation values.
 /// </summary>
-public sealed class Dev_WaterRuntimeState
+public sealed class Dev_WaterState
 {
-    private readonly Dev_WaterMapAccessor _map;
+    private readonly Dev_MapAccessor _map;
     private readonly HashSet<Vector2Int> _dirtyCells = new HashSet<Vector2Int>();
 
-    public Dev_WaterRuntimeState(Dev_WaterMapAccessor map)
+    public Dev_WaterState(Dev_MapAccessor map)
     {
         _map = map;
         Width = Mathf.Max(0, map != null ? map.Width : 0);
@@ -114,9 +114,9 @@ public sealed class Dev_WaterRuntimeState
         _dirtyCells.Clear();
     }
 
-    internal Dev_WaterRuntimeState Clone()
+    internal Dev_WaterState Clone()
     {
-        Dev_WaterRuntimeState clone = new Dev_WaterRuntimeState(_map);
+        Dev_WaterState clone = new Dev_WaterState(_map);
         CopyGrid(Terrain, clone.Terrain);
         CopyGrid(Water, clone.Water);
         CopyGrid(FlowX, clone.FlowX);
@@ -162,7 +162,7 @@ public sealed class Dev_WaterRuntimeState
         {
             for (int x = 1; x <= Width; x++)
             {
-                if (!_map.TryGetCell(x, y, out Dev_WaterMapCell cell))
+                if (!_map.TryGetCell(x, y, out Dev_MapCellDef cell))
                     continue;
 
                 Terrain[x, y] = cell.Elevation;

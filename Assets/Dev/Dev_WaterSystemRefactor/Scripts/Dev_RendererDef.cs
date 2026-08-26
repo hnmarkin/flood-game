@@ -21,8 +21,8 @@ public sealed class Dev_WaterVisualBand
 /// Persistent presentation data consumed by the new renderer.
 /// It does not depend on the former water visual model.
 /// </summary>
-[CreateAssetMenu(fileName = "Dev_WaterVisualDefinition", menuName = "Dev/Water System/Visual Definition")]
-public sealed class Dev_WaterVisualDefinition : ScriptableObject
+[CreateAssetMenu(fileName = "Dev_RendererDef", menuName = "Dev/Water System/Renderer Definition")]
+public sealed class Dev_RendererDef : ScriptableObject
 {
     [SerializeField] private TileBase dryTile;
     [SerializeField] private Color dryTint = Color.white;

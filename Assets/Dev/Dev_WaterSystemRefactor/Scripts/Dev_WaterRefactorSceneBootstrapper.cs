@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,15 +9,16 @@ using UnityEditor.SceneManagement;
 
 /// <summary>
 /// Generates the deterministic new-format map used by RefactorScene.
-/// This is Dev test tooling and writes only Dev_WaterMapData, never legacy tile data.
+/// This is Dev test tooling and writes only Dev_MapDef, never legacy tile data.
 /// </summary>
 [ExecuteAlways]
 public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
 {
     [Header("New Water Data")]
-    [SerializeField] private Dev_WaterMapData mapData;
-    [SerializeField] private Dev_WaterTerrainDefinition groundTerrain;
-    [SerializeField] private Dev_WaterTerrainDefinition waterTerrain;
+    [FormerlySerializedAs("mapData")]
+    [SerializeField] private Dev_MapDef mapDef;
+    [SerializeField] private Dev_TerrainTypeDef groundTerrain;
+    [SerializeField] private Dev_TerrainTypeDef waterTerrain;
 
     [Header("Preview Tilemap")]
     [SerializeField] private Tilemap terrainTilemap;
@@ -57,7 +59,7 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
         if (!ValidateReferences())
             return;
 
-        mapData.Configure(origin, width, height);
+        mapDef.Configure(origin, width, height);
         terrainTilemap.ClearAllTiles();
 
         for (int y = 0; y < height; y++)
@@ -67,18 +69,18 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
                 Vector2Int logical = new Vector2Int(origin.x + x, origin.y + y);
                 int elevation = ComputeElevation(x, y);
                 bool isWaterBody = createWaterBody && IsWaterBodyCell(x, y);
-                Dev_WaterTerrainDefinition terrain = isWaterBody ? waterTerrain : groundTerrain;
+                Dev_TerrainTypeDef terrain = isWaterBody ? waterTerrain : groundTerrain;
                 float waterDepth = isWaterBody ? initialWaterBodyDepth : 0f;
 
-                mapData.TryConfigureCell(
+                mapDef.TryConfigureCell(
                     logical,
                     elevation,
                     terrain,
                     waterDepth,
                     isWaterBody);
 
-                Dev_WaterVisualDefinition visual = terrain != null ? terrain.VisualDefinition : null;
-                TileBase tile = visual != null ? visual.ResolveTile(waterDepth) : null;
+                Dev_RendererDef renderer = terrain != null ? terrain.RendererDefinition : null;
+                TileBase tile = renderer != null ? renderer.ResolveTile(waterDepth) : null;
                 if (tile != null)
                     terrainTilemap.SetTile(new Vector3Int(logical.x, logical.y, 0), tile);
             }
@@ -89,8 +91,8 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
 #if UNITY_EDITOR
         if (!Application.isPlaying)
         {
-            EditorUtility.SetDirty(mapData);
-            AssetDatabase.SaveAssetIfDirty(mapData);
+            EditorUtility.SetDirty(mapDef);
+            AssetDatabase.SaveAssetIfDirty(mapDef);
             EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
 #endif
@@ -98,9 +100,9 @@ public class Dev_WaterRefactorSceneBootstrapper : MonoBehaviour
 
     private bool ValidateReferences()
     {
-        if (mapData == null)
+        if (mapDef == null)
         {
-            Debug.LogError("[Dev_WaterRefactorSceneBootstrapper] Dev_WaterMapData is missing.");
+            Debug.LogError("[Dev_WaterRefactorSceneBootstrapper] Dev_MapDef is missing.");
             return false;
         }
 

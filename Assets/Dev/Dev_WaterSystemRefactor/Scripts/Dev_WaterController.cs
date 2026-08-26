@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Public interface for live Dev water. It owns runtime state, profile transitions,
@@ -7,11 +8,13 @@ using UnityEngine;
 /// </summary>
 public class Dev_WaterController : MonoBehaviour
 {
-    [Header("Map Data")]
-    [SerializeField] private Dev_WaterMapData mapData;
+    [Header("Map Definition")]
+    [FormerlySerializedAs("mapData")]
+    [SerializeField] private Dev_MapDef mapDef;
 
-    [Header("Scenario Configuration")]
-    [SerializeField] private Dev_WaterScenarioConfig scenarioConfig;
+    [Header("Scenario Definition")]
+    [FormerlySerializedAs("scenarioConfig")]
+    [SerializeField] private Dev_ScenarioDef scenarioDef;
     [SerializeField] private Dev_WaterConfigurationMode configurationMode = Dev_WaterConfigurationMode.DevDefaultsWithWarnings;
 
     [Header("Modifier Contract")]
@@ -19,7 +22,7 @@ public class Dev_WaterController : MonoBehaviour
     [SerializeField] private MonoBehaviour modifierProviderBehaviour;
 
     [Header("Rendering")]
-    [SerializeField] private Dev_WaterTilemapRenderer waterRenderer;
+    [SerializeField] private Dev_WaterRenderer waterRenderer;
 
     [Header("Lifecycle")]
     [SerializeField] private bool initializeOnStart = true;
@@ -31,10 +34,10 @@ public class Dev_WaterController : MonoBehaviour
     [Tooltip("Dev-only test input until the project input system exists.")]
     [SerializeField] private bool spaceKeyStepsWhenManual = true;
 
-    private Dev_WaterMapAccessor _mapAccessor;
-    private Dev_WaterRuntimeState _runtimeState;
-    private Dev_WaterSimulationEngine _engine;
-    private Dev_WaterBarrierGrid _barrierGrid;
+    private Dev_MapAccessor _mapAccessor;
+    private Dev_WaterState _runtimeState;
+    private Dev_WaterPhysics _engine;
+    private Dev_WaterPhysicsBarrier _barrierGrid;
     private Dev_WaterSimulationSettings _resolvedSettings;
     private Dev_WaterSourceSpec[] _resolvedInitialSources = Array.Empty<Dev_WaterSourceSpec>();
     private Dev_WaterSourceSpec[] _resolvedContinuousSources = Array.Empty<Dev_WaterSourceSpec>();
@@ -93,7 +96,7 @@ public class Dev_WaterController : MonoBehaviour
 
     public bool CanStartSimulation()
     {
-        return mapData != null && (scenarioConfig != null || configurationMode == Dev_WaterConfigurationMode.DevDefaultsWithWarnings);
+        return mapDef != null && (scenarioDef != null || configurationMode == Dev_WaterConfigurationMode.DevDefaultsWithWarnings);
     }
 
     /// <summary>Dev/manual entry point. Production callers should drive SetGameFlow and SetGamePhase.</summary>
@@ -183,7 +186,7 @@ public class Dev_WaterController : MonoBehaviour
     public bool TryGetPreliminaryFlooding(out Dev_WaterPreliminaryFloodingConfig configuration)
     {
         configuration = null;
-        return scenarioConfig != null && scenarioConfig.TryGetPreliminaryFlooding(out configuration, out _);
+        return scenarioDef != null && scenarioDef.TryGetPreliminaryFlooding(out configuration, out _);
     }
 
     /// <summary>Runs complete normal microsteps without changing Game State turn or action progress.</summary>
@@ -284,8 +287,8 @@ public class Dev_WaterController : MonoBehaviour
             !TryResolveModifiers(out Dev_WaterModifierSnapshot modifiers))
             return false;
 
-        Dev_WaterRuntimeState projectionState = _runtimeState.Clone();
-        Dev_WaterSimulationEngine projectionEngine = new Dev_WaterSimulationEngine(_mapAccessor, _barrierGrid.Clone());
+        Dev_WaterState projectionState = _runtimeState.Clone();
+        Dev_WaterPhysics projectionEngine = new Dev_WaterPhysics(_mapAccessor, _barrierGrid.Clone());
         projectionEngine.InitializeProjection(projectionState, _resolvedSettings);
 
         float remaining = simulatedDuration;
@@ -312,18 +315,18 @@ public class Dev_WaterController : MonoBehaviour
 
     public bool InitializeRuntimeState()
     {
-        if (mapData == null)
+        if (mapDef == null)
         {
-            Debug.LogError("[Dev_WaterController] Cannot initialize: Dev_WaterMapData is not assigned.");
+            Debug.LogError("[Dev_WaterController] Cannot initialize: Dev_MapDef is not assigned.");
             _initialized = false;
             return false;
         }
 
-        string scenarioError = scenarioConfig == null ? "scenario config is missing" : null;
+        string scenarioError = scenarioDef == null ? "scenario definition is missing" : null;
         if (configurationMode == Dev_WaterConfigurationMode.Production &&
-            (scenarioConfig == null || !scenarioConfig.IsValidForProduction(out scenarioError)))
+            (scenarioDef == null || !scenarioDef.IsValidForProduction(out scenarioError)))
         {
-            Debug.LogError($"[Dev_WaterController] Production configuration rejected scenario data: {scenarioError ?? "scenario config is missing"}");
+            Debug.LogError($"[Dev_WaterController] Production configuration rejected scenario data: {scenarioError ?? "scenario definition is missing"}");
             _initialized = false;
             return false;
         }
@@ -340,12 +343,12 @@ public class Dev_WaterController : MonoBehaviour
             return false;
         }
 
-        _resolvedInitialSources = scenarioConfig != null
-            ? scenarioConfig.CreateInitialSourceInstances()
+        _resolvedInitialSources = scenarioDef != null
+            ? scenarioDef.CreateInitialSourceInstances()
             : Array.Empty<Dev_WaterSourceSpec>();
-        _mapAccessor = new Dev_WaterMapAccessor(mapData);
-        _runtimeState = new Dev_WaterRuntimeState(_mapAccessor);
-        _barrierGrid = new Dev_WaterBarrierGrid();
+        _mapAccessor = new Dev_MapAccessor(mapDef);
+        _runtimeState = new Dev_WaterState(_mapAccessor);
+        _barrierGrid = new Dev_WaterPhysicsBarrier();
 
         if (!_barrierGrid.InitializeForSimulation(_runtimeState.GridWidth, _runtimeState.GridHeight))
         {
@@ -353,7 +356,7 @@ public class Dev_WaterController : MonoBehaviour
             return false;
         }
 
-        _engine = new Dev_WaterSimulationEngine(_mapAccessor, _barrierGrid);
+        _engine = new Dev_WaterPhysics(_mapAccessor, _barrierGrid);
         _engine.Initialize(_runtimeState, _resolvedSettings);
         _engine.ApplyInitialSources(_resolvedInitialSources, modifiers);
         _engine.InitializeActiveRegion();
@@ -399,17 +402,17 @@ public class Dev_WaterController : MonoBehaviour
     {
         settings = null;
         sources = Array.Empty<Dev_WaterSourceSpec>();
-        string error = scenarioConfig == null ? "scenario config is missing" : null;
-        if (scenarioConfig != null && scenarioConfig.TryCreateProfile(stage, out settings, out sources, out error))
+        string error = scenarioDef == null ? "scenario definition is missing" : null;
+        if (scenarioDef != null && scenarioDef.TryCreateProfile(stage, out settings, out sources, out error))
             return true;
 
         if (configurationMode == Dev_WaterConfigurationMode.Production)
         {
-            Debug.LogError($"[Dev_WaterController] Production configuration rejected {stage} profile: {error ?? "scenario config is missing"}");
+            Debug.LogError($"[Dev_WaterController] Production configuration rejected {stage} profile: {error ?? "scenario definition is missing"}");
             return false;
         }
 
-        Debug.LogWarning($"[Dev_WaterController] Dev defaults are active because the {stage} profile is unavailable: {error ?? "scenario config is missing"}");
+        Debug.LogWarning($"[Dev_WaterController] Dev defaults are active because the {stage} profile is unavailable: {error ?? "scenario definition is missing"}");
         settings = new Dev_WaterSimulationSettings();
         settings.Sanitize();
         return true;
