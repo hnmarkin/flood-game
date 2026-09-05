@@ -5,6 +5,7 @@
 2. HUNT FOR EXAMPLES: Before implementing, look for existing code that solves a similar problem. If no clear reference exists, ask the developer whether they know of one.
 3. PLAN APPROPRIATELY: For substantial, risky, or architectural changes, propose a plan before editing code. For small obvious fixes, proceed with a brief explanation.
 4. COMMIT CHECKPOINTS: After meaningful completed changes, remind the developer to review and commit, or offer to make a commit if requested.
+5. SCRIPT NAMING: Use concise names, with {subsystem}{component}.cs as a base title. If it is the engine or equivalent primary piece of a subsystem, the component may be removed. If necessary, add the system name as a prefix for differentiation.  For example, the controller for the modifier subsystem of Core is ModifierController.cs. No further differentiation is needed. For the runtime state in the water system, we start with StateData.cs. However, it is the main component of the water system state, so it becomes State.cs. However, other systems such as modifiers and resources within Core would also have State.cs. So, we end by naming it WaterState.cs.
 
 ## Dev Folder Policy
 Codex should only write to `AgentRef` when working on agent support material. The other shared `Dev` folders are read-only for Codex.
