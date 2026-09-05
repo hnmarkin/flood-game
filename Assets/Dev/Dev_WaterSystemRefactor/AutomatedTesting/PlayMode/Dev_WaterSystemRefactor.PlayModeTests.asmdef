@@ -1,5 +1,5 @@
 {
-  "name": "Dev_WaterSystemRefactor.EditModeTests",
+  "name": "Dev_WaterSystemRefactor.PlayModeTests",
   "rootNamespace": "",
   "references": [
     "Dev_WaterSystemRefactor.Runtime"
