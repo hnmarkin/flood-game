@@ -77,8 +77,8 @@ public class Dev_WaterRenderer : MonoBehaviour
             if (tile != null)
                 tilemap.SetTile(cell, tile);
 
-            tilemap.SetColor(cell, tint);
             tilemap.RefreshTile(cell);
+            tilemap.SetColor(cell, tint);
         }
     }
 }
