@@ -81,10 +81,12 @@ public sealed class Dev_WaterState
 
     public bool TrySetWaterDepth(Vector2Int tileCell, float depth)
     {
-        if (!TryTileToSim(tileCell, out int simX, out int simY) || !HasMapCellAtSim(simX, simY))
+        if (float.IsNaN(depth) || float.IsInfinity(depth) || depth < 0f ||
+            !TryTileToSim(tileCell, out int simX, out int simY) || !HasMapCellAtSim(simX, simY))
             return false;
 
-        Water[simX, simY] = Mathf.Max(0f, depth);
+        Water[simX, simY] = depth;
+        Active[simX, simY] = depth > 0f;
         MarkDirtyBySim(simX, simY);
         return true;
     }

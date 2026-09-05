@@ -42,6 +42,23 @@ public enum Dev_WaterConfigurationMode
     DevDefaultsWithWarnings
 }
 
+/// <summary>Defines what exists immediately beyond one logical map edge.</summary>
+public enum Dev_WaterBoundaryMode
+{
+    Wall,
+    Source,
+    Sink
+}
+
+/// <summary>Identifies one of the four logical map edges.</summary>
+public enum Dev_WaterBoundarySide
+{
+    North,
+    East,
+    South,
+    West
+}
+
 /// <summary>Identifies the map region that a configured water source affects.</summary>
 public enum Dev_WaterSourceKind
 {
@@ -66,8 +83,13 @@ public class Dev_WaterSimulationSettings
     [Min(0f)] public float maxWaterDepth = 100f;
 
     [Header("Boundary")]
+    // Retained for deserializing older scenario assets. New assets should configure each edge below.
     public bool useBoundaryWalls = true;
     [Min(0f)] public float boundaryHeightPadding = 2f;
+    public Dev_WaterBoundarySettings northBoundary = new Dev_WaterBoundarySettings();
+    public Dev_WaterBoundarySettings eastBoundary = new Dev_WaterBoundarySettings();
+    public Dev_WaterBoundarySettings southBoundary = new Dev_WaterBoundarySettings();
+    public Dev_WaterBoundarySettings westBoundary = new Dev_WaterBoundarySettings();
 
     [Header("Spread Gating")]
     public bool useSpreadGating = true;
@@ -90,24 +112,36 @@ public class Dev_WaterSimulationSettings
 
     public Dev_WaterSimulationSettings Clone()
     {
-        return (Dev_WaterSimulationSettings)MemberwiseClone();
+        Dev_WaterSimulationSettings clone = (Dev_WaterSimulationSettings)MemberwiseClone();
+        clone.northBoundary = northBoundary != null ? northBoundary.Clone() : null;
+        clone.eastBoundary = eastBoundary != null ? eastBoundary.Clone() : null;
+        clone.southBoundary = southBoundary != null ? southBoundary.Clone() : null;
+        clone.westBoundary = westBoundary != null ? westBoundary.Clone() : null;
+        return clone;
     }
 
     public void Sanitize()
     {
-        dx = Mathf.Max(0.01f, dx);
-        dy = Mathf.Max(0.01f, dy);
-        dt = Mathf.Max(0.001f, dt);
-        gravity = Mathf.Max(0f, gravity);
-        friction = Mathf.Clamp(friction, 0f, 0.99f);
-        maxWaterDepth = Mathf.Max(0f, maxWaterDepth);
-        boundaryHeightPadding = Mathf.Max(0f, boundaryHeightPadding);
-        spreadInterval = Mathf.Max(0.05f, spreadInterval);
+        dx = IsFinitePositive(dx) ? Mathf.Max(0.01f, dx) : 1f;
+        dy = IsFinitePositive(dy) ? Mathf.Max(0.01f, dy) : 1f;
+        dt = IsFinitePositive(dt) ? Mathf.Max(0.001f, dt) : 0.25f;
+        gravity = IsFiniteNonNegative(gravity) ? gravity : 0f;
+        friction = IsFiniteNonNegative(friction) ? Mathf.Clamp(friction, 0f, 0.99f) : 0f;
+        maxWaterDepth = IsFiniteNonNegative(maxWaterDepth) ? maxWaterDepth : 0f;
+        boundaryHeightPadding = IsFiniteNonNegative(boundaryHeightPadding) ? boundaryHeightPadding : 0f;
+        spreadInterval = IsFinitePositive(spreadInterval) ? Mathf.Max(0.05f, spreadInterval) : 2f;
         spreadLayersPerTick = Mathf.Max(1, spreadLayersPerTick);
-        expandFromWaterThreshold = Mathf.Max(0f, expandFromWaterThreshold);
-        baseDrainageDepthPerSecond = Mathf.Max(0f, baseDrainageDepthPerSecond);
-        windForceScale = Mathf.Max(0f, windForceScale);
-        overtopDepthForFullFlow = Mathf.Max(0.01f, overtopDepthForFullFlow);
+        expandFromWaterThreshold = IsFiniteNonNegative(expandFromWaterThreshold) ? expandFromWaterThreshold : 0f;
+        baseDrainageDepthPerSecond = IsFiniteNonNegative(baseDrainageDepthPerSecond) ? baseDrainageDepthPerSecond : 0f;
+        windForceScale = IsFiniteNonNegative(windForceScale) ? windForceScale : 0f;
+        overtopDepthForFullFlow = IsFinitePositive(overtopDepthForFullFlow) ? Mathf.Max(0.01f, overtopDepthForFullFlow) : 1f;
+
+        EnsureBoundarySettings();
+        NormalizeLegacyBoundarySetting();
+        northBoundary.Sanitize();
+        eastBoundary.Sanitize();
+        southBoundary.Sanitize();
+        westBoundary.Sanitize();
     }
 
     public bool IsValid(out string error)
@@ -118,7 +152,7 @@ public class Dev_WaterSimulationSettings
             return false;
         }
 
-        if (!IsFiniteNonNegative(gravity) || !IsFiniteNonNegative(friction) ||
+        if (!IsFiniteNonNegative(gravity) || !IsFiniteNonNegative(friction) || friction > 0.99f ||
             !IsFiniteNonNegative(maxWaterDepth) || !IsFiniteNonNegative(boundaryHeightPadding) ||
             !IsFinitePositive(spreadInterval) || !IsFiniteNonNegative(expandFromWaterThreshold) ||
             !IsFiniteNonNegative(baseDrainageDepthPerSecond) || !IsFiniteNonNegative(windForceScale) ||
@@ -128,13 +162,144 @@ public class Dev_WaterSimulationSettings
             return false;
         }
 
+        if (!IsValidBoundary(northBoundary, "north", out error) ||
+            !IsValidBoundary(eastBoundary, "east", out error) ||
+            !IsValidBoundary(southBoundary, "south", out error) ||
+            !IsValidBoundary(westBoundary, "west", out error))
+            return false;
+
         error = null;
+        return true;
+    }
+
+    public Dev_WaterBoundarySettings GetBoundary(Dev_WaterBoundarySide side)
+    {
+        EnsureBoundarySettings();
+        switch (side)
+        {
+            case Dev_WaterBoundarySide.North: return northBoundary;
+            case Dev_WaterBoundarySide.East: return eastBoundary;
+            case Dev_WaterBoundarySide.South: return southBoundary;
+            case Dev_WaterBoundarySide.West: return westBoundary;
+            default: return northBoundary;
+        }
+    }
+
+    private void EnsureBoundarySettings()
+    {
+        if (northBoundary == null) northBoundary = new Dev_WaterBoundarySettings();
+        if (eastBoundary == null) eastBoundary = new Dev_WaterBoundarySettings();
+        if (southBoundary == null) southBoundary = new Dev_WaterBoundarySettings();
+        if (westBoundary == null) westBoundary = new Dev_WaterBoundarySettings();
+    }
+
+    private void NormalizeLegacyBoundarySetting()
+    {
+        if (useBoundaryWalls ||
+            northBoundary.mode != Dev_WaterBoundaryMode.Wall ||
+            eastBoundary.mode != Dev_WaterBoundaryMode.Wall ||
+            southBoundary.mode != Dev_WaterBoundaryMode.Wall ||
+            westBoundary.mode != Dev_WaterBoundaryMode.Wall)
+            return;
+
+        northBoundary.mode = Dev_WaterBoundaryMode.Sink;
+        eastBoundary.mode = Dev_WaterBoundaryMode.Sink;
+        southBoundary.mode = Dev_WaterBoundaryMode.Sink;
+        westBoundary.mode = Dev_WaterBoundaryMode.Sink;
+    }
+
+    private static bool IsValidBoundary(Dev_WaterBoundarySettings boundary, string name, out string error)
+    {
+        if (boundary == null)
+        {
+            error = $"The {name} boundary settings are missing.";
+            return false;
+        }
+
+        if (!boundary.IsValid(out error))
+        {
+            error = $"The {name} boundary settings are invalid: {error}";
+            return false;
+        }
+
         return true;
     }
 
     private static bool IsFinitePositive(float value)
     {
         return !float.IsNaN(value) && !float.IsInfinity(value) && value > 0f;
+    }
+
+    private static bool IsFiniteNonNegative(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
+    }
+}
+
+/// <summary>Configuration for one external edge of the simulation.</summary>
+[Serializable]
+public sealed class Dev_WaterBoundarySettings
+{
+    public Dev_WaterBoundaryMode mode = Dev_WaterBoundaryMode.Wall;
+
+    [Tooltip("Depth added per simulated second when this edge is a limitless source.")]
+    [Min(0f)] public float sourceDepthPerSecond;
+
+    [Tooltip("Depth removed per simulated second through a Wall edge. Ignored for Source and Sink edges.")]
+    [Min(0f)] public float seepageDepthPerSecond;
+
+    public Dev_WaterBoundarySettings Clone()
+    {
+        return (Dev_WaterBoundarySettings)MemberwiseClone();
+    }
+
+    public void Sanitize()
+    {
+        if (!Enum.IsDefined(typeof(Dev_WaterBoundaryMode), mode))
+            mode = Dev_WaterBoundaryMode.Wall;
+
+        sourceDepthPerSecond = IsFiniteNonNegative(sourceDepthPerSecond)
+            ? sourceDepthPerSecond
+            : 0f;
+        seepageDepthPerSecond = IsFiniteNonNegative(seepageDepthPerSecond)
+            ? seepageDepthPerSecond
+            : 0f;
+    }
+
+    public bool IsValid(out string error)
+    {
+        if (!Enum.IsDefined(typeof(Dev_WaterBoundaryMode), mode))
+        {
+            error = "Boundary mode is unknown.";
+            return false;
+        }
+
+        if (!IsFiniteNonNegative(sourceDepthPerSecond) || !IsFiniteNonNegative(seepageDepthPerSecond))
+        {
+            error = "Boundary source and seepage depths must be finite and non-negative.";
+            return false;
+        }
+
+        if (mode == Dev_WaterBoundaryMode.Source && sourceDepthPerSecond <= 0f)
+        {
+            error = "A source boundary requires a positive source depth per second.";
+            return false;
+        }
+
+        if (mode != Dev_WaterBoundaryMode.Source && sourceDepthPerSecond > 0f)
+        {
+            error = "Source depth is only valid for a Source boundary.";
+            return false;
+        }
+
+        if (mode != Dev_WaterBoundaryMode.Wall && seepageDepthPerSecond > 0f)
+        {
+            error = "Seepage depth is only valid for a Wall boundary.";
+            return false;
+        }
+
+        error = null;
+        return true;
     }
 
     private static bool IsFiniteNonNegative(float value)
@@ -163,6 +328,12 @@ public class Dev_WaterSourceSpec
 
     public bool IsValid(out string error)
     {
+        if (!Enum.IsDefined(typeof(Dev_WaterSourceKind), kind))
+        {
+            error = "Source kind is unknown.";
+            return false;
+        }
+
         if (float.IsNaN(depth) || float.IsInfinity(depth) || depth < 0f)
         {
             error = "Source depth must be finite and non-negative.";
@@ -286,17 +457,47 @@ public struct Dev_WaterModifierSnapshot
 
     public void Sanitize()
     {
-        DrainageEfficiency = Mathf.Max(0f, DrainageEfficiency);
-        RainfallRate = Mathf.Max(0f, RainfallRate);
-        AntecedentWetness = Mathf.Max(0f, AntecedentWetness);
-        ExternalWaterLoad = Mathf.Max(0f, ExternalWaterLoad);
-        WindStress = Mathf.Max(0f, WindStress);
-        EventPacing = Mathf.Max(0.01f, EventPacing);
+        DrainageEfficiency = IsFiniteNonNegative(DrainageEfficiency) ? DrainageEfficiency : 1f;
+        RainfallRate = IsFiniteNonNegative(RainfallRate) ? RainfallRate : 1f;
+        AntecedentWetness = IsFiniteNonNegative(AntecedentWetness) ? AntecedentWetness : 1f;
+        ExternalWaterLoad = IsFiniteNonNegative(ExternalWaterLoad) ? ExternalWaterLoad : 1f;
+        WindStress = IsFiniteNonNegative(WindStress) ? WindStress : 0f;
+        EventPacing = IsFinitePositive(EventPacing) ? Mathf.Max(0.01f, EventPacing) : 1f;
 
-        if (WindDirection.sqrMagnitude <= 0.0001f)
+        if (!IsFinite(WindDirection.x) || !IsFinite(WindDirection.y) || WindDirection.sqrMagnitude <= 0.0001f)
             WindDirection = Vector2.right;
         else
             WindDirection.Normalize();
+    }
+
+    public bool IsValid(out string error)
+    {
+        if (!IsFiniteNonNegative(DrainageEfficiency) || !IsFiniteNonNegative(RainfallRate) ||
+            !IsFiniteNonNegative(AntecedentWetness) || !IsFiniteNonNegative(ExternalWaterLoad) ||
+            !IsFiniteNonNegative(WindStress) || !IsFinitePositive(EventPacing) ||
+            !IsFinite(WindDirection.x) || !IsFinite(WindDirection.y))
+        {
+            error = "Modifier values must be finite and within their documented bounds.";
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
+
+    private static bool IsFinite(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value);
+    }
+
+    private static bool IsFinitePositive(float value)
+    {
+        return IsFinite(value) && value > 0f;
+    }
+
+    private static bool IsFiniteNonNegative(float value)
+    {
+        return IsFinite(value) && value >= 0f;
     }
 }
 

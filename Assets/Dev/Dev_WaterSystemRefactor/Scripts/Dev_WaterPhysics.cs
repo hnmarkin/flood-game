@@ -29,27 +29,46 @@ public sealed class Dev_WaterPhysics
         _spreadTimer = 0f;
 
         ClearFlow();
-        if (_settings.useBoundaryWalls)
-            SetupBoundaryWalls();
+        ConfigureBoundaryGhosts();
     }
 
     public void Reconfigure(Dev_WaterSimulationSettings settings)
     {
         _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
         _settings.Sanitize();
-
-        if (_settings.useBoundaryWalls)
-            SetupBoundaryWalls();
+        ConfigureBoundaryGhosts();
     }
 
     /// <summary>Configures a cloned projection state without clearing its live flow history.</summary>
     public void InitializeProjection(Dev_WaterState state, Dev_WaterSimulationSettings settings)
     {
+        InitializeProjection(state, settings, 0f);
+    }
+
+    /// <summary>Configures a cloned projection state while preserving its spread-gate timer.</summary>
+    public void InitializeProjection(
+        Dev_WaterState state,
+        Dev_WaterSimulationSettings settings,
+        float spreadTimer)
+    {
         _state = state;
         _settings = settings != null ? settings.Clone() : new Dev_WaterSimulationSettings();
         _settings.Sanitize();
         _stepIndex = 0;
-        _spreadTimer = 0f;
+        _spreadTimer = !float.IsNaN(spreadTimer) && !float.IsInfinity(spreadTimer)
+            ? Mathf.Max(0f, spreadTimer)
+            : 0f;
+        ConfigureBoundaryGhosts();
+    }
+
+    internal Dev_WaterPhysics CloneForState(Dev_WaterState state, Dev_WaterPhysicsBarrier barrierGrid)
+    {
+        Dev_WaterPhysics clone = new Dev_WaterPhysics(_map, barrierGrid);
+        clone._state = state;
+        clone._settings = _settings != null ? _settings.Clone() : new Dev_WaterSimulationSettings();
+        clone._spreadTimer = _spreadTimer;
+        clone._stepIndex = _stepIndex;
+        return clone;
     }
 
     public float GetSimulationStepDuration(Dev_WaterModifierSnapshot modifiers)
@@ -129,11 +148,14 @@ public sealed class Dev_WaterPhysics
         modifiers.Sanitize();
 
         float dt = Mathf.Max(0.0001f, simulatedDeltaTime);
+        ApplyBoundarySources(dt);
         ApplyContinuousSources(continuousSources, modifiers, dt);
 
         AccelerateFlows(dt, modifiers);
         ScaleOutflows(dt);
         UpdateWaterDepths(dt, modifiers);
+        ApplyBoundaryWallSeepage(dt);
+        ApplyBoundarySinks();
         KeepBoundaryDry();
         TickSpreadGate(dt);
 
@@ -153,7 +175,7 @@ public sealed class Dev_WaterPhysics
         }
     }
 
-    private void SetupBoundaryWalls()
+    private void ConfigureBoundaryGhosts()
     {
         float maxTerrain = 0f;
         bool foundTerrain = false;
@@ -172,21 +194,185 @@ public sealed class Dev_WaterPhysics
 
         float boundaryHeight = maxTerrain + _settings.boundaryHeightPadding;
 
+        ClearBoundaryGhosts();
+
+        if (_settings.GetBoundary(Dev_WaterBoundarySide.South).mode == Dev_WaterBoundaryMode.Wall)
+        {
+            for (int x = 0; x < _state.GridWidth; x++)
+                _state.Terrain[x, 0] = boundaryHeight;
+        }
+
+        if (_settings.GetBoundary(Dev_WaterBoundarySide.North).mode == Dev_WaterBoundaryMode.Wall)
+        {
+            for (int x = 0; x < _state.GridWidth; x++)
+                _state.Terrain[x, _state.GridHeight - 1] = boundaryHeight;
+        }
+
+        if (_settings.GetBoundary(Dev_WaterBoundarySide.West).mode == Dev_WaterBoundaryMode.Wall)
+        {
+            for (int y = 0; y < _state.GridHeight; y++)
+                _state.Terrain[0, y] = boundaryHeight;
+        }
+
+        if (_settings.GetBoundary(Dev_WaterBoundarySide.East).mode == Dev_WaterBoundaryMode.Wall)
+        {
+            for (int y = 0; y < _state.GridHeight; y++)
+                _state.Terrain[_state.GridWidth - 1, y] = boundaryHeight;
+        }
+    }
+
+    private void ClearBoundaryGhosts()
+    {
         for (int x = 0; x < _state.GridWidth; x++)
         {
-            _state.Terrain[x, 0] = boundaryHeight;
-            _state.Terrain[x, _state.GridHeight - 1] = boundaryHeight;
+            _state.Terrain[x, 0] = 0f;
+            _state.Terrain[x, _state.GridHeight - 1] = 0f;
             _state.Water[x, 0] = 0f;
             _state.Water[x, _state.GridHeight - 1] = 0f;
         }
 
         for (int y = 0; y < _state.GridHeight; y++)
         {
-            _state.Terrain[0, y] = boundaryHeight;
-            _state.Terrain[_state.GridWidth - 1, y] = boundaryHeight;
+            _state.Terrain[0, y] = 0f;
+            _state.Terrain[_state.GridWidth - 1, y] = 0f;
             _state.Water[0, y] = 0f;
             _state.Water[_state.GridWidth - 1, y] = 0f;
         }
+    }
+
+    private void ApplyBoundarySources(float dt)
+    {
+        ApplyBoundarySource(Dev_WaterBoundarySide.North, dt);
+        ApplyBoundarySource(Dev_WaterBoundarySide.East, dt);
+        ApplyBoundarySource(Dev_WaterBoundarySide.South, dt);
+        ApplyBoundarySource(Dev_WaterBoundarySide.West, dt);
+    }
+
+    private void ApplyBoundarySource(Dev_WaterBoundarySide side, float dt)
+    {
+        Dev_WaterBoundarySettings boundary = _settings.GetBoundary(side);
+        if (boundary.mode != Dev_WaterBoundaryMode.Source || boundary.sourceDepthPerSecond <= 0f)
+            return;
+
+        float depth = boundary.sourceDepthPerSecond * dt;
+        if (float.IsNaN(depth) || depth <= 0f)
+            return;
+        if (float.IsInfinity(depth))
+            depth = _settings.maxWaterDepth > 0f ? _settings.maxWaterDepth : float.MaxValue;
+        switch (side)
+        {
+            case Dev_WaterBoundarySide.North:
+                for (int x = 1; x <= _state.Width; x++)
+                    AddOrSetWaterAtSim(x, _state.Height, depth, true);
+                break;
+            case Dev_WaterBoundarySide.East:
+                for (int y = 1; y <= _state.Height; y++)
+                    AddOrSetWaterAtSim(_state.Width, y, depth, true);
+                break;
+            case Dev_WaterBoundarySide.South:
+                for (int x = 1; x <= _state.Width; x++)
+                    AddOrSetWaterAtSim(x, 1, depth, true);
+                break;
+            case Dev_WaterBoundarySide.West:
+                for (int y = 1; y <= _state.Height; y++)
+                    AddOrSetWaterAtSim(1, y, depth, true);
+                break;
+        }
+    }
+
+    private void ApplyBoundarySinks()
+    {
+        ClearBoundarySink(Dev_WaterBoundarySide.North);
+        ClearBoundarySink(Dev_WaterBoundarySide.East);
+        ClearBoundarySink(Dev_WaterBoundarySide.South);
+        ClearBoundarySink(Dev_WaterBoundarySide.West);
+    }
+
+    private void ApplyBoundaryWallSeepage(float dt)
+    {
+        DrainBoundaryWall(Dev_WaterBoundarySide.North, dt);
+        DrainBoundaryWall(Dev_WaterBoundarySide.East, dt);
+        DrainBoundaryWall(Dev_WaterBoundarySide.South, dt);
+        DrainBoundaryWall(Dev_WaterBoundarySide.West, dt);
+    }
+
+    private void DrainBoundaryWall(Dev_WaterBoundarySide side, float dt)
+    {
+        Dev_WaterBoundarySettings boundary = _settings.GetBoundary(side);
+        if (boundary.mode != Dev_WaterBoundaryMode.Wall || boundary.seepageDepthPerSecond <= 0f)
+            return;
+
+        float depth = boundary.seepageDepthPerSecond * dt;
+        if (float.IsNaN(depth) || depth <= 0f)
+            return;
+        if (float.IsInfinity(depth))
+            depth = _settings.maxWaterDepth > 0f ? _settings.maxWaterDepth : float.MaxValue;
+
+        switch (side)
+        {
+            case Dev_WaterBoundarySide.North:
+                for (int x = 1; x <= _state.Width; x++)
+                    DrainWaterAtSim(x, _state.Height, depth);
+                break;
+            case Dev_WaterBoundarySide.East:
+                for (int y = 1; y <= _state.Height; y++)
+                    DrainWaterAtSim(_state.Width, y, depth);
+                break;
+            case Dev_WaterBoundarySide.South:
+                for (int x = 1; x <= _state.Width; x++)
+                    DrainWaterAtSim(x, 1, depth);
+                break;
+            case Dev_WaterBoundarySide.West:
+                for (int y = 1; y <= _state.Height; y++)
+                    DrainWaterAtSim(1, y, depth);
+                break;
+        }
+    }
+
+    private void DrainWaterAtSim(int simX, int simY, float depth)
+    {
+        if (!_state.HasMapCellAtSim(simX, simY) || _state.Water[simX, simY] <= 0f)
+            return;
+
+        float previous = _state.Water[simX, simY];
+        _state.Water[simX, simY] = Mathf.Max(0f, previous - depth);
+        if (!Mathf.Approximately(previous, _state.Water[simX, simY]))
+            _state.MarkDirtyBySim(simX, simY);
+    }
+
+    private void ClearBoundarySink(Dev_WaterBoundarySide side)
+    {
+        if (_settings.GetBoundary(side).mode != Dev_WaterBoundaryMode.Sink)
+            return;
+
+        switch (side)
+        {
+            case Dev_WaterBoundarySide.North:
+                for (int x = 1; x <= _state.Width; x++)
+                    ClearWaterAtSim(x, _state.Height);
+                break;
+            case Dev_WaterBoundarySide.East:
+                for (int y = 1; y <= _state.Height; y++)
+                    ClearWaterAtSim(_state.Width, y);
+                break;
+            case Dev_WaterBoundarySide.South:
+                for (int x = 1; x <= _state.Width; x++)
+                    ClearWaterAtSim(x, 1);
+                break;
+            case Dev_WaterBoundarySide.West:
+                for (int y = 1; y <= _state.Height; y++)
+                    ClearWaterAtSim(1, y);
+                break;
+        }
+    }
+
+    private void ClearWaterAtSim(int simX, int simY)
+    {
+        if (!_state.HasMapCellAtSim(simX, simY) || _state.Water[simX, simY] <= 0f)
+            return;
+
+        _state.Water[simX, simY] = 0f;
+        _state.MarkDirtyBySim(simX, simY);
     }
 
     private void ApplyContinuousSources(Dev_WaterSourceSpec[] sources, Dev_WaterModifierSnapshot modifiers, float dt)
@@ -204,7 +390,7 @@ public sealed class Dev_WaterPhysics
         float dt,
         bool continuous)
     {
-        if (source == null || source.depth <= 0f)
+        if (source == null || float.IsNaN(source.depth) || float.IsInfinity(source.depth) || source.depth <= 0f)
             return;
 
         float depth = ResolveSourceDepth(source, modifiers);
@@ -261,25 +447,21 @@ public sealed class Dev_WaterPhysics
 
     private void ApplyToEdgeCells(float depth, bool additive)
     {
-        for (int x = 1; x <= _state.Width; x++)
-        {
-            AddOrSetWaterAtSim(x, 1, depth, additive);
-            AddOrSetWaterAtSim(x, _state.Height, depth, additive);
-        }
-
-        for (int y = 2; y <= _state.Height - 1; y++)
-        {
-            AddOrSetWaterAtSim(1, y, depth, additive);
-            AddOrSetWaterAtSim(_state.Width, y, depth, additive);
-        }
+        for (int y = 1; y <= _state.Height; y++)
+            for (int x = 1; x <= _state.Width; x++)
+                if (x == 1 || x == _state.Width || y == 1 || y == _state.Height)
+                    AddOrSetWaterAtSim(x, y, depth, additive);
     }
 
     private void ApplyToCornerCells(float depth, bool additive)
     {
         AddOrSetWaterAtSim(1, 1, depth, additive);
-        AddOrSetWaterAtSim(1, _state.Height, depth, additive);
-        AddOrSetWaterAtSim(_state.Width, 1, depth, additive);
-        AddOrSetWaterAtSim(_state.Width, _state.Height, depth, additive);
+        if (_state.Height > 1)
+            AddOrSetWaterAtSim(1, _state.Height, depth, additive);
+        if (_state.Width > 1)
+            AddOrSetWaterAtSim(_state.Width, 1, depth, additive);
+        if (_state.Width > 1 && _state.Height > 1)
+            AddOrSetWaterAtSim(_state.Width, _state.Height, depth, additive);
     }
 
     private void ApplyToWaterBodyCells(float depth, bool additive)
@@ -292,15 +474,22 @@ public sealed class Dev_WaterPhysics
 
     private void AddOrSetWaterAtSim(int simX, int simY, float depth, bool additive)
     {
-        if (!_state.HasMapCellAtSim(simX, simY))
+        if (!_state.HasMapCellAtSim(simX, simY) || float.IsNaN(depth) || depth <= 0f)
             return;
 
         float next = additive
             ? _state.Water[simX, simY] + depth
             : Mathf.Max(_state.Water[simX, simY], depth);
 
+        if (float.IsNaN(next))
+            return;
+        if (float.IsInfinity(next))
+            next = _settings.maxWaterDepth > 0f ? _settings.maxWaterDepth : float.MaxValue;
+
         _state.Water[simX, simY] = ClampDepth(next);
-        _state.Active[simX, simY] = _state.Water[simX, simY] > _settings.expandFromWaterThreshold;
+        // Any positive source input is live water. The spread threshold controls
+        // expansion, not whether a source cell is immediately discarded.
+        _state.Active[simX, simY] = _state.Water[simX, simY] > 0f;
         _state.MarkDirtyBySim(simX, simY);
     }
 
@@ -359,12 +548,18 @@ public sealed class Dev_WaterPhysics
 
     private bool CanFlowAcrossX(int x, int y)
     {
-        return _state.HasMapCellAtSim(x - 1, y) && _state.HasMapCellAtSim(x, y);
+        if (!_state.HasMapCellAtSim(x - 1, y) || !_state.HasMapCellAtSim(x, y))
+            return false;
+
+        return !_settings.useSpreadGating || (_state.Active[x - 1, y] && _state.Active[x, y]);
     }
 
     private bool CanFlowAcrossY(int x, int y)
     {
-        return _state.HasMapCellAtSim(x, y - 1) && _state.HasMapCellAtSim(x, y);
+        if (!_state.HasMapCellAtSim(x, y - 1) || !_state.HasMapCellAtSim(x, y))
+            return false;
+
+        return !_settings.useSpreadGating || (_state.Active[x, y - 1] && _state.Active[x, y]);
     }
 
     private float GetBarrierTransmissionX(int x, int y)
@@ -429,6 +624,8 @@ public sealed class Dev_WaterPhysics
 
     private void ScaleOutflows(float dt)
     {
+        ClearFlowsAcrossInactiveCells();
+
         for (int y = 1; y <= _state.Height; y++)
         {
             for (int x = 1; x <= _state.Width; x++)
@@ -470,6 +667,32 @@ public sealed class Dev_WaterPhysics
                 if (downActive && _state.FlowY[x, y] < 0f) _state.FlowY[x, y] *= scale;
                 if (rightActive && _state.FlowX[x + 1, y] > 0f) _state.FlowX[x + 1, y] *= scale;
                 if (upActive && _state.FlowY[x, y + 1] > 0f) _state.FlowY[x, y + 1] *= scale;
+            }
+        }
+    }
+
+    private void ClearFlowsAcrossInactiveCells()
+    {
+        if (!_settings.useSpreadGating)
+            return;
+
+        for (int y = 1; y <= _state.Height; y++)
+        {
+            for (int x = 2; x <= _state.Width; x++)
+            {
+                if (!_state.HasMapCellAtSim(x - 1, y) || !_state.HasMapCellAtSim(x, y) ||
+                    !_state.Active[x - 1, y] || !_state.Active[x, y])
+                    _state.FlowX[x, y] = 0f;
+            }
+        }
+
+        for (int y = 2; y <= _state.Height; y++)
+        {
+            for (int x = 1; x <= _state.Width; x++)
+            {
+                if (!_state.HasMapCellAtSim(x, y - 1) || !_state.HasMapCellAtSim(x, y) ||
+                    !_state.Active[x, y - 1] || !_state.Active[x, y])
+                    _state.FlowY[x, y] = 0f;
             }
         }
     }
@@ -580,8 +803,13 @@ public sealed class Dev_WaterPhysics
 
     private float ClampDepth(float depth)
     {
+        if (float.IsNaN(depth) || depth <= 0f)
+            return 0f;
+        if (float.IsInfinity(depth))
+            return _settings.maxWaterDepth > 0f ? _settings.maxWaterDepth : float.MaxValue;
+
         if (_settings.maxWaterDepth <= 0f)
-            return Mathf.Max(0f, depth);
+            return depth;
 
         return Mathf.Clamp(depth, 0f, _settings.maxWaterDepth);
     }

@@ -113,9 +113,9 @@ public sealed class Dev_WaterPhysicsBarrier
             return false;
         }
 
-        if (!IsFiniteNonNegative(height) || !IsFiniteNonNegative(seepage))
+        if (!IsFinitePositive(height) || !IsFiniteNonNegative(seepage))
         {
-            Debug.LogWarning("[Dev_WaterPhysicsBarrier] Barrier height and seepage must be finite, non-negative values.");
+            Debug.LogWarning("[Dev_WaterPhysicsBarrier] Barrier height must be finite and positive; seepage must be finite and non-negative.");
             return false;
         }
 
@@ -157,6 +157,11 @@ public sealed class Dev_WaterPhysicsBarrier
     private static bool IsFiniteNonNegative(float value)
     {
         return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
+    }
+
+    private static bool IsFinitePositive(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value) && value > 0f;
     }
 
     private static void CopyGrid<T>(T[,] source, T[,] destination)
