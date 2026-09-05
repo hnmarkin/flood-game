@@ -107,6 +107,9 @@ Scenario initialization loads relevant scenario-specific values and objects, inc
 > Note: Use C# events, not Unity events - C# event subscriptions are easier to track.
 
 ### World Simulation: Tile Map & Water System
+#### Water System
+> As of 9/5/2026, the water system has been refactored, following conventions and separation of concerns.
+The water syste is 
 
 ### Preparation Actions
 The system for Preparation Actions includes six components, the base class, individual card definitions, a runtime card state, a loader script, a communication failure resolver, and the interface with other game systems.
