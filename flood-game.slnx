@@ -1,6 +1,7 @@
-﻿<Solution>
+<Solution>
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="Dev_WaterSystemRefactor.Runtime.csproj" />
-  <Project Path="Dev_WaterSystemRefactor.EditModeTests.csproj" />
+  <Project Path="WaterSystemRefactor.Runtime.csproj" />
+  <Project Path="WaterSystemRefactor.EditModeTests.csproj" />
+  <Project Path="WaterSystemRefactor.PlayModeTests.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>
