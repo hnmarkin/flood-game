@@ -19,6 +19,24 @@ public sealed class Dev_TerrainTypeDef : ScriptableObject
     public float DrainageMultiplier => Mathf.Max(0f, drainageMultiplier);
     public Dev_RendererDef RendererDefinition => rendererDefinition;
 
+    public bool IsValidForProduction(out string error)
+    {
+        if (string.IsNullOrWhiteSpace(terrainId))
+        {
+            error = "Terrain ID is missing.";
+            return false;
+        }
+
+        if (float.IsNaN(drainageMultiplier) || float.IsInfinity(drainageMultiplier) || drainageMultiplier < 0f)
+        {
+            error = "Terrain drainage multiplier must be finite and non-negative.";
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
+
     public void Configure(
         string id,
         bool canSimulate,

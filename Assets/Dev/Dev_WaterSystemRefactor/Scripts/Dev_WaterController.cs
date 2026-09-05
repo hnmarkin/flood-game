@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -59,6 +60,8 @@ public class Dev_WaterController : MonoBehaviour
     public bool IsInitialized => _initialized;
     public bool IsSimulationRunning => _simulationRunning;
     public Dev_WaterProfileStage ActiveProfileStage => _activeProfileStage;
+    public Dev_WaterGameFlow GameFlow => _gameFlow;
+    public Dev_WaterGamePhase GamePhase => _gamePhase;
 
     private void Start()
     {
@@ -157,13 +160,13 @@ public class Dev_WaterController : MonoBehaviour
     /// <summary>Receives Game Phase changes; it does not create or own the Game Phase state machine.</summary>
     public bool SetGamePhase(Dev_WaterGamePhase gamePhase)
     {
-        _gamePhase = gamePhase;
         if (gamePhase == Dev_WaterGamePhase.Crisis && _activeProfileStage != Dev_WaterProfileStage.Crisis)
         {
             if (!TryApplyProfile(Dev_WaterProfileStage.Crisis))
                 return false;
         }
 
+        _gamePhase = gamePhase;
         RefreshLifecycleStepping();
         return true;
     }
@@ -177,10 +180,36 @@ public class Dev_WaterController : MonoBehaviour
             return false;
         }
 
-        if (!EnsureInitialized() || !TryApplyProfile(Dev_WaterProfileStage.Preliminary))
+        if (!EnsureInitialized() ||
+            !TryResolveProfile(Dev_WaterProfileStage.Preliminary, out Dev_WaterSimulationSettings settings,
+                out Dev_WaterSourceSpec[] sources))
             return false;
 
-        return RunSimulationForDuration(simulatedDuration);
+        Dev_WaterState projectionState = _runtimeState.Clone();
+        Dev_WaterPhysicsBarrier projectionBarrier = _barrierGrid.Clone();
+        Dev_WaterPhysics projectionEngine = _engine.CloneForState(projectionState, projectionBarrier);
+        projectionEngine.Reconfigure(settings);
+
+        List<Dev_WaterStepSummary> summaries = new List<Dev_WaterStepSummary>();
+        if (!RunSimulationForDuration(projectionEngine, sources, simulatedDuration, summaries))
+            return false;
+
+        _runtimeState = projectionState;
+        _barrierGrid = projectionBarrier;
+        _engine = projectionEngine;
+        _resolvedSettings = settings;
+        _resolvedContinuousSources = sources;
+        _activeProfileStage = Dev_WaterProfileStage.Preliminary;
+
+        waterRenderer?.Initialize(_runtimeState, _mapAccessor);
+        OnWaterProfileChanged?.Invoke(_activeProfileStage);
+        foreach (Dev_WaterStepSummary summary in summaries)
+        {
+            _lastSummary = summary;
+            OnWaterSimulationStepped?.Invoke(summary);
+        }
+
+        return true;
     }
 
     public bool TryGetPreliminaryFlooding(out Dev_WaterPreliminaryFloodingConfig configuration)
@@ -195,26 +224,7 @@ public class Dev_WaterController : MonoBehaviour
         if (!EnsureInitialized() || !IsFinitePositive(simulatedDuration))
             return false;
 
-        float remaining = simulatedDuration;
-        int safetyLimit = 100000;
-        while (remaining > 0.0001f && safetyLimit-- > 0)
-        {
-            Dev_WaterModifierSnapshot modifiers;
-            if (!TryResolveModifiers(out modifiers))
-                return false;
-
-            float deltaTime = Mathf.Min(remaining, _engine.GetSimulationStepDuration(modifiers));
-            StepSimulation(deltaTime, modifiers);
-            remaining -= deltaTime;
-        }
-
-        if (safetyLimit <= 0)
-        {
-            Debug.LogError("[Dev_WaterController] Preliminary flooding exceeded the simulation safety limit.");
-            return false;
-        }
-
-        return true;
+        return RunSimulationForDuration(_engine, _resolvedContinuousSources, simulatedDuration, null);
     }
 
     public bool StepSimulation()
@@ -288,8 +298,7 @@ public class Dev_WaterController : MonoBehaviour
             return false;
 
         Dev_WaterState projectionState = _runtimeState.Clone();
-        Dev_WaterPhysics projectionEngine = new Dev_WaterPhysics(_mapAccessor, _barrierGrid.Clone());
-        projectionEngine.InitializeProjection(projectionState, _resolvedSettings);
+        Dev_WaterPhysics projectionEngine = _engine.CloneForState(projectionState, _barrierGrid.Clone());
 
         float remaining = simulatedDuration;
         int safetyLimit = 100000;
@@ -318,6 +327,14 @@ public class Dev_WaterController : MonoBehaviour
         if (mapDef == null)
         {
             Debug.LogError("[Dev_WaterController] Cannot initialize: Dev_MapDef is not assigned.");
+            _initialized = false;
+            return false;
+        }
+
+        if (configurationMode == Dev_WaterConfigurationMode.Production &&
+            !mapDef.IsValidForProduction(out string mapError))
+        {
+            Debug.LogError($"[Dev_WaterController] Production configuration rejected map data: {mapError}");
             _initialized = false;
             return false;
         }
@@ -424,6 +441,20 @@ public class Dev_WaterController : MonoBehaviour
         string error = provider == null ? "provider is missing" : null;
         if (provider != null && provider.TryGetResolvedWaterModifiers(out modifiers, out error))
         {
+            if (!modifiers.IsValid(out error))
+            {
+                if (configurationMode == Dev_WaterConfigurationMode.Production)
+                {
+                    Debug.LogError($"[Dev_WaterController] Production modifier provider returned invalid values: {error}");
+                    modifiers = default;
+                    return false;
+                }
+
+                Debug.LogWarning($"[Dev_WaterController] Dev modifier defaults are active: {error}");
+                modifiers = Dev_WaterModifierSnapshot.Defaults();
+                return true;
+            }
+
             modifiers.Sanitize();
             return true;
         }
@@ -445,6 +476,44 @@ public class Dev_WaterController : MonoBehaviour
         _lastSummary = _engine.Step(_resolvedContinuousSources, modifiers, simulatedDeltaTime);
         waterRenderer?.ApplyDirty();
         OnWaterSimulationStepped?.Invoke(_lastSummary);
+        return true;
+    }
+
+    private bool RunSimulationForDuration(
+        Dev_WaterPhysics engine,
+        Dev_WaterSourceSpec[] continuousSources,
+        float simulatedDuration,
+        List<Dev_WaterStepSummary> summaries)
+    {
+        float remaining = simulatedDuration;
+        int safetyLimit = 100000;
+        while (remaining > 0.0001f && safetyLimit-- > 0)
+        {
+            if (!TryResolveModifiers(out Dev_WaterModifierSnapshot modifiers))
+                return false;
+
+            float deltaTime = Mathf.Min(remaining, engine.GetSimulationStepDuration(modifiers));
+            Dev_WaterStepSummary summary = engine.Step(continuousSources, modifiers, deltaTime);
+            remaining -= deltaTime;
+
+            if (summaries != null)
+            {
+                summaries.Add(summary);
+            }
+            else
+            {
+                _lastSummary = summary;
+                waterRenderer?.ApplyDirty();
+                OnWaterSimulationStepped?.Invoke(summary);
+            }
+        }
+
+        if (safetyLimit <= 0)
+        {
+            Debug.LogError("[Dev_WaterController] Simulation duration exceeded the simulation safety limit.");
+            return false;
+        }
+
         return true;
     }
 

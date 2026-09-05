@@ -78,10 +78,10 @@ public sealed class Dev_ProjectionController : MonoBehaviour
 
     public bool RefreshForecast()
     {
-        _forecastDirty = false;
         if (waterController == null || !waterController.TryBuildProjection(forecastSimulatedDuration, out Dev_WaterProjection forecast))
             return false;
 
+        _forecastDirty = false;
         CurrentForecast = forecast;
         OnForecastReplaced?.Invoke(forecast);
         return true;

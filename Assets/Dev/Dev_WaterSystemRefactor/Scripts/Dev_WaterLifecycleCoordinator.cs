@@ -10,6 +10,7 @@ public sealed class Dev_WaterLifecycleCoordinator : MonoBehaviour
     [SerializeField] private Dev_WaterController waterController;
 
     private bool _hasAppliedPreliminaryFlooding;
+    private bool _preliminaryFloodingInProgress;
 
     public event Action OnPreliminaryFloodingApplied;
 
@@ -43,20 +44,31 @@ public sealed class Dev_WaterLifecycleCoordinator : MonoBehaviour
     public bool NotifyCompletedPreparationTurn(int completedPreparationTurns)
     {
         if (waterController == null || _hasAppliedPreliminaryFlooding ||
+            _preliminaryFloodingInProgress ||
             !waterController.TryGetPreliminaryFlooding(out Dev_WaterPreliminaryFloodingConfig flooding))
             return false;
 
         if (completedPreparationTurns < flooding.CompletedPreparationTurnThreshold)
             return false;
 
-        // Set before stepping so re-entrant lifecycle delivery cannot schedule the batch twice.
-        _hasAppliedPreliminaryFlooding = true;
-        if (!waterController.RunPreliminaryFlooding(flooding.SimulatedDuration))
+        _preliminaryFloodingInProgress = true;
+        bool applied;
+        try
         {
-            Debug.LogError("[Dev_WaterLifecycleCoordinator] Preliminary flooding failed after it was scheduled.");
+            applied = waterController.RunPreliminaryFlooding(flooding.SimulatedDuration);
+        }
+        finally
+        {
+            _preliminaryFloodingInProgress = false;
+        }
+
+        if (!applied)
+        {
+            Debug.LogError("[Dev_WaterLifecycleCoordinator] Preliminary flooding failed; the lifecycle marker was not committed.");
             return false;
         }
 
+        _hasAppliedPreliminaryFlooding = true;
         OnPreliminaryFloodingApplied?.Invoke();
         return true;
     }

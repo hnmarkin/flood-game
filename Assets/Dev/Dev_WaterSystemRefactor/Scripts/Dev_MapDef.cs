@@ -19,6 +19,46 @@ public sealed class Dev_MapDef : ScriptableObject
     public int Height => Mathf.Max(0, height);
     public int CellCount => Width * Height;
 
+    public bool IsValidForProduction(out string error)
+    {
+        if (width <= 0 || height <= 0)
+        {
+            error = "Map width and height must be positive.";
+            return false;
+        }
+
+        long expectedCellCount = (long)width * height;
+        if (expectedCellCount > int.MaxValue)
+        {
+            error = "Map dimensions are too large.";
+            return false;
+        }
+
+        if (cells == null || cells.Length != expectedCellCount)
+        {
+            error = $"Map must contain exactly {expectedCellCount} cell definitions.";
+            return false;
+        }
+
+        for (int i = 0; i < cells.Length; i++)
+        {
+            if (cells[i] == null)
+            {
+                error = $"Map cell {i} is missing.";
+                return false;
+            }
+
+            if (!cells[i].IsValidForProduction(out error))
+            {
+                error = $"Map cell {i} is invalid: {error}";
+                return false;
+            }
+        }
+
+        error = null;
+        return true;
+    }
+
     public void Configure(Vector2Int mapOrigin, int mapWidth, int mapHeight)
     {
         origin = mapOrigin;

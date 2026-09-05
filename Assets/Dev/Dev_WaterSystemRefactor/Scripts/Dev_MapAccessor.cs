@@ -31,7 +31,9 @@ public sealed class Dev_MapAccessor
 
     public bool IsSimulationCell(int simX, int simY)
     {
-        return TryGetCell(simX, simY, out _);
+        return TryGetCell(simX, simY, out Dev_MapCellDef cell)
+            && cell.Terrain != null
+            && cell.Terrain.ParticipatesInSimulation;
     }
 
     public float GetElevation(int simX, int simY)
