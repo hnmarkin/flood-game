@@ -73,6 +73,8 @@ Mutable state for one simulation run. It owns current water depth, flow, active-
 
 Scenario-owned simulation inputs: storm profiles, initial sources, continuous sources, and optional preliminary flooding. It does not duplicate map layout.
 
+Each storm profile also defines the four map edges independently through `Dev_WaterBoundarySettings`. A `Wall` blocks the edge and may remove a configured seepage depth per simulated second, a `Source` injects its configured depth per simulated second without being depleted, and a `Sink` removes water reaching that edge without being depleted. This models the limitless world beyond the authored map: use a source for an upstream river edge, a sink for an ocean edge, and a wall for land barriers. Source and sink edges are applied to logical edge cells; corners are processed once.
+
 ## Runtime Responsibilities
 
 `Dev_WaterController` is the public interface and orchestration layer. It creates the accessor, water state, physics, and runtime barrier store, then controls initialization, stepping, pausing, resetting, and public water queries.
@@ -97,7 +99,8 @@ The deterministic `RefactorScene` bootstrapper now writes `Dev_MapDef` directly 
 2. Assign a `Dev_ScenarioDef` asset if the scenario needs non-default profiles or sources.
 3. Assign `Dev_WaterRenderer` and its target tilemaps.
 4. Ensure every `Dev_MapCellDef` references a `Dev_TerrainTypeDef`, which references a `Dev_RendererDef`.
-5. Call `Dev_WaterController.BeginSimulation()` from the new UI or gameplay interface.
+5. Configure North, East, South, and West as `Wall`, `Source`, or `Sink` for every production profile. Source edges require a positive rate; wall height padding is used only for wall edges.
+6. Call `Dev_WaterController.BeginSimulation()` from the new UI or gameplay interface.
 
 ## Migration Rule
 

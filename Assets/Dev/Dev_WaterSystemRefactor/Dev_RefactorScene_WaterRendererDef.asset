@@ -19,7 +19,7 @@ MonoBehaviour:
     maximumDepth: 2
     tile: {fileID: 11400000, guid: 6c1e5e8b1bb54f3e9cd5d6bb4c901205, type: 2}
     tint: {r: 0.7, g: 0.85, b: 1, a: 1}
-  - minimumDepth: 2.001
+  - minimumDepth: 2
     maximumDepth: 1000
     tile: {fileID: 11400000, guid: 6c1e5e8b1bb54f3e9cd5d6bb4c901206, type: 2}
     tint: {r: 0.1, g: 0.25, b: 0.5, a: 1}

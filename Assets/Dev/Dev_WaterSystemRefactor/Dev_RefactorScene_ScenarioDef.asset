@@ -21,8 +21,23 @@ MonoBehaviour:
       gravity: 9.81
       friction: 0.02
       maxWaterDepth: 100
-      useBoundaryWalls: 1
       boundaryHeightPadding: 2
+      northBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      eastBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      southBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      westBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
       useSpreadGating: 1
       spreadInterval: 2
       spreadLayersPerTick: 1
@@ -41,8 +56,23 @@ MonoBehaviour:
       gravity: 9.81
       friction: 0.02
       maxWaterDepth: 100
-      useBoundaryWalls: 1
       boundaryHeightPadding: 2
+      northBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      eastBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      southBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      westBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
       useSpreadGating: 1
       spreadInterval: 2
       spreadLayersPerTick: 1
@@ -61,8 +91,23 @@ MonoBehaviour:
       gravity: 9.81
       friction: 0.02
       maxWaterDepth: 100
-      useBoundaryWalls: 1
       boundaryHeightPadding: 2
+      northBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      eastBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      southBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
+      westBoundary:
+        mode: 0
+        sourceDepthPerSecond: 0
+        seepageDepthPerSecond: 0
       useSpreadGating: 1
       spreadInterval: 2
       spreadLayersPerTick: 1

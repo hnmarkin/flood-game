@@ -4641,7 +4641,7 @@ MonoBehaviour:
   modifierProviderBehaviour: {fileID: 0}
   waterRenderer: {fileID: 1946108814}
   initializeOnStart: 1
-  startOnPlay: 0
+  startOnPlay: 1
   stepMode: 1
   autoStepInterval: 0.35
   spaceKeyStepsWhenManual: 1
