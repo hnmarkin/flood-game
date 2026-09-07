@@ -50,11 +50,7 @@ public class WaterController : MonoBehaviour
     private bool _simulationRunning;
     private WaterStepSummary _lastSummary;
 
-    public event Action<WaterController> OnWaterInitialized;
-    public event Action<WaterController> OnWaterSimulationStarted;
-    public event Action<WaterController> OnWaterSimulationPaused;
     public event Action<WaterController> OnWaterSimulationReset;
-    public event Action<WaterProfileStage> OnWaterProfileChanged;
     public event Action<WaterStepSummary> OnWaterSimulationStepped;
 
     public bool IsInitialized => _initialized;
@@ -120,7 +116,6 @@ public class WaterController : MonoBehaviour
 
         _simulationRunning = true;
         _autoStepTimer = 0f;
-        OnWaterSimulationStarted?.Invoke(this);
         return true;
     }
 
@@ -130,7 +125,6 @@ public class WaterController : MonoBehaviour
             return;
 
         _simulationRunning = false;
-        OnWaterSimulationPaused?.Invoke(this);
     }
 
     public bool ResumeSimulation()
@@ -144,9 +138,6 @@ public class WaterController : MonoBehaviour
         _autoStepTimer = 0f;
 
         bool initialized = InitializeRuntimeState();
-        if (initialized)
-            OnWaterSimulationReset?.Invoke(this);
-
         return initialized;
     }
 
@@ -202,7 +193,6 @@ public class WaterController : MonoBehaviour
         _activeProfileStage = WaterProfileStage.Preliminary;
 
         waterRenderer?.Initialize(_runtimeState, _mapAccessor);
-        OnWaterProfileChanged?.Invoke(_activeProfileStage);
         foreach (WaterStepSummary summary in summaries)
         {
             _lastSummary = summary;
@@ -384,7 +374,7 @@ public class WaterController : MonoBehaviour
         _activeProfileStage = WaterProfileStage.Baseline;
         _initialized = true;
         _lastSummary = default;
-        OnWaterInitialized?.Invoke(this);
+        OnWaterSimulationReset?.Invoke(this);
         return true;
     }
 
@@ -408,7 +398,6 @@ public class WaterController : MonoBehaviour
         _resolvedContinuousSources = sources;
         _engine.Reconfigure(_resolvedSettings);
         _activeProfileStage = stage;
-        OnWaterProfileChanged?.Invoke(stage);
         return true;
     }
 

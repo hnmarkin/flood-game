@@ -85,7 +85,7 @@ Each scenario contains Baseline, Preliminary, and Crisis storm profiles. Each pr
 
 ## Runtime Responsibilities
 
-`WaterController` is the public interface and orchestration layer. It creates the accessor, water state, physics engine, and runtime barrier store, then controls initialization, profile changes, stepping, pausing, resetting, terrain/water/barrier changes, public water queries, and immutable projection creation. It raises C# events only after successful changes.
+`WaterController` is the public interface and orchestration layer. It creates the accessor, water state, physics engine, and runtime barrier store, then controls initialization, profile changes, stepping, pausing, resetting, terrain/water/barrier changes, public water queries, and immutable projection creation. Its retained C# events describe water-specific notifications rather than mirrors of Game State transitions.
 
 `WaterPhysics` performs water calculations using only the new accessor, water state, settings, modifiers, sources, and barrier data. It has no tilemap or legacy-data responsibility.
 
@@ -98,6 +98,33 @@ Each scenario contains Baseline, Preliminary, and Crisis storm profiles. Each pr
 `ProjectionController` owns forecast replacement. It asks the water controller to simulate a cloned snapshot for a configured duration, exposes the immutable `WaterProjection`, and can coalesce several Game State changes into one forecast event with its transaction methods. `CalculateHazards()` remains an intentional no-op until hazard classification and overlay design are defined.
 
 `IWaterModifierProvider` is required in Production mode. Development mode may use sanitized defaults with warnings; Production rejects missing or invalid maps, scenarios, profiles, and modifier values.
+
+## Game State Integration Handoff — Lifecycle Events Removed
+
+Game State owns Game Flow, Game Phase, scenario initialization, and time/profile transitions. Water receives those decisions through explicit coordinator calls; it does not own a second lifecycle state machine.
+
+The following `WaterController` mirror events were removed:
+
+- `OnWaterSimulationStarted`
+- `OnWaterSimulationPaused`
+- `OnWaterInitialized`
+- `OnWaterProfileChanged`
+
+`OnWaterSimulationStepped` remains because simulation can progress repeatedly and asynchronously within one Game State interval. It is the water-specific notification for each completed simulation step. `OnWaterSimulationReset` remains as the water-specific post-reset/rebuilt-runtime notification. It is raised after a successful `ResetSimulation()` and after a successful direct `InitializeRuntimeState()` rebuild, so forecast consumers can invalidate after live state exists again.
+
+Required initialization is an explicit coordinator operation that calls each required initializer and checks its returned `bool` or result. Game State should publish `ScenarioInitialized` only after Water, Risk Overlay, Resources, and every other required system reports success. Do not use C# event acknowledgements for this barrier: events notify observers after the operation, but they do not define ordering, failure handling, or completion.
+
+When Game State changes the time profile, it must explicitly notify `ProjectionController.NotifyTimeProfileChanged()`. The same applies to any other forecast-affecting change through the existing notification methods. Use `BeginForecastChangeTransaction()` and `EndForecastChangeTransaction()` when one Game State transition changes several inputs and should produce one forecast replacement. `OnForecastReplaced` remains the notification for consumers of the new immutable forecast.
+
+### Future Game State hookup checklist
+
+1. Define the authoritative Game State events/transitions for flow, phase, scenario initialization, and time/profile changes.
+2. During scenario initialization, call the Water initialization seam (`WaterLifecycleCoordinator.NotifyLoadingCompleted()` or the approved Game State coordinator equivalent), check its result, then coordinate Risk Overlay, Resources, and other required initializers. Abort on failure and publish `ScenarioInitialized` only after all required results succeed.
+3. Route flow and phase changes to `WaterLifecycleCoordinator.NotifyGameFlowChanged()` and `NotifyGamePhaseChanged()`. Game State owns pause/start decisions; no Water Started/Paused mirror event should be restored.
+4. After a successful time/profile transition, call `ProjectionController.NotifyTimeProfileChanged()`. Coalesce it with resource, modifier, defense, or game-time notifications when the same transition affects multiple forecast inputs.
+5. Ensure new-run/reset transitions call `WaterLifecycleCoordinator.NotifyNewRun()` and allow `OnWaterSimulationReset` to invalidate/rebuild forecasts after the water runtime state is ready.
+6. Adapt the commented lifecycle event assertions in `WaterLifecyclePlayModeTests.cs` to assert Game State completion and notification ordering once the Game State system exists.
+7. Remove transitional Water-specific flow/phase types and coordinator forwarding only when the real Game State integration is available and covered.
 
 ## Legacy Conversion
 
@@ -115,7 +142,7 @@ The deterministic `RefactorScene` bootstrapper now writes `MapDef` directly for 
 4. Add `WaterController`, assign the map and scenario, select the configuration mode, and assign a component implementing `IWaterModifierProvider`. The provider is mandatory in Production mode.
 5. Optionally add `WaterRenderer`, configure its target tilemaps, and assign it to the water controller. A controller without a renderer can still simulate.
 6. Add `WaterLifecycleCoordinator`, assign the controller, and have Game State call its notification methods. In Production, simulation runs only while Game Flow is `Gameplay` and Game Phase is `Crisis`; `BeginSimulation()` is the direct development/manual entry point.
-7. Optionally add `ProjectionController` for forecasts. Assign the same water controller and notify it after game-time, completed-defense, or water-affecting modifier changes.
+7. Optionally add `ProjectionController` for forecasts. Assign the same water controller and notify it after game-time, time/profile, completed-defense, or water-affecting modifier changes.
 
 The controller supports automatic interval stepping and explicit manual stepping. The Space-key path is a development-only input until the project input integration exists.
 

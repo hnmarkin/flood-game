@@ -20,8 +20,7 @@ public sealed class ProjectionController : MonoBehaviour
         if (waterController == null)
             return;
 
-        waterController.OnWaterInitialized += OnWaterChanged;
-        waterController.OnWaterProfileChanged += OnWaterProfileChanged;
+        waterController.OnWaterSimulationReset += OnWaterReset;
         waterController.OnWaterSimulationStepped += OnWaterStepped;
         RefreshForecast();
     }
@@ -31,8 +30,7 @@ public sealed class ProjectionController : MonoBehaviour
         if (waterController == null)
             return;
 
-        waterController.OnWaterInitialized -= OnWaterChanged;
-        waterController.OnWaterProfileChanged -= OnWaterProfileChanged;
+        waterController.OnWaterSimulationReset -= OnWaterReset;
         waterController.OnWaterSimulationStepped -= OnWaterStepped;
     }
 
@@ -53,6 +51,12 @@ public sealed class ProjectionController : MonoBehaviour
     }
 
     public void NotifyGameTimeAdvanced()
+    {
+        MarkForecastDirty();
+    }
+
+    /// <summary>Called by Game State after a time/profile transition affects forecasts.</summary>
+    public void NotifyTimeProfileChanged()
     {
         MarkForecastDirty();
     }
@@ -102,12 +106,7 @@ public sealed class ProjectionController : MonoBehaviour
             "No hazard classification or overlay rendering has been implemented.");
     }
 
-    private void OnWaterChanged(WaterController _)
-    {
-        MarkForecastDirty();
-    }
-
-    private void OnWaterProfileChanged(WaterProfileStage _)
+    private void OnWaterReset(WaterController _)
     {
         MarkForecastDirty();
     }
