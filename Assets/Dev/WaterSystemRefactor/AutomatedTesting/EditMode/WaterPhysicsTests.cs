@@ -89,10 +89,10 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
         WaterRuntimeFixture bodies = CreateRuntime(3, 3, waterBodies: waterBodies);
 
         // Act
-        fullMap.Physics.ApplyInitialSources(new[] { Source(WaterSourceKind.FullMap, 2f) }, Defaults());
-        edges.Physics.ApplyInitialSources(new[] { Source(WaterSourceKind.Edges, 2f) }, Defaults());
-        corners.Physics.ApplyInitialSources(new[] { Source(WaterSourceKind.Corners, 2f) }, Defaults());
-        bodies.Physics.ApplyInitialSources(new[] { Source(WaterSourceKind.ExistingWaterBodies, 2f) }, Defaults());
+        fullMap.Physics.ApplyInitialSources(new[] { InitialSource(WaterSourceKind.FullMap, 2f) }, Defaults());
+        edges.Physics.ApplyInitialSources(new[] { InitialSource(WaterSourceKind.Edges, 2f) }, Defaults());
+        corners.Physics.ApplyInitialSources(new[] { InitialSource(WaterSourceKind.Corners, 2f) }, Defaults());
+        bodies.Physics.ApplyInitialSources(new[] { InitialSource(WaterSourceKind.ExistingWaterBodies, 2f) }, Defaults());
 
         // Assert
         WaterAssert.Multiple(() =>
@@ -113,7 +113,7 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
         WaterRuntimeFixture fixture = CreateRuntime(1, 1);
 
         // Act
-        fixture.Physics.ApplyInitialSources(new[] { Source(WaterSourceKind.Edges, 3f) }, Defaults());
+        fixture.Physics.ApplyInitialSources(new[] { InitialSource(WaterSourceKind.Edges, 3f) }, Defaults());
 
         // Assert
         Assert.That(fixture.State.Water[1, 1], Is.EqualTo(3f).Within(Tolerance));
@@ -124,7 +124,7 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
     {
         // Arrange
         WaterRuntimeFixture fixture = CreateRuntime(1, 1);
-        WaterSourceSpec source = Source(WaterSourceKind.FullMap, 2f);
+        WaterSourceSpec source = ContinuousSource(WaterSourceKind.FullMap, 2f);
         source.scaleByRainfallRate = true;
         source.scaleByExternalWaterLoad = true;
         source.scaleByAntecedentWetness = true;
@@ -201,7 +201,7 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
 
         // Act
         WaterStepSummary summary = fixture.Physics.Step(
-            new[] { Source(WaterSourceKind.FullMap, 100f) }, Defaults(), 1f);
+            new[] { ContinuousSource(WaterSourceKind.FullMap, 100f) }, Defaults(), 1f);
 
         // Assert
         WaterAssert.Multiple(() =>
@@ -220,7 +220,7 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
         WaterRuntimeFixture fixture = CreateRuntime(1, 1, settings: settings);
 
         // Act
-        fixture.Physics.Step(new[] { Source(WaterSourceKind.FullMap, 1000000f) }, Defaults(), 1f);
+        fixture.Physics.Step(new[] { ContinuousSource(WaterSourceKind.FullMap, 1000000f) }, Defaults(), 1f);
 
         // Assert
         WaterAssert.Multiple(() =>
@@ -418,12 +418,22 @@ public sealed class WaterPhysicsTests : WaterEditModeFixture
 
     // Fixture helpers
 
-    private static WaterSourceSpec Source(WaterSourceKind kind, float depth)
+    private static WaterSourceSpec InitialSource(WaterSourceKind kind, float depth)
     {
         return new WaterSourceSpec
         {
             kind = kind,
-            depth = depth,
+            initialDepth = depth,
+            scaleByExternalWaterLoad = false
+        };
+    }
+
+    private static WaterSourceSpec ContinuousSource(WaterSourceKind kind, float depthPerSecond)
+    {
+        return new WaterSourceSpec
+        {
+            kind = kind,
+            continuousDepthPerSecond = depthPerSecond,
             scaleByExternalWaterLoad = false
         };
     }

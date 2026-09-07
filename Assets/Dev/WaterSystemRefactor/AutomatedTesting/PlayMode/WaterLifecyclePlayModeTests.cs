@@ -348,7 +348,7 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
         WaterSourceSpec rainfall = new WaterSourceSpec
         {
             kind = WaterSourceKind.Rainfall,
-            depth = 1f,
+            continuousDepthPerSecond = 1f,
             scaleByExternalWaterLoad = false
         };
         WaterControllerFixture fixture = CreateControllerFixture(continuousSources: new[] { rainfall });

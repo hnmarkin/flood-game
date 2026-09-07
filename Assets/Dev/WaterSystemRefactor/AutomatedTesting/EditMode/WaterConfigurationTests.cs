@@ -96,7 +96,7 @@ public sealed class WaterConfigurationTests : WaterEditModeFixture
     public void SourceSpec_NonFiniteDepth_RejectsConfiguration()
     {
         // Arrange
-        WaterSourceSpec source = new WaterSourceSpec { depth = float.PositiveInfinity };
+        WaterSourceSpec source = new WaterSourceSpec { initialDepth = float.PositiveInfinity };
 
         // Act
         bool isValid = source.IsValid(out string error);
@@ -155,7 +155,7 @@ public sealed class WaterConfigurationTests : WaterEditModeFixture
         // Arrange
         WaterSimulationSettings settings = CreateSettings();
         settings.northBoundary.seepageDepthPerSecond = 0.2f;
-        WaterSourceSpec source = new WaterSourceSpec { depth = 2f };
+        WaterSourceSpec source = new WaterSourceSpec { continuousDepthPerSecond = 2f };
         WaterStormProfile profile = CreateProfile(settings, new[] { source }, "baseline");
 
         // Act
@@ -164,14 +164,14 @@ public sealed class WaterConfigurationTests : WaterEditModeFixture
 
         // Assert
         settingsClone.northBoundary.seepageDepthPerSecond = 0.8f;
-        sourceClones[0].depth = 9f;
+        sourceClones[0].continuousDepthPerSecond = 9f;
         WaterAssert.Multiple(() =>
         {
             Assert.That(profile.ProfileName, Is.EqualTo("baseline"));
             Assert.That(settingsClone, Is.Not.SameAs(settings));
             Assert.That(sourceClones[0], Is.Not.SameAs(source));
             Assert.That(settings.northBoundary.seepageDepthPerSecond, Is.EqualTo(0.2f).Within(Tolerance));
-            Assert.That(source.depth, Is.EqualTo(2f).Within(Tolerance));
+            Assert.That(source.continuousDepthPerSecond, Is.EqualTo(2f).Within(Tolerance));
         });
     }
 
@@ -180,8 +180,8 @@ public sealed class WaterConfigurationTests : WaterEditModeFixture
     {
         // Arrange
         WaterSimulationSettings settings = CreateSettings();
-        WaterSourceSpec continuous = new WaterSourceSpec { depth = 1f };
-        WaterSourceSpec initial = new WaterSourceSpec { depth = 2f };
+        WaterSourceSpec continuous = new WaterSourceSpec { continuousDepthPerSecond = 1f };
+        WaterSourceSpec initial = new WaterSourceSpec { initialDepth = 2f };
         ScenarioDef scenario = CreateScenario(
             baseline: CreateProfile(settings, new[] { continuous }),
             initialSources: new[] { initial });
@@ -196,14 +196,14 @@ public sealed class WaterConfigurationTests : WaterEditModeFixture
 
         // Assert
         settingsClone.dt = 9f;
-        continuousClones[0].depth = 9f;
-        initialClones[0].depth = 9f;
+        continuousClones[0].continuousDepthPerSecond = 9f;
+        initialClones[0].initialDepth = 9f;
         WaterAssert.Multiple(() =>
         {
             Assert.That(created, Is.True, error);
             Assert.That(settings.dt, Is.EqualTo(0.25f).Within(Tolerance));
-            Assert.That(continuous.depth, Is.EqualTo(1f).Within(Tolerance));
-            Assert.That(initial.depth, Is.EqualTo(2f).Within(Tolerance));
+            Assert.That(continuous.continuousDepthPerSecond, Is.EqualTo(1f).Within(Tolerance));
+            Assert.That(initial.initialDepth, Is.EqualTo(2f).Within(Tolerance));
             Assert.That(scenario.IsValidForProduction(out _), Is.True);
         });
     }

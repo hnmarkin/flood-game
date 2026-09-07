@@ -18,7 +18,7 @@ public class ScenarioDef : ScriptableObject
         new WaterSourceSpec
         {
             kind = WaterSourceKind.ExistingWaterBodies,
-            depth = 10f,
+            initialDepth = 10f,
             scaleByExternalWaterLoad = true
         }
     };

@@ -119,7 +119,7 @@ MonoBehaviour:
     continuousSources: []
   initialSources:
   - kind: 3
-    depth: 10
+    initialDepth: 10
     scaleByRainfallRate: 0
     scaleByExternalWaterLoad: 1
     scaleByAntecedentWetness: 0

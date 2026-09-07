@@ -314,8 +314,11 @@ public class WaterSourceSpec
 {
     public WaterSourceKind kind = WaterSourceKind.ExistingWaterBodies;
 
-    [Tooltip("Initial sources use this as absolute depth. Continuous sources use this as depth per second.")]
-    [Min(0f)] public float depth = 10f;
+    [Tooltip("Absolute water depth added when this is used as an initial source.")]
+    [Min(0f)] public float initialDepth;
+
+    [Tooltip("Water depth added per simulated second when this is used as a continuous source.")]
+    [Min(0f)] public float continuousDepthPerSecond;
 
     public bool scaleByRainfallRate;
     public bool scaleByExternalWaterLoad = true;
@@ -334,14 +337,19 @@ public class WaterSourceSpec
             return false;
         }
 
-        if (float.IsNaN(depth) || float.IsInfinity(depth) || depth < 0f)
+        if (!IsFiniteNonNegative(initialDepth) || !IsFiniteNonNegative(continuousDepthPerSecond))
         {
-            error = "Source depth must be finite and non-negative.";
+            error = "Initial and continuous source depths must be finite and non-negative.";
             return false;
         }
 
         error = null;
         return true;
+    }
+
+    private static bool IsFiniteNonNegative(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
     }
 }
 

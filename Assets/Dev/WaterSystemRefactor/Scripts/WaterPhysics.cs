@@ -390,10 +390,14 @@ public sealed class WaterPhysics
         float dt,
         bool continuous)
     {
-        if (source == null || float.IsNaN(source.depth) || float.IsInfinity(source.depth) || source.depth <= 0f)
+        if (source == null)
             return;
 
-        float depth = ResolveSourceDepth(source, modifiers);
+        float sourceDepth = continuous ? source.continuousDepthPerSecond : source.initialDepth;
+        if (float.IsNaN(sourceDepth) || float.IsInfinity(sourceDepth) || sourceDepth <= 0f)
+            return;
+
+        float depth = ResolveSourceDepth(source, sourceDepth, modifiers);
         if (continuous)
             depth *= Mathf.Max(0f, dt);
 
@@ -422,9 +426,12 @@ public sealed class WaterPhysics
         }
     }
 
-    private float ResolveSourceDepth(WaterSourceSpec source, WaterModifierSnapshot modifiers)
+    private float ResolveSourceDepth(
+        WaterSourceSpec source,
+        float sourceDepth,
+        WaterModifierSnapshot modifiers)
     {
-        float depth = Mathf.Max(0f, source.depth);
+        float depth = Mathf.Max(0f, sourceDepth);
 
         if (source.kind == WaterSourceKind.Rainfall || source.scaleByRainfallRate)
             depth *= modifiers.RainfallRate;

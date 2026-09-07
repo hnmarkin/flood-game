@@ -48,7 +48,7 @@ public sealed class WaterScenarioTests : WaterEditModeFixture
         WaterSourceSpec source = new WaterSourceSpec
         {
             kind = WaterSourceKind.Edges,
-            depth = 1000f,
+            continuousDepthPerSecond = 1000f,
             scaleByExternalWaterLoad = true
         };
         WaterModifierSnapshot modifiers = WaterModifierSnapshot.Defaults();
@@ -94,7 +94,7 @@ public sealed class WaterScenarioTests : WaterEditModeFixture
         WaterSourceSpec rainfall = new WaterSourceSpec
         {
             kind = WaterSourceKind.Rainfall,
-            depth = rainDepthPerSecond,
+            continuousDepthPerSecond = rainDepthPerSecond,
             scaleByExternalWaterLoad = false
         };
         WaterModifierSnapshot modifiers = WaterModifierSnapshot.Defaults();
