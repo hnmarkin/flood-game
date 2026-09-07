@@ -107,6 +107,46 @@ Scenario initialization loads relevant scenario-specific values and objects, inc
 > Note: Use C# events, not Unity events - C# event subscriptions are easier to track.
 
 ### World Simulation: Tile Map & Water System
+#### Water System
+The refactored Water System is large and includes the terrain system. Some parts still await other system implementations--Game State, Modifiers, etc. The existing work (ignoring testing, which is a self-contained system and unimportant to high-level architecture) can be divided into Data definitions and Runtime scripts/controllers.
+##### Data
+The new data types are listed below. For a general overview, `MapCellDef` defines the atomic objects of the map, `TerrainTypeDef` defines general types that MapCells can be, and `MapDef` defines the grid that is the actual map.
+
+`WaterState` handles the live runtime state of the water system, and `RendererDef` defines the visual variants of terrain tiles. `RendererDef` is a ScriptableObject, and `WaterState `is (primarily supposed to be) instantiated at the beginning of Play.
+
+**Breakdown**
+1. `MapDef` is a ScriptableObject definition with settings for the grid dimensions. It has error checks for cell interactions. It is immutable during runtime and can only be accessed through `MapAccessor`.
+2. `MapCellDef` is the cell definition, including elevation, terrain type, initial water depth, initial-water-body-status, and everything except coordinates.
+3. `TerrainTypeDef` is the Terrain Type definition, allowing for forests, plains, beaches, infrastructure, etc. The main attributes are a drainage multiplier (affects the physics), a RendererDef (affects the tile visual), and the `ParticipatesInSimulation` flag.
+4. `RendererDef` is a ScriptableObject definition that configures base terrain visuals and waterlogged tile variants based on current water depth.
+5. `MapAccessor` is a read-only layer on MapDef.
+6. `WaterState` is the definition of the volatile object that holds logical water information during Play time. The main data used by the water-pipes simulation system in `WaterPhysics` is stored here. 
+7. `ScenarioDef` is a ScriptableObject definition for scenario settings, with placements of water sources, map edge boundaries, and the optional preliminary flood settings. There are three profiles total, including the Preliminary Prep Phase, Baseline Profile, and Crisis Profile. Ideally, all scenarios will be individual ScriptableObjects.
+8. `WaterTypes` is a collection of data types that are used by the runtime scripts, including:
+	1. `enums` for readability: `WaterGameFlow`, `WaterGamePhase`, `WaterProfileStage`, `WaterConfigurationMode`, `WaterBoundaryMode`, `WaterBoundarySide`, `WaterSourceKind`, `WaterStepMode`
+	2. `class WaterSimulationSettings` and `class WaterBoundarySettings`: `WaterSimulationSettings` subsumes `WaterBoundarySettings `and is passed as an argument by `WaterController` for`WaterPhysics.Initialize`.
+	3. `class WaterSourceSpec`: defines water source tiles and how modifiers can scale them.
+	4. `class WaterStormProfile`: contains simulations settings and handles water source tiles.
+	5. `class WaterPreliminaryFloodingConfig`: the data type for the Prep Phase "Preliminary Flooding" settings. Optionally instantiated by `ScenarioDef`.
+	6. `struct WaterModifierSnapshot`: temporary placeholder until real modifier system is implemented.
+	7. `struct WaterStepSummary`: used to group the results of water steps for logging/debugging/stats.
+	8. `class WaterProjection`: read-only data type used by ProjectionController (and potentially other scripts) for flood forecasting.
+
+##### Runtime
+The runtime behavior of the Water System follows the convention, with `WaterController` handling all interactions with outside systems (unit testing not included). `WaterPhysics` handles all logical water math (water height, flow, etc.), and `WaterPhysicsBarrier` supplements it with handling of player barriers.
+
+1. `WaterRenderer` is a renderer for the RendererDef data type, translating map tiles to the correct variant based on water depth info from `WaterState` (shallow or deep water for water tiles, waterlogged variants for land tiles).
+2. `WaterController` is the interface that handles all connections to outside systems. It handles initialization, interactions and their error checks, and provides two C# events to facilitate interactions:
+	1. `OnWaterSimulationReset` is triggered every time there is an all-encompassing reloading. The only current instance of this is scenario initialization.
+	2. `OnWaterSimulationStepped` is simply triggered every step of the water simulation. As such, it is triggered mainly in the Crisis Phase, with the additional steps of Prep Phase time-skip preliminary flooding.
+3. `WaterPhysics` runs the "water pipes" simulation. For the most part, a direct adaptation of [Simulating water over terrain | lisyarus blog](https://lisyarus.github.io/blog/posts/simulating-water-over-terrain.html). It reads/writes to the `WaterState` data type.
+4. `WaterPhysicsBarrier` manages player-created barriers.
+5. `ProjectionController` manages the forward logical simulation for the flood forecasting overlay, though it does not render. It outputs a `WaterProjection` data type.
+6. `WaterLifecycleCoordinator` is a wrapper around `WaterController` to connect it to the future Game State system.
+
+**Legacy Conversion/Dev Tools**
+`WaterLegacyMapConverter` converts legacy maps and their data types into the new data types.
+`WaterRefactorSceneBootstrapper` is for deterministaclly regenerating the `RefactorScene` map asset and Tilemap preview for developer testing.
 
 ### Preparation Actions
 The system for Preparation Actions includes six components, the base class, individual card definitions, a runtime card state, a loader script, a communication failure resolver, and the interface with other game systems.
