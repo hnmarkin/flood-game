@@ -111,17 +111,27 @@ public static class WaterLegacyMapConverter
         string mapPath = AssetDatabase.GenerateUniqueAssetPath(
             $"{outputFolder}/{SanitizeAssetName(mapName)}.asset");
         convertedMap = ScriptableObject.CreateInstance<MapDef>();
-        convertedMap.Configure(origin, width, height);
+        var authoredCells = new WaterMapCellAuthoringData[width * height];
 
         foreach (LegacyCell source in cells)
         {
             TerrainTypeDef terrain = terrainByLegacyType[source.Cell.tileType];
-            convertedMap.TryConfigureCell(
-                source.Position,
+            int x = source.Position.x - origin.x;
+            int y = source.Position.y - origin.y;
+            authoredCells[y * width + x] = new WaterMapCellAuthoringData(
+                true,
                 source.Cell.elevation,
                 terrain,
                 source.Cell.waterHeight,
                 source.Cell.tileType.isWater);
+        }
+
+        if (!WaterMapDefAuthoring.TryOverwrite(convertedMap, origin, width, height, authoredCells, out string error))
+        {
+            Debug.LogError($"[WaterLegacyMapConverter] Could not author converted map: {error}");
+            Object.DestroyImmediate(convertedMap);
+            convertedMap = null;
+            return false;
         }
 
         AssetDatabase.CreateAsset(convertedMap, mapPath);

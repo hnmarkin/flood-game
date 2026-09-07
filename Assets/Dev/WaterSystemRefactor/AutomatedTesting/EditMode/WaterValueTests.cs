@@ -53,6 +53,86 @@ public sealed class WaterValueTests : WaterEditModeFixture
         });
     }
 
+    [Test]
+    public void RendererDefinition_DepthBand_ResolvesOneCompleteFloodedTileVariant()
+    {
+        // Arrange
+        Tile dry = Track(ScriptableObject.CreateInstance<Tile>());
+        Tile shallowFloodedBuilding = Track(ScriptableObject.CreateInstance<Tile>());
+        Tile deepFloodedBuilding = Track(ScriptableObject.CreateInstance<Tile>());
+        RendererDef renderer = CreateRenderer(
+            dry,
+            Color.white,
+            new[]
+            {
+                new WaterVisualBand
+                {
+                    minimumDepth = 0.001f,
+                    maximumDepth = 1f,
+                    tile = shallowFloodedBuilding,
+                    tint = Color.cyan
+                },
+                new WaterVisualBand
+                {
+                    minimumDepth = 1f,
+                    maximumDepth = 2f,
+                    tile = deepFloodedBuilding,
+                    tint = Color.blue
+                }
+            });
+
+        // Act
+        WaterVisual dryVisual = renderer.ResolveVisual(0f);
+        WaterVisual floodedVisual = renderer.ResolveVisual(1.5f);
+        WaterVisual saturatedVisual = renderer.ResolveVisual(10f);
+
+        // Assert
+        WaterAssert.Multiple(() =>
+        {
+            Assert.That(dryVisual.Tile, Is.SameAs(dry));
+            Assert.That(floodedVisual.Tile, Is.SameAs(deepFloodedBuilding));
+            Assert.That(floodedVisual.Tint, Is.EqualTo(Color.blue));
+            Assert.That(saturatedVisual.Tile, Is.SameAs(deepFloodedBuilding));
+            Assert.That(saturatedVisual.Tint, Is.EqualTo(Color.blue));
+        });
+    }
+
+    [Test]
+    public void RendererDefinition_ProductionValidation_RejectsMissingReplacementTileOrBandGap()
+    {
+        // Arrange
+        Tile dry = Track(ScriptableObject.CreateInstance<Tile>());
+        RendererDef missingReplacement = CreateRenderer(
+            dry,
+            Color.white,
+            new[] { new WaterVisualBand { minimumDepth = 0.001f, maximumDepth = 1f } });
+        RendererDef gap = CreateRenderer(
+            dry,
+            Color.white,
+            new[]
+            {
+                new WaterVisualBand
+                {
+                    minimumDepth = 0.001f,
+                    maximumDepth = 1f,
+                    tile = Track(ScriptableObject.CreateInstance<Tile>())
+                },
+                new WaterVisualBand
+                {
+                    minimumDepth = 2f,
+                    maximumDepth = 3f,
+                    tile = Track(ScriptableObject.CreateInstance<Tile>())
+                }
+            });
+
+        // Assert
+        WaterAssert.Multiple(() =>
+        {
+            Assert.That(missingReplacement.IsValidForProduction(out _), Is.False);
+            Assert.That(gap.IsValidForProduction(out _), Is.False);
+        });
+    }
+
     // Tests: immutable projection value
 
     [Test]

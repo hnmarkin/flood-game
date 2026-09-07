@@ -41,12 +41,6 @@ public class WaterRefactorSceneBootstrapper : MonoBehaviour
     [Header("Editor Behavior")]
     [SerializeField] private bool rebuildOnEnable;
 
-    private void Awake()
-    {
-        if (Application.isPlaying)
-            RebuildScene();
-    }
-
     private void OnEnable()
     {
         if (!Application.isPlaying && rebuildOnEnable)
@@ -56,11 +50,17 @@ public class WaterRefactorSceneBootstrapper : MonoBehaviour
     [ContextMenu("Rebuild Scene")]
     public void RebuildScene()
     {
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+        {
+            Debug.LogWarning("[WaterRefactorSceneBootstrapper] Map authoring is available only outside Play Mode.");
+            return;
+        }
+
         if (!ValidateReferences())
             return;
 
-        mapDef.Configure(origin, width, height);
-        terrainTilemap.ClearAllTiles();
+        var cells = new WaterMapCellAuthoringData[width * height];
 
         for (int y = 0; y < height; y++)
         {
@@ -72,15 +72,31 @@ public class WaterRefactorSceneBootstrapper : MonoBehaviour
                 TerrainTypeDef terrain = isWaterBody ? waterTerrain : groundTerrain;
                 float waterDepth = isWaterBody ? initialWaterBodyDepth : 0f;
 
-                mapDef.TryConfigureCell(
-                    logical,
+                cells[y * width + x] = new WaterMapCellAuthoringData(
+                    true,
                     elevation,
                     terrain,
                     waterDepth,
                     isWaterBody);
+            }
+        }
 
-                RendererDef renderer = terrain != null ? terrain.RendererDefinition : null;
-                TileBase tile = renderer != null ? renderer.ResolveTile(waterDepth) : null;
+        if (!WaterMapDefAuthoring.TryOverwrite(mapDef, origin, width, height, cells, out string error))
+        {
+            Debug.LogError($"[WaterRefactorSceneBootstrapper] Could not author MapDef: {error}");
+            return;
+        }
+
+        terrainTilemap.ClearAllTiles();
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Vector2Int logical = new Vector2Int(origin.x + x, origin.y + y);
+                WaterMapCellAuthoringData cell = cells[y * width + x];
+
+                RendererDef renderer = cell.Terrain != null ? cell.Terrain.RendererDefinition : null;
+                TileBase tile = renderer != null ? renderer.ResolveVisual(cell.InitialWaterDepth).Tile : null;
                 if (tile != null)
                     terrainTilemap.SetTile(new Vector3Int(logical.x, logical.y, 0), tile);
             }
@@ -88,13 +104,10 @@ public class WaterRefactorSceneBootstrapper : MonoBehaviour
 
         terrainTilemap.RefreshAllTiles();
 
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-        {
-            EditorUtility.SetDirty(mapDef);
-            AssetDatabase.SaveAssetIfDirty(mapDef);
-            EditorSceneManager.MarkSceneDirty(gameObject.scene);
-        }
+        AssetDatabase.SaveAssetIfDirty(mapDef);
+        EditorSceneManager.MarkSceneDirty(gameObject.scene);
+#else
+        Debug.LogWarning("[WaterRefactorSceneBootstrapper] Map authoring is unavailable in player builds.");
 #endif
     }
 

@@ -57,20 +57,6 @@ public sealed class MapCellDef
         return true;
     }
 
-    public void Configure(
-        bool cellExists,
-        int cellElevation,
-        TerrainTypeDef terrainDefinition,
-        float waterDepth,
-        bool initialWaterBody)
-    {
-        exists = cellExists;
-        elevation = cellElevation;
-        terrain = terrainDefinition;
-        initialWaterDepth = Mathf.Max(0f, waterDepth);
-        isInitialWaterBody = initialWaterBody;
-    }
-
     private static bool IsFiniteNonNegative(float value)
     {
         return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;

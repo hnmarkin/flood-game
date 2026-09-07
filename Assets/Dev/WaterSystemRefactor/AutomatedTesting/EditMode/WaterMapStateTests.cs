@@ -5,6 +5,21 @@ using UnityEngine;
 [Category("WaterUnit")]
 public sealed class WaterMapStateTests : WaterEditModeFixture
 {
+    [Test]
+    public void MapDefinition_RuntimeApi_HasNoPublicMutationOrAssetLeak()
+    {
+        // Assert
+        WaterAssert.Multiple(() =>
+        {
+            Assert.That(typeof(MapDef).GetMethod("Configure"), Is.Null);
+            Assert.That(typeof(MapDef).GetMethod("EnsureCellCapacity"), Is.Null);
+            Assert.That(typeof(MapDef).GetMethod("TrySetCell"), Is.Null);
+            Assert.That(typeof(MapDef).GetMethod("TryConfigureCell"), Is.Null);
+            Assert.That(typeof(MapCellDef).GetMethod("Configure"), Is.Null);
+            Assert.That(typeof(MapAccessor).GetProperty("MapDef"), Is.Null);
+        });
+    }
+
     // Tests: map access
 
     [Test]

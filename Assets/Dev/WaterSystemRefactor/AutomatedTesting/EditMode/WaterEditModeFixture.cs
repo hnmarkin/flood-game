@@ -32,6 +32,7 @@ public abstract class WaterEditModeFixture
         float drainageMultiplier = 1f,
         RendererDef renderer = null)
     {
+        renderer ??= CreateProductionRenderer();
         TerrainTypeDef terrain = Track(ScriptableObject.CreateInstance<TerrainTypeDef>());
         terrain.Configure("test-terrain", participates, drainageMultiplier, renderer);
         return terrain;
@@ -60,7 +61,8 @@ public abstract class WaterEditModeFixture
         int cellCount = width * height;
         TerrainTypeDef defaultTerrain = CreateTerrain();
         MapDef map = Track(ScriptableObject.CreateInstance<MapDef>());
-        map.Configure(origin ?? Vector2Int.zero, width, height);
+        Vector2Int mapOrigin = origin ?? Vector2Int.zero;
+        var cells = new MapCellDef[cellCount];
 
         for (int i = 0; i < cellCount; i++)
         {
@@ -71,8 +73,13 @@ public abstract class WaterEditModeFixture
             bool waterBody = initialWaterBodies != null && initialWaterBodies[i];
             TerrainTypeDef terrain = terrains != null ? terrains[i] : defaultTerrain;
             int elevation = elevations != null ? elevations[i] : 0;
-            map.TryConfigureCell(map.Origin + new Vector2Int(x, y), elevation, terrain, depth, waterBody, cellExists);
+            cells[i] = CreateMapCell(cellExists, elevation, terrain, depth, waterBody);
         }
+
+        SetSerializedField(map, "origin", mapOrigin);
+        SetSerializedField(map, "width", width);
+        SetSerializedField(map, "height", height);
+        SetSerializedField(map, "cells", cells);
 
         return map;
     }
@@ -175,6 +182,41 @@ public abstract class WaterEditModeFixture
         FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.That(field, Is.Not.Null, $"Missing serialized field {target.GetType().Name}.{fieldName}");
         field.SetValue(target, value);
+    }
+
+    private RendererDef CreateProductionRenderer()
+    {
+        Tile dryTile = Track(ScriptableObject.CreateInstance<Tile>());
+        Tile floodedTile = Track(ScriptableObject.CreateInstance<Tile>());
+        return CreateRenderer(
+            dryTile,
+            Color.white,
+            new[]
+            {
+                new WaterVisualBand
+                {
+                    minimumDepth = 0.001f,
+                    maximumDepth = 1000f,
+                    tile = floodedTile,
+                    tint = Color.white
+                }
+            });
+    }
+
+    private static MapCellDef CreateMapCell(
+        bool exists,
+        int elevation,
+        TerrainTypeDef terrain,
+        float initialWaterDepth,
+        bool initialWaterBody)
+    {
+        var cell = new MapCellDef();
+        SetSerializedField(cell, "exists", exists);
+        SetSerializedField(cell, "elevation", elevation);
+        SetSerializedField(cell, "terrain", terrain);
+        SetSerializedField(cell, "initialWaterDepth", initialWaterDepth);
+        SetSerializedField(cell, "isInitialWaterBody", initialWaterBody);
+        return cell;
     }
 }
 

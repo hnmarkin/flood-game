@@ -59,37 +59,6 @@ public sealed class MapDef : ScriptableObject
         return true;
     }
 
-    public void Configure(Vector2Int mapOrigin, int mapWidth, int mapHeight)
-    {
-        origin = mapOrigin;
-        width = Mathf.Max(1, mapWidth);
-        height = Mathf.Max(1, mapHeight);
-        EnsureCellCapacity();
-    }
-
-    public void EnsureCellCapacity()
-    {
-        int required = Mathf.Max(0, Width * Height);
-        if (cells == null || cells.Length != required)
-        {
-            MapCellDef[] previous = cells;
-            cells = new MapCellDef[required];
-
-            if (previous != null)
-            {
-                int copyCount = Mathf.Min(previous.Length, cells.Length);
-                for (int i = 0; i < copyCount; i++)
-                    cells[i] = previous[i];
-            }
-        }
-
-        for (int i = 0; i < cells.Length; i++)
-        {
-            if (cells[i] == null)
-                cells[i] = new MapCellDef();
-        }
-    }
-
     public bool TryGetCell(Vector2Int tileCell, out MapCellDef cell)
     {
         cell = null;
@@ -98,37 +67,6 @@ public sealed class MapDef : ScriptableObject
 
         cell = cells[index];
         return cell != null && cell.Exists;
-    }
-
-    public bool TrySetCell(Vector2Int tileCell, MapCellDef cell)
-    {
-        if (!TryGetIndex(tileCell, out int index))
-            return false;
-
-        EnsureCellCapacity();
-        cells[index] = cell;
-        return true;
-    }
-
-    public bool TryConfigureCell(
-        Vector2Int tileCell,
-        int elevation,
-        TerrainTypeDef terrain,
-        float initialWaterDepth,
-        bool initialWaterBody,
-        bool exists = true)
-    {
-        if (!TryGetIndex(tileCell, out int index))
-            return false;
-
-        EnsureCellCapacity();
-        cells[index].Configure(
-            exists,
-            elevation,
-            terrain,
-            initialWaterDepth,
-            initialWaterBody);
-        return true;
     }
 
     private bool TryGetIndex(Vector2Int tileCell, out int index)

@@ -52,15 +52,16 @@ public class WaterRenderer : MonoBehaviour
 
         float visualDepth = Mathf.Max(0f, _state.Water[simX, simY]);
         RendererDef renderer = cell.Terrain != null ? cell.Terrain.RendererDefinition : null;
-        TileBase tile = renderer != null ? renderer.ResolveTile(visualDepth) : null;
-        Color tint = renderer != null
-            ? renderer.ResolveTint(visualDepth)
-            : Color.Lerp(
-                shallowWaterColor,
-                deepWaterColor,
-                Mathf.InverseLerp(0f, Mathf.Max(0.0001f, depthForDeepColor), visualDepth));
+        WaterVisual visual = renderer != null
+            ? renderer.ResolveVisual(visualDepth)
+            : new WaterVisual(
+                null,
+                Color.Lerp(
+                    shallowWaterColor,
+                    deepWaterColor,
+                    Mathf.InverseLerp(0f, Mathf.Max(0.0001f, depthForDeepColor), visualDepth)));
 
-        Refresh(tileCell, tile, tint);
+        Refresh(tileCell, visual.Tile, visual.Tint);
     }
 
     private void Refresh(Vector2Int tileCell, TileBase tile, Color tint)

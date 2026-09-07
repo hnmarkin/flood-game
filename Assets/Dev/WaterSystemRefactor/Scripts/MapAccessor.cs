@@ -13,7 +13,6 @@ public sealed class MapAccessor
         _mapDef = mapDef;
     }
 
-    public MapDef MapDef => _mapDef;
     public Vector2Int Origin => _mapDef != null ? _mapDef.Origin : default;
     public int Width => _mapDef != null ? _mapDef.Width : 0;
     public int Height => _mapDef != null ? _mapDef.Height : 0;

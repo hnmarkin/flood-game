@@ -47,7 +47,7 @@ public abstract class WaterPlayModeFixture
         WaterController controller = root.AddComponent<WaterController>();
         WaterLifecycleCoordinator coordinator = root.AddComponent<WaterLifecycleCoordinator>();
 
-        TerrainTypeDef terrain = CreateTerrain();
+        TerrainTypeDef terrain = CreateTerrain(CreateProductionRenderer());
         MapDef map = CreateMap(2, 1, terrain, initialDepths ?? new[] { 0f, 0f });
         ScenarioDef scenario = includeScenario
             ? CreateScenario(includeCrisisProfile, continuousSources)
@@ -137,7 +137,7 @@ public abstract class WaterPlayModeFixture
                 });
         }
 
-        TerrainTypeDef terrain = CreateTerrain(rendererDefinition);
+        TerrainTypeDef terrain = CreateTerrain(rendererDefinition, rendererDefinitionAssigned);
         MapDef map = CreateMap(2, 1, terrain, new[] { initialDepth, 0f });
         MapAccessor accessor = new MapAccessor(map);
         WaterState state = new WaterState(accessor);
@@ -169,8 +169,11 @@ public abstract class WaterPlayModeFixture
         SetSerializedField(controller, "configurationMode", mode);
     }
 
-    private TerrainTypeDef CreateTerrain(RendererDef renderer = null)
+    private TerrainTypeDef CreateTerrain(RendererDef renderer = null, bool requireRenderer = true)
     {
+        if (renderer == null && requireRenderer)
+            renderer = CreateProductionRenderer();
+
         TerrainTypeDef terrain = Track(ScriptableObject.CreateInstance<TerrainTypeDef>());
         terrain.Configure("playmode-test", true, 1f, renderer);
         return terrain;
@@ -179,16 +182,21 @@ public abstract class WaterPlayModeFixture
     private MapDef CreateMap(int width, int height, TerrainTypeDef terrain, float[] depths)
     {
         MapDef map = Track(ScriptableObject.CreateInstance<MapDef>());
-        map.Configure(Vector2Int.zero, width, height);
+        var cells = new MapCellDef[width * height];
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 int index = y * width + x;
                 float depth = depths[index];
-                map.TryConfigureCell(new Vector2Int(x, y), 0, terrain, depth, depth > 0f);
+                cells[index] = CreateMapCell(true, 0, terrain, depth, depth > 0f);
             }
         }
+
+        SetSerializedField(map, "origin", Vector2Int.zero);
+        SetSerializedField(map, "width", width);
+        SetSerializedField(map, "height", height);
+        SetSerializedField(map, "cells", cells);
 
         return map;
     }
@@ -254,6 +262,46 @@ public abstract class WaterPlayModeFixture
         FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.That(field, Is.Not.Null, $"Missing serialized field {target.GetType().Name}.{fieldName}");
         field.SetValue(target, value);
+    }
+
+    private RendererDef CreateProductionRenderer()
+    {
+        Tile dryTile = Track(ScriptableObject.CreateInstance<Tile>());
+        Tile floodedTile = Track(ScriptableObject.CreateInstance<Tile>());
+        dryTile.flags = TileFlags.None;
+        floodedTile.flags = TileFlags.None;
+
+        RendererDef renderer = Track(ScriptableObject.CreateInstance<RendererDef>());
+        renderer.Configure(
+            dryTile,
+            Color.white,
+            new[]
+            {
+                new WaterVisualBand
+                {
+                    minimumDepth = 0.001f,
+                    maximumDepth = 1000f,
+                    tile = floodedTile,
+                    tint = Color.white
+                }
+            });
+        return renderer;
+    }
+
+    private static MapCellDef CreateMapCell(
+        bool exists,
+        int elevation,
+        TerrainTypeDef terrain,
+        float initialWaterDepth,
+        bool initialWaterBody)
+    {
+        var cell = new MapCellDef();
+        SetSerializedField(cell, "exists", exists);
+        SetSerializedField(cell, "elevation", elevation);
+        SetSerializedField(cell, "terrain", terrain);
+        SetSerializedField(cell, "initialWaterDepth", initialWaterDepth);
+        SetSerializedField(cell, "isInitialWaterBody", initialWaterBody);
+        return cell;
     }
 }
 

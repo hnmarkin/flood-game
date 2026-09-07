@@ -33,6 +33,18 @@ public sealed class TerrainTypeDef : ScriptableObject
             return false;
         }
 
+        if (participatesInSimulation)
+        {
+            if (rendererDefinition == null)
+            {
+                error = "Simulating terrain needs a Renderer Definition with complete tile variants.";
+                return false;
+            }
+
+            if (!rendererDefinition.IsValidForProduction(out error))
+                return false;
+        }
+
         error = null;
         return true;
     }

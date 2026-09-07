@@ -67,7 +67,7 @@ Reusable terrain behavior shared by map cells. It defines whether terrain partic
 
 ### `RendererDef`
 
-Renderer data used to map dry and water-depth states to standard Unity tiles and tint values. It has no legacy tile-management dependency.
+Renderer data used to map dry and water-depth states to complete standard Unity tile variants and optional tint values. A flooded band is primarily a tile swap: author each stage as the complete terrain state for that depth (for example, a building with the appropriate vehicles, lights, and debris already changed). Tint is only a finishing treatment. Production requires a dry tile and an ordered, gap-free set of flooded replacement-tile bands; depths above the final band keep its final visual.
 
 ### `MapAccessor`
 
@@ -89,7 +89,7 @@ Each scenario contains Baseline, Preliminary, and Crisis storm profiles. Each pr
 
 `WaterPhysics` performs water calculations using only the new accessor, water state, settings, modifiers, sources, and barrier data. It has no tilemap or legacy-data responsibility.
 
-`WaterRenderer` receives runtime state and the map accessor from the controller, resolves tiles and tints, and updates only dirty cells on its configured Unity tilemaps. It never writes simulation values back into the map asset or runtime state.
+`WaterRenderer` receives runtime state and the map accessor from the controller, resolves one complete tile-and-tint visual per dirty cell, and updates only those cells on its configured Unity tilemaps. It never writes simulation values back into the map asset or runtime state.
 
 `WaterPhysicsBarrier` is runtime data owned by the controller/physics. It is not a serialized scene component or compatibility provider.
 
@@ -132,11 +132,11 @@ When Game State changes the time profile, it must explicitly notify `ProjectionC
 
 The converter is not part of the runtime dependency graph. If a legacy map needs to be updated, run conversion again and review the generated assets.
 
-The deterministic `RefactorScene` bootstrapper now writes `MapDef` directly for test-map generation. It does not populate or refresh legacy tile data.
+The deterministic `RefactorScene` bootstrapper authors `MapDef` only in the editor for test-map generation. It does not populate or refresh legacy tile data, and it never rewrites the map during Play Mode.
 
 ## Basic Setup
 
-1. Create a `MapDef`, configure its origin and dimensions, and populate every grid position with an existing `MapCellDef`; Production validation currently rejects sparse maps. Every cell needs a valid `TerrainTypeDef`. Assign a `RendererDef` to each terrain that needs authored tile and tint selection; otherwise the renderer uses its fallback tint and does not replace the tile.
+1. Create and author a `MapDef` through the editor authoring seam; runtime code has no map mutation API. Populate every grid position with an existing `MapCellDef`; Production validation rejects sparse maps. Every simulating terrain needs a valid `RendererDef`: a dry tile plus ordered flooded replacement-tile bands. Non-simulating terrain may omit a renderer.
 2. Create a `ScenarioDef`. Production requires valid Baseline, Preliminary, and Crisis profiles; configure initial sources, continuous sources, and optional preliminary flooding as needed.
 3. Configure North, East, South, and West as `Wall`, `Source`, or `Sink` in every profile. Source edges require a positive rate; wall height padding is used only for wall edges.
 4. Add `WaterController`, assign the map and scenario, select the configuration mode, and assign a component implementing `IWaterModifierProvider`. The provider is mandatory in Production mode.
