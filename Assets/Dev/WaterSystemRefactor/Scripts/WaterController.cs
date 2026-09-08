@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using FloodGame.Dev.GameState;
 
 /// <summary>
 /// Public interface for live Dev water. It owns runtime state, profile transitions,
@@ -44,8 +43,8 @@ public class WaterController : MonoBehaviour
     private WaterSourceSpec[] _resolvedInitialSources = Array.Empty<WaterSourceSpec>();
     private WaterSourceSpec[] _resolvedContinuousSources = Array.Empty<WaterSourceSpec>();
     private WaterProfileStage _activeProfileStage;
-    private GameFlow _gameFlow = GameFlow.Loading;
-    private GamePhase _gamePhase = GamePhase.Preparation;
+    private WaterGameFlow _gameFlow = WaterGameFlow.Loading;
+    private WaterGamePhase _gamePhase = WaterGamePhase.Preparation;
     private float _autoStepTimer;
     private bool _initialized;
     private bool _simulationRunning;
@@ -57,8 +56,8 @@ public class WaterController : MonoBehaviour
     public bool IsInitialized => _initialized;
     public bool IsSimulationRunning => _simulationRunning;
     public WaterProfileStage ActiveProfileStage => _activeProfileStage;
-    public GameFlow GameFlow => _gameFlow;
-    public GamePhase GamePhase => _gamePhase;
+    public WaterGameFlow GameFlow => _gameFlow;
+    public WaterGamePhase GamePhase => _gamePhase;
 
     private void Start()
     {
@@ -71,11 +70,6 @@ public class WaterController : MonoBehaviour
 
     private void Update()
     {
-        // Production Water advances only from the authoritative Time/Game State handoff.
-        // Automatic stepping remains available for explicitly Dev-only manual exploration.
-        if (configurationMode == WaterConfigurationMode.Production)
-            return;
-
         if (!_simulationRunning)
             return;
 
@@ -104,14 +98,14 @@ public class WaterController : MonoBehaviour
         return mapDef != null && (scenarioDef != null || configurationMode == WaterConfigurationMode.DevDefaultsWithWarnings);
     }
 
-    /// <summary>Dev/manual entry point. Production callers start and advance through the Game State coordinator.</summary>
+    /// <summary>Dev/manual entry point. Production callers should drive SetGameFlow and SetGamePhase.</summary>
     public bool BeginSimulation()
     {
         if (_simulationRunning)
             return false;
 
         if (configurationMode == WaterConfigurationMode.Production &&
-            (_gameFlow != GameFlow.Gameplay || _gamePhase != GamePhase.Crisis))
+            (_gameFlow != WaterGameFlow.Gameplay || _gamePhase != WaterGamePhase.Crisis))
         {
             Debug.LogError("[WaterController] Production automatic stepping requires Gameplay and Crisis lifecycle states.");
             return false;
@@ -147,42 +141,24 @@ public class WaterController : MonoBehaviour
         return initialized;
     }
 
-    /// <summary>Releases live scenario state so a Game State teardown cannot retain a prior run.</summary>
-    public bool TeardownRuntimeState()
-    {
-        _simulationRunning = false;
-        _autoStepTimer = 0f;
-        _initialized = false;
-        _mapAccessor = null;
-        _runtimeState = null;
-        _engine = null;
-        _barrierGrid = null;
-        _resolvedSettings = null;
-        _resolvedInitialSources = Array.Empty<WaterSourceSpec>();
-        _resolvedContinuousSources = Array.Empty<WaterSourceSpec>();
-        _activeProfileStage = WaterProfileStage.Baseline;
-        _gameFlow = GameFlow.MainMenu;
-        _gamePhase = GamePhase.Preparation;
-        _lastSummary = default;
-        return true;
-    }
-
     /// <summary>Receives Game Flow changes; it does not create or own the Game Flow state machine.</summary>
-    public void SetGameFlow(GameFlow gameFlow)
+    public void SetGameFlow(WaterGameFlow gameFlow)
     {
         _gameFlow = gameFlow;
+        RefreshLifecycleStepping();
     }
 
     /// <summary>Receives Game Phase changes; it does not create or own the Game Phase state machine.</summary>
-    public bool SetGamePhase(GamePhase gamePhase)
+    public bool SetGamePhase(WaterGamePhase gamePhase)
     {
-        if (gamePhase == GamePhase.Crisis && _activeProfileStage != WaterProfileStage.Crisis)
+        if (gamePhase == WaterGamePhase.Crisis && _activeProfileStage != WaterProfileStage.Crisis)
         {
             if (!TryApplyProfile(WaterProfileStage.Crisis))
                 return false;
         }
 
         _gamePhase = gamePhase;
+        RefreshLifecycleStepping();
         return true;
     }
 
@@ -528,6 +504,20 @@ public class WaterController : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void RefreshLifecycleStepping()
+    {
+        bool shouldRun = _gameFlow == WaterGameFlow.Gameplay && _gamePhase == WaterGamePhase.Crisis;
+        if (shouldRun)
+        {
+            if (!_simulationRunning)
+                BeginSimulation();
+        }
+        else
+        {
+            PauseSimulation();
+        }
     }
 
     private static bool IsFinitePositive(float value)

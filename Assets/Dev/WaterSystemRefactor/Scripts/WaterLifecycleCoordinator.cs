@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-using FloodGame.Dev.GameState;
 
 /// <summary>
 /// Game State seam for water lifecycle events. Game State owns when completed preparation
 /// effects are committed, then calls this coordinator at the turn boundary.
 /// </summary>
-public sealed class WaterLifecycleCoordinator : MonoBehaviour, IDevGameStateWaterAdapter
+public sealed class WaterLifecycleCoordinator : MonoBehaviour
 {
     [SerializeField] private WaterController waterController;
 
@@ -17,121 +16,40 @@ public sealed class WaterLifecycleCoordinator : MonoBehaviour, IDevGameStateWate
 
     public bool HasAppliedPreliminaryFlooding => _hasAppliedPreliminaryFlooding;
 
-    public string Name => "Water";
-
-    public GameStateResult Initialize(Dev_ScenarioInitializationContext context)
-    {
-        return NotifyLoadingCompleted();
-    }
-
-    public GameStateResult Teardown()
-    {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        return waterController.TeardownRuntimeState()
-            ? GameStateResult.Success(true)
-            : GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller could not release runtime state.");
-    }
-
-    public GameStateResult NotifyNewRun()
+    public bool NotifyNewRun()
     {
         _hasAppliedPreliminaryFlooding = false;
-        _preliminaryFloodingInProgress = false;
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        waterController.SetGamePhase(GamePhase.Preparation);
-        return waterController.ResetSimulation()
-            ? GameStateResult.Success(true)
-            : GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller could not reset the new run.");
+        return waterController != null && waterController.ResetSimulation();
     }
 
-    public GameStateResult NotifyLoadingCompleted()
+    public bool NotifyLoadingCompleted()
     {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        return waterController.InitializeRuntimeState()
-            ? GameStateResult.Success(true)
-            : GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller could not initialize runtime state.");
+        return waterController != null && waterController.InitializeRuntimeState();
     }
 
-    public GameStateResult NotifyGameFlowChanged(GameFlow gameFlow)
+    public void NotifyGameFlowChanged(WaterGameFlow gameFlow)
     {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        waterController.SetGameFlow(gameFlow);
-        if (gameFlow != GameFlow.Gameplay)
-            waterController.PauseSimulation();
-
-        return GameStateResult.Success(true);
+        waterController?.SetGameFlow(gameFlow);
     }
 
-    public GameStateResult NotifyGamePhaseChanged(GamePhase gamePhase)
+    public bool NotifyGamePhaseChanged(WaterGamePhase gamePhase)
     {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        if (!waterController.SetGamePhase(gamePhase))
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller rejected the Game Phase transition.");
-        }
-
-        if (gamePhase != GamePhase.Crisis)
-            waterController.PauseSimulation();
-
-        return GameStateResult.Success(true);
+        return waterController != null && waterController.SetGamePhase(gamePhase);
     }
 
     /// <summary>
     /// Must be called only after Game State has committed completed action, terrain, modifier,
     /// and explicit barrier changes. This method does not advance turn or construction state.
     /// </summary>
-    public GameStateResult NotifyCompletedPreparationTurn(int completedPreparationTurns)
+    public bool NotifyCompletedPreparationTurn(int completedPreparationTurns)
     {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        if (_hasAppliedPreliminaryFlooding || _preliminaryFloodingInProgress ||
+        if (waterController == null || _hasAppliedPreliminaryFlooding ||
+            _preliminaryFloodingInProgress ||
             !waterController.TryGetPreliminaryFlooding(out WaterPreliminaryFloodingConfig flooding))
-            return GameStateResult.Success();
+            return false;
 
         if (completedPreparationTurns < flooding.CompletedPreparationTurnThreshold)
-            return GameStateResult.Success();
+            return false;
 
         _preliminaryFloodingInProgress = true;
         bool applied;
@@ -147,73 +65,11 @@ public sealed class WaterLifecycleCoordinator : MonoBehaviour, IDevGameStateWate
         if (!applied)
         {
             Debug.LogError("[WaterLifecycleCoordinator] Preliminary flooding failed; the lifecycle marker was not committed.");
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Preliminary flooding failed and remains retryable.");
+            return false;
         }
 
         _hasAppliedPreliminaryFlooding = true;
         OnPreliminaryFloodingApplied?.Invoke();
-        return GameStateResult.Success(true);
-    }
-
-    public GameStateResult NotifyCrisisTimeStarted()
-    {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        return waterController.BeginSimulation()
-            ? GameStateResult.Success(true)
-            : GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller could not start Crisis simulation.");
-    }
-
-    public GameStateResult NotifyCrisisTimeAdvanced(float simulatedDuration)
-    {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        if (float.IsNaN(simulatedDuration) || float.IsInfinity(simulatedDuration) || simulatedDuration <= 0f)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.InvalidArgument,
-                "Crisis simulation duration must be finite and positive.");
-        }
-
-        if (!waterController.IsSimulationRunning)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.InvalidTransition,
-                "Crisis simulation must be started before it can advance.");
-        }
-
-        return waterController.RunSimulationForDuration(simulatedDuration)
-            ? GameStateResult.Success(true)
-            : GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller could not advance Crisis simulation.");
-    }
-
-    public GameStateResult NotifyCrisisTimeStopped()
-    {
-        if (waterController == null)
-        {
-            return GameStateResult.Failure(
-                GameStateFailureCode.WaterAdapterFailed,
-                "Water Controller is not assigned.");
-        }
-
-        bool wasRunning = waterController.IsSimulationRunning;
-        waterController.PauseSimulation();
-        return GameStateResult.Success(wasRunning);
+        return true;
     }
 }

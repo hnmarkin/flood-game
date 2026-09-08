@@ -1,9 +1,7 @@
 {
   "name": "WaterSystemRefactor.Runtime",
   "rootNamespace": "",
-  "references": [
-    "Dev.GameState.Runtime"
-  ],
+  "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

@@ -10,6 +10,23 @@ public enum WaterStepMode
     Automatic
 }
 
+/// <summary>Lifecycle values supplied by Game State to the Dev water lifecycle seam.</summary>
+public enum WaterGameFlow
+{
+    Loading,
+    Gameplay,
+    Pause,
+    MainMenu
+}
+
+/// <summary>Phase values supplied by Game State to the Dev water lifecycle seam.</summary>
+public enum WaterGamePhase
+{
+    Preparation,
+    Crisis,
+    Scoring
+}
+
 /// <summary>Identifies the scenario-owned storm profile currently driving water physics.</summary>
 public enum WaterProfileStage
 {
