@@ -2,6 +2,10 @@
 
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
 
+## Local authentication
+
+Before using `gh`, authenticate the local CLI with `gh auth login`. In non-interactive automation, provide `GH_TOKEN` through the environment's secret-management mechanism instead. Never commit a token, credential, or `.env` value. Confirm access with `gh auth status` before creating or editing issues.
+
 ## Conventions
 
 - **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.
