@@ -3,6 +3,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using FloodGame.Dev.GameState;
 
 [Category("WaterLifecycle")]
 public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
@@ -171,17 +172,17 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
         // fixture.Controller.OnWaterProfileChanged += handler;
 
         // Act
-        fixture.Coordinator.NotifyGameFlowChanged(WaterGameFlow.Gameplay);
-        bool phaseChanged = fixture.Coordinator.NotifyGamePhaseChanged(WaterGamePhase.Crisis);
-        fixture.Coordinator.NotifyGameFlowChanged(WaterGameFlow.Pause);
+        fixture.Coordinator.NotifyGameFlowChanged(GameFlow.Gameplay);
+        GameStateResult phaseChanged = fixture.Coordinator.NotifyGamePhaseChanged(GamePhase.Crisis);
+        fixture.Coordinator.NotifyGameFlowChanged(GameFlow.Pause);
 
         // Assert
         // fixture.Controller.OnWaterProfileChanged -= handler;
         WaterAssert.Multiple(() =>
         {
-            Assert.That(phaseChanged, Is.True);
-            Assert.That(fixture.Controller.GamePhase, Is.EqualTo(WaterGamePhase.Crisis));
-            Assert.That(fixture.Controller.GameFlow, Is.EqualTo(WaterGameFlow.Pause));
+            Assert.That(phaseChanged.Succeeded, Is.True);
+            Assert.That(fixture.Controller.GamePhase, Is.EqualTo(GamePhase.Crisis));
+            Assert.That(fixture.Controller.GameFlow, Is.EqualTo(GameFlow.Pause));
             Assert.That(fixture.Controller.ActiveProfileStage, Is.EqualTo(WaterProfileStage.Crisis));
             Assert.That(fixture.Controller.IsSimulationRunning, Is.False);
             // Assert.That(profileEvents, Is.EqualTo(1));
@@ -201,16 +202,56 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
             "[WaterController] Production configuration rejected Crisis profile: The Crisis water profile is missing.");
 
         // Act
-        bool changed = fixture.Coordinator.NotifyGamePhaseChanged(WaterGamePhase.Crisis);
+        GameStateResult changed = fixture.Coordinator.NotifyGamePhaseChanged(GamePhase.Crisis);
 
         // Assert
         WaterAssert.Multiple(() =>
         {
-            Assert.That(changed, Is.False);
-            Assert.That(fixture.Controller.GamePhase, Is.EqualTo(WaterGamePhase.Preparation));
+            Assert.That(changed.Succeeded, Is.False);
+            Assert.That(fixture.Controller.GamePhase, Is.EqualTo(GamePhase.Preparation));
             Assert.That(fixture.Controller.ActiveProfileStage, Is.EqualTo(WaterProfileStage.Baseline));
         });
         yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator CrisisSimulation_AdvancesOnlyThroughExplicitTimeHandoff()
+    {
+        // Arrange
+        WaterControllerFixture fixture = CreateControllerFixture();
+        ConfigureControllerMode(fixture.Controller, WaterConfigurationMode.Production);
+        int steppedEvents = 0;
+        Action<WaterStepSummary> stepped = _ => steppedEvents++;
+        fixture.Controller.OnWaterSimulationStepped += stepped;
+
+        // Act
+        GameStateResult gameplay = fixture.Coordinator.NotifyGameFlowChanged(GameFlow.Gameplay);
+        GameStateResult crisis = fixture.Coordinator.NotifyGamePhaseChanged(GamePhase.Crisis);
+        yield return null;
+
+        // Assert no wall-clock step begins when Crisis is announced.
+        WaterAssert.Multiple(() =>
+        {
+            Assert.That(gameplay.Succeeded, Is.True);
+            Assert.That(crisis.Succeeded, Is.True);
+            Assert.That(fixture.Controller.IsSimulationRunning, Is.False);
+            Assert.That(steppedEvents, Is.Zero);
+        });
+
+        GameStateResult started = fixture.Coordinator.NotifyCrisisTimeStarted();
+        GameStateResult advanced = fixture.Coordinator.NotifyCrisisTimeAdvanced(0.5f);
+        GameStateResult stopped = fixture.Coordinator.NotifyCrisisTimeStopped();
+        fixture.Controller.OnWaterSimulationStepped -= stepped;
+
+        WaterAssert.Multiple(() =>
+        {
+            Assert.That(started.Succeeded, Is.True);
+            Assert.That(advanced.Succeeded, Is.True);
+            Assert.That(advanced.Changed, Is.True);
+            Assert.That(steppedEvents, Is.GreaterThan(0));
+            Assert.That(stopped.Succeeded, Is.True);
+            Assert.That(fixture.Controller.IsSimulationRunning, Is.False);
+        });
     }
 
     [UnityTest]
@@ -248,17 +289,20 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
         fixture.Coordinator.OnPreliminaryFloodingApplied += handler;
 
         // Act
-        bool beforeThreshold = fixture.Coordinator.NotifyCompletedPreparationTurn(1);
-        bool atThreshold = fixture.Coordinator.NotifyCompletedPreparationTurn(2);
-        bool repeated = fixture.Coordinator.NotifyCompletedPreparationTurn(3);
+        GameStateResult beforeThreshold = fixture.Coordinator.NotifyCompletedPreparationTurn(1);
+        GameStateResult atThreshold = fixture.Coordinator.NotifyCompletedPreparationTurn(2);
+        GameStateResult repeated = fixture.Coordinator.NotifyCompletedPreparationTurn(3);
 
         // Assert
         fixture.Coordinator.OnPreliminaryFloodingApplied -= handler;
         WaterAssert.Multiple(() =>
         {
-            Assert.That(beforeThreshold, Is.False);
-            Assert.That(atThreshold, Is.True);
-            Assert.That(repeated, Is.False);
+            Assert.That(beforeThreshold.Succeeded, Is.True);
+            Assert.That(beforeThreshold.Changed, Is.False);
+            Assert.That(atThreshold.Succeeded, Is.True);
+            Assert.That(atThreshold.Changed, Is.True);
+            Assert.That(repeated.Succeeded, Is.True);
+            Assert.That(repeated.Changed, Is.False);
             Assert.That(fixture.Coordinator.HasAppliedPreliminaryFlooding, Is.True);
             Assert.That(fixture.Controller.ActiveProfileStage, Is.EqualTo(WaterProfileStage.Preliminary));
             Assert.That(appliedEvents, Is.EqualTo(1));
@@ -271,18 +315,20 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
     {
         // Arrange
         WaterControllerFixture fixture = CreateControllerFixture();
-        bool reentrantResult = true;
+        GameStateResult reentrantResult = null;
         fixture.Provider.OnResolve = () =>
             reentrantResult = fixture.Coordinator.NotifyCompletedPreparationTurn(2);
 
         // Act
-        bool applied = fixture.Coordinator.NotifyCompletedPreparationTurn(2);
+        GameStateResult applied = fixture.Coordinator.NotifyCompletedPreparationTurn(2);
 
         // Assert
         WaterAssert.Multiple(() =>
         {
-            Assert.That(applied, Is.True);
-            Assert.That(reentrantResult, Is.False);
+            Assert.That(applied.Succeeded, Is.True);
+            Assert.That(applied.Changed, Is.True);
+            Assert.That(reentrantResult.Succeeded, Is.True);
+            Assert.That(reentrantResult.Changed, Is.False);
             Assert.That(fixture.Coordinator.HasAppliedPreliminaryFlooding, Is.True);
         });
         yield return null;
@@ -324,15 +370,17 @@ public sealed class WaterLifecyclePlayModeTests : WaterPlayModeFixture
     {
         // Arrange
         WaterControllerFixture fixture = CreateControllerFixture();
-        Assert.That(fixture.Coordinator.NotifyCompletedPreparationTurn(2), Is.True);
+        Assert.That(
+            fixture.Coordinator.NotifyCompletedPreparationTurn(2).Changed,
+            Is.True);
 
         // Act
-        bool reset = fixture.Coordinator.NotifyNewRun();
+        GameStateResult reset = fixture.Coordinator.NotifyNewRun();
 
         // Assert
         WaterAssert.Multiple(() =>
         {
-            Assert.That(reset, Is.True);
+            Assert.That(reset.Succeeded, Is.True);
             Assert.That(fixture.Coordinator.HasAppliedPreliminaryFlooding, Is.False);
             Assert.That(fixture.Controller.ActiveProfileStage, Is.EqualTo(WaterProfileStage.Baseline));
         });

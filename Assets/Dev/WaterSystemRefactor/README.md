@@ -101,7 +101,7 @@ Each scenario contains Baseline, Preliminary, and Crisis storm profiles. Each pr
 
 ## Game State Integration Handoff — Lifecycle Events Removed
 
-Game State owns Game Flow, Game Phase, scenario initialization, and time/profile transitions. Water receives those decisions through explicit coordinator calls; it does not own a second lifecycle state machine.
+Game State owns Game Flow, Game Phase, scenario initialization, and time/profile transitions. Water receives those decisions through `WaterLifecycleCoordinator`, which implements the Game State adapter seam; it does not own a second lifecycle state machine.
 
 The following `WaterController` mirror events were removed:
 
@@ -112,19 +112,18 @@ The following `WaterController` mirror events were removed:
 
 `OnWaterSimulationStepped` remains because simulation can progress repeatedly and asynchronously within one Game State interval. It is the water-specific notification for each completed simulation step. `OnWaterSimulationReset` remains as the water-specific post-reset/rebuilt-runtime notification. It is raised after a successful `ResetSimulation()` and after a successful direct `InitializeRuntimeState()` rebuild, so forecast consumers can invalidate after live state exists again.
 
-Required initialization is an explicit coordinator operation that calls each required initializer and checks its returned `bool` or result. Game State should publish `ScenarioInitialized` only after Water, Risk Overlay, Resources, and every other required system reports success. Do not use C# event acknowledgements for this barrier: events notify observers after the operation, but they do not define ordering, failure handling, or completion.
+Required initialization is an explicit Game State coordinator operation that calls each required initializer and checks its returned result. Game State publishes `ScenarioInitialized` only after Water, Risk Overlay, Resources, and every other configured system reports success. Do not use C# event acknowledgements for this barrier: events notify observers after the operation, but they do not define ordering, failure handling, or completion.
 
 When Game State changes the time profile, it must explicitly notify `ProjectionController.NotifyTimeProfileChanged()`. The same applies to any other forecast-affecting change through the existing notification methods. Use `BeginForecastChangeTransaction()` and `EndForecastChangeTransaction()` when one Game State transition changes several inputs and should produce one forecast replacement. `OnForecastReplaced` remains the notification for consumers of the new immutable forecast.
 
-### Future Game State hookup checklist
+### Game State hookup checklist
 
-1. Define the authoritative Game State events/transitions for flow, phase, scenario initialization, and time/profile changes.
-2. During scenario initialization, call the Water initialization seam (`WaterLifecycleCoordinator.NotifyLoadingCompleted()` or the approved Game State coordinator equivalent), check its result, then coordinate Risk Overlay, Resources, and other required initializers. Abort on failure and publish `ScenarioInitialized` only after all required results succeed.
-3. Route flow and phase changes to `WaterLifecycleCoordinator.NotifyGameFlowChanged()` and `NotifyGamePhaseChanged()`. Game State owns pause/start decisions; no Water Started/Paused mirror event should be restored.
-4. After a successful time/profile transition, call `ProjectionController.NotifyTimeProfileChanged()`. Coalesce it with resource, modifier, defense, or game-time notifications when the same transition affects multiple forecast inputs.
-5. Ensure new-run/reset transitions call `WaterLifecycleCoordinator.NotifyNewRun()` and allow `OnWaterSimulationReset` to invalidate/rebuild forecasts after the water runtime state is ready.
-6. Adapt the commented lifecycle event assertions in `WaterLifecyclePlayModeTests.cs` to assert Game State completion and notification ordering once the Game State system exists.
-7. Remove transitional Water-specific flow/phase types and coordinator forwarding only when the real Game State integration is available and covered.
+1. During scenario initialization, Game State calls the Water initializer seam, checks its result, then coordinates Risk Overlay, Resources, and other configured initializers. It aborts on failure and publishes `ScenarioInitialized` only after all required results succeed.
+2. Game State routes flow and phase changes to `WaterLifecycleCoordinator.NotifyGameFlowChanged()` and `NotifyGamePhaseChanged()`. Game State owns pause/start decisions; no Water Started/Paused mirror event should be restored.
+3. After a successful time/profile transition, call `ProjectionController.NotifyTimeProfileChanged()`. Coalesce it with resource, modifier, defense, or game-time notifications when the same transition affects multiple forecast inputs.
+4. Ensure new-run/reset transitions call `WaterLifecycleCoordinator.NotifyNewRun()` and allow `OnWaterSimulationReset` to invalidate/rebuild forecasts after the water runtime state is ready.
+5. Crisis acknowledgement calls `NotifyCrisisTimeStarted()`. Each authoritative Time Tracker advancement calls `NotifyCrisisTimeAdvanced()`; duration expiry calls `NotifyCrisisTimeStopped()` before the Scoring transition.
+6. Lifecycle tests assert Game State completion and notification ordering through the coordinator rather than Water-specific lifecycle enums or mirror events.
 
 ## Legacy Conversion
 

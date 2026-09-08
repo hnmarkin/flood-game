@@ -1,9 +1,7 @@
 {
-  "name": "WaterSystemRefactor.Runtime",
-  "rootNamespace": "",
-  "references": [
-    "Dev.GameState.Runtime"
-  ],
+  "name": "Dev.GameState.Runtime",
+  "rootNamespace": "FloodGame.Dev.GameState",
+  "references": [],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
@@ -12,5 +10,5 @@
   "autoReferenced": true,
   "defineConstraints": [],
   "versionDefines": [],
-  "noEngineReferences": false
+  "noEngineReferences": true
 }

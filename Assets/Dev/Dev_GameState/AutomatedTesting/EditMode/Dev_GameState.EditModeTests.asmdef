@@ -1,8 +1,7 @@
 {
-  "name": "WaterSystemRefactor.EditModeTests",
-  "rootNamespace": "",
+  "name": "Dev.GameState.EditModeTests",
+  "rootNamespace": "FloodGame.Dev.GameState.Tests",
   "references": [
-    "WaterSystemRefactor.Runtime",
     "Dev.GameState.Runtime"
   ],
   "includePlatforms": [
@@ -19,7 +18,7 @@
     "UNITY_INCLUDE_TESTS"
   ],
   "versionDefines": [],
-  "noEngineReferences": false,
+  "noEngineReferences": true,
   "optionalUnityReferences": [
     "TestAssemblies"
   ],
