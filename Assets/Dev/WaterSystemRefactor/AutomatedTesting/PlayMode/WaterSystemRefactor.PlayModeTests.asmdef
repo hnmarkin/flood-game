@@ -2,7 +2,8 @@
   "name": "WaterSystemRefactor.PlayModeTests",
   "rootNamespace": "",
   "references": [
-    "WaterSystemRefactor.Runtime"
+    "WaterSystemRefactor.Runtime",
+    "Dev.GameState.Runtime"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
