@@ -151,7 +151,9 @@ public class GlobalHUDController : MonoBehaviour
 
     public void SetHoveredZoneId(string zoneId)
     {
-        hoveredZoneId = string.IsNullOrWhiteSpace(zoneId) ? "--" : zoneId;
+        hoveredZoneId = string.IsNullOrWhiteSpace(zoneId)
+            ? "--"
+            : DemoDisplayIdFormatter.GetZoneDisplayId(zoneId);
 
         if (_zone != null)
             _zone.text = $"{zonePrefix}: {hoveredZoneId}";

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
@@ -92,7 +93,10 @@ public class ShelterCandidateController : MonoBehaviour
 
     [Header("Visualization")]
     [SerializeField] private Color candidateTileColor = new Color(0.15f, 0.9f, 1f, 1f);
-    [SerializeField] private Color associatedZoneColor = new Color(0.3f, 0.85f, 0.85f, 1f);
+    [FormerlySerializedAs("associatedZoneColor")]
+    [SerializeField] private Color candidateAssociatedZoneColor = new Color(0f, 0.8f, 1f, 0.45f);
+    [SerializeField] private Color placedShelterAssociatedZoneColor = new Color(0f, 1f, 0.65f, 0.75f);
+    [SerializeField] private bool showPlacedShelterZoneOutlines = true;
     [SerializeField] private bool showCandidateLabels = true;
     [SerializeField] private float labelHeightOffset = 0.85f;
     [SerializeField] private float labelFontSize = 3.25f;
@@ -122,6 +126,7 @@ public class ShelterCandidateController : MonoBehaviour
     private bool _hasCachedCandidates;
     private bool _isShowingCandidates;
     private bool _isShelterPlacementModeActive;
+    private bool _isSubscribedToShelterManager;
     private bool _placementModeShowedCandidateHighlights;
     private bool _candidateHighlightsWereShowingBeforePlacement;
     private int _placementStartedFrame = -1;
@@ -142,6 +147,13 @@ public class ShelterCandidateController : MonoBehaviour
         ResolveReferences();
     }
 
+    private void OnEnable()
+    {
+        ResolveReferences();
+        SubscribeToShelterChanges();
+        RefreshPlacedShelterZoneOutlines();
+    }
+
     private void Update()
     {
         if (_isShelterPlacementModeActive)
@@ -150,8 +162,12 @@ public class ShelterCandidateController : MonoBehaviour
 
     private void OnDisable()
     {
+        UnsubscribeFromShelterChanges();
         ExitShelterPlacementMode();
         HideShelterCandidates();
+
+        if (zoneOutlineHighlighter != null)
+            zoneOutlineHighlighter.ClearPlacedShelterAssociatedZoneOutlines();
     }
 
     private void OnValidate()
@@ -272,7 +288,7 @@ public class ShelterCandidateController : MonoBehaviour
                 if (string.IsNullOrEmpty(geoid) || !IsZoneEnabledForShelterPlacement(geoid))
                     continue;
 
-                zoneRequests.Add(new ZoneRiskOutlineRequest(geoid, associatedZoneColor));
+                zoneRequests.Add(new ZoneRiskOutlineRequest(geoid, candidateAssociatedZoneColor));
             }
 
             if (showCandidateLabels)
@@ -499,6 +515,8 @@ public class ShelterCandidateController : MonoBehaviour
 
         if (_isShowingCandidates)
             ShowShelterCandidates();
+
+        RefreshPlacedShelterZoneOutlines();
 
         if (!keepPlacementModeActiveAfterPlacement)
             ExitShelterPlacementMode();
@@ -934,6 +952,83 @@ public class ShelterCandidateController : MonoBehaviour
 
         if (labelParent == null)
             labelParent = transform;
+    }
+
+    private void SubscribeToShelterChanges()
+    {
+        if (_isSubscribedToShelterManager || shelterManager == null)
+            return;
+
+        shelterManager.OnSheltersChanged += OnSheltersChanged;
+        _isSubscribedToShelterManager = true;
+    }
+
+    private void UnsubscribeFromShelterChanges()
+    {
+        if (!_isSubscribedToShelterManager || shelterManager == null)
+            return;
+
+        shelterManager.OnSheltersChanged -= OnSheltersChanged;
+        _isSubscribedToShelterManager = false;
+    }
+
+    private void OnSheltersChanged()
+    {
+        RefreshPlacedShelterZoneOutlines();
+    }
+
+    public void RefreshPlacedShelterZoneOutlines()
+    {
+        ResolveReferences();
+
+        if (zoneOutlineHighlighter == null)
+            return;
+
+        if (!showPlacedShelterZoneOutlines || shelterManager == null)
+        {
+            zoneOutlineHighlighter.ClearPlacedShelterAssociatedZoneOutlines();
+
+            if (debugLogs)
+                Debug.Log("[ShelterCandidateController] Placed shelter zone outlines refreshed.");
+
+            return;
+        }
+
+        BuildZoneEnabledLookup();
+
+        List<PlacedShelterData> activeShelters = shelterManager.GetActiveShelters();
+        List<ZoneRiskOutlineRequest> zoneRequests = new();
+        HashSet<string> processedGeoids = new(StringComparer.Ordinal);
+
+        if (activeShelters != null)
+        {
+            for (int i = 0; i < activeShelters.Count; i++)
+            {
+                PlacedShelterData shelter = activeShelters[i];
+
+                if (shelter == null || !shelter.isActive || shelter.associatedZoneGeoids == null)
+                    continue;
+
+                for (int zoneIndex = 0; zoneIndex < shelter.associatedZoneGeoids.Count; zoneIndex++)
+                {
+                    string geoid = NormalizeGeoid(shelter.associatedZoneGeoids[zoneIndex]);
+
+                    if (string.IsNullOrEmpty(geoid) ||
+                        !processedGeoids.Add(geoid) ||
+                        !IsZoneEnabledForShelterPlacement(geoid))
+                    {
+                        continue;
+                    }
+
+                    zoneRequests.Add(new ZoneRiskOutlineRequest(geoid, placedShelterAssociatedZoneColor));
+                }
+            }
+        }
+
+        zoneOutlineHighlighter.ShowPlacedShelterAssociatedZoneOutlines(zoneRequests);
+
+        if (debugLogs)
+            Debug.Log("[ShelterCandidateController] Placed shelter zone outlines refreshed.");
     }
 
     private bool ValidateReferences()

@@ -60,7 +60,7 @@ public class FloodDamagePanelController : MonoBehaviour
         }
 
         if (_zoneValue != null)
-            _zoneValue.text = summary.Geoid;
+            _zoneValue.text = DemoDisplayIdFormatter.GetZoneDisplayId(summary.Geoid);
 
         if (_totalDamageValue != null)
             _totalDamageValue.text = $"${summary.TotalEstimatedDamage:0}";

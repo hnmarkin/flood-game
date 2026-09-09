@@ -8,12 +8,14 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 {
     public static event Action OnAllZoneBarriersPlaced;
     public event Action<bool> ZoneBoundaryModeChanged;
+    public event Action<int, int> ZoneBarrierPlaced;
 
     [Header("References")]
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap terrainTilemap;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private JsonMapLoader jsonMapLoader;
+    [SerializeField] private WaterSimulator waterSimulator;
 
     private NpcToastController _npcToast;
 
@@ -22,6 +24,10 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 
     [Tooltip("Maximum number of zone barriers allowed for this map.")]
     [SerializeField, Min(1)] private int maxZoneBarriers = 1;
+
+    [Header("Flood Auto Start")]
+    [SerializeField] private bool autoStartFloodAfterBarrierLimit = true;
+    [SerializeField, Min(1)] private int requiredBarriersBeforeFlood = 3;
 
     [Header("Barrier Logic")]
     [SerializeField] private float barrierHeight = 40f;
@@ -40,6 +46,9 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
     [SerializeField] private Color zoneOutlineColor = new Color(1f, 0.85f, 0.15f, 1f);
     [SerializeField] private bool drawCommittedOutline = true;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs = true;
+
     private float[,] _barrierHX;
     private float[,] _barrierHY;
     private float[,] _seepX;
@@ -57,6 +66,7 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
     private HashSet<Vector2Int> _hoverZoneTiles = null;
 
     private Coroutine _enterZoneModeCoroutine;
+    private bool _autoStartedFlood;
 
     public int BarriersPlaced => _committedZones.Count;
 
@@ -73,11 +83,17 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
         }
     }
 
+    public int RequiredBarriersBeforeFlood => Mathf.Clamp(
+        requiredBarriersBeforeFlood > 0 ? requiredBarriersBeforeFlood : ActualMaxZoneBarriers,
+        1,
+        ActualMaxZoneBarriers);
+
     private void Awake()
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
 
+        ResolveWaterSimulator();
         InitializeArraysAndOrigin();
 
         // Important:
@@ -128,6 +144,9 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 
         if (seepage < 0f)
             seepage = 0f;
+
+        if (requiredBarriersBeforeFlood < 1)
+            requiredBarriersBeforeFlood = 1;
     }
 
     public void ToggleBuildModeFromUI()
@@ -521,10 +540,18 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
 
         ShowMessage($"Zone barrier placed: {BarriersPlaced}/{ActualMaxZoneBarriers}");
 
+        int requiredBeforeFlood = RequiredBarriersBeforeFlood;
+
+        if (debugLogs)
+            Debug.Log($"[FloodDefenseBoxStamp] Barrier placed. Count: {BarriersPlaced}/{requiredBeforeFlood}.");
+
+        ZoneBarrierPlaced?.Invoke(BarriersPlaced, requiredBeforeFlood);
+
         Debug.Log($"[FloodDefenseBoxStamp] Zone boundary committed. Zone={geoid}, Zone tiles={zoneTiles.Count}, " +
                   $"Blocked edges={blockedEdges}, Placed={BarriersPlaced}/{ActualMaxZoneBarriers}");
 
         ClearHoverAndPreview();
+        TryStartFloodAfterBarrierLimit();
         
         if (BarriersPlaced >= ActualMaxZoneBarriers)
         {
@@ -729,6 +756,42 @@ public class FloodDefenseBoxStamp : MonoBehaviour, IBarrierProvider
                 ActualMaxZoneBarriers
             );
         }
+    }
+
+    private void ResolveWaterSimulator()
+    {
+        if (waterSimulator == null)
+            waterSimulator = FindFirstObjectByType<WaterSimulator>();
+    }
+
+    private void TryStartFloodAfterBarrierLimit()
+    {
+        if (!autoStartFloodAfterBarrierLimit || _autoStartedFlood)
+            return;
+
+        int requiredBeforeFlood = RequiredBarriersBeforeFlood;
+
+        if (BarriersPlaced < requiredBeforeFlood)
+            return;
+
+        if (debugLogs)
+            Debug.Log("[FloodDefenseBoxStamp] Required barriers placed. Starting flood simulation.");
+
+        ResolveWaterSimulator();
+
+        if (waterSimulator == null)
+        {
+            Debug.LogWarning("[FloodDefenseBoxStamp] Required barriers placed, but WaterSimulator is not assigned.");
+            return;
+        }
+
+        if (waterSimulator.IsSimulationRunning)
+        {
+            _autoStartedFlood = true;
+            return;
+        }
+
+        _autoStartedFlood = waterSimulator.BeginSimulationFromBarrierTrigger();
     }
 
     // ---------- IBarrierProvider ----------

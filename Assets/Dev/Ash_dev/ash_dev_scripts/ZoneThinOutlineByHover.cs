@@ -54,6 +54,7 @@ public class ZoneThinOutlineByHover : MonoBehaviour
     private readonly List<LineRenderer> _liveFloodLinePool = new();
     private readonly List<LineRenderer> _shelterZoneLinePool = new();
     private readonly List<LineRenderer> _shelterTileLinePool = new();
+    private readonly List<LineRenderer> _placedShelterZoneLinePool = new();
     private readonly List<LineRenderer> _communicationZoneLinePool = new();
 
     private string _currentGeoid = null;
@@ -64,6 +65,7 @@ public class ZoneThinOutlineByHover : MonoBehaviour
     private int _liveFloodActiveLineCount;
     private int _shelterZoneActiveLineCount;
     private int _shelterTileActiveLineCount;
+    private int _placedShelterZoneActiveLineCount;
     private int _communicationZoneActiveLineCount;
     private bool _persistentOutlinesVisible = true;
 
@@ -267,6 +269,23 @@ public class ZoneThinOutlineByHover : MonoBehaviour
         _shelterTileActiveLineCount = 0;
         HidePool(_shelterZoneLinePool);
         HidePool(_shelterTileLinePool);
+    }
+
+    public void ShowPlacedShelterAssociatedZoneOutlines(IEnumerable<ZoneRiskOutlineRequest> requests)
+    {
+        if (!TryResolveFloodDefense())
+        {
+            Debug.LogWarning("[ZoneThinOutlineByHover] Cannot show placed shelter zone outlines because FloodDefenseBoxStamp is missing.");
+            return;
+        }
+
+        ShowOverlayRequests(requests, _placedShelterZoneLinePool, out _placedShelterZoneActiveLineCount);
+    }
+
+    public void ClearPlacedShelterAssociatedZoneOutlines()
+    {
+        _placedShelterZoneActiveLineCount = 0;
+        HidePool(_placedShelterZoneLinePool);
     }
 
     public void ShowCommunicationZoneOutlines(IEnumerable<ZoneRiskOutlineRequest> requests)
@@ -514,6 +533,7 @@ public class ZoneThinOutlineByHover : MonoBehaviour
         ApplyPoolVisibility(_liveFloodLinePool, _liveFloodActiveLineCount, visible);
         ApplyPoolVisibility(_shelterZoneLinePool, _shelterZoneActiveLineCount, visible);
         ApplyPoolVisibility(_shelterTileLinePool, _shelterTileActiveLineCount, visible);
+        ApplyPoolVisibility(_placedShelterZoneLinePool, _placedShelterZoneActiveLineCount, visible);
         ApplyPoolVisibility(_communicationZoneLinePool, _communicationZoneActiveLineCount, visible);
     }
 

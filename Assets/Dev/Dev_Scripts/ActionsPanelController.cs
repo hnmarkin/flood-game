@@ -34,6 +34,7 @@ public class ActionsPanelController : MonoBehaviour
     private bool _communicationBound;
     private bool _preparationCardsBound;
     private bool _isSubscribedToBarrierMode;
+    private bool _isSubscribedToEvacuationPreview;
     private bool _isSubscribedToCommunicationMode;
     private bool _isSubscribedToCardsUI;
 
@@ -119,6 +120,8 @@ public class ActionsPanelController : MonoBehaviour
     {
         if (evacuationController == null)
             evacuationController = FindFirstObjectByType<EvacuationController>();
+
+        SubscribeToExternalState();
 
         if (evacuationController == null)
         {
@@ -397,6 +400,13 @@ public class ActionsPanelController : MonoBehaviour
             _isSubscribedToCommunicationMode = true;
         }
 
+        if (!_isSubscribedToEvacuationPreview && evacuationController != null)
+        {
+            evacuationController.OnEvacuationRoutesBuilt += OnEvacuationPreviewStateChanged;
+            evacuationController.OnEvacuationRoutesHidden += OnEvacuationPreviewStateChanged;
+            _isSubscribedToEvacuationPreview = true;
+        }
+
         if (!_isSubscribedToCardsUI && preparationCardsController != null)
         {
             preparationCardsController.CardsUIVisibilityChanged += OnCardsUIVisibilityChanged;
@@ -416,6 +426,13 @@ public class ActionsPanelController : MonoBehaviour
         {
             communicationTowerController.CommunicationModeChanged -= OnCommunicationModeChanged;
             _isSubscribedToCommunicationMode = false;
+        }
+
+        if (_isSubscribedToEvacuationPreview && evacuationController != null)
+        {
+            evacuationController.OnEvacuationRoutesBuilt -= OnEvacuationPreviewStateChanged;
+            evacuationController.OnEvacuationRoutesHidden -= OnEvacuationPreviewStateChanged;
+            _isSubscribedToEvacuationPreview = false;
         }
 
         if (_isSubscribedToCardsUI && preparationCardsController != null)
@@ -438,6 +455,14 @@ public class ActionsPanelController : MonoBehaviour
     private void OnCommunicationModeChanged(bool isActive)
     {
         SetButtonActive(_communicationButton, isActive);
+    }
+
+    private void OnEvacuationPreviewStateChanged()
+    {
+        SetButtonActive(
+            _evacuationButton,
+            evacuationController != null && evacuationController.IsPreviewModeActive
+        );
     }
 
     private void RefreshButtonStates()

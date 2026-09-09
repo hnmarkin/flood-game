@@ -134,9 +134,13 @@ public class MapHoverTooltipController : MonoBehaviour
             return;
 
         string routeId = string.IsNullOrWhiteSpace(route.routeId) ? "Unknown Route" : route.routeId.Trim();
-        SetLabelText(_evacZoneLabel, $"Zone: {SafeText(route.sourceZoneGeoid, "Unknown Zone")}");
+        string routeDisplayId = DemoDisplayIdFormatter.GetEvacuationRouteDisplayId(route.routeId);
+        string zoneDisplayId = DemoDisplayIdFormatter.GetZoneDisplayId(route.sourceZoneGeoid);
+        string shelterDisplayId = DemoDisplayIdFormatter.GetShelterDisplayId(route.destinationShelterId);
+
+        SetLabelText(_evacZoneLabel, $"{routeDisplayId} | Zone: {zoneDisplayId}");
         SetLabelText(_evacPopulationLabel, $"Population: {Mathf.Max(0, route.sourceZonePopulation)}");
-        SetLabelText(_evacShelterIdLabel, $"Shelter ID: {SafeText(route.destinationShelterId, "Unknown Shelter")}");
+        SetLabelText(_evacShelterIdLabel, $"Shelter ID: {shelterDisplayId}");
         SetLabelText(_evacShelterTypeLabel, $"Shelter Type: {SafeText(route.destinationShelterType, "Shelter")}");
         SetLabelText(_evacShelterCapacityLabel, $"Shelter Capacity: {Mathf.Max(0, route.destinationShelterCapacity)}");
 
@@ -174,6 +178,7 @@ public class MapHoverTooltipController : MonoBehaviour
             return;
 
         string towerId = string.IsNullOrWhiteSpace(tower.towerId) ? "Unknown Tower" : tower.towerId.Trim();
+        string towerDisplayId = DemoDisplayIdFormatter.GetTowerDisplayId(tower.towerId);
         int zoneRange = tower.associatedZoneGeoids != null ? tower.associatedZoneGeoids.Count : 0;
         GetTowerStatusSummary(
             tower,
@@ -182,7 +187,7 @@ public class MapHoverTooltipController : MonoBehaviour
             out int pendingCount,
             out int unreachedCount);
 
-        SetLabelText(_towerIdLabel, $"Tower ID: {towerId}");
+        SetLabelText(_towerIdLabel, $"Tower ID: {towerDisplayId}");
         SetLabelText(_towerRangeLabel, $"Tower Zone Range: {zoneRange}");
         SetLabelText(_towerStatusLabel, $"Tower Status: {statusText}");
         SetLabelText(_towerWarnedCountLabel, $"Warned: {warnedCount}");
@@ -393,13 +398,13 @@ public class MapHoverTooltipController : MonoBehaviour
         if (evacRouteTooltipUxml == null)
         {
             evacRouteTooltipUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                "Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/EvacRouteTooltip.uxml");
+                "Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/EvacRouteTooltip.uxml");
         }
 
         if (communicationTowerTooltipUxml == null)
         {
             communicationTowerTooltipUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                "Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/CommunicationTowerTooltip.uxml");
+                "Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/CommunicationTowerTooltip.uxml");
         }
 #endif
     }
@@ -554,7 +559,12 @@ public class MapHoverTooltipController : MonoBehaviour
         if (tower.associatedZoneGeoids.Count > 4)
             return $"Served Zones: {tower.associatedZoneGeoids.Count}";
 
-        return $"Served Zones: {string.Join(", ", tower.associatedZoneGeoids)}";
+        List<string> displayIds = new();
+
+        for (int i = 0; i < tower.associatedZoneGeoids.Count; i++)
+            displayIds.Add(DemoDisplayIdFormatter.GetZoneDisplayId(tower.associatedZoneGeoids[i]));
+
+        return $"Served Zones: {string.Join(", ", displayIds)}";
     }
 
     private string SafeText(string value, string fallback)

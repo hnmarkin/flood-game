@@ -57,6 +57,7 @@ public class ShelterManager : MonoBehaviour
     private readonly Dictionary<string, int> _zonePopulationByGeoid = new();
 
     public event Action OnSheltersChanged;
+    public event Action<PlacedShelterData> OnShelterPlaced;
 
     public IReadOnlyList<ShelterTypeDefinition> ShelterTypes => shelterTypes;
     public bool AllowMultipleSheltersPerCandidate => allowMultipleSheltersPerCandidate;
@@ -166,6 +167,38 @@ public class ShelterManager : MonoBehaviour
         return _shelterByTile.TryGetValue(tileCell, out shelter);
     }
 
+    public bool TryGetActiveShelterForZone(string geoid, out PlacedShelterData shelter)
+    {
+        shelter = null;
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return false;
+
+        for (int i = 0; i < _placedShelters.Count; i++)
+        {
+            PlacedShelterData candidate = _placedShelters[i];
+
+            if (candidate == null ||
+                !candidate.isActive ||
+                candidate.associatedZoneGeoids == null)
+            {
+                continue;
+            }
+
+            for (int zoneIndex = 0; zoneIndex < candidate.associatedZoneGeoids.Count; zoneIndex++)
+            {
+                if (NormalizeGeoid(candidate.associatedZoneGeoids[zoneIndex]) != geoid)
+                    continue;
+
+                shelter = candidate;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool RegisterShelter(
         ShelterTypeDefinition shelterType,
         Vector3Int tileCell,
@@ -253,6 +286,7 @@ public class ShelterManager : MonoBehaviour
             Debug.Log("[ShelterManager] " + GetShelterInfoText(shelterData));
         }
 
+        OnShelterPlaced?.Invoke(shelterData);
         OnSheltersChanged?.Invoke();
         return true;
     }

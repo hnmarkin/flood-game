@@ -76,6 +76,7 @@ public class CommunicationTowerController : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private MapHoverTooltipController mapHoverTooltip;
     [SerializeField] private UIDocument tooltipUIDocument;
+    [SerializeField] private CommunicationPanelController communicationPanelController;
 
     [Header("Tower Visuals")]
     [SerializeField] private Sprite mainTowerSprite;
@@ -116,6 +117,8 @@ public class CommunicationTowerController : MonoBehaviour
     public IReadOnlyList<CommunicationTowerData> CommunicationTowers => _communicationTowers;
 
     public event Action<bool> CommunicationModeChanged;
+    public event Action<CommunicationTowerData> OnTowerActivated;
+    public event Action<string> OnZoneWarned;
 
     private void Awake()
     {
@@ -208,6 +211,38 @@ public class CommunicationTowerController : MonoBehaviour
         return _zoneStatusByGeoid.TryGetValue(geoid, out status);
     }
 
+    public IReadOnlyList<CommunicationTowerData> GetAllTowers()
+    {
+        return _communicationTowers;
+    }
+
+    public IReadOnlyList<CommunicationTowerData> GetActiveTowers()
+    {
+        List<CommunicationTowerData> activeTowers = new();
+
+        for (int i = 0; i < _communicationTowers.Count; i++)
+        {
+            CommunicationTowerData tower = _communicationTowers[i];
+
+            if (tower != null && tower.isActive)
+                activeTowers.Add(tower);
+        }
+
+        return activeTowers;
+    }
+
+    public ZoneCommunicationStatus GetZoneCommunicationStatus(string geoid)
+    {
+        return TryGetCommunicationStatus(geoid, out ZoneCommunicationStatus status)
+            ? status
+            : ZoneCommunicationStatus.Unreached;
+    }
+
+    public Dictionary<string, ZoneCommunicationStatus> GetAllZoneCommunicationStatuses()
+    {
+        return new Dictionary<string, ZoneCommunicationStatus>(_zoneStatusByGeoid, StringComparer.Ordinal);
+    }
+
     public void MarkZoneWarned(string geoid)
     {
         geoid = NormalizeGeoid(geoid);
@@ -218,14 +253,18 @@ public class CommunicationTowerController : MonoBehaviour
         if (!_zoneStatusByGeoid.TryGetValue(geoid, out ZoneCommunicationStatus previousStatus))
             previousStatus = ZoneCommunicationStatus.Unreached;
 
+        bool statusChanged = previousStatus != ZoneCommunicationStatus.Warned;
         _zoneStatusByGeoid[geoid] = ZoneCommunicationStatus.Warned;
 
-        if (debugLogs && previousStatus != ZoneCommunicationStatus.Warned)
+        if (debugLogs && statusChanged)
         {
             Debug.Log(
                 $"[CommunicationTowerController] Zone {geoid} communication status changed: " +
                 $"{previousStatus} -> Warned.");
         }
+
+        if (statusChanged)
+            OnZoneWarned?.Invoke(geoid);
     }
 
     public void NotifyActionButtonConnected()
@@ -382,6 +421,9 @@ public class CommunicationTowerController : MonoBehaviour
 
         if (tooltipUIDocument == null)
             tooltipUIDocument = ResolveTooltipUIDocument();
+
+        if (communicationPanelController == null)
+            communicationPanelController = FindFirstObjectByType<CommunicationPanelController>();
 
         if (mapHoverTooltip == null)
         {
@@ -931,6 +973,7 @@ public class CommunicationTowerController : MonoBehaviour
             if (debugLogs)
                 Debug.Log($"[CommunicationTowerController] Tower {tower.towerId} is already active.");
 
+            OpenCommunicationPanel(tower);
             return;
         }
 
@@ -962,6 +1005,23 @@ public class CommunicationTowerController : MonoBehaviour
                     "Unreached -> Pending.");
             }
         }
+
+        OnTowerActivated?.Invoke(tower);
+        OpenCommunicationPanel(tower);
+    }
+
+    private void OpenCommunicationPanel(CommunicationTowerData tower)
+    {
+        if (communicationPanelController == null)
+            communicationPanelController = FindFirstObjectByType<CommunicationPanelController>();
+
+        if (communicationPanelController == null)
+        {
+            Debug.LogWarning("[CommunicationTowerController] CommunicationPanelController is not assigned. Cannot open CommunicationPanel.");
+            return;
+        }
+
+        communicationPanelController.ShowForTower(tower);
     }
 
     private void ShowAssociatedZoneHighlight(CommunicationTowerData tower)

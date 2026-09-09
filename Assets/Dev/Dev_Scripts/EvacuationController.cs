@@ -22,8 +22,8 @@ builds one SimpleEvacuationRoute from each associated zone center anchor to each
 shelter, caches those routes, tracks route hover/selection ids, and sends already-calculated paths
 to EvacuationRouteVisualizer for preview drawing. When a route is hovered, it sends route metadata
 to MapHoverTooltipController for a small cursor-following UXML tooltip.
-It does not draw visuals directly, score routes, route to city exits, color danger segments,
-draw white overlays, or apply evacuation mitigation.
+It does not draw visuals directly, route to city exits, color danger segments,
+draw white overlays, directly edit risk formulas, or score route danger.
 */
 
 [Serializable]
@@ -69,6 +69,7 @@ public class EvacuationController : MonoBehaviour
     [Header("References")]
     [SerializeField] private ZoneBaselineRiskController baselineRiskController;
     [SerializeField] private ShelterManager shelterManager;
+    [SerializeField] private ShelterCandidateController shelterCandidateController;
     [SerializeField] private FloodDefenseBoxStamp floodDefenseBoxStamp;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap routeTilemap;
@@ -82,6 +83,8 @@ public class EvacuationController : MonoBehaviour
     [SerializeField] private bool debugLogs = true;
     [SerializeField] private bool previewModeActive;
     [SerializeField, Min(1)] private int maxPathSearchIterations = 6000;
+    [SerializeField, Min(0)] private int minimumVisibleRouteLengthTiles = 8;
+    [SerializeField] private bool skipShortRoutes = true;
 
     [Header("Simple Tile Movement Costs")]
     [SerializeField, Min(0.01f)] private float roadTileCost = 1f;
@@ -93,23 +96,81 @@ public class EvacuationController : MonoBehaviour
     [SerializeField] private bool allowRouteSelection = true;
     [SerializeField] private bool limitSelectedRoutes = true;
     [SerializeField, Min(1)] private int maxSelectedRoutes = 1;
+    [SerializeField] private bool lockRouteAfterSelection = true;
 
-    private readonly List<SimpleEvacuationRoute> _currentRoutes = new();
+    private readonly List<SimpleEvacuationRoute> _availableRoutes = new();
+    private readonly List<SimpleEvacuationRoute> _visibleRoutes = new();
     private readonly Dictionary<Vector3Int, List<string>> routeIdsByCell = new();
+    private readonly HashSet<string> selectedRouteIds = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, int> evacuatedPopulationByZone = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, float> evacuationMitigationByZone = new(StringComparer.Ordinal);
     private string hoveredRouteId;
-    private HashSet<string> selectedRouteIds = new HashSet<string>();
+    private int totalEvacuatedPopulation;
+    private bool hasConfirmedEvacuationRoute;
+    private string confirmedRouteId;
     private bool _isSubscribedToShelters;
+    private bool _isSubscribedToShelterPlacement;
 
     public bool IsPreviewModeActive => previewModeActive;
-    public SimpleEvacuationRoute CurrentRoute => _currentRoutes.Count > 0 ? _currentRoutes[0] : null;
-    public IReadOnlyList<SimpleEvacuationRoute> CurrentRoutes => _currentRoutes;
+    public SimpleEvacuationRoute CurrentRoute => _availableRoutes.Count > 0 ? _availableRoutes[0] : null;
+    public IReadOnlyList<SimpleEvacuationRoute> CurrentRoutes => _availableRoutes;
+    public bool HasConfirmedEvacuationRoute => hasConfirmedEvacuationRoute;
+    public string ConfirmedRouteId => confirmedRouteId;
     public event Action OnEvacuationRoutesChanged;
+    public event Action OnEvacuationRoutesBuilt;
+    public event Action OnEvacuationRoutesHidden;
+    public event Action<SimpleEvacuationRoute> OnEvacuationRouteSelected;
+    public event Action<SimpleEvacuationRoute> OnEvacuationRouteDeselected;
+    public event Action<SimpleEvacuationRoute> OnEvacuationRouteConfirmed;
+
+    public bool IsPreviewActive()
+    {
+        return previewModeActive;
+    }
+
+    public IReadOnlyList<SimpleEvacuationRoute> GetAvailableRoutes()
+    {
+        return _availableRoutes;
+    }
+
+    public IReadOnlyList<SimpleEvacuationRoute> GetSelectedRoutes()
+    {
+        List<SimpleEvacuationRoute> routes = new();
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null ||
+                !route.isValid ||
+                string.IsNullOrEmpty(route.routeId) ||
+                !selectedRouteIds.Contains(route.routeId))
+            {
+                continue;
+            }
+
+            routes.Add(route);
+        }
+
+        return routes;
+    }
+
+    public bool IsRouteSelected(string routeId)
+    {
+        routeId = NormalizeGeoid(routeId);
+        return !string.IsNullOrEmpty(routeId) && selectedRouteIds.Contains(routeId);
+    }
 
     private void Awake()
     {
         ResolveReferences();
         EnsureVisualizerConfigured();
         EnsureTooltipConfigured();
+        previewModeActive = false;
+        ClearVisibleRouteVisuals();
+
+        if (debugLogs)
+            Debug.Log("[EvacuationController] Preview starts disabled.");
     }
 
     private void OnEnable()
@@ -118,12 +179,14 @@ public class EvacuationController : MonoBehaviour
         EnsureVisualizerConfigured();
         EnsureTooltipConfigured();
         SubscribeToShelterChanges();
+        SubscribeToShelterPlacementChanges();
     }
 
     private void OnDisable()
     {
         UnsubscribeFromShelterChanges();
-        HideEvacuationRoute();
+        UnsubscribeFromShelterPlacementChanges();
+        HideEvacuationRoutes();
     }
 
     private void OnValidate()
@@ -134,6 +197,7 @@ public class EvacuationController : MonoBehaviour
         waterTileCost = Mathf.Max(0.01f, waterTileCost);
         deepFloodWaterThreshold = Mathf.Max(0f, deepFloodWaterThreshold);
         maxSelectedRoutes = Mathf.Max(1, maxSelectedRoutes);
+        minimumVisibleRouteLengthTiles = Mathf.Max(0, minimumVisibleRouteLengthTiles);
     }
 
     private void Update()
@@ -148,16 +212,11 @@ public class EvacuationController : MonoBehaviour
     {
         if (previewModeActive)
         {
-            HideEvacuationRoute();
+            HideEvacuationRoutes();
             return;
         }
 
-        previewModeActive = true;
-
-        if (debugLogs)
-            Debug.Log("[EvacuationController] Evacuation preview enabled.");
-
-        ShowSingleEvacuationRoute();
+        ShowEvacuationRoutes();
     }
 
     public void ToggleEvacuationPreviewMode()
@@ -165,78 +224,145 @@ public class EvacuationController : MonoBehaviour
         ToggleEvacuationPreview();
     }
 
-    public void ShowSingleEvacuationRoute()
+    public void ShowEvacuationRoutes()
     {
+        if (IsShelterPlacementModeActive())
+        {
+            previewModeActive = false;
+            RefreshEvacuationRoutes();
+
+            if (debugLogs)
+                Debug.Log("[EvacuationController] Shelter placement mode active. Evacuation visuals hidden, selected routes preserved.");
+
+            return;
+        }
+
         previewModeActive = true;
-        RefreshSingleRoute();
+
+        if (debugLogs)
+            Debug.Log("[EvacuationController] Evacuation preview enabled by player.");
+
+        RefreshEvacuationRoutes();
+
+        if (debugLogs)
+            Debug.Log($"[EvacuationController] Selected routes preserved after preview toggle: {selectedRouteIds.Count}.");
     }
 
-    public void HideEvacuationRoute()
+    public void HideEvacuationRoutes()
     {
-        bool hadRouteState = previewModeActive || _currentRoutes.Count > 0;
+        bool hadRouteState = previewModeActive || _visibleRoutes.Count > 0 || !string.IsNullOrEmpty(hoveredRouteId);
 
         previewModeActive = false;
-        _currentRoutes.Clear();
-        ClearRouteInteractionState(true);
+        ClearVisibleRouteVisuals();
 
-        if (routeVisualizer != null)
-            routeVisualizer.ClearRoute();
+        if (!hadRouteState)
+            return;
 
-        if (hadRouteState && debugLogs)
-            Debug.Log("[EvacuationController] Evacuation preview disabled.");
+        if (debugLogs)
+            Debug.Log("[EvacuationController] Evacuation preview hidden. Route data and selected routes preserved.");
 
+        OnEvacuationRoutesHidden?.Invoke();
         OnEvacuationRoutesChanged?.Invoke();
     }
 
-    public void RefreshSingleRoute()
+    public void RefreshEvacuationRoutes()
     {
         ResolveReferences();
         EnsureVisualizerConfigured();
 
-        _currentRoutes.Clear();
-        ClearRouteInteractionState(true);
+        bool rebuiltRoutes = RebuildAvailableRouteData();
 
-        if (routeVisualizer != null)
-            routeVisualizer.ClearRoute();
-
-        if (!previewModeActive)
+        if (rebuiltRoutes)
         {
-            OnEvacuationRoutesChanged?.Invoke();
-            return;
+            RemoveInvalidSelectedRouteIds();
+            RecalculateEvacuationMitigation();
         }
 
-        if (!ValidateRouteReferences())
+        if (previewModeActive && IsShelterPlacementModeActive())
         {
-            OnEvacuationRoutesChanged?.Invoke();
-            return;
+            previewModeActive = false;
+            ClearVisibleRouteVisuals();
+
+            if (debugLogs)
+                Debug.Log("[EvacuationController] Shelter placement mode active. Evacuation visuals hidden, selected routes preserved.");
+
+            OnEvacuationRoutesHidden?.Invoke();
         }
-
-        List<PlacedShelterData> activeShelters = shelterManager.GetActiveShelters();
-        int activeShelterCount = activeShelters != null ? activeShelters.Count : 0;
-
-        if (debugLogs)
-            Debug.Log($"[EvacuationController] Active shelters found: {activeShelterCount}.");
-
-        if (activeShelterCount == 0)
+        else if (previewModeActive)
         {
-            Debug.LogWarning("[EvacuationController] No active shelters placed. Cannot draw evacuation routes yet.");
-            OnEvacuationRoutesChanged?.Invoke();
-            return;
-        }
-
-        if (debugLogs)
-            Debug.Log("[EvacuationController] Building evacuation routes for all active shelters.");
-
-        BuildRoutesForAllActiveShelters(activeShelters);
-        BuildRouteCellLookup();
-
-        if (_currentRoutes.Count > 0)
             RedrawVisibleRoutes();
+        }
+        else
+        {
+            ClearVisibleRouteVisuals();
+        }
 
-        if (debugLogs)
-            Debug.Log($"[EvacuationController] Total evacuation routes built: {_currentRoutes.Count}.");
+        if (rebuiltRoutes)
+            OnEvacuationRoutesBuilt?.Invoke();
 
         OnEvacuationRoutesChanged?.Invoke();
+    }
+
+    public void ShowSingleEvacuationRoute()
+    {
+        ShowEvacuationRoutes();
+    }
+
+    public void HideEvacuationRoute()
+    {
+        HideEvacuationRoutes();
+    }
+
+    public void RefreshSingleRoute()
+    {
+        RefreshEvacuationRoutes();
+    }
+
+    public bool HasEvacuationRouteForZone(string geoid)
+    {
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return false;
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null || !route.isValid)
+                continue;
+
+            if (string.Equals(NormalizeGeoid(route.sourceZoneGeoid), geoid, StringComparison.Ordinal))
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool HasSelectedEvacuationRouteForZone(string geoid)
+    {
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return false;
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null ||
+                !route.isValid ||
+                string.IsNullOrEmpty(route.routeId) ||
+                !selectedRouteIds.Contains(route.routeId))
+            {
+                continue;
+            }
+
+            if (string.Equals(NormalizeGeoid(route.sourceZoneGeoid), geoid, StringComparison.Ordinal))
+                return true;
+        }
+
+        return false;
     }
 
     public bool TrySelectRoute(string routeId)
@@ -257,12 +383,17 @@ public class EvacuationController : MonoBehaviour
             return false;
         }
 
+        if (IsRouteSelectionLockedAgainst(routeId))
+            return false;
+
         if (selectedRouteIds.Contains(routeId))
             return true;
 
-        if (!HasVisibleRoute(routeId))
+        SimpleEvacuationRoute route = GetRouteById(routeId);
+
+        if (route == null || !route.isValid)
         {
-            Debug.LogWarning($"[EvacuationController] Could not select route '{routeId}' because it is not in the current preview cache.");
+            Debug.LogWarning($"[EvacuationController] Could not select route '{routeId}' because it is not in the available route cache.");
             return false;
         }
 
@@ -270,18 +401,24 @@ public class EvacuationController : MonoBehaviour
             return false;
 
         selectedRouteIds.Add(routeId);
+        bool routeConfirmed = TryConfirmRouteSelection(routeId);
 
         if (debugLogs)
             Debug.Log($"[EvacuationController] Selected evacuation route: {routeId}");
 
+        RecalculateEvacuationMitigation();
         RedrawVisibleRoutes();
+        OnEvacuationRouteSelected?.Invoke(route);
+        if (routeConfirmed)
+            OnEvacuationRouteConfirmed?.Invoke(route);
+
         OnEvacuationRoutesChanged?.Invoke();
         return true;
     }
 
     private void UpdateRouteHoverAndSelection()
     {
-        if (_currentRoutes.Count == 0 || routeIdsByCell.Count == 0)
+        if (_visibleRoutes.Count == 0 || routeIdsByCell.Count == 0)
         {
             SetHoveredRoute(null, Vector2.zero);
             return;
@@ -435,14 +572,30 @@ public class EvacuationController : MonoBehaviour
             return false;
         }
 
+        if (IsRouteSelectionLockedAgainst(routeId))
+            return false;
+
         if (selectedRouteIds.Contains(routeId))
         {
+            if (lockRouteAfterSelection &&
+                hasConfirmedEvacuationRoute &&
+                string.Equals(confirmedRouteId, routeId, StringComparison.Ordinal))
+            {
+                LogRouteSelectionLocked();
+                return false;
+            }
+
+            SimpleEvacuationRoute route = GetRouteById(routeId);
             selectedRouteIds.Remove(routeId);
 
             if (debugLogs)
                 Debug.Log($"[EvacuationController] Deselected evacuation route: {routeId}");
 
+            RecalculateEvacuationMitigation();
             RedrawVisibleRoutes();
+            if (route != null)
+                OnEvacuationRouteDeselected?.Invoke(route);
+
             OnEvacuationRoutesChanged?.Invoke();
             return true;
         }
@@ -465,6 +618,49 @@ public class EvacuationController : MonoBehaviour
         return false;
     }
 
+    private bool IsRouteSelectionLockedAgainst(string routeId)
+    {
+        if (!lockRouteAfterSelection || !hasConfirmedEvacuationRoute)
+            return false;
+
+        if (string.Equals(confirmedRouteId, routeId, StringComparison.Ordinal))
+            return false;
+
+        LogRouteSelectionLocked();
+        return true;
+    }
+
+    private bool TryConfirmRouteSelection(string routeId)
+    {
+        if (!lockRouteAfterSelection || hasConfirmedEvacuationRoute)
+            return false;
+
+        confirmedRouteId = routeId;
+        hasConfirmedEvacuationRoute = true;
+
+        LogRouteSelectionLocked();
+
+        return true;
+    }
+
+    private void LogRouteSelectionLocked()
+    {
+        if (debugLogs)
+            Debug.Log($"[EvacuationController] Route selection locked. Confirmed route: {confirmedRouteId}.");
+    }
+
+    private void ClearConfirmedRouteSelection()
+    {
+        if (!hasConfirmedEvacuationRoute)
+            return;
+
+        if (debugLogs)
+            Debug.Log($"[EvacuationController] Cleared confirmed evacuation route because it is no longer available: {confirmedRouteId}.");
+
+        confirmedRouteId = null;
+        hasConfirmedEvacuationRoute = false;
+    }
+
     private void DeselectSelectedRoutesExcept(string routeIdToKeep)
     {
         if (selectedRouteIds.Count == 0)
@@ -478,22 +674,40 @@ public class EvacuationController : MonoBehaviour
                 routesToDeselect.Add(selectedRouteId);
         }
 
+        List<SimpleEvacuationRoute> deselectedRoutes = new();
+
         for (int i = 0; i < routesToDeselect.Count; i++)
         {
-            selectedRouteIds.Remove(routesToDeselect[i]);
+            string routeId = routesToDeselect[i];
+            SimpleEvacuationRoute route = GetRouteById(routeId);
+            selectedRouteIds.Remove(routeId);
+
+            if (route != null)
+                deselectedRoutes.Add(route);
 
             if (debugLogs)
-                Debug.Log($"[EvacuationController] Deselected evacuation route: {routesToDeselect[i]}");
+                Debug.Log($"[EvacuationController] Deselected evacuation route: {routeId}");
         }
+
+        if (routesToDeselect.Count == 0)
+            return;
+
+        RecalculateEvacuationMitigation();
+        RedrawVisibleRoutes();
+
+        for (int i = 0; i < deselectedRoutes.Count; i++)
+            OnEvacuationRouteDeselected?.Invoke(deselectedRoutes[i]);
+
+        OnEvacuationRoutesChanged?.Invoke();
     }
 
     private void BuildRouteCellLookup()
     {
         routeIdsByCell.Clear();
 
-        for (int i = 0; i < _currentRoutes.Count; i++)
+        for (int i = 0; i < _visibleRoutes.Count; i++)
         {
-            SimpleEvacuationRoute route = _currentRoutes[i];
+            SimpleEvacuationRoute route = _visibleRoutes[i];
 
             if (route == null || string.IsNullOrEmpty(route.routeId) || route.pathCells == null)
                 continue;
@@ -514,11 +728,6 @@ public class EvacuationController : MonoBehaviour
         }
     }
 
-    private bool HasVisibleRoute(string routeId)
-    {
-        return GetRouteById(routeId) != null;
-    }
-
     private SimpleEvacuationRoute GetRouteById(string routeId)
     {
         routeId = NormalizeGeoid(routeId);
@@ -526,9 +735,9 @@ public class EvacuationController : MonoBehaviour
         if (string.IsNullOrEmpty(routeId))
             return null;
 
-        for (int i = 0; i < _currentRoutes.Count; i++)
+        for (int i = 0; i < _availableRoutes.Count; i++)
         {
-            SimpleEvacuationRoute route = _currentRoutes[i];
+            SimpleEvacuationRoute route = _availableRoutes[i];
 
             if (route != null && route.routeId == routeId)
                 return route;
@@ -537,15 +746,16 @@ public class EvacuationController : MonoBehaviour
         return null;
     }
 
-    private void ClearRouteInteractionState(bool clearSelection)
+    private void ClearVisibleRouteVisuals()
     {
         bool hadHover = !string.IsNullOrEmpty(hoveredRouteId);
         hoveredRouteId = null;
+        _visibleRoutes.Clear();
         routeIdsByCell.Clear();
         HideRouteTooltip();
 
-        if (clearSelection)
-            selectedRouteIds.Clear();
+        if (routeVisualizer != null)
+            routeVisualizer.ClearRoute();
 
         if (debugLogs && hadHover)
             Debug.Log("[EvacuationController] Evacuation route hover cleared.");
@@ -556,17 +766,59 @@ public class EvacuationController : MonoBehaviour
         if (!previewModeActive || routeVisualizer == null)
             return;
 
-        routeVisualizer.DrawRoutes(_currentRoutes, hoveredRouteId, selectedRouteIds);
+        _visibleRoutes.Clear();
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route != null && route.isValid)
+                _visibleRoutes.Add(route);
+        }
+
+        BuildRouteCellLookup();
+        routeVisualizer.DrawRoutes(_visibleRoutes, hoveredRouteId, selectedRouteIds);
     }
 
     public float GetEvacuationMitigationForZone(string geoid)
     {
-        return 0f;
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return 0f;
+
+        return evacuationMitigationByZone.TryGetValue(geoid, out float mitigation)
+            ? Mathf.Clamp01(mitigation)
+            : 0f;
     }
 
     public int GetEvacuatedPopulationForZone(string geoid)
     {
-        return 0;
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return 0;
+
+        return evacuatedPopulationByZone.TryGetValue(geoid, out int evacuatedPopulation)
+            ? Mathf.Max(0, evacuatedPopulation)
+            : 0;
+    }
+
+    public int GetRemainingPopulationAfterEvacuation(string geoid)
+    {
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return 0;
+
+        int zonePopulation = GetKnownZonePopulation(geoid);
+        int evacuatedPopulation = GetEvacuatedPopulationForZone(geoid);
+        return Mathf.Max(0, zonePopulation - evacuatedPopulation);
+    }
+
+    public int GetTotalEvacuatedPopulation()
+    {
+        return Mathf.Max(0, totalEvacuatedPopulation);
     }
 
     private void ResolveReferences()
@@ -576,6 +828,9 @@ public class EvacuationController : MonoBehaviour
 
         if (shelterManager == null)
             shelterManager = FindFirstObjectByType<ShelterManager>();
+
+        if (shelterCandidateController == null)
+            shelterCandidateController = FindFirstObjectByType<ShelterCandidateController>();
 
         if (floodDefenseBoxStamp == null)
             floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
@@ -693,10 +948,78 @@ public class EvacuationController : MonoBehaviour
         _isSubscribedToShelters = false;
     }
 
+    private void SubscribeToShelterPlacementChanges()
+    {
+        if (_isSubscribedToShelterPlacement || shelterCandidateController == null)
+            return;
+
+        shelterCandidateController.ShelterPlacementModeChanged += OnShelterPlacementModeChanged;
+        _isSubscribedToShelterPlacement = true;
+    }
+
+    private void UnsubscribeFromShelterPlacementChanges()
+    {
+        if (!_isSubscribedToShelterPlacement || shelterCandidateController == null)
+            return;
+
+        shelterCandidateController.ShelterPlacementModeChanged -= OnShelterPlacementModeChanged;
+        _isSubscribedToShelterPlacement = false;
+    }
+
     private void OnSheltersChanged()
     {
-        if (previewModeActive)
-            RefreshSingleRoute();
+        RefreshEvacuationRoutes();
+    }
+
+    private void OnShelterPlacementModeChanged(bool isActive)
+    {
+        if (!isActive || (!previewModeActive && _visibleRoutes.Count == 0))
+            return;
+
+        HideEvacuationRoutes();
+
+        if (debugLogs)
+            Debug.Log("[EvacuationController] Shelter placement mode active. Evacuation visuals hidden, selected routes preserved.");
+    }
+
+    private bool IsShelterPlacementModeActive()
+    {
+        if (shelterCandidateController == null)
+            shelterCandidateController = FindFirstObjectByType<ShelterCandidateController>();
+
+        return shelterCandidateController != null && shelterCandidateController.IsShelterPlacementModeActive;
+    }
+
+    private bool RebuildAvailableRouteData()
+    {
+        _availableRoutes.Clear();
+
+        if (!ValidateRouteReferences())
+            return false;
+
+        List<PlacedShelterData> activeShelters = shelterManager.GetActiveShelters();
+        int activeShelterCount = activeShelters != null ? activeShelters.Count : 0;
+
+        if (debugLogs)
+            Debug.Log($"[EvacuationController] Active shelters found: {activeShelterCount}.");
+
+        if (activeShelterCount == 0)
+        {
+            if (debugLogs)
+                Debug.Log("[EvacuationController] Routes built for all active shelters: 0.");
+
+            return true;
+        }
+
+        if (debugLogs)
+            Debug.Log("[EvacuationController] Building evacuation routes for all active shelters.");
+
+        BuildRoutesForAllActiveShelters(activeShelters);
+
+        if (debugLogs)
+            Debug.Log($"[EvacuationController] Routes built for all active shelters: {_availableRoutes.Count}.");
+
+        return true;
     }
 
     private bool ValidateRouteReferences()
@@ -755,7 +1078,7 @@ public class EvacuationController : MonoBehaviour
             }
 
             int associatedZoneCount = shelter.associatedZoneGeoids != null ? shelter.associatedZoneGeoids.Count : 0;
-            int routeCountBeforeShelter = _currentRoutes.Count;
+            int routeCountBeforeShelter = _availableRoutes.Count;
 
             if (debugLogs)
                 Debug.Log($"[EvacuationController] Shelter {shelter.shelterId} serves {associatedZoneCount} zones.");
@@ -763,7 +1086,7 @@ public class EvacuationController : MonoBehaviour
             BuildRoutesForShelter(shelter, shelterTile);
 
             if (debugLogs)
-                Debug.Log($"[EvacuationController] Routes built for shelter {shelter.shelterId}: {_currentRoutes.Count - routeCountBeforeShelter}.");
+                Debug.Log($"[EvacuationController] Routes built for shelter {shelter.shelterId}: {_availableRoutes.Count - routeCountBeforeShelter}.");
         }
     }
 
@@ -788,6 +1111,19 @@ public class EvacuationController : MonoBehaviour
             if (string.IsNullOrEmpty(geoid) || !processedGeoids.Add(geoid))
                 continue;
 
+            string destinationShelterId = GetSafeShelterId(shelter);
+
+            if (IsShelterInsideZone(geoid, shelterTile))
+            {
+                if (debugLogs)
+                {
+                    Debug.Log(
+                        $"[EvacuationController] Skipping route for zone {geoid} because shelter {destinationShelterId} is located inside that zone.");
+                }
+
+                continue;
+            }
+
             if (debugLogs)
                 Debug.Log($"[EvacuationController] Building route from zone {geoid} to shelter {shelter.shelterId}.");
 
@@ -806,7 +1142,16 @@ public class EvacuationController : MonoBehaviour
                 continue;
             }
 
-            string destinationShelterId = GetSafeShelterId(shelter);
+            if (skipShortRoutes && distanceTiles < minimumVisibleRouteLengthTiles)
+            {
+                if (debugLogs)
+                {
+                    Debug.Log(
+                        $"[EvacuationController] Skipping short route. Zone={geoid}, Shelter={destinationShelterId}, Distance={distanceTiles:0.##}, Minimum={minimumVisibleRouteLengthTiles}.");
+                }
+
+                continue;
+            }
 
             SimpleEvacuationRoute route = new()
             {
@@ -823,11 +1168,158 @@ public class EvacuationController : MonoBehaviour
                 isValid = pathCells.Count > 0,
             };
 
-            _currentRoutes.Add(route);
+            _availableRoutes.Add(route);
 
             if (debugLogs)
                 Debug.Log($"[EvacuationController] Route built. Zone={geoid}, Shelter={shelter.shelterId}, Cells={pathCells.Count}, Distance={distanceTiles:0.##}.");
         }
+    }
+
+    private bool IsShelterInsideZone(string geoid, Vector2Int shelterTile)
+    {
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid) || floodDefenseBoxStamp == null)
+            return false;
+
+        return floodDefenseBoxStamp.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) &&
+               zoneTiles != null &&
+               zoneTiles.Contains(shelterTile);
+    }
+
+    private void RemoveInvalidSelectedRouteIds()
+    {
+        if (selectedRouteIds.Count == 0)
+            return;
+
+        HashSet<string> validRouteIds = new(StringComparer.Ordinal);
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null || !route.isValid || string.IsNullOrEmpty(route.routeId))
+                continue;
+
+            validRouteIds.Add(route.routeId);
+        }
+
+        List<string> staleRouteIds = new();
+
+        foreach (string selectedRouteId in selectedRouteIds)
+        {
+            if (string.IsNullOrEmpty(selectedRouteId) || !validRouteIds.Contains(selectedRouteId))
+            {
+                staleRouteIds.Add(selectedRouteId);
+                continue;
+            }
+
+            if (debugLogs)
+                Debug.Log($"[EvacuationController] Preserved selected route: {selectedRouteId}.");
+        }
+
+        for (int i = 0; i < staleRouteIds.Count; i++)
+        {
+            string staleRouteId = staleRouteIds[i];
+            selectedRouteIds.Remove(staleRouteId);
+
+            if (string.Equals(staleRouteId, confirmedRouteId, StringComparison.Ordinal))
+                ClearConfirmedRouteSelection();
+
+            if (debugLogs)
+                Debug.Log($"[EvacuationController] Removed stale selected route because route no longer exists: {staleRouteId}.");
+        }
+    }
+
+    private void RecalculateEvacuationMitigation()
+    {
+        evacuatedPopulationByZone.Clear();
+        evacuationMitigationByZone.Clear();
+        totalEvacuatedPopulation = 0;
+
+        Dictionary<string, int> remainingCapacityByShelter = new(StringComparer.Ordinal);
+        Dictionary<string, int> zonePopulationByGeoid = new(StringComparer.Ordinal);
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null ||
+                !route.isValid ||
+                string.IsNullOrEmpty(route.routeId) ||
+                !selectedRouteIds.Contains(route.routeId))
+            {
+                continue;
+            }
+
+            string geoid = NormalizeGeoid(route.sourceZoneGeoid);
+            string shelterId = NormalizeGeoid(route.destinationShelterId);
+
+            if (string.IsNullOrEmpty(geoid) || string.IsNullOrEmpty(shelterId))
+                continue;
+
+            int zonePopulation = Mathf.Max(0, route.sourceZonePopulation);
+            int alreadyEvacuatedFromZone = evacuatedPopulationByZone.TryGetValue(geoid, out int currentZoneEvacuation)
+                ? currentZoneEvacuation
+                : 0;
+            int remainingZonePopulation = Mathf.Max(0, zonePopulation - alreadyEvacuatedFromZone);
+
+            if (!zonePopulationByGeoid.TryGetValue(geoid, out int cachedZonePopulation) || zonePopulation > cachedZonePopulation)
+                zonePopulationByGeoid[geoid] = zonePopulation;
+
+            if (!remainingCapacityByShelter.TryGetValue(shelterId, out int remainingCapacity))
+                remainingCapacity = Mathf.Max(0, route.destinationShelterCapacity);
+
+            int evacuatedPopulation = Mathf.Min(remainingZonePopulation, remainingCapacity);
+            remainingCapacityByShelter[shelterId] = Mathf.Max(0, remainingCapacity - evacuatedPopulation);
+
+            if (evacuatedPopulation <= 0)
+                continue;
+
+            evacuatedPopulationByZone[geoid] = alreadyEvacuatedFromZone + evacuatedPopulation;
+            totalEvacuatedPopulation += evacuatedPopulation;
+        }
+
+        foreach (KeyValuePair<string, int> pair in evacuatedPopulationByZone)
+        {
+            string geoid = pair.Key;
+            int evacuatedPopulation = Mathf.Max(0, pair.Value);
+            int zonePopulation = zonePopulationByGeoid.TryGetValue(geoid, out int cachedPopulation)
+                ? Mathf.Max(0, cachedPopulation)
+                : GetKnownZonePopulation(geoid);
+
+            evacuationMitigationByZone[geoid] = zonePopulation > 0
+                ? Mathf.Clamp01((float)evacuatedPopulation / zonePopulation)
+                : 0f;
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"[EvacuationController] Recalculated evacuation mitigation. Total evacuated population={totalEvacuatedPopulation}.");
+            Debug.Log($"[EvacuationController] Total evacuated population after selected routes: {totalEvacuatedPopulation}.");
+        }
+    }
+
+    private int GetKnownZonePopulation(string geoid)
+    {
+        geoid = NormalizeGeoid(geoid);
+
+        if (string.IsNullOrEmpty(geoid))
+            return 0;
+
+        int bestPopulation = 0;
+
+        for (int i = 0; i < _availableRoutes.Count; i++)
+        {
+            SimpleEvacuationRoute route = _availableRoutes[i];
+
+            if (route == null || NormalizeGeoid(route.sourceZoneGeoid) != geoid)
+                continue;
+
+            bestPopulation = Mathf.Max(bestPopulation, route.sourceZonePopulation);
+        }
+
+        return bestPopulation > 0 ? bestPopulation : GetSourceZonePopulation(geoid);
     }
 
     private bool TryFindZoneCenterAnchor(string geoid, out ZoneAnchor anchor)

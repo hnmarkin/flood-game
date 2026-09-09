@@ -306,7 +306,7 @@ public class HoverTileTooltip : MonoBehaviour
             _elevationLabel.text = $"Elevation: {elevation}";
 
         if (_zoneLabel != null)
-            _zoneLabel.text = $"Zone: {zone}";
+            _zoneLabel.text = $"Zone: {DemoDisplayIdFormatter.GetZoneDisplayId(zone)}";
     }
 
     private void PositionTooltip(Vector2 mouseScreen)

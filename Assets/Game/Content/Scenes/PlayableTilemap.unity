@@ -184,7 +184,7 @@ MonoBehaviour:
     description: Large-capacity shelter option.
   allowMultipleSheltersPerCandidate: 0
   limitPlacedShelters: 1
-  maxPlacedShelters: 4
+  maxPlacedShelters: 2
   defaultRouteAccessibility: 1
   defaultShelterSafety: 0.9
   debugLogs: 1
@@ -677,6 +677,9 @@ Transform:
   - {fileID: 928855867}
   - {fileID: 2147339102}
   - {fileID: 2044171024}
+  - {fileID: 1319508904}
+  - {fileID: 2100000002}
+  - {fileID: 2100000102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &222353873
@@ -745,8 +748,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -901,24 +904,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baselineRiskController: {fileID: 1590100951}
   shelterManager: {fileID: 12772933}
+  shelterCandidateController: {fileID: 0}
   floodDefenseBoxStamp: {fileID: 1046329326}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   routeTilemap: {fileID: 36957482}
   routeVisualizer: {fileID: 1117061671}
   mapHoverTooltip: {fileID: 0}
-  routeTooltipUIDocument: {fileID: 0}
+  routeTooltipUIDocument: {fileID: 2044171025}
   mainCamera: {fileID: 917516086}
   routeColor: {r: 1, g: 0, b: 0.3026948, a: 1}
   debugLogs: 1
   previewModeActive: 1
   maxPathSearchIterations: 6000
+  minimumVisibleRouteLengthTiles: 8
+  skipShortRoutes: 1
   roadTileCost: 1
   landTileCost: 3
   waterTileCost: 5
   deepFloodWaterThreshold: 0.5
   allowRouteSelection: 1
-  limitSelectedRoutes: 0
+  limitSelectedRoutes: 1
   maxSelectedRoutes: 1
+  lockRouteAfterSelection: 1
 --- !u!4 &336004483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3083331364671776438, guid: 49d40a3467d77496ea93f3aa2a90b9f4, type: 3}
@@ -942,7 +949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &368263632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -960,7 +967,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 110}
+  m_AnchoredPosition: {x: 5, y: 155}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &368263633
@@ -1039,8 +1046,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1165,7 +1172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Zoom Out
+  m_text: '[-]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
   m_sharedMaterial: {fileID: 1987965418738740644, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
@@ -1174,8 +1181,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1192,8 +1199,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1255,6 +1262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 515287496}
   - component: {fileID: 515287497}
+  - component: {fileID: 515287498}
   m_Layer: 0
   m_Name: AdvisorPanel
   m_TagString: Untagged
@@ -1292,10 +1300,32 @@ MonoBehaviour:
   baselineRiskController: {fileID: 1590100951}
   advisorUIDocument: {fileID: 377076261}
   highRiskManager: {fileID: 1663569816}
+  floodDefense: {fileID: 1046329326}
+  waterSimulator: {fileID: 1818902683}
+  shelterManager: {fileID: 12772933}
+  evacuationController: {fileID: 315251714}
+  communicationTowerController: {fileID: 810699005}
   popupDelay: 1
   secondsPerCharacter: 0.07
   autoHideAfterSeconds: 0
   hideOnStart: 1
+  maxAdvisorMessageCharacters: 220
+  subscribeToGameplayEvents: 1
+  debugLogs: 1
+--- !u!114 &515287498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515287495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2f2e87cb5d4a4f8d7ed689fb6ad946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smallAdvisorUIDocument: {fileID: 377076261}
+  bigAdvisorUIDocument: {fileID: 2100000103}
   debugLogs: 1
 --- !u!1 &529214712
 GameObject:
@@ -1354,7 +1384,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reset Zoom
+  m_text: Auto Focus
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
   m_sharedMaterial: {fileID: 1987965418738740644, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
@@ -1363,8 +1393,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4086,8 +4116,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4209,7 +4239,8 @@ MonoBehaviour:
   shelterCandidateController: {fileID: 1482495044}
   mainCamera: {fileID: 917516086}
   mapHoverTooltip: {fileID: 0}
-  tooltipUIDocument: {fileID: 0}
+  tooltipUIDocument: {fileID: 2082171433}
+  communicationPanelController: {fileID: 2100000004}
   mainTowerSprite: {fileID: 21300000, guid: 7e25c158da0c7974cbf783bc599cbba3, type: 3}
   zoneTowerSprite: {fileID: 21300000, guid: 984ce4b18bfef434881def49d974e4c6, type: 3}
   towerVisualRoot: {fileID: 1688803249}
@@ -4303,8 +4334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908e8eaeef6084fcf840ee5b5e6f5cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipUIDocument: {fileID: 0}
-  cursorOffset: {x: 16, y: 18}
+  tooltipUIDocument: {fileID: 2044171025}
+  cursorOffset: {x: 5, y: -50}
   maxTooltipWidth: 240
   screenEdgePadding: 8
   debugLogs: 0
@@ -4326,7 +4357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &841802069
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4344,7 +4375,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 5, y: 150}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &841802070
@@ -4423,8 +4454,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4493,7 +4524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &911887724
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4503,7 +4534,7 @@ RectTransform:
   m_GameObject: {fileID: 911887723}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 419006125}
@@ -4511,7 +4542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 170, y: 200}
+  m_AnchoredPosition: {x: 85, y: 200}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &911887725
@@ -4590,8 +4621,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5023,8 +5054,11 @@ MonoBehaviour:
   terrainTilemap: {fileID: 1822120955}
   mainCamera: {fileID: 917516086}
   jsonMapLoader: {fileID: 1678446140}
+  waterSimulator: {fileID: 1818902683}
   zoneBoundaryMode: 0
   maxZoneBarriers: 3
+  autoStartFloodAfterBarrierLimit: 1
+  requiredBarriersBeforeFlood: 3
   barrierHeight: 40
   seepage: 0
   previewTilemap: {fileID: 915049043}
@@ -5034,6 +5068,7 @@ MonoBehaviour:
   zoneOutlineTile: {fileID: 11400000, guid: 00c3cd3b48aa04a3d959afde9e254e92, type: 2}
   zoneOutlineColor: {r: 0, g: 0, b: 0, a: 0.84313726}
   drawCommittedOutline: 1
+  debugLogs: 1
 --- !u!114 &1046329327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5046,19 +5081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4da8be3a33cf40d9a2e41e79ba0ff92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speaker: Operations Lead
-  firstMessage: All available barriers have been placed.
-  secondMessage: Good work. Now watch how the floodwater responds to your decisions.
-    Some areas may remain protected, while others may still be affected by seepage
-    or surrounding terrain.
-  firstDelayBeforeShow: 0.3
-  secondsPerChar: 0.05
-  holdAfterFinished: 3.5
-  useTypewriter: 1
-  autoHide: 1
-  delayAfterFirstToast: 2.5
-  playOnlyOnce: 1
-  _hasPlayed: 0
 --- !u!1 &1067446490
 GameObject:
   m_ObjectHideFlags: 0
@@ -5158,7 +5180,7 @@ MonoBehaviour:
   actionsUIDocument: {fileID: 571244097}
   highRiskManager: {fileID: 1663569816}
   labelTemplatePrefab: {fileID: 4619502793678252998, guid: f4150b396b2f74df6b71c299a2e09960, type: 3}
-  labelParent: {fileID: 0}
+  labelParent: {fileID: 855510019}
   showLabelsForAllZones: 1
   maxLabelsToShow: 50
   riskLabelHeightOffset: 0.95
@@ -5361,7 +5383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Zoom In
+  m_text: '[+]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
   m_sharedMaterial: {fileID: 1987965418738740644, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
@@ -5370,8 +5392,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5388,8 +5410,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5488,15 +5510,15 @@ MonoBehaviour:
   routeTilemap: {fileID: 36957482}
   linePrefab: {fileID: 1963393216}
   lineMaterial: {fileID: 2100000, guid: 5c951169c35ea49eab614112f3848aa0, type: 2}
-  routeColor: {r: 1, g: 0, b: 0.3019608, a: 1}
+  routeColor: {r: 0.9056604, g: 0, b: 0.27954072, a: 1}
   routeLineWidth: 0.05
   sortingLayerName: Default
   routeSortingOrder: 2300
   routeZOffset: -0.05
   debugLogs: 1
-  previewRouteColor: {r: 1, g: 0, b: 0.41345692, a: 0.6117647}
-  hoveredRouteColor: {r: 1, g: 0, b: 0.106119156, a: 0.8627451}
-  selectedRouteColor: {r: 1, g: 0, b: 0.3019608, a: 1}
+  previewRouteColor: {r: 0.90588236, g: 0, b: 0.28235295, a: 0.6117647}
+  hoveredRouteColor: {r: 0.90588236, g: 0, b: 0.28235295, a: 0.8627451}
+  selectedRouteColor: {r: 1, g: 0, b: 0.39857292, a: 1}
   previewLineWidth: 0.05
   hoveredLineWidth: 0.06
   selectedLineWidth: 0.1
@@ -25823,6 +25845,38 @@ Transform:
   - {fileID: 1948095785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1319508903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1319508904}
+  m_Layer: 0
+  m_Name: CommunicationTooltip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1319508904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319508903}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2082171432}
+  m_Father: {fileID: 195463844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1389987225
 GameObject:
   m_ObjectHideFlags: 0
@@ -25870,8 +25924,8 @@ MonoBehaviour:
   actionsUIDocument: {fileID: 571244097}
   floodDefenseBoxStamp: {fileID: 1046329326}
   shelterCandidateController: {fileID: 1482495044}
-  evacuationController: {fileID: 0}
-  communicationTowerController: {fileID: 0}
+  evacuationController: {fileID: 315251714}
+  communicationTowerController: {fileID: 810699005}
   preparationCardsController: {fileID: 2147339104}
   debugLogs: 1
 --- !u!1 &1411769531
@@ -25996,6 +26050,7 @@ Transform:
   - {fileID: 938194713}
   - {fileID: 1067446491}
   - {fileID: 1837393908}
+  - {fileID: 2019949260}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1434780121
@@ -26092,7 +26147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1448825048
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26110,7 +26165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 170, y: 110}
+  m_AnchoredPosition: {x: 5, y: 110}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1448825049
@@ -26133,8 +26188,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -26274,10 +26329,10 @@ MonoBehaviour:
   floodImpactController: {fileID: 35733723}
   shelterManager: {fileID: 12772933}
   inventoryToolsDocument: {fileID: 1300253460}
-  labelParent: {fileID: 0}
+  labelParent: {fileID: 1067446491}
   labelFontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
-  minZonesPerShelter: 1
-  maxZonesPerShelter: 4
+  minZonesPerShelter: 8
+  maxZonesPerShelter: 9
   allowSingleZoneShelters: 0
   allowUndersizedFallbackGroups: 1
   defaultZoneEnabled: 1
@@ -26300,8 +26355,10 @@ MonoBehaviour:
   - lake
   - ocean
   - flood_source
-  candidateTileColor: {r: 1, g: 0.31021366, b: 0.1490196, a: 1}
-  associatedZoneColor: {r: 0.3, g: 0.85, b: 0.85, a: 1}
+  candidateTileColor: {r: 1, g: 0.796214, b: 0, a: 1}
+  candidateAssociatedZoneColor: {r: 0, g: 0.013331577, b: 0.8773585, a: 1}
+  placedShelterAssociatedZoneColor: {r: 0.2805456, g: 1, b: 0, a: 0.75}
+  showPlacedShelterZoneOutlines: 1
   showCandidateLabels: 1
   labelHeightOffset: 0.85
   labelFontSize: 3.25
@@ -26401,7 +26458,7 @@ MonoBehaviour:
   terrainTilemap: {fileID: 1822120955}
   zoneOutlineHighlighter: {fileID: 704415076}
   shelterManager: {fileID: 12772933}
-  evacuationController: {fileID: 0}
+  evacuationController: {fileID: 315251714}
   maxRiskDistanceCells: 12
   distanceWeight: 0.4
   elevationWeight: 0.35
@@ -26482,10 +26539,10 @@ MonoBehaviour:
   riskWarningMarkerPrefab: {fileID: 4619502793678252998, guid: f4150b396b2f74df6b71c299a2e09960, type: 3}
   markerParent: {fileID: 1590100950}
   liveFloodOverlayManager: {fileID: 1089964579}
-  maxRiskZonesToShow: 5
+  maxRiskZonesToShow: 3
   markerHeightOffset: 1.25
-  showWarningMarkersForTopZones: 1
-  showLabelsForAllZones: 0
+  showWarningMarkersForTopZones: 0
+  showLabelsForAllZones: 1
   maxLabelsToShow: 50
   includeRiskLevelInLabels: 1
   labelHeightOffset: 0.95
@@ -32417,7 +32474,7 @@ RectTransform:
   m_GameObject: {fileID: 1802201607}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1105109786}
@@ -32425,7 +32482,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 200}
+  m_AnchoredPosition: {x: 5, y: 200}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1802201609
@@ -32504,8 +32561,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -32557,15 +32614,16 @@ MonoBehaviour:
   waterTileType: {fileID: 11400000, guid: 8f8f193412445453db541a34e65dc85d, type: 2}
   stepMode: 1
   barrierProviderBehaviour: {fileID: 1046329326}
-  useSpreadGating: 1
-  spreadInterval: 0.4
-  spreadLayersPerTick: 10
-  expandFromWaterThreshold: 0.001
+  useSpreadGating: 0
+  spreadInterval: 10
+  spreadLayersPerTick: 1
+  expandFromWaterThreshold: 0.1
   expandOnceImmediatelyOnStart: 1
   persistentFloodVisuals: 0
-  visualWaterChangePerStep: 0.5
+  visualWaterChangePerStep: 3
   autoStepInterval: 0.1
   startOnPlay: 0
+  showDebugFloodButton: 0
 --- !u!4 &1818902684
 Transform:
   m_ObjectHideFlags: 0
@@ -79133,8 +79191,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -79254,7 +79312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1992211703
 RectTransform:
   m_ObjectHideFlags: 0
@@ -79272,7 +79330,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 170, y: 155}
+  m_AnchoredPosition: {x: 175, y: 155}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1992211704
@@ -79351,8 +79409,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0a0e2856922a1474ab9541dd2f949ad1, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -79440,7 +79498,71 @@ MonoBehaviour:
     fullPanelName: mission_checklist_full
     minimizeButtonName: mission_checklist_minimize_btn
     collapsedButtonName: mission_checklist_collapse_btn
+  - panelLabel: Communication Panel
+    panelUIDocument: {fileID: 2100000003}
+    fullPanelName: com_full_panel_container
+    minimizeButtonName: com_panel_minimize_btn
+    collapsedButtonName: com_panel_collapsed_btn
   debugLogs: 1
+--- !u!1 &2019949259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2019949260}
+  - component: {fileID: 2019949261}
+  m_Layer: 0
+  m_Name: GameStateSummary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2019949260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019949259}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2019949261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019949259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f071b1bf5c4fbcb484a15e63fc3c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shelterManager: {fileID: 12772933}
+  zoneBaselineRiskController: {fileID: 1590100951}
+  floodImpactController: {fileID: 35733723}
+  evacuationController: {fileID: 315251714}
+  communicationTowerController: {fileID: 810699005}
+  highRiskManager: {fileID: 1663569816}
+  currentGamePhase: PreCrisis
+  currentTurn: 1
+  topRiskZoneCount: 5
+  topFloodImpactZoneCount: 5
+  logJsonToConsole: 1
+  prettyPrintJson: 1
+  logDisplayIdMappings: 1
+  debugUIDocument: {fileID: 0}
+  debugJsonLabelName: game_state_json_label
 --- !u!1 &2026107600
 GameObject:
   m_ObjectHideFlags: 0
@@ -79607,6 +79729,57 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!1 &2082171431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2082171432}
+  - component: {fileID: 2082171433}
+  m_Layer: 0
+  m_Name: UIDocument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2082171432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082171431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1319508904}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2082171433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082171431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 3a9d075b934104e3da06f152a0c525a7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a47e3a5a0eb4e4062adf4cc40c2c40ea, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &2087412560
 GameObject:
   m_ObjectHideFlags: 0
@@ -79709,6 +79882,142 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2110391902}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2100000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100000002}
+  - component: {fileID: 2100000003}
+  - component: {fileID: 2100000004}
+  m_Layer: 0
+  m_Name: CommunicationPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195463844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 3a9d075b934104e3da06f152a0c525a7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7a7554768217246c7a4b79f427772e7e, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+--- !u!114 &2100000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1e2d3c4b5a69788776655443322110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  communicationUIDocument: {fileID: 2100000003}
+  communicationPanelTemplate: {fileID: 9197481963319205126, guid: 7a7554768217246c7a4b79f427772e7e, type: 3}
+  communicationTowerController: {fileID: 810699005}
+  shelterManager: {fileID: 12772933}
+  evacuationController: {fileID: 315251714}
+  zoneBaselineRiskController: {fileID: 1590100951}
+  evacuationMissingIcon: {fileID: 21300000, guid: a06926691cf4a4aaf87afbd95e73c7a7, type: 3}
+  evacuationAvailableIcon: {fileID: 21300000, guid: 6777646f22c3d47389d7cd3797633e26, type: 3}
+  communicationPendingIcon: {fileID: 21300000, guid: fba3ad272c0674a9a844a694c5fa5068, type: 3}
+  communicationCompletedIcon: {fileID: 21300000, guid: 6777646f22c3d47389d7cd3797633e26, type: 3}
+  warningUncheckedIcon: {fileID: 21300000, guid: 35015788fda5f47f7bf9ac956298ba88, type: 3}
+  warningCheckedIcon: {fileID: 21300000, guid: 40b2fde3b623540f4acdbf78c9b0df97, type: 3}
+  riskCriticalIcon: {fileID: 21300000, guid: 798075030ea554e199dea4f9dacae2cd, type: 3}
+  riskMediumIcon: {fileID: 21300000, guid: 0406195a78fcd43bba878cde1710d3e9, type: 3}
+  riskLowIcon: {fileID: 21300000, guid: ac2a20716160d4652b1ce32135762cce, type: 3}
+  sendWarningNormalSprite: {fileID: 21300000, guid: 58d95de73eebe4116aedf3593ad8896e, type: 3}
+  sendWarningHoverSprite: {fileID: 21300000, guid: ac899538245d14e868405bdf9c93db26, type: 3}
+  sendWarningSelectedSprite: {fileID: 21300000, guid: 297a054d03cd9496faede1926b742f2c, type: 3}
+  sendWarningSuccessSeconds: 0.35
+  sendWarningHoverScale: 1.04
+  debugLogs: 1
+--- !u!1 &2100000101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100000102}
+  - component: {fileID: 2100000103}
+  m_Layer: 0
+  m_Name: AdvisorBigPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100000102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000101}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195463844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100000103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 3a9d075b934104e3da06f152a0c525a7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7fcc44eb3ce7144078c3bb567c0964fb, type: 3}
+  m_SortingOrder: 1
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &2110391900
 GameObject:
   m_ObjectHideFlags: 0
@@ -79897,7 +80206,9 @@ MonoBehaviour:
   - ocean
   - flood_source
   candidateTileColor: {r: 0.15, g: 0.9, b: 1, a: 1}
-  associatedZoneColor: {r: 0.3, g: 0.85, b: 0.85, a: 1}
+  candidateAssociatedZoneColor: {r: 0.3, g: 0.85, b: 0.85, a: 1}
+  placedShelterAssociatedZoneColor: {r: 0, g: 1, b: 0.65, a: 0.75}
+  showPlacedShelterZoneOutlines: 1
   showCandidateLabels: 1
   labelHeightOffset: 0.85
   labelFontSize: 3.25
