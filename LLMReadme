@@ -1,0 +1,221 @@
+LLM-BASED PLAYER FEEDBACK SYSTEM
+================================
+
+The LLM system provides contextual feedback to the player based on the current flood-game state. Unity first calculates and validates the gameplay data, then sends the validated information to a locally running language model.
+
+The system uses:
+- Unity C# scripts for gameplay data and calculations
+- LM Studio for running the LLM locally
+- Phi-3.1 Mini 4K Instruct model
+- Local API communication between Unity and LM Studio
+- Persona-based feedback generation
+
+Local LLM Endpoint -> http://127.0.0.1:1234/v1/chat/completions
+Model -> phi-3.1-mini-4k-instruct
+
+
+LLM PROCESSING FLOW
+===================
+
+When feedback is requested:
+1. Unity collects the current gameplay information.
+2. A C# Data Builder calculates and validates numerical values.
+3. The validated facts are passed to LLMManager.
+4. LLMManager creates the LLM request.
+5. The request is sent to the local LM Studio server.
+6. Phi-3.1 generates player-facing feedback.
+7. The response is returned to Unity.
+8. LLMUIController displays the response to the player.
+
+Unity Game State
+      |
+      v
+C# Data Builder
+      |
+      v
+Validated Game Facts
+      |
+      v
+LLMManager
+      |
+      v
+LM Studio
+      |
+      v
+Phi-3.1 Mini
+      |
+      v
+LLM Feedback
+      |
+      v
+LLMUIController
+
+The numerical calculations are performed in C# rather than by the LLM. This reduces arithmetic errors and prevents the LLM from becoming the authoritative source for game-state values.
+
+
+SHELTER FEEDBACK
+================
+
+The Shelter feedback system evaluates shelter capacity and population assignment.
+
+Test data:
+- Shelter S-01: Capacity 500, Assigned 650
+- Shelter S-02: Capacity 600, Assigned 520
+
+ShelterFeedbackDataBuilder calculates:
+- S-01 excess population = 150
+- S-02 available capacity = 80
+- Possible transfer = 80
+- Remaining excess = 70
+
+The calculated values are passed to the LLM as authoritative facts.
+
+
+EVACUATION FEEDBACK
+===================
+
+The Evacuation feedback system evaluates evacuation progress and route availability.
+
+Test data:
+- Available routes = 3
+- Selected routes = 2
+- Blocked routes = 1
+- Total population = 1200
+- Evacuated population = 850
+
+EvacuationFeedbackDataBuilder calculates:
+- Usable routes = 2
+- Remaining population = 350
+- Selected routes exceed usable routes = False
+
+The validated evacuation information is then passed to LLMManager for feedback generation.
+
+
+FLOOD DEFENSE FEEDBACK
+======================
+
+The Flood Defense feedback system is connected to the actual Unity flood-defense gameplay system.
+
+FloodDefenseFeedbackDataBuilder reads information from FloodDefenseBoxStamp.
+
+The system uses:
+- BarriersPlaced
+- ActualMaxZoneBarriers
+
+It calculates:
+- Number of barriers placed
+- Maximum barriers available
+- Number of barriers remaining
+- Whether all available barriers have been placed
+
+Example:
+Barriers Placed: 3
+Maximum Available: 3
+Barriers Remaining: 0
+All Barriers Placed: True
+
+
+AUTOMATIC FLOOD DEFENSE LLM TRIGGER
+===================================
+
+FloodDefenseLLMTrigger automatically generates feedback when the player finishes placing all available flood-defense barriers.
+
+The FloodDefenseBoxStamp script invokes OnAllZoneBarriersPlaced when the final barrier is committed.
+
+FloodDefenseLLMTrigger listens for this event.
+
+Player Places Barrier
+        |
+        v
+FloodDefenseBoxStamp
+        |
+        v
+3 / 3 Barriers Placed
+        |
+        v
+OnAllZoneBarriersPlaced
+        |
+        v
+FloodDefenseLLMTrigger
+        |
+        v
+FloodDefenseFeedbackDataBuilder
+        |
+        v
+LLMManager
+        |
+        v
+Phi-3.1 Feedback
+
+Therefore, the player does not need to press a keyboard test button for the final flood-defense implementation.
+
+
+MANUAL TESTING CONTROLS
+=======================
+
+During development, keyboard controls were used to test individual feedback modules.
+
+F -> Shelter Feedback
+E -> Evacuation Feedback
+B -> Flood Defense Feedback
+
+These controls are primarily for testing. The current Flood Defense implementation can generate feedback automatically after all barriers are placed.
+
+
+LLM UI
+======
+
+LLMUIController handles displaying the generated response inside Unity.
+
+The UI contains:
+
+LLMUIController
+        |
+        +-- LLMFeedbackPanel
+              |
+              +-- LLMFeedbackText
+              |
+              +-- CloseButton
+
+ShowMessage() displays the generated LLM response.
+HideMessage() closes the feedback panel.
+
+
+IMPORTANT LLM DESIGN RULE
+=========================
+
+The LLM should not calculate important gameplay values.
+
+The implemented architecture is:
+
+Game Data
+   |
+   v
+C# Calculation + Validation
+   |
+   v
+Authoritative Facts
+   |
+   v
+LLM
+   |
+   v
+Natural-Language Feedback
+
+This design was adopted because the LLM occasionally produced incorrect arithmetic or unsupported information such as road conditions, water levels, barrier effectiveness, or protected zones.
+
+The prompt therefore instructs the model to treat Unity-calculated values as authoritative and avoid inventing information that is not contained in the supplied game state.
+
+
+CURRENT IMPLEMENTATION STATUS
+=============================
+
+- Local LM Studio connection: Completed
+- Phi-3.1 Mini integration: Completed
+- Shelter validation and LLM feedback: Completed
+- Evacuation validation and LLM feedback: Completed
+- Flood Defense validation and LLM feedback: Completed
+- Automatic Flood Defense LLM trigger: Completed
+- In-game LLM feedback UI: In progress / being tested
+
+The system has progressed from manual LLM testing to an event-driven feedback architecture in which Unity validates gameplay facts before sending them to the local language model.
