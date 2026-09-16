@@ -1,0 +1,523 @@
+On branch GIS-DataPipeline
+Your branch is up to date with 'origin/GIS-DataPipeline'.
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	modified:   AGENTS.md
+	new file:   Assets/Dev/AgentRef/Records/2026-05-14-dev-codex-scoring-ui-toolkit.md
+	renamed:    Assets/Dev/AgentRef/UIArchitectureAgents.md.meta -> Assets/Dev/AgentRef/Records/2026-05-14-dev-codex-scoring-ui-toolkit.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-05-14-guidelines-dev-folder-policy.md
+	renamed:    Assets/_Project/Sprites/SandbagMarker.prefab.meta -> Assets/Dev/AgentRef/Records/2026-05-14-guidelines-dev-folder-policy.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-05-18-dev-water-system-refactor.md
+	new file:   Assets/Dev/AgentRef/Records/2026-05-18-dev-water-system-refactor.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-05-18-scoring-salvage-notes.md
+	new file:   Assets/Dev/AgentRef/Records/2026-05-18-scoring-salvage-notes.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-22-dev-water-data-architecture.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-22-dev-water-data-architecture.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-22-dev-water-refactor-boundaries.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-22-dev-water-refactor-boundaries.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-24-water-projection-planning-seams.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-24-water-projection-planning-seams.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-25-issue-25-water-lifecycle.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-25-issue-25-water-lifecycle.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-26-pr27-correctness-repair.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-26-pr27-correctness-repair.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-08-26-water-naming.md
+	new file:   Assets/Dev/AgentRef/Records/2026-08-26-water-naming.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-09-05-water-automated-testing.md
+	new file:   Assets/Dev/AgentRef/Records/2026-09-05-water-automated-testing.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-issue-26-agent-workflow.md
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-issue-26-agent-workflow.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-event-cleanup.md
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-event-cleanup.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-source-units.md
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-source-units.md.meta
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-visuals-map-immutability.md
+	new file:   Assets/Dev/AgentRef/Records/2026-09-07-water-visuals-map-immutability.md.meta
+	renamed:    Assets/Dev/AgentRef/UIArchitectureAgents.md -> Assets/Dev/AgentRef/UIArchitectureReference.md
+	new file:   Assets/Dev/AgentRef/UIArchitectureReference.md.meta
+	modified:   Assets/Dev/AgentRef/guidelines.md
+	new file:   Assets/Dev/AgentRef/hudsontodo.md
+	new file:   Assets/Dev/AgentRef/hudsontodo.md.meta
+	new file:   Assets/Dev/AgentRef/water-system-refactor-spec.md
+	new file:   Assets/Dev/AgentRef/water-system-refactor-spec.md.meta
+	new file:   Assets/Dev/AgentRef/water-system-refactor-status.md
+	new file:   Assets/Dev/AgentRef/water-system-refactor-status.md.meta
+	modified:   Assets/Dev/Dev_Scripts.meta
+	modified:   Assets/Dev/Dev_Scripts/UI_Scripts.meta
+	new file:   Assets/Dev/Dev_Scripts/UI_Scripts/ScoringSceneController.cs
+	new file:   Assets/Dev/Dev_Scripts/UI_Scripts/ScoringSceneController.cs.meta
+	modified:   Assets/Dev/Dev_Scripts/UI_UXML_USS.meta
+	modified:   Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor.meta
+	new file:   Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ScoringScene.uss
+	renamed:    Assets/_Project/FloodDamagePanel.uss.meta -> Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ScoringScene.uss.meta
+	new file:   Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ScoringScene.uxml
+	renamed:    Assets/_Project/FloodDamagePanel.uxml.meta -> Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ScoringScene.uxml.meta
+	deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/npc_icon.jpg
+	renamed:    Assets/Dark UI.meta -> Assets/Dev/Old_UI_Ref.meta
+	renamed:    Assets/Game/Features/UI/BlueWaves.jpg -> Assets/Dev/Old_UI_Ref/BlueWaves.jpg
+	renamed:    Assets/Game/Features/UI/BlueWaves.jpg.meta -> Assets/Dev/Old_UI_Ref/BlueWaves.jpg.meta
+	renamed:    Assets/Game/Features/UI/ButtonContainer.prefab -> Assets/Dev/Old_UI_Ref/ButtonContainer.prefab
+	renamed:    Assets/Game/Features/UI/ButtonContainer.prefab.meta -> Assets/Dev/Old_UI_Ref/ButtonContainer.prefab.meta
+	renamed:    Assets/Game/Features/UI/CorporateStar.prefab -> Assets/Dev/Old_UI_Ref/CorporateStar.prefab
+	renamed:    Assets/Game/Features/UI/CorporateStar.prefab.meta -> Assets/Dev/Old_UI_Ref/CorporateStar.prefab.meta
+	renamed:    Assets/Game/Features/UI/Fonts.meta -> Assets/Dev/Old_UI_Ref/Fonts.meta
+	renamed:    Assets/Game/Features/UI/Fonts/PixelifySans-VariableFont_wght SDF.asset -> Assets/Dev/Old_UI_Ref/Fonts/PixelifySans-VariableFont_wght SDF.asset
+	renamed:    Assets/Game/Features/UI/Fonts/PixelifySans-VariableFont_wght SDF.asset.meta -> Assets/Dev/Old_UI_Ref/Fonts/PixelifySans-VariableFont_wght SDF.asset.meta
+	renamed:    Assets/Game/Features/UI/Fonts/PixelifySans-VariableFont_wght.ttf -> Assets/Dev/Old_UI_Ref/Fonts/PixelifySans-VariableFont_wght.ttf
+	renamed:    Assets/Game/Features/UI/Fonts/PixelifySans-VariableFont_wght.ttf.meta -> Assets/Dev/Old_UI_Ref/Fonts/PixelifySans-VariableFont_wght.ttf.meta
+	renamed:    Assets/Game/Features/UI/NotificationPrefab.prefab -> Assets/Dev/Old_UI_Ref/NotificationPrefab.prefab
+	renamed:    Assets/Game/Features/UI/NotificationPrefab.prefab.meta -> Assets/Dev/Old_UI_Ref/NotificationPrefab.prefab.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/Alerts.prefab -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/Alerts.prefab
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/Alerts.prefab.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/Alerts.prefab.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/DefenseOverlay.prefab -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/DefenseOverlay.prefab
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/DefenseOverlay.prefab.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/DefenseOverlay.prefab.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/Policies.prefab -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/Policies.prefab
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/Policies.prefab.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/Policies.prefab.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/PolicyTitle.prefab -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/PolicyTitle.prefab
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/PolicyTitle.prefab.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/PolicyTitle.prefab.meta
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/ResourcesOverlay.prefab -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/ResourcesOverlay.prefab
+	renamed:    Assets/Game/Features/UI/Overlay Prefabs/ResourcesOverlay.prefab.meta -> Assets/Dev/Old_UI_Ref/Overlay Prefabs/ResourcesOverlay.prefab.meta
+	renamed:    Assets/Game/Features/UI/PolicyCard.prefab -> Assets/Dev/Old_UI_Ref/PolicyCard.prefab
+	renamed:    Assets/Game/Features/UI/PolicyCard.prefab.meta -> Assets/Dev/Old_UI_Ref/PolicyCard.prefab.meta
+	renamed:    Assets/Game/Features/UI/PolicyEntryPrefab.prefab -> Assets/Dev/Old_UI_Ref/PolicyEntryPrefab.prefab
+	renamed:    Assets/Game/Features/UI/PolicyEntryPrefab.prefab.meta -> Assets/Dev/Old_UI_Ref/PolicyEntryPrefab.prefab.meta
+	renamed:    Assets/Game/Features/UI/PoliticalStar.prefab -> Assets/Dev/Old_UI_Ref/PoliticalStar.prefab
+	renamed:    Assets/Game/Features/UI/PoliticalStar.prefab.meta -> Assets/Dev/Old_UI_Ref/PoliticalStar.prefab.meta
+	renamed:    Assets/Game/Features/UI/ResidentialStar.prefab -> Assets/Dev/Old_UI_Ref/ResidentialStar.prefab
+	renamed:    Assets/Game/Features/UI/ResidentialStar.prefab.meta -> Assets/Dev/Old_UI_Ref/ResidentialStar.prefab.meta
+	renamed:    Assets/_Project/Scripts.meta -> Assets/Dev/Old_UI_Ref/Scripts.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertAnimation.cs -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertAnimation.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertAnimation.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertAnimation.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertLoader.cs -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertLoader.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertLoader.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertLoader.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertStyleLibrary.cs -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertStyleLibrary.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertStyleLibrary.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertStyleLibrary.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertViewer.cs -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertViewer.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertViewer.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/AlertViewer.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/Style.asset -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/Style.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/Style.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Alerts/Style.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/CardSelect.asset -> Assets/Dev/Old_UI_Ref/Scripts/CardSelect.asset
+	renamed:    Assets/Game/Features/UI/Scripts/CardSelect.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/CardSelect.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/DevInputController.cs -> Assets/Dev/Old_UI_Ref/Scripts/DevInputController.cs
+	renamed:    Assets/Game/Features/UI/Scripts/DevInputController.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/DevInputController.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/InfoPanelManager.cs -> Assets/Dev/Old_UI_Ref/Scripts/InfoPanelManager.cs
+	renamed:    Assets/Game/Features/UI/Scripts/InfoPanelManager.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/InfoPanelManager.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/AvailableLoader.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/AvailableLoader.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/AvailableLoader.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/AvailableLoader.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/ButtonClickAnimationPolicy.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/ButtonClickAnimationPolicy.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/ButtonClickAnimationPolicy.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/ButtonClickAnimationPolicy.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/CardLoader.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/CardLoader.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/CardLoader.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/CardLoader.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/CardScriptableObject.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/CardScriptableObject.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/CardScriptableObject.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/CardScriptableObject.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/EnactPolicyButton.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/EnactPolicyButton.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/EnactPolicyButton.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/EnactPolicyButton.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Player Resources.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Player Resources.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Player Resources.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Player Resources.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Community Rating System.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Community Rating System.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Community Rating System.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Community Rating System.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Hazard Mitigation Grand Program.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Hazard Mitigation Grand Program.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Hazard Mitigation Grand Program.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Hazard Mitigation Grand Program.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Levee Repair Tax.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Levee Repair Tax.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Levee Repair Tax.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Levee Repair Tax.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Mandatory Floodplain Insurance.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Mandatory Floodplain Insurance.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Mandatory Floodplain Insurance.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Mandatory Floodplain Insurance.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Residential Property Voluntary Buyouts.asset -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Residential Property Voluntary Buyouts.asset
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/Policy Cards/Residential Property Voluntary Buyouts.asset.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/Policy Cards/Residential Property Voluntary Buyouts.asset.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicyDisplayExample.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicyDisplayExample.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicyDisplayExample.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicyDisplayExample.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicyManager.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicyManager.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicyManager.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicyManager.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicySystemSetup.md -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicySystemSetup.md
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/PolicySystemSetup.md.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/PolicySystemSetup.md.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/ResourcesData.cs -> Assets/Dev/Old_UI_Ref/Scripts/Policy/ResourcesData.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Policy/ResourcesData.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Policy/ResourcesData.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/PolicyUIManager.cs -> Assets/Dev/Old_UI_Ref/Scripts/PolicyUIManager.cs
+	renamed:    Assets/Game/Features/UI/Scripts/PolicyUIManager.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/PolicyUIManager.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/ResultsOverlayManager.cs -> Assets/Dev/Old_UI_Ref/Scripts/ResultsOverlayManager.cs
+	renamed:    Assets/Game/Features/UI/Scripts/ResultsOverlayManager.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/ResultsOverlayManager.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/SliderLabel.cs -> Assets/Dev/Old_UI_Ref/Scripts/SliderLabel.cs
+	renamed:    Assets/Game/Features/UI/Scripts/SliderLabel.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/SliderLabel.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/UIManager.cs -> Assets/Dev/Old_UI_Ref/Scripts/UIManager.cs
+	renamed:    Assets/Game/Features/UI/Scripts/UIManager.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/UIManager.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/AutoJoinToggleGroup.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/AutoJoinToggleGroup.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/AutoJoinToggleGroup.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/AutoJoinToggleGroup.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ButtonClickAnimation.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ButtonClickAnimation.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ButtonClickAnimation.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ButtonClickAnimation.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/DialogueUI.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/DialogueUI.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/DialogueUI.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/DialogueUI.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/TypewriterEffect.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/TypewriterEffect.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/TypewriterEffect.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/TypewriterEffect.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ValueColorizer.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ValueColorizer.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ValueColorizer.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ValueColorizer.cs.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ValueUpdater.cs -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ValueUpdater.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Utility/ValueUpdater.cs.meta -> Assets/Dev/Old_UI_Ref/Scripts/Utility/ValueUpdater.cs.meta
+	renamed:    Assets/Game/Features/UI/Slider.prefab -> Assets/Dev/Old_UI_Ref/Slider.prefab
+	renamed:    Assets/Game/Features/UI/Slider.prefab.meta -> Assets/Dev/Old_UI_Ref/Slider.prefab.meta
+	renamed:    Assets/Game/Features/UI/Sprites.meta -> Assets/Dev/Old_UI_Ref/Sprites.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_circle.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_circle.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_circle.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_circle.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_circle_outline.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_circle_outline.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_circle_outline.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_circle_outline.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle 1.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle 1.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle 1.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle 1.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_left.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_left.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_left.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_left.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline 1.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline 1.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline 1.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline 1.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline_left.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline_left.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline_left.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline_left.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline_right.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline_right.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_outline_right.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_outline_right.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_right.png -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_right.png
+	renamed:    Assets/Game/Features/UI/Sprites/9sprite_8bit_semicircle_right.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/9sprite_8bit_semicircle_right.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Blue Building.png -> Assets/Dev/Old_UI_Ref/Sprites/Blue Building.png
+	renamed:    Assets/Game/Features/UI/Sprites/Blue Building.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Blue Building.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Button1.prefab -> Assets/Dev/Old_UI_Ref/Sprites/Button1.prefab
+	renamed:    Assets/Game/Features/UI/Sprites/Button1.prefab.meta -> Assets/Dev/Old_UI_Ref/Sprites/Button1.prefab.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Green Home.png -> Assets/Dev/Old_UI_Ref/Sprites/Green Home.png
+	renamed:    Assets/Game/Features/UI/Sprites/Green Home.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Green Home.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/PIXEL Bobby (2).png -> Assets/Dev/Old_UI_Ref/Sprites/PIXEL Bobby (2).png
+	renamed:    Assets/Game/Features/UI/Sprites/PIXEL Bobby (2).png.meta -> Assets/Dev/Old_UI_Ref/Sprites/PIXEL Bobby (2).png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Pixel.png -> Assets/Dev/Old_UI_Ref/Sprites/Pixel.png
+	renamed:    Assets/Game/Features/UI/Sprites/Pixel.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Pixel.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Red Alert.png -> Assets/Dev/Old_UI_Ref/Sprites/Red Alert.png
+	renamed:    Assets/Game/Features/UI/Sprites/Red Alert.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Red Alert.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Rep. Carrie.png -> Assets/Dev/Old_UI_Ref/Sprites/Rep. Carrie.png
+	renamed:    Assets/Game/Features/UI/Sprites/Rep. Carrie.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Rep. Carrie.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/Secretary Vlad.png -> Assets/Dev/Old_UI_Ref/Sprites/Secretary Vlad.png
+	renamed:    Assets/Game/Features/UI/Sprites/Secretary Vlad.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/Secretary Vlad.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/background _long.png -> Assets/Dev/Old_UI_Ref/Sprites/background _long.png
+	renamed:    Assets/Game/Features/UI/Sprites/background _long.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/background _long.png.meta
+	renamed:    Assets/Game/Features/UI/Sprites/background.png -> Assets/Dev/Old_UI_Ref/Sprites/background.png
+	renamed:    Assets/Game/Features/UI/Sprites/background.png.meta -> Assets/Dev/Old_UI_Ref/Sprites/background.png.meta
+	renamed:    Assets/Game/Features/UI/crisp_click.ogg -> Assets/Dev/Old_UI_Ref/crisp_click.ogg
+	renamed:    Assets/Game/Features/UI/crisp_click.ogg.meta -> Assets/Dev/Old_UI_Ref/crisp_click.ogg.meta
+	renamed:    Assets/Game/Features/UI/select_001.ogg -> Assets/Dev/Old_UI_Ref/select_001.ogg
+	renamed:    Assets/Game/Features/UI/select_001.ogg.meta -> Assets/Dev/Old_UI_Ref/select_001.ogg.meta
+	new file:   Assets/Dev/PrototypeScenes/Dev_Codex.unity
+	new file:   Assets/Dev/PrototypeScenes/Dev_Codex.unity.meta
+	renamed:    Assets/Game/Features/Scoring.meta -> Assets/Dev/PrototypeScenes/Materials.meta
+	new file:   Assets/Dev/PrototypeScenes/Materials/BlueCube_-8208_mat.mat
+	new file:   Assets/Dev/PrototypeScenes/Materials/BlueCube_-8208_mat.mat.meta
+	new file:   Assets/Dev/PrototypeScenes/Materials/GreenCube_-8144_mat.mat
+	new file:   Assets/Dev/PrototypeScenes/Materials/GreenCube_-8144_mat.mat.meta
+	new file:   Assets/Dev/PrototypeScenes/Materials/RedCube_-8060_mat.mat
+	new file:   Assets/Dev/PrototypeScenes/Materials/RedCube_-8060_mat.mat.meta
+	renamed:    Assets/Dev/Dev_Prefabs.meta -> Assets/Dev/Scripts.meta
+	renamed:    Assets/Dev/Dev_Scripts/FloodDamageCalculator.cs -> Assets/Dev/Scripts/FloodDamageCalculator.cs
+	renamed:    Assets/Dev/Dev_Scripts/FloodDamageCalculator.cs.meta -> Assets/Dev/Scripts/FloodDamageCalculator.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/FloodDamageUIDocumentToggle.cs -> Assets/Dev/Scripts/FloodDamageUIDocumentToggle.cs
+	renamed:    Assets/Dev/Dev_Scripts/FloodDamageUIDocumentToggle.cs.meta -> Assets/Dev/Scripts/FloodDamageUIDocumentToggle.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/FloodDefenseBoxStamp.cs -> Assets/Dev/Scripts/FloodDefenseBoxStamp.cs
+	renamed:    Assets/Dev/Dev_Scripts/FloodDefenseBoxStamp.cs.meta -> Assets/Dev/Scripts/FloodDefenseBoxStamp.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/IBarrierProvider.cs -> Assets/Dev/Scripts/IBarrierProvider.cs
+	renamed:    Assets/Dev/Dev_Scripts/IBarrierProvider.cs.meta -> Assets/Dev/Scripts/IBarrierProvider.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/JsonMapLoader.cs -> Assets/Dev/Scripts/JsonMapLoader.cs
+	renamed:    Assets/Dev/Dev_Scripts/JsonMapLoader.cs.meta -> Assets/Dev/Scripts/JsonMapLoader.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/NpcToastController.cs -> Assets/Dev/Scripts/NpcToastController.cs
+	renamed:    Assets/Dev/Dev_Scripts/NpcToastController.cs.meta -> Assets/Dev/Scripts/NpcToastController.cs.meta
+	renamed:    Assets/Dev/Mockups.meta -> Assets/Dev/Scripts/UI_Scripts.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/FloodDamagePanelController.cs -> Assets/Dev/Scripts/UI_Scripts/FloodDamagePanelController.cs
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/FloodDamagePanelController.cs.meta -> Assets/Dev/Scripts/UI_Scripts/FloodDamagePanelController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/GlobalHUDController.cs -> Assets/Dev/Scripts/UI_Scripts/GlobalHUDController.cs
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/GlobalHUDController.cs.meta -> Assets/Dev/Scripts/UI_Scripts/GlobalHUDController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/MainMenuController.cs -> Assets/Dev/Scripts/UI_Scripts/MainMenuController.cs
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/MainMenuController.cs.meta -> Assets/Dev/Scripts/UI_Scripts/MainMenuController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/NpcPopupController.cs -> Assets/Dev/Scripts/UI_Scripts/NpcPopupController.cs
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/NpcPopupController.cs.meta -> Assets/Dev/Scripts/UI_Scripts/NpcPopupController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/ZoneActionToast.cs -> Assets/Dev/Scripts/UI_Scripts/ZoneActionToast.cs
+	renamed:    Assets/Dev/Dev_Scripts/UI_Scripts/ZoneActionToast.cs.meta -> Assets/Dev/Scripts/UI_Scripts/ZoneActionToast.cs.meta
+	new file:   Assets/Dev/Scripts/UI_UXML_USS.meta
+	new file:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Card.uss -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/Card.uss
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Card.uss.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/Card.uss.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Card.uxml -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/Card.uxml
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Card.uxml.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/Card.uxml.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uss -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uss
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uss.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uss.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uxml -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uxml
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uxml.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/DecisionScreen.uxml.meta
+	new file:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/MainMenu.uss
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/1 4.png -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/1 4.png
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/1 4.png.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/1 4.png.meta
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/warning.png -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/warning.png
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/warning.png.meta -> Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/warning.png.meta
+	renamed:    Assets/Dev/Dev_Scripts/Video_Script.meta -> Assets/Dev/Scripts/Video_Script.meta
+	renamed:    Assets/Dev/Dev_Scripts/Video_Script/IntroVideoController.cs -> Assets/Dev/Scripts/Video_Script/IntroVideoController.cs
+	renamed:    Assets/Dev/Dev_Scripts/Video_Script/IntroVideoController.cs.meta -> Assets/Dev/Scripts/Video_Script/IntroVideoController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/ZoneFocusController.cs -> Assets/Dev/Scripts/ZoneFocusController.cs
+	renamed:    Assets/Dev/Dev_Scripts/ZoneFocusController.cs.meta -> Assets/Dev/Scripts/ZoneFocusController.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/ZoneInfoHoverToggle.cs -> Assets/Dev/Scripts/ZoneInfoHoverToggle.cs
+	renamed:    Assets/Dev/Dev_Scripts/ZoneInfoHoverToggle.cs.meta -> Assets/Dev/Scripts/ZoneInfoHoverToggle.cs.meta
+	renamed:    Assets/Dev/Dev_Scripts/ZoneOutlineByHover.cs -> Assets/Dev/Scripts/ZoneOutlineByHover.cs
+	renamed:    Assets/Dev/Dev_Scripts/ZoneOutlineByHover.cs.meta -> Assets/Dev/Scripts/ZoneOutlineByHover.cs.meta
+	modified:   Assets/Dev/Tilemaps/Terrain/WaterTileType.asset
+	new file:   Assets/Dev/WaterSystemRefactor.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterConfigurationTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterConfigurationTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterEditModeFixture.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterEditModeFixture.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterMapStateTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterMapStateTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterPhysicsTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterPhysicsTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterScenarioTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterScenarioTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterSystemRefactor.EditModeTests.asmdef
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterSystemRefactor.EditModeTests.asmdef.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterValueTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/EditMode/WaterValueTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterLifecyclePlayModeTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterLifecyclePlayModeTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterPlayModeFixture.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterPlayModeFixture.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterRenderingPlayModeTests.cs
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterRenderingPlayModeTests.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterSystemRefactor.PlayModeTests.asmdef
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/PlayMode/WaterSystemRefactor.PlayModeTests.asmdef.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterAutomatedTestingResearch.md
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterAutomatedTestingResearch.md.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterTestReport.md
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterTestReport.md.meta
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterTestRunbook.md
+	new file:   Assets/Dev/WaterSystemRefactor/AutomatedTesting/WaterTestRunbook.md.meta
+	new file:   Assets/Dev/WaterSystemRefactor/CutoverChecklist.md
+	new file:   Assets/Dev/WaterSystemRefactor/CutoverChecklist.md.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Editor.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Editor/WaterLegacyMapConverter.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Editor/WaterLegacyMapConverter.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Editor/WaterRefactorSceneAuthoring.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Editor/WaterRefactorSceneAuthoring.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/README.md
+	new file:   Assets/Dev/WaterSystemRefactor/README.md.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene.unity
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene.unity.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundDryTile.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundDryTile.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundFloodTile.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundFloodTile.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundRendererDef.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundRendererDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundTerrainTypeDef.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_GroundTerrainTypeDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_MapDef.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_MapDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_ScenarioDef.asset
+	renamed:    Assets/Game/Features/Scoring/LLMConfig.asset.meta -> Assets/Dev/WaterSystemRefactor/RefactorScene_ScenarioDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_TileMapData.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_TileMapData.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterDeepTile.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterDeepTile.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterDryTile.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterDryTile.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterRendererDef.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterRendererDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterShallowTile.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterShallowTile.asset.meta
+	renamed:    Assets/Game/Features/Scoring/LLMConfig.asset -> Assets/Dev/WaterSystemRefactor/RefactorScene_WaterTerrainTypeDef.asset
+	new file:   Assets/Dev/WaterSystemRefactor/RefactorScene_WaterTerrainTypeDef.asset.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapAccessor.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapAccessor.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapCellDef.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapCellDef.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapDef.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/MapDef.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/ProjectionController.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/ProjectionController.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/RendererDef.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/RendererDef.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/ScenarioDef.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/ScenarioDef.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/TerrainTypeDef.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/TerrainTypeDef.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterController.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterController.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterLifecycleCoordinator.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterLifecycleCoordinator.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterMapDefAuthoring.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterMapDefAuthoring.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterPhysics.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterPhysics.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterPhysicsBarrier.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterPhysicsBarrier.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterRefactorSceneBootstrapper.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterRefactorSceneBootstrapper.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterRenderer.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterRenderer.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterState.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterState.cs.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterSystemRefactor.Runtime.asmdef
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterSystemRefactor.Runtime.asmdef.meta
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterTypes.cs
+	new file:   Assets/Dev/WaterSystemRefactor/Scripts/WaterTypes.cs.meta
+	renamed:    Assets/_Project/Scripts/Dev_Scripts/Data/cards.json -> Assets/Dev/cards.json
+	renamed:    Assets/_Project/Scripts/Dev_Scripts/Data/cards.json.meta -> Assets/Dev/cards.json.meta
+	modified:   Assets/Game/Core/Architecture/architecture.md
+	renamed:    Assets/Game/Features/WaterSystem.meta -> Assets/Game/Features/LegacyWaterSystem.meta
+	renamed:    Assets/Game/Features/WaterSystem/Grass.asset -> Assets/Game/Features/LegacyWaterSystem/Grass.asset
+	renamed:    Assets/Game/Features/WaterSystem/Grass.asset.meta -> Assets/Game/Features/LegacyWaterSystem/Grass.asset.meta
+	renamed:    Assets/Game/Features/WaterSystem/MapLoader.cs -> Assets/Game/Features/LegacyWaterSystem/MapLoader.cs
+	renamed:    Assets/Game/Features/WaterSystem/MapLoader.cs.meta -> Assets/Game/Features/LegacyWaterSystem/MapLoader.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/README.md -> Assets/Game/Features/LegacyWaterSystem/README.md
+	renamed:    Assets/Game/Features/WaterSystem/README.md.meta -> Assets/Game/Features/LegacyWaterSystem/README.md.meta
+	renamed:    Assets/Game/Features/WaterSystem/Sand.asset -> Assets/Game/Features/LegacyWaterSystem/Sand.asset
+	renamed:    Assets/Game/Features/WaterSystem/Sand.asset.meta -> Assets/Game/Features/LegacyWaterSystem/Sand.asset.meta
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects.meta -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects.meta
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/DynamicTile.cs -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/DynamicTile.cs
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/DynamicTile.cs.meta -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/DynamicTile.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/TileMapData.cs -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/TileMapData.cs
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/TileMapData.cs.meta -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/TileMapData.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/TileType.cs -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/TileType.cs
+	renamed:    Assets/Game/Features/WaterSystem/ScriptableObjects/TileType.cs.meta -> Assets/Game/Features/LegacyWaterSystem/ScriptableObjects/TileType.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/TileInstance.cs -> Assets/Game/Features/LegacyWaterSystem/TileInstance.cs
+	renamed:    Assets/Game/Features/WaterSystem/TileInstance.cs.meta -> Assets/Game/Features/LegacyWaterSystem/TileInstance.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/TileManager.cs -> Assets/Game/Features/LegacyWaterSystem/TileManager.cs
+	renamed:    Assets/Game/Features/WaterSystem/TileManager.cs.meta -> Assets/Game/Features/LegacyWaterSystem/TileManager.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/TileMapDataTest.asset -> Assets/Game/Features/LegacyWaterSystem/TileMapDataTest.asset
+	renamed:    Assets/Game/Features/WaterSystem/TileMapDataTest.asset.meta -> Assets/Game/Features/LegacyWaterSystem/TileMapDataTest.asset.meta
+	renamed:    Assets/Game/Features/WaterSystem/WaterSimulator.cs -> Assets/Game/Features/LegacyWaterSystem/WaterSimulator.cs
+	renamed:    Assets/Game/Features/WaterSystem/WaterSimulator.cs.meta -> Assets/Game/Features/LegacyWaterSystem/WaterSimulator.cs.meta
+	renamed:    Assets/Game/Features/WaterSystem/WaterWaveStripeAnimator.cs -> Assets/Game/Features/LegacyWaterSystem/WaterWaveStripeAnimator.cs
+	renamed:    Assets/Game/Features/WaterSystem/WaterWaveStripeAnimator.cs.meta -> Assets/Game/Features/LegacyWaterSystem/WaterWaveStripeAnimator.cs.meta
+	deleted:    Assets/Game/Features/Scoring/EnvStartup.cs
+	deleted:    Assets/Game/Features/Scoring/EnvStartup.cs.meta
+	deleted:    Assets/Game/Features/Scoring/LLMConfig.cs
+	deleted:    Assets/Game/Features/Scoring/LLMConfig.cs.meta
+	deleted:    Assets/Game/Features/Scoring/LLMController.cs
+	deleted:    Assets/Game/Features/Scoring/LLMController.cs.meta
+	deleted:    Assets/Game/Features/Scoring/LLMService.cs
+	deleted:    Assets/Game/Features/Scoring/LLMService.cs.meta
+	deleted:    Assets/Game/Features/Scoring/ScoringPromptController.cs
+	deleted:    Assets/Game/Features/Scoring/ScoringPromptController.cs.meta
+	modified:   Assets/Game/Features/UI/Scripts.meta
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertBus.cs -> Assets/Game/Features/UI/Scripts/AlertBus.cs
+	renamed:    Assets/Game/Features/UI/Scripts/Alerts/AlertBus.cs.meta -> Assets/Game/Features/UI/Scripts/AlertBus.cs.meta
+	deleted:    Assets/IsoTools.meta
+	deleted:    Assets/IsoTools/Examples.meta
+	deleted:    Assets/LeanTween.meta
+	modified:   Assets/README.md
+	new file:   Assets/Screenshots.meta
+	new file:   Assets/Screenshots/RefactorScene_PlayVerify.png
+	renamed:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/npc_icon.jpg.meta -> Assets/Screenshots/RefactorScene_PlayVerify.png.meta
+	new file:   Assets/Screenshots/screenshot-20260518-134840.png
+	new file:   Assets/Screenshots/screenshot-20260518-134840.png.meta
+	deleted:    Assets/TextMesh Pro.meta
+	deleted:    Assets/_Project.meta
+	deleted:    Assets/_Project/FloodDamagePanel.uss
+	deleted:    Assets/_Project/FloodDamagePanel.uxml
+	deleted:    Assets/_Project/Models.meta
+	deleted:    Assets/_Project/Models/tempIsoFiles.meta
+	deleted:    Assets/_Project/Scripts/Dev_Scripts.meta
+	deleted:    Assets/_Project/Scripts/Dev_Scripts/Data.meta
+	deleted:    Assets/_Project/Sprites.meta
+	deleted:    Assets/_Project/Sprites/SandbagMarker.prefab
+	new file:   CONTEXT.md
+	modified:   Packages/manifest.json
+	modified:   Packages/packages-lock.json
+	new file:   ProjectSettings/Packages/com.unity.ai.assistant/Settings.json
+	modified:   UserSettings/EditorUserSettings.asset
+	new file:   docs/adr/README.md
+	new file:   docs/agents/domain.md
+	new file:   docs/agents/issue-tracker.md
+	new file:   docs/agents/triage-labels.md
+	modified:   flood-game.slnx
+
+Unmerged paths:
+  (use "git add/rm <file>..." as appropriate to mark resolution)
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uss
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uxml
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uxml.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/GameHUD.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/GameHUD.uxml.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/IntroVideo.uss
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/IntroVideo.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/IntroVideo.uxml
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/IntroVideo.uxml.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/MainMenu.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/MainMenu.uxml
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/MainMenu.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Pop_Up_Quiz/Challenge.uss
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/Pop_Up_Quiz/Challenge.uxml.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ResourceBar.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ResourceBar.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_HUD/ResourceBar.uss.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_HUD/ResourceBar.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/FloodDamagePanel.uss
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/FloodDamagePanel.uss.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/FloodDamagePanel.uxml
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/FloodDamagePanel.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/IntroVideo.uss
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/IntroVideo.uss.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/IntroVideo.uxml
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/IntroVideo.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/ZoneInfo.uss.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/ZoneInfo.uxml
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Panels_Tooltips/ZoneInfo.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Scenes/MainMenu.uss.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Scenes/MainMenu.uxml
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Scenes/MainMenu.uxml.meta
+	added by us:     Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Shared_USS/SharedGameButtons.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uss
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uss.meta
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uxml
+	both deleted:    Assets/Dev/Dev_Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uxml.meta
+	deleted by us:   Assets/Dev/Scripts/UI_Scripts/DecisionScreenController.cs
+	deleted by us:   Assets/Dev/Scripts/UI_Scripts/DecisionScreenController.cs.meta
+	deleted by us:   Assets/Dev/Scripts/UI_Scripts/WeatherFlowController.cs
+	deleted by us:   Assets/Dev/Scripts/UI_Scripts/WeatherFlowController.cs.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uss
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uss.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/FloodDamagePanel.uxml.meta
+	deleted by us:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/GameHUD.uss
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/GameHUD.uss.meta
+	deleted by us:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/GameHUD.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/GameHUD.uxml.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/IntroVideo.uss
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/IntroVideo.uss.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/IntroVideo.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/IntroVideo.uxml.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/MainMenu.uss.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/MainMenu.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/MainMenu.uxml.meta
+	deleted by us:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ResourceBar.uss
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ResourceBar.uss.meta
+	deleted by us:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ResourceBar.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ResourceBar.uxml.meta
+	added by us:     Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/npc_icon.jpg
+	added by us:     Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/npc_icon.jpg.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/UI_Toolkit_Images/pixel-art-portrait-young-man-with-dark-hair-blue-background_1292377-14853.jpg.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uss
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uss.meta
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uxml
+	added by them:   Assets/Dev/Scripts/UI_UXML_USS/UI Editor/ZoneInfo.uxml.meta
+	both modified:   UserSettings/Layouts/CurrentMaximizeLayout.dwlt
+	both modified:   UserSettings/Layouts/default-6000.dwlt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	merge-conflicts.txt
+

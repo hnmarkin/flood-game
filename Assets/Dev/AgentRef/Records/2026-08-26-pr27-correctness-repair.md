@@ -1,0 +1,3 @@
+# PR 27 Correctness Repair
+
+Fixed water spread gating leaks, finite-value handling, production map validation, active-cell updates, projection timer/state cloning, transactional preliminary flooding, crisis profile commit ordering, barrier validation, terrain participation, edge-source de-duplication, renderer threshold continuity, forecast retry state, and scene startup. Added per-edge Wall/Source/Sink boundaries with limitless source/sink behavior and focused EditMode/PlayMode coverage. Reverted the shared PanelSettings scale change. Unity project regeneration and manual cutover verification remain editor-dependent; the historical Assets/Game migration remains outside the allowed write scope.

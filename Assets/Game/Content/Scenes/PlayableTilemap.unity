@@ -680,6 +680,8 @@ Transform:
   - {fileID: 1319508904}
   - {fileID: 2100000002}
   - {fileID: 2100000102}
+  - {fileID: 274464409}
+  - {fileID: 1516714437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &222353873
@@ -852,6 +854,38 @@ Transform:
   - {fileID: 1117061670}
   - {fileID: 315251713}
   m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &274464408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 274464409}
+  m_Layer: 0
+  m_Name: ScoringUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &274464409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274464408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1848276405}
+  m_Father: {fileID: 195463844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &298309929 stripped
 Transform:
@@ -1309,7 +1343,9 @@ MonoBehaviour:
   secondsPerCharacter: 0.07
   autoHideAfterSeconds: 0
   hideOnStart: 1
+  useUnscaledTime: 1
   maxAdvisorMessageCharacters: 220
+  useVariedMessages: 1
   subscribeToGameplayEvents: 1
   debugLogs: 1
 --- !u!114 &515287498
@@ -4868,7 +4904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46cd9b33a104b4b71b607b8330098d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingOrthoSize: 14
+  startingOrthoSize: 12
   zoomStep: 2
   minOrthoSize: 3
   maxOrthoSize: 25
@@ -5516,6 +5552,7 @@ MonoBehaviour:
   routeSortingOrder: 2300
   routeZOffset: -0.05
   debugLogs: 1
+  hideUnselectedRoutesWhenSelected: 1
   previewRouteColor: {r: 0.90588236, g: 0, b: 0.28235295, a: 0.6117647}
   hoveredRouteColor: {r: 0.90588236, g: 0, b: 0.28235295, a: 0.8627451}
   selectedRouteColor: {r: 1, g: 0, b: 0.39857292, a: 1}
@@ -26375,6 +26412,180 @@ MonoBehaviour:
   ghostHeightOffset: 0.25
   ghostSortingOrder: 2200
   debugLogs: 1
+--- !u!1 &1516714436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1516714437}
+  - component: {fileID: 1516714440}
+  - component: {fileID: 1516714439}
+  - component: {fileID: 1516714438}
+  - component: {fileID: 1516714441}
+  m_Layer: 0
+  m_Name: UI_GameFlow_Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1516714437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516714436}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195463844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1516714438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516714436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed54496d12b45b78e8aed30a4eab0e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibilityController: {fileID: 1516714440}
+  typewriterController: {fileID: 1516714439}
+  fadeTransition: {fileID: 0}
+  waterSimulator: {fileID: 1818902683}
+  showIntroOnStart: 1
+  autoFindMissingReferences: 1
+  bindRetryFrames: 60
+  useFadeTransitions: 1
+  advisorMainFadeInSeconds: 0.45
+  advisorMainFadeOutSeconds: 0.25
+  scorePanelFadeInSeconds: 0.5
+  scorePanelFadeOutSeconds: 0.25
+  advisorMainCloseButtonName: 
+  bindAllMatchingAdvisorMainCloseButtons: 1
+  advisorMainContinueButtonNames:
+  - close_btn
+  - close_button
+  - continue_btn
+  - start_btn
+  - start_game_btn
+  - start_game_button
+  - advisor_main_close_btn
+  - advisor_continue_btn
+  - prepare_btn
+  - begin_preparation_btn
+  - begin_preperation_btn
+  advisorPara1LabelName: para1
+  advisorPara2LabelName: para2
+  advisorCharactersPerSecond: 45
+  advisorPauseBetweenLabelsSeconds: 0.25
+  scorePanelDelaySeconds: 20
+  scoreContentLabelName: score_panel_content_label
+  scoreCharactersPerSecond: 40
+  scoreTypewriterStartDelaySeconds: 0.1
+  subscribeToWaterSimulatorStarted: 1
+  startScoreTimerIfFloodAlreadyRunning: 1
+  pauseGameWhenScorePanelShows: 1
+  restoreTimeScaleWhenScorePanelCloses: 1
+  debugLogs: 1
+--- !u!114 &1516714439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516714436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ffebbaa7a504f27aef99e64ea8b4d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charactersPerSecond: 45
+  secondsPerCharacter: 0
+  pauseBetweenLabelsSeconds: 0.2
+  clearAllLabelsBeforeSequence: 1
+  enableRichTextDuringTyping: 1
+  treatRichTextTagsAsZeroWidth: 1
+  useUnscaledTime: 1
+--- !u!114 &1516714440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516714436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6db0bb81424d22a5caf8ae20ed2e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceBarDocument: {fileID: 555384875}
+  actionsPanelDocument: {fileID: 571244097}
+  alertsPanelDocument: {fileID: 568211095}
+  inventoryToolsDocument: {fileID: 1300253460}
+  missionChecklistDocument: {fileID: 2026107602}
+  advisorMainDocument: {fileID: 377076261}
+  advisorPanelDocument: {fileID: 377076261}
+  scorePanelDocument: {fileID: 1848276406}
+  resourceBarRootName: HUDRoot
+  actionsPanelRootName: actions_root
+  alertsPanelRootName: alert_root
+  inventoryToolsRootName: inventory_root
+  missionChecklistRootName: mission_checklist_root
+  advisorMainHostName: advisor_main_instance
+  advisorMainRootName: advisor_main_root
+  advisorPanelRootName: advisor_panel_root
+  scorePanelRootName: score_panel_root
+  autoFindMissingDocuments: 1
+  showAdvisorPanelDuringGameplay: 1
+  keepResourceBarVisibleOnScore: 1
+--- !u!114 &1516714441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516714436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12944e00c177477f96f673dbf2026abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultDurationSeconds: 0.35
+  opacityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1571906966
 GameObject:
   m_ObjectHideFlags: 0
@@ -32464,7 +32675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1802201608
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32616,11 +32827,11 @@ MonoBehaviour:
   barrierProviderBehaviour: {fileID: 1046329326}
   useSpreadGating: 0
   spreadInterval: 10
-  spreadLayersPerTick: 1
-  expandFromWaterThreshold: 0.1
-  expandOnceImmediatelyOnStart: 1
+  spreadLayersPerTick: 5
+  expandFromWaterThreshold: 1
+  expandOnceImmediatelyOnStart: 0
   persistentFloodVisuals: 0
-  visualWaterChangePerStep: 3
+  visualWaterChangePerStep: 1
   autoStepInterval: 0.1
   startOnPlay: 0
   showDebugFloodButton: 0
@@ -78728,6 +78939,57 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1848276404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1848276405}
+  - component: {fileID: 1848276406}
+  m_Layer: 0
+  m_Name: ScoringResultUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1848276405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848276404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 274464409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1848276406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848276404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 3a9d075b934104e3da06f152a0c525a7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a2d7aa677908c42e589489e1388bb7ed, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &1925346383
 GameObject:
   m_ObjectHideFlags: 0

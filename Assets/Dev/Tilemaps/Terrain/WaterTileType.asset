@@ -27,3 +27,4 @@ MonoBehaviour:
     min: 3
     max: 1000
   soilCapacity: 0
+  isWater: 1

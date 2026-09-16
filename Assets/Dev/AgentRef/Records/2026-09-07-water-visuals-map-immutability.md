@@ -1,0 +1,3 @@
+# Water visuals and map immutability
+
+`RendererDef` now resolves one complete tile-and-tint variant per depth, validates authored flooded tile bands, and treats tile swapping as the flooding presentation. Simulating terrain must provide a valid renderer definition in Production. `MapDef` and `MapCellDef` no longer expose runtime mutation methods, and `MapAccessor` no longer exposes the underlying map asset. Editor conversion and RefactorScene generation write serialized map data through an editor-only authoring seam; the bootstrapper no longer mutates maps in Play Mode. Tests construct map fixtures through private serialized data only.
