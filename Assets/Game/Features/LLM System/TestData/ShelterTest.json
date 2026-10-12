@@ -1,0 +1,19 @@
+{
+  "system": "Shelter System",
+  "floodRisk": "High",
+  "population": 2000,
+  "shelters": [
+    {
+      "shelterId": "S-01",
+      "assignedZones": ["Zone A", "Zone B", "Zone C"],
+      "capacity": 500,
+      "assignedPopulation": 650
+    },
+    {
+      "shelterId": "S-02",
+      "assignedZones": ["Zone D", "Zone E", "Zone F"],
+      "capacity": 600,
+      "assignedPopulation": 520
+    }
+  ]
+}

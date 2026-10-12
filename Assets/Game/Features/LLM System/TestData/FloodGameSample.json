@@ -1,0 +1,10 @@
+{
+  "testName": "Flood Mitigation LLM Test",
+  "scenario": "Urban flood emergency",
+  "systems": {
+    "shelter": true,
+    "evacuation": true,
+    "communication": true,
+    "barrier": true
+  }
+}

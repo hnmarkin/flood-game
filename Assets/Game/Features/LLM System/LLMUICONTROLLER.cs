@@ -1,15 +1,46 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class LLMUIController : MonoBehaviour
 {
-    public Text actionText;
-    public Text commentaryText;
+    [Header("LLM Feedback UI")]
+    [SerializeField] private GameObject feedbackPanel;
+    [SerializeField] private TMP_Text feedbackText;
 
-    // This function will be called by LLMManager
-    public void UpdateUI(string action, string commentary)
+    private void Awake()
     {
-        actionText.text = "Action: " + action;
-        commentaryText.text = "Commentary: " + commentary;
+        // Hide the panel when the game starts
+        if (feedbackPanel != null)
+        {
+            feedbackPanel.SetActive(false);
+        }
+    }
+
+    public void ShowMessage(string message)
+    {
+        Debug.Log("LLM UI MESSAGE: " + message);
+
+        if (feedbackPanel == null)
+        {
+            Debug.LogWarning("LLMUIController: Feedback Panel is not assigned.");
+            return;
+        }
+
+        if (feedbackText == null)
+        {
+            Debug.LogWarning("LLMUIController: Feedback Text is not assigned.");
+            return;
+        }
+
+        feedbackText.text = message;
+        feedbackPanel.SetActive(true);
+    }
+
+    public void HideMessage()
+    {
+        if (feedbackPanel != null)
+        {
+            feedbackPanel.SetActive(false);
+        }
     }
 }

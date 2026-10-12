@@ -1,0 +1,9 @@
+{
+  "evacuation": {
+    "availableRoutes": 3,
+    "selectedRoutes": 2,
+    "blockedRoutes": 1,
+    "totalPopulation": 1200,
+    "evacuatedPopulation": 850
+  }
+}
