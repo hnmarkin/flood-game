@@ -1,0 +1,26 @@
+VisualElement {}
+
+.inventory-tool-slot {
+    transition-property: translate, scale;
+    transition-duration: 100ms, 100ms;
+    transition-timing-function: ease-out, ease-out;
+}
+
+.inventory-tool-slot:hover {
+    translate: 0 -2px;
+    scale: 1.04 1.04;
+}
+
+.inventory-tool-slot.inventory-tool-selected,
+.inventory-tool-slot.shelter-tool-selected {
+    translate: 0 -2px;
+    scale: 1.04 1.04;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-color: rgb(120, 236, 255);
+    border-right-color: rgb(120, 236, 255);
+    border-bottom-color: rgb(120, 236, 255);
+    border-left-color: rgb(120, 236, 255);
+}

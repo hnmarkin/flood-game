@@ -1,0 +1,1 @@
+Added `AdvisorPanelLinkController` to connect the small Advisor expand button to the Advisor Big Panel, with close actions returning the small panel to its collapsed state. Added a scene UIDocument for `AdvisorBigPanel.uxml`, assigned it to the link controller, named/styled the big panel Done button, and added minimal pixel-style hover/active scaling for big panel buttons.

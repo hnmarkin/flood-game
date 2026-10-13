@@ -1,0 +1,17 @@
+VisualElement {}
+
+.advisor-big-button {
+    background-image: url("project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/UI_Flat_Frame01a.png?fileID=21300000&guid=58d95de73eebe4116aedf3593ad8896e&type=3#UI_Flat_Frame01a");
+    scale: 1;
+    transition-property: scale;
+    transition-duration: 0.08s;
+}
+
+.advisor-big-button:hover {
+    background-image: url("project://database/Assets/Dev/Ash_dev/dev_imgs/UI_imgs/UI%20Panels/UI_Flat_Frame_DarkGrey.png?fileID=21300000&guid=ac899538245d14e868405bdf9c93db26&type=3#UI_Flat_Frame_DarkGrey");
+    scale: 1.04;
+}
+
+.advisor-big-button:active {
+    scale: 0.98;
+}

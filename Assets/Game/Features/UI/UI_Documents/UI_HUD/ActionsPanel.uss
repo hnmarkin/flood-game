@@ -1,0 +1,18 @@
+VisualElement {}
+
+.action-panel-button {
+    transition-property: translate, scale;
+    transition-duration: 0.12s;
+    translate: 0 0;
+    scale: 1 1;
+}
+
+.action-panel-button:hover {
+    translate: 1px -1px;
+    scale: 1.02 1.02;
+}
+
+.action-button-active {
+    scale: 1.03 1.03;
+    -unity-background-image-tint-color: rgb(125, 228, 255);
+}

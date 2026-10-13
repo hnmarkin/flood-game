@@ -65,10 +65,13 @@ public class WaterSimulator : MonoBehaviour
 
     [Header("Control")]
     [SerializeField] private bool startOnPlay = false;
+    [SerializeField] private bool showDebugFloodButton = false;
     private bool _simulationEnabled = false;
 
     private float[,] _visualWater;
     private float[,] _visualTargetWater;
+
+    public bool IsSimulationRunning => _simulationEnabled;
 
     private void Awake()
     {
@@ -91,22 +94,39 @@ public class WaterSimulator : MonoBehaviour
 
     public void BeginSimulationFromUI()
     {
+        if (!showDebugFloodButton)
+        {
+            Debug.Log("[WaterSimulator] Debug flood button is disabled.");
+            return;
+        }
+
+        TryBeginSimulation("[WaterSimulator] Simulation started from debug UI.");
+    }
+
+    public bool BeginSimulationFromBarrierTrigger()
+    {
+        return TryBeginSimulation("[WaterSimulator] Flood simulation started by barrier trigger.");
+    }
+
+    private bool TryBeginSimulation(string startLogMessage)
+    {
         if (tileMapData == null)
         {
             Debug.LogError("[WaterSimulator] Cannot start: no TileMapData assigned.");
-            return;
+            return false;
         }
 
         if (_simulationEnabled)
         {
             Debug.LogWarning("[WaterSimulator] Simulation already started.");
-            return;
+            return false;
         }
 
-        BeginSimulationInternal();
+        BeginSimulationInternal(startLogMessage);
+        return true;
     }
 
-    private void BeginSimulationInternal()
+    private void BeginSimulationInternal(string startLogMessage = "[WaterSimulator] Simulation started.")
     {
         Initialize();
         ApplyWaterBlanket(tileMapData.rangeX, tileMapData.rangeY, waterHeight, blanketType);
@@ -114,7 +134,7 @@ public class WaterSimulator : MonoBehaviour
         ApplyVisualWaterState();
 
         _simulationEnabled = true;
-        Debug.Log("[WaterSimulator] Simulation started.");
+        Debug.Log(string.IsNullOrWhiteSpace(startLogMessage) ? "[WaterSimulator] Simulation started." : startLogMessage);
 
         OnSimulationStarted?.Invoke();
     }
