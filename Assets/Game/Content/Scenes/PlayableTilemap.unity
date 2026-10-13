@@ -247,10 +247,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floodDefense: {fileID: 1046329326}
   baselineRiskController: {fileID: 1590100951}
-  shelterManager: {fileID: 12772933}
+  shelterController: {fileID: 1420635165}
   evacuationController: {fileID: 315251714}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
-  waterSimulator: {fileID: 1818902683}
+  waterController: {fileID: 1876854016}
   floodedFractionWeight: 0.4
   averageDepthWeight: 0.25
   maxDepthWeight: 0.2
@@ -263,8 +263,6 @@ MonoBehaviour:
   baseAssetValuePerTile: 1000
   assetValuePerPerson: 500
   vulnerabilityMultiplier: 1
-  refreshOnSimulationStart: 1
-  refreshOnSimulationStep: 1
   debugLogs: 1
 --- !u!1 &36957479
 GameObject:
@@ -496,63 +494,6 @@ Transform:
   - {fileID: 1963393217}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &102142144
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 102142145}
-  - component: {fileID: 102142146}
-  m_Layer: 0
-  m_Name: QuizTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &102142145
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102142144}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 195463844}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &102142146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102142144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab723b05921754ef4bd2e997fad706eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerKey: 113
-  testQuestion:
-    question: Your first call during a Flood Crisis is crictical to saving lives!
-      Who do you Call?
-    option1: Disaster Control
-    option2: Local Police department
-    option3: Fire department
-    correctOptionIndex: 1
-    explanationForOption1: Close..., But in a Flood Crisis it is essential to inform
-      the local authorities first.
-    explanationForOption2: Thats right, informing the local police department about
-      critical life-threatening flood situations in your area is ideal.
-    explanationForOption3: But a good option to rescue people at immediate risk.
 --- !u!1 &130091723
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,6 +575,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &179784586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 179784587}
+  m_Layer: 0
+  m_Name: ZoneSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &179784587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179784586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2070746515}
+  m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &195463843
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,7 +640,6 @@ Transform:
   - {fileID: 1925346384}
   - {fileID: 1081574011}
   - {fileID: 1971563675}
-  - {fileID: 102142145}
   - {fileID: 2127827532}
   - {fileID: 1826789573}
   - {fileID: 1571906967}
@@ -937,8 +909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baselineRiskController: {fileID: 1590100951}
-  shelterManager: {fileID: 12772933}
-  shelterCandidateController: {fileID: 0}
+  shelterController: {fileID: 1420635165}
   floodDefenseBoxStamp: {fileID: 1046329326}
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   routeTilemap: {fileID: 36957482}
@@ -1286,6 +1257,151 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419006124}
   m_CullTransparentMesh: 1
+--- !u!1 &420333451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 420333453}
+  - component: {fileID: 420333452}
+  m_Layer: 0
+  m_Name: BarrierController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &420333452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420333451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d52216790784401b854340a1b65e9eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+  terrainTilemap: {fileID: 1822120955}
+  mainCamera: {fileID: 917516086}
+  jsonMapLoader: {fileID: 1678446140}
+  zoneController: {fileID: 2070746514}
+  waterController: {fileID: 1876854016}
+  npcToast: {fileID: 1872198977}
+  placementInput: {fileID: 1265975349}
+  visuals: {fileID: 602883506}
+  physicsAdapter: {fileID: 521349345}
+  zoneBoundaryMode: 1
+  maxZoneBarriers: 4
+  requiredBarriersBeforeFlood: 3
+  barrierHeight: 40
+  seepage: 0.001
+  previewTilemap: {fileID: 915049043}
+  previewTile: {fileID: 11400000, guid: f8a6ac3c7d88e45689adcabfc44ac1c1, type: 2}
+  previewColor: {r: 0, g: 0.3207547, b: 0, a: 0.6117647}
+  zoneOutlineTilemap: {fileID: 36957482}
+  zoneOutlineTile: {fileID: 11400000, guid: f8a6ac3c7d88e45689adcabfc44ac1c1, type: 2}
+  zoneOutlineColor: {r: 0.4811321, g: 0.39687854, b: 0, a: 1}
+  drawCommittedOutline: 1
+  debugLogs: 1
+--- !u!4 &420333453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420333451}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1294415254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &434996195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 434996197}
+  - component: {fileID: 434996196}
+  - component: {fileID: 434996198}
+  m_Layer: 0
+  m_Name: ShelterPresentation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &434996196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434996195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32d7337dc7a94591bd7e955b4968ba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &434996197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434996195}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 829650270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &434996198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434996195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98303f012e22b414e93bf0c99007e359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneOutlineHighlighter: {fileID: 704415076}
+  candidateTileColor: {r: 0.15, g: 0.9, b: 1, a: 1}
+  candidateAssociatedZoneColor: {r: 0, g: 0.8, b: 1, a: 0.45}
+  placedShelterAssociatedZoneColor: {r: 0, g: 1, b: 0.65, a: 0.75}
+  showPlacedShelterZoneOutlines: 1
+  showCandidateLabels: 1
+  labelParent: {fileID: 434996197}
+  labelFontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
+  labelHeightOffset: 0.85
+  labelFontSize: 3.25
+  labelColor: {r: 1, g: 1, b: 1, a: 1}
+  labelSortingOrder: 2150
+  shelterGhostPrefab: {fileID: 7878850554299139147, guid: e27f8afff86aa4915bfdb3442cc05511, type: 3}
+  shelterGhostRenderer: {fileID: 4149901682798998386, guid: e27f8afff86aa4915bfdb3442cc05511, type: 3}
+  defaultShelterSprite: {fileID: 21300000, guid: 875330406bf2d4917b43eff6c75b4ced, type: 3}
+  placedShelterPrefab: {fileID: 6527885319074876082, guid: 2ca388da8c7a44483904f2e22cd340e9, type: 3}
+  validPlacementColor: {r: 0.35, g: 1, b: 0.35, a: 0.75}
+  invalidPlacementColor: {r: 1, g: 0.2, b: 0.2, a: 0.55}
+  ghostHeightOffset: 0.25
+  ghostSortingOrder: 2200
+  debugLogs: 1
 --- !u!1 &515287495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1452,7 @@ MonoBehaviour:
   highRiskManager: {fileID: 1663569816}
   floodDefense: {fileID: 1046329326}
   waterSimulator: {fileID: 1818902683}
-  shelterManager: {fileID: 12772933}
+  shelterController: {fileID: 1420635165}
   evacuationController: {fileID: 315251714}
   communicationTowerController: {fileID: 810699005}
   popupDelay: 1
@@ -1363,6 +1479,53 @@ MonoBehaviour:
   smallAdvisorUIDocument: {fileID: 377076261}
   bigAdvisorUIDocument: {fileID: 2100000103}
   debugLogs: 1
+--- !u!1 &521349344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 521349346}
+  - component: {fileID: 521349345}
+  m_Layer: 0
+  m_Name: BarrierPhysics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &521349345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521349344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e65eda51982374c9bb4a2b1565d13464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterController: {fileID: 1876854016}
+  terrainTilemap: {fileID: 1822120955}
+  debugLogs: 1
+--- !u!4 &521349346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521349344}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1294415254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &529214712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,6 +1858,50 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!1 &602883504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 602883505}
+  - component: {fileID: 602883506}
+  m_Layer: 0
+  m_Name: BarrierVisuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &602883505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602883504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1294415254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &602883506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602883504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1681a41c6c7de4af2ae686f90cb2d2b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &628953063
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,6 +4127,66 @@ MonoBehaviour:
   outliningEnabled: 1
   hideWhileBarrierModeIsActive: 1
   hidePersistentWhileBarrierModeIsActive: 1
+--- !u!1 &748270050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748270051}
+  - component: {fileID: 748270052}
+  - component: {fileID: 748270053}
+  m_Layer: 0
+  m_Name: ShelterPlacementInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &748270051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748270050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 829650270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &748270052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748270050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94259d23cf9f043cd96b10d0e72dbb21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &748270053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748270050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96f0c9a57b344c5bb62da754804a61f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shelterController: {fileID: 1420635165}
+  mainCamera: {fileID: 917516086}
+  placementTilemap: {fileID: 628953066}
 --- !u!1 &771863410
 GameObject:
   m_ObjectHideFlags: 0
@@ -4271,8 +4538,7 @@ MonoBehaviour:
   floodDefenseBoxStamp: {fileID: 1046329326}
   communicationTilemap: {fileID: 36957482}
   zoneVisualController: {fileID: 704415076}
-  shelterManager: {fileID: 12772933}
-  shelterCandidateController: {fileID: 1482495044}
+  shelterController: {fileID: 1420635165}
   mainCamera: {fileID: 917516086}
   mapHoverTooltip: {fileID: 0}
   tooltipUIDocument: {fileID: 2082171433}
@@ -4375,6 +4641,40 @@ MonoBehaviour:
   maxTooltipWidth: 240
   screenEdgePadding: 8
   debugLogs: 0
+--- !u!1 &829650269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 829650270}
+  m_Layer: 0
+  m_Name: ShelterSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &829650270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829650269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1420635164}
+  - {fileID: 434996197}
+  - {fileID: 748270051}
+  m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &841802068
 GameObject:
   m_ObjectHideFlags: 0
@@ -4961,6 +5261,63 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &923783431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923783432}
+  - component: {fileID: 923783433}
+  m_Layer: 0
+  m_Name: WaterLegacyMapConverter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &923783432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923783431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1497047835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &923783433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923783431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1fd20db7135974eb83c0b93efd8e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapDef: {fileID: 11400000, guid: 92de7f7130759442fa6a0fb8ddd4bef8, type: 2}
+  groundTerrain: {fileID: 0}
+  waterTerrain: {fileID: 0}
+  terrainTilemap: {fileID: 1822120955}
+  width: 20
+  height: 20
+  origin: {x: 0, y: 0}
+  rimHeight: 8
+  basinDepth: 3
+  channelDepth: 2
+  createWaterBody: 1
+  initialWaterBodyDepth: 10
+  rebuildOnEnable: 0
 --- !u!1 &928855866
 GameObject:
   m_ObjectHideFlags: 0
@@ -5091,9 +5448,12 @@ MonoBehaviour:
   mainCamera: {fileID: 917516086}
   jsonMapLoader: {fileID: 1678446140}
   waterSimulator: {fileID: 1818902683}
+  zoneController: {fileID: 2070746514}
+  waterController: {fileID: 1876854016}
+  barrierController: {fileID: 420333452}
   zoneBoundaryMode: 0
   maxZoneBarriers: 3
-  autoStartFloodAfterBarrierLimit: 1
+  autoStartFloodAfterBarrierLimit: 0
   requiredBarriersBeforeFlood: 3
   barrierHeight: 40
   seepage: 0
@@ -5132,7 +5492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1067446491
 Transform:
   m_ObjectHideFlags: 0
@@ -25531,6 +25891,51 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1265975347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1265975348}
+  - component: {fileID: 1265975349}
+  m_Layer: 0
+  m_Name: BarrierPlacementInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1265975348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265975347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1294415254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1265975349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265975347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04211bd15f5ab495092402f833e778b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 917516086}
 --- !u!1 &1268517516
 GameObject:
   m_ObjectHideFlags: 0
@@ -25654,6 +26059,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1318637588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1294415253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1294415254}
+  m_Layer: 0
+  m_Name: BarrierSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1294415254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294415253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 420333453}
+  - {fileID: 1265975348}
+  - {fileID: 602883505}
+  - {fileID: 521349346}
+  m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1300253458
 GameObject:
   m_ObjectHideFlags: 0
@@ -25719,7 +26159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUIDocument: {fileID: 1300253460}
-  shelterCandidateController: {fileID: 1482495044}
+  shelterController: {fileID: 1420635165}
   debugLogs: 1
 --- !u!1 &1304940509
 GameObject:
@@ -25960,7 +26400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionsUIDocument: {fileID: 571244097}
   floodDefenseBoxStamp: {fileID: 1046329326}
-  shelterCandidateController: {fileID: 1482495044}
+  shelterController: {fileID: 1420635165}
   evacuationController: {fileID: 315251714}
   communicationTowerController: {fileID: 810699005}
   preparationCardsController: {fileID: 2147339104}
@@ -26044,6 +26484,124 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1420635162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1420635164}
+  - component: {fileID: 1420635163}
+  - component: {fileID: 1420635165}
+  m_Layer: 0
+  m_Name: ShelterController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1420635163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420635162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b516d3fb7dd444b769132f5e17485a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1420635164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420635162}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 829650270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1420635165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420635162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 889273345757b49ba982c2c5ca64aa4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floodDefense: {fileID: 1046329326}
+  jsonMapLoader: {fileID: 1678446140}
+  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+  terrainTilemap: {fileID: 1822120955}
+  targetTilemap: {fileID: 628953066}
+  mainCamera: {fileID: 917516086}
+  zoneBaselineRiskController: {fileID: 1590100951}
+  presentation: {fileID: 434996198}
+  placementInput: {fileID: 748270053}
+  shelterTypes:
+  - shelterTypeName: Community Shelter
+    shelterSprite: {fileID: 0}
+    capacity: 250
+    cost: 100
+    safetyMultiplier: 1
+    description: General-purpose emergency shelter.
+  - shelterTypeName: Storm Shelter
+    shelterSprite: {fileID: 0}
+    capacity: 150
+    cost: 150
+    safetyMultiplier: 1
+    description: Smaller high-safety shelter option.
+  - shelterTypeName: School Shelter
+    shelterSprite: {fileID: 0}
+    capacity: 400
+    cost: 200
+    safetyMultiplier: 1
+    description: Large-capacity shelter option.
+  allowMultipleSheltersPerCandidate: 0
+  limitPlacedShelters: 1
+  maxPlacedShelters: 2
+  defaultRouteAccessibility: 1
+  defaultShelterSafety: 0.9
+  candidateSettings:
+    minZonesPerShelter: 8
+    maxZonesPerShelter: 9
+    allowSingleZoneShelters: 0
+    allowUndersizedFallbackGroups: 1
+    defaultZoneEnabled: 1
+    allowDisabledZonesToBeServedByNearbyShelters: 0
+    zoneOverrides: []
+    deepFloodWaterThreshold: 0.25
+    fallbackSearchRadiusCells: 4
+    supportFeatureDistanceForMaxScore: 4
+    waterClearanceDistanceForMaxScore: 6
+    centerPreferenceDistanceCells: 10
+    elevationWeight: 1.1
+    centerWeight: 1
+    supportFeatureWeight: 0.45
+    waterClearanceWeight: 0.55
+    waterPenaltyWeight: 0.8
+    waterCategoryKeywords:
+    - water
+    - river
+    - stream
+    - lake
+    - ocean
+    - flood_source
+  keepPlacementModeActiveAfterPlacement: 0
+  showCandidateHighlightsDuringPlacement: 1
+  debugLogs: 1
 --- !u!1 &1434462329
 GameObject:
   m_ObjectHideFlags: 0
@@ -26074,6 +26632,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 855510019}
+  - {fileID: 179784587}
+  - {fileID: 1294415254}
   - {fileID: 812424061}
   - {fileID: 2110391902}
   - {fileID: 515287496}
@@ -26086,8 +26646,10 @@ Transform:
   - {fileID: 1688803249}
   - {fileID: 938194713}
   - {fileID: 1067446491}
+  - {fileID: 829650270}
   - {fileID: 1837393908}
   - {fileID: 2019949260}
+  - {fileID: 1872198976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1434780121
@@ -26135,18 +26697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a49d09d23d6483fb909c984ac5131dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiDocument: {fileID: 1434780124}
-  cameraPanZoom: {fileID: 917516088}
-  targetCamera: {fileID: 917516086}
-  minimapSprite: {fileID: 21300000, guid: 998cae310a0724d9e85ea28be73330e7, type: 3}
-  minimapTexture: {fileID: 0}
-  mapWorldMin: {x: -20, y: -20}
-  mapWorldMax: {x: 20, y: 20}
-  hoverRectSizeNormalized: {x: 0.18, y: 0.18}
-  minimumCurrentRectSizeNormalized: {x: 0.08, y: 0.08}
-  zoomInButtonName: 
-  zoomOutButtonName: 
-  resetButtonName: 
 --- !u!114 &1434780124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26412,6 +26962,39 @@ MonoBehaviour:
   ghostHeightOffset: 0.25
   ghostSortingOrder: 2200
   debugLogs: 1
+--- !u!1 &1497047834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1497047835}
+  m_Layer: 0
+  m_Name: WaterSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1497047835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497047834}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4483056, y: 5.5073586, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1876854013}
+  - {fileID: 923783432}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1516714436
 GameObject:
   m_ObjectHideFlags: 0
@@ -26628,7 +27211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1590100950}
   - component: {fileID: 1590100951}
-  - component: {fileID: 2147001234}
   m_Layer: 0
   m_Name: ZoneBaselineRisk
   m_TagString: Untagged
@@ -26668,7 +27250,7 @@ MonoBehaviour:
   tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
   terrainTilemap: {fileID: 1822120955}
   zoneOutlineHighlighter: {fileID: 704415076}
-  shelterManager: {fileID: 12772933}
+  shelterController: {fileID: 1420635165}
   evacuationController: {fileID: 315251714}
   maxRiskDistanceCells: 12
   distanceWeight: 0.4
@@ -32806,7 +33388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1818902683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78990,6 +79572,160 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!1 &1872198975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1872198976}
+  - component: {fileID: 1872198977}
+  m_Layer: 0
+  m_Name: NpcSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1872198976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872198975}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1434462330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1872198977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872198975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f52b48835f5947b3bd2e4b5cfed8448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultDelayBeforeShow: 1.2
+  defaultSecondsPerChar: 0.02
+  defaultHoldAfterTyped: 1.5
+  defaultHideAfterHold: 1
+  defaultUseTypewriter: 1
+  toastName: npc_toast
+  speakerNameLabel: npc_toast_name
+  textName: npc_toast_text
+  defaultAnchor: 0
+--- !u!1 &1876854012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1876854013}
+  - component: {fileID: 1876854016}
+  - component: {fileID: 1876854015}
+  - component: {fileID: 1876854014}
+  - component: {fileID: 1876854017}
+  m_Layer: 0
+  m_Name: WaterSystemRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1876854013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876854012}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.8714068, y: 10.9998455, z: -0.021180192}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1497047835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1876854014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876854012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d187f4911d84df8b493ccd2ae1f226d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterController: {fileID: 1876854016}
+--- !u!114 &1876854015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876854012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa6c2ed2f2fc194099fec7a965cdc53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemaps:
+  - {fileID: 1822120955}
+  depthForDeepColor: 1
+  shallowWaterColor: {r: 0.7, g: 0.85, b: 1, a: 1}
+  deepWaterColor: {r: 0.1, g: 0.25, b: 0.5, a: 1}
+--- !u!114 &1876854016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876854012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b03f9861226afd4890a0b10dbd15429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapDef: {fileID: 11400000, guid: 92de7f7130759442fa6a0fb8ddd4bef8, type: 2}
+  scenarioDef: {fileID: 11400000, guid: a1cc30db8ec74d143bc5433c27359b82, type: 2}
+  configurationMode: 1
+  modifierProviderBehaviour: {fileID: 0}
+  waterRenderer: {fileID: 1876854015}
+  initializeOnStart: 1
+  startOnPlay: 1
+  stepMode: 1
+  autoStepInterval: 0.5
+  spaceKeyStepsWhenManual: 1
+--- !u!114 &1876854017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876854012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e72c912b45243b5b8c3a4fda09e64f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterController: {fileID: 1876854016}
+  forecastSimulatedDuration: 5
 --- !u!1 &1925346383
 GameObject:
   m_ObjectHideFlags: 0
@@ -79810,7 +80546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f071b1bf5c4fbcb484a15e63fc3c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shelterManager: {fileID: 12772933}
+  shelterController: {fileID: 1420635165}
   zoneBaselineRiskController: {fileID: 1590100951}
   floodImpactController: {fileID: 35733723}
   evacuationController: {fileID: 315251714}
@@ -79991,6 +80727,54 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!1 &2070746513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2070746515}
+  - component: {fileID: 2070746514}
+  m_Layer: 0
+  m_Name: ZoneController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2070746514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070746513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a2bd6974cc48f781edac70b6557993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
+  terrainTilemap: {fileID: 1822120955}
+  jsonMapLoader: {fileID: 1678446140}
+  debugLogs: 1
+--- !u!4 &2070746515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070746513}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 179784587}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2082171431
 GameObject:
   m_ObjectHideFlags: 0
@@ -80211,7 +80995,7 @@ MonoBehaviour:
   communicationUIDocument: {fileID: 2100000003}
   communicationPanelTemplate: {fileID: 9197481963319205126, guid: 7a7554768217246c7a4b79f427772e7e, type: 3}
   communicationTowerController: {fileID: 810699005}
-  shelterManager: {fileID: 12772933}
+  shelterController: {fileID: 1420635165}
   evacuationController: {fileID: 315251714}
   zoneBaselineRiskController: {fileID: 1590100951}
   evacuationMissingIcon: {fileID: 21300000, guid: a06926691cf4a4aaf87afbd95e73c7a7, type: 3}
@@ -80418,75 +81202,6 @@ Transform:
   - {fileID: 377076260}
   m_Father: {fileID: 195463844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2147001234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1590100949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b63ec2700e46229b5b3ba3af12f4b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floodDefense: {fileID: 1046329326}
-  jsonMapLoader: {fileID: 1678446140}
-  tileMapData: {fileID: 11400000, guid: 7e81a30567a6c1b44ae537c0db92678b, type: 2}
-  terrainTilemap: {fileID: 1822120955}
-  targetTilemap: {fileID: 36957482}
-  mainCamera: {fileID: 917516086}
-  zoneOutlineHighlighter: {fileID: 704415076}
-  zoneBaselineRiskController: {fileID: 1590100951}
-  floodImpactController: {fileID: 35733723}
-  shelterManager: {fileID: 12772933}
-  inventoryToolsDocument: {fileID: 1300253460}
-  labelParent: {fileID: 0}
-  labelFontAsset: {fileID: 11400000, guid: f9678f839eb8243a4b6433ea1c76a69c, type: 2}
-  minZonesPerShelter: 3
-  maxZonesPerShelter: 5
-  allowSingleZoneShelters: 0
-  allowUndersizedFallbackGroups: 1
-  defaultZoneEnabled: 1
-  allowDisabledZonesToBeServedByNearbyShelters: 0
-  zoneOverrides: []
-  deepFloodWaterThreshold: 0.25
-  fallbackSearchRadiusCells: 4
-  supportFeatureDistanceForMaxScore: 4
-  waterClearanceDistanceForMaxScore: 6
-  centerPreferenceDistanceCells: 10
-  elevationWeight: 1.1
-  centerWeight: 1
-  supportFeatureWeight: 0.45
-  waterClearanceWeight: 0.55
-  waterPenaltyWeight: 0.8
-  waterCategoryKeywords:
-  - water
-  - river
-  - stream
-  - lake
-  - ocean
-  - flood_source
-  candidateTileColor: {r: 0.15, g: 0.9, b: 1, a: 1}
-  candidateAssociatedZoneColor: {r: 0.3, g: 0.85, b: 0.85, a: 1}
-  placedShelterAssociatedZoneColor: {r: 0, g: 1, b: 0.65, a: 0.75}
-  showPlacedShelterZoneOutlines: 1
-  showCandidateLabels: 1
-  labelHeightOffset: 0.85
-  labelFontSize: 3.25
-  labelColor: {r: 1, g: 1, b: 1, a: 1}
-  labelSortingOrder: 2150
-  shelterGhostPrefab: {fileID: 7878850554299139147, guid: e27f8afff86aa4915bfdb3442cc05511, type: 3}
-  shelterGhostRenderer: {fileID: 4149901682798998386, guid: e27f8afff86aa4915bfdb3442cc05511, type: 3}
-  defaultShelterSprite: {fileID: 21300000, guid: 875330406bf2d4917b43eff6c75b4ced, type: 3}
-  placedShelterPrefab: {fileID: 6527885319074876082, guid: 2ca388da8c7a44483904f2e22cd340e9, type: 3}
-  keepPlacementModeActiveAfterPlacement: 0
-  showCandidateHighlightsDuringPlacement: 1
-  validPlacementColor: {r: 0.35, g: 1, b: 0.35, a: 0.75}
-  invalidPlacementColor: {r: 1, g: 0.2, b: 0.2, a: 0.55}
-  ghostHeightOffset: 0.25
-  ghostSortingOrder: 2200
-  debugLogs: 1
 --- !u!1 &2147339101
 GameObject:
   m_ObjectHideFlags: 0
@@ -80720,6 +81435,7 @@ SceneRoots:
   - {fileID: 1100739190}
   - {fileID: 1678446139}
   - {fileID: 1318637588}
+  - {fileID: 1497047835}
   - {fileID: 1818902684}
   - {fileID: 155857294}
   - {fileID: 1304940513}
