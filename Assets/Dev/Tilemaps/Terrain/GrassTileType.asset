@@ -15,11 +15,11 @@ MonoBehaviour:
   tileName: GrassTileType
   tileBases:
   - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
-    sprite: {fileID: 21300000, guid: 9abb1667fc0a1497abc2b3f4b782b417, type: 3}
+    sprite: {fileID: 21300000, guid: c55b2d22a6b784947a43108ff0f01d62, type: 3}
     min: 0
     max: 2
   - tileBase: {fileID: 11400000, guid: 0912d829ce9b64452b94234f587cb466, type: 2}
-    sprite: {fileID: 21300000, guid: 4c61c22322ff4476db2b74dc43f98d19, type: 3}
+    sprite: {fileID: 21300000, guid: 1c92b67df6246406e9790560ab7feb5c, type: 3}
     min: 2
     max: 1000
   soilCapacity: 0

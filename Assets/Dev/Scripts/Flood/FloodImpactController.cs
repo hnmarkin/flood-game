@@ -37,7 +37,7 @@ public struct ZoneFloodImpactResult
 public class FloodImpactController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private FloodDefenseBoxStamp floodDefense;
+    [SerializeField] private ZoneController zoneController;
     [SerializeField] private ZoneBaselineRiskController baselineRiskController;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
@@ -77,8 +77,8 @@ public class FloodImpactController : MonoBehaviour
 
     private void Awake()
     {
-        if (floodDefense == null)
-            floodDefense = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (zoneController == null)
+            zoneController = FindFirstObjectByType<ZoneController>();
 
         if (baselineRiskController == null)
             baselineRiskController = FindFirstObjectByType<ZoneBaselineRiskController>();
@@ -227,14 +227,14 @@ public class FloodImpactController : MonoBehaviour
             return;
         }
 
-        if (!floodDefense.EnsureZoneIndexReadyForExternalUse())
+        if (!zoneController.EnsureZoneIndexReadyForExternalUse())
         {
             ClearCachedImpactResults();
             Debug.LogWarning("[FloodImpactController] Zone data is not ready, so flood impact could not be calculated yet.");
             return;
         }
 
-        IReadOnlyDictionary<string, HashSet<Vector2Int>> zoneLookup = floodDefense.GetAllZoneTiles();
+        IReadOnlyDictionary<string, HashSet<Vector2Int>> zoneLookup = zoneController.GetAllZoneTiles();
         if (zoneLookup == null || zoneLookup.Count == 0)
         {
             ClearCachedImpactResults();
@@ -415,9 +415,9 @@ public class FloodImpactController : MonoBehaviour
     {
         bool isValid = true;
 
-        if (floodDefense == null)
+        if (zoneController == null)
         {
-            Debug.LogError("[FloodImpactController] FloodDefenseBoxStamp is not assigned.");
+            Debug.LogError("[FloodImpactController] ZoneController is not assigned.");
             isValid = false;
         }
 
@@ -463,7 +463,7 @@ public class FloodImpactController : MonoBehaviour
             return 0f;
 
         // Convert zone-local coordinates to actual Tilemap coordinates.
-        Vector3Int cell = floodDefense.NormalizedTileToCell(normalizedTile);
+        Vector3Int cell = zoneController.NormalizedTileToCell(normalizedTile);
 
         Vector2Int waterTile = new Vector2Int(cell.x, cell.y);
 
@@ -496,7 +496,7 @@ public class FloodImpactController : MonoBehaviour
         if (baselineRiskController != null && baselineRiskController.TryGetZoneCenterWorld(geoid, out worldCenter))
             return true;
 
-        if (zoneTiles == null || zoneTiles.Count == 0 || floodDefense == null || floodDefense.TerrainTilemap == null)
+        if (zoneTiles == null || zoneTiles.Count == 0 || zoneController == null || zoneController.TerrainTilemap == null)
             return false;
 
         Vector3 sum = Vector3.zero;
@@ -504,8 +504,8 @@ public class FloodImpactController : MonoBehaviour
 
         foreach (Vector2Int tile in zoneTiles)
         {
-            Vector3Int cell = floodDefense.NormalizedTileToCell(tile);
-            sum += floodDefense.TerrainTilemap.GetCellCenterWorld(cell);
+            Vector3Int cell = zoneController.NormalizedTileToCell(tile);
+            sum += zoneController.TerrainTilemap.GetCellCenterWorld(cell);
             sampleCount++;
         }
 
@@ -573,22 +573,22 @@ public class FloodImpactController : MonoBehaviour
             return;
         }
 
-        if (floodDefense == null ||
-            !floodDefense.EnsureZoneIndexReadyForExternalUse())
+        if (zoneController == null ||
+            !zoneController.EnsureZoneIndexReadyForExternalUse())
         {
             Debug.LogWarning(
                 "[FloodImpactController] Zone index is not ready.");
             return;
         }
 
-        var zones = floodDefense.GetAllZoneTiles();
+        var zones = zoneController.GetAllZoneTiles();
 
         foreach (var zone in zones)
         {
             foreach (Vector2Int normalizedTile in zone.Value)
             {
                 Vector3Int cell =
-                    floodDefense.NormalizedTileToCell(normalizedTile);
+                    zoneController.NormalizedTileToCell(normalizedTile);
 
                 Vector2Int waterTile =
                     new Vector2Int(cell.x, cell.y);

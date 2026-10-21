@@ -11,7 +11,8 @@ using UnityEngine.Tilemaps;
 public class ShelterPresentation : MonoBehaviour
 {
     [Header("Outline References")]
-    [SerializeField] private ZoneThinOutlineByHover zoneOutlineHighlighter;
+    [SerializeField] private ZoneController zoneController;
+    // Retained for existing Inspector assignments; outlines use ZoneController.
 
     [Header("Candidate Visualization")]
     [SerializeField] private Color candidateTileColor = new(0.15f, 0.9f, 1f, 1f);
@@ -41,12 +42,14 @@ public class ShelterPresentation : MonoBehaviour
 
     private readonly List<GameObject> _spawnedLabels = new();
     private readonly List<GameObject> _placedShelterObjects = new();
+    private readonly HashSet<ZoneOutlineChannel> _loggedOutlineRequestFailures = new();
 
     private GameObject _runtimeGhostObject;
     private SpriteRenderer _runtimeGhostRenderer;
     private SpriteRenderer[] _runtimeGhostRenderers = Array.Empty<SpriteRenderer>();
     private Sprite _generatedFallbackShelterSprite;
     private bool _loggedMissingDefaultShelterSprite;
+    private bool _zoneControllerResolutionAttempted;
 
     public bool HasConfiguredShelterPlacementVisuals =>
         shelterGhostPrefab != null || shelterGhostRenderer != null || defaultShelterSprite != null;
@@ -71,11 +74,56 @@ public class ShelterPresentation : MonoBehaviour
 
     public void ResolveReferences()
     {
-        if (zoneOutlineHighlighter == null)
-            zoneOutlineHighlighter = FindFirstObjectByType<ZoneThinOutlineByHover>();
+        ResolveZoneController();
 
         if (labelParent == null)
             labelParent = transform;
+    }
+
+    private void ResolveZoneController()
+    {
+        if (_zoneControllerResolutionAttempted)
+            return;
+
+        _zoneControllerResolutionAttempted = true;
+
+        if (zoneController != null)
+            return;
+
+        zoneController = GetComponent<ZoneController>();
+        if (zoneController != null)
+            return;
+
+        // ResolveReferences also runs on refreshes; search only during initialization.
+        foreach (ZoneController candidate in FindObjectsByType<ZoneController>(FindObjectsSortMode.None))
+        {
+            if (candidate.gameObject.scene != gameObject.scene || !candidate.isActiveAndEnabled)
+                continue;
+
+            if (zoneController != null)
+            {
+                zoneController = null;
+                Debug.LogWarning("[ShelterPresentation] Multiple active ZoneControllers found in this scene. Assign ZoneController explicitly; shelter outlines will be skipped, but labels, ghosts and shelter sprites remain available.", this);
+                return;
+            }
+
+            zoneController = candidate;
+        }
+
+        if (zoneController == null)
+            Debug.LogWarning("[ShelterPresentation] ZoneController could not be resolved during initialization. Shelter outlines will be skipped, but labels, ghosts and shelter sprites remain available.", this);
+    }
+
+    private void ReportOutlineRequestResult(ZoneOutlineChannel channel, bool accepted)
+    {
+        if (accepted)
+        {
+            _loggedOutlineRequestFailures.Remove(channel);
+            return;
+        }
+
+        if (_loggedOutlineRequestFailures.Add(channel))
+            Debug.LogWarning($"[ShelterPresentation] {channel} outlines could not be shown because ZoneController's renderer or zone map is not ready. Other shelter presentation remains available.", this);
     }
 
     public void ShowShelterCandidates(
@@ -129,10 +177,14 @@ public class ShelterPresentation : MonoBehaviour
                 SpawnCandidateLabel(result);
         }
 
-        if (zoneOutlineHighlighter != null)
+        if (zoneController != null)
         {
-            zoneOutlineHighlighter.ShowShelterAssociatedZoneOutlines(zoneRequests);
-            zoneOutlineHighlighter.ShowShelterCandidateTiles(tileRequests);
+            ReportOutlineRequestResult(
+                ZoneOutlineChannel.ShelterCandidateZones,
+                zoneController.SetZoneOutlines(ZoneOutlineChannel.ShelterCandidateZones, zoneRequests));
+            ReportOutlineRequestResult(
+                ZoneOutlineChannel.ShelterCandidateTiles,
+                zoneController.SetTileOutlines(ZoneOutlineChannel.ShelterCandidateTiles, tileRequests));
         }
 
         if (debugLogs)
@@ -141,8 +193,11 @@ public class ShelterPresentation : MonoBehaviour
 
     public void ClearCandidateVisuals()
     {
-        if (zoneOutlineHighlighter != null)
-            zoneOutlineHighlighter.ClearShelterCandidateHighlights();
+        if (zoneController != null)
+        {
+            zoneController.ClearOutlines(ZoneOutlineChannel.ShelterCandidateZones);
+            zoneController.ClearOutlines(ZoneOutlineChannel.ShelterCandidateTiles);
+        }
 
         for (int i = 0; i < _spawnedLabels.Count; i++)
         {
@@ -159,12 +214,12 @@ public class ShelterPresentation : MonoBehaviour
     {
         ResolveReferences();
 
-        if (zoneOutlineHighlighter == null)
+        if (zoneController == null)
             return;
 
         if (!showPlacedShelterZoneOutlines)
         {
-            zoneOutlineHighlighter.ClearPlacedShelterAssociatedZoneOutlines();
+            zoneController.ClearOutlines(ZoneOutlineChannel.PlacedShelterZones);
             return;
         }
 
@@ -196,7 +251,9 @@ public class ShelterPresentation : MonoBehaviour
             }
         }
 
-        zoneOutlineHighlighter.ShowPlacedShelterAssociatedZoneOutlines(zoneRequests);
+        ReportOutlineRequestResult(
+            ZoneOutlineChannel.PlacedShelterZones,
+            zoneController.SetZoneOutlines(ZoneOutlineChannel.PlacedShelterZones, zoneRequests));
 
         if (debugLogs)
             Debug.Log("[ShelterPresentation] Placed shelter zone outlines refreshed.");
@@ -204,8 +261,8 @@ public class ShelterPresentation : MonoBehaviour
 
     public void ClearPlacedShelterZoneOutlines()
     {
-        if (zoneOutlineHighlighter != null)
-            zoneOutlineHighlighter.ClearPlacedShelterAssociatedZoneOutlines();
+        if (zoneController != null)
+            zoneController.ClearOutlines(ZoneOutlineChannel.PlacedShelterZones);
     }
 
     public void UpdateGhostVisual(

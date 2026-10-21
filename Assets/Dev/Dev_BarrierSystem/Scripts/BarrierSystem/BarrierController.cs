@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [DisallowMultipleComponent]
-public sealed class BarrierController : MonoBehaviour
+public sealed class BarrierController : MonoBehaviour, IBarrierProvider
 {
+    public static event Action OnAllZoneBarriersPlaced;
+
     public event Action<bool> ZoneBoundaryModeChanged;
     public event Action<int, int> ZoneBarrierPlaced;
     public event Action AllZoneBarriersPlaced;
@@ -129,7 +131,9 @@ public sealed class BarrierController : MonoBehaviour
         npcToast = toast != null ? toast : npcToast;
 
         ResolveReferences();
-        InitializePlacementState();
+        if (!InitializePlacementState() && BarriersPlaced > 0)
+            return;
+
         ConfigureChildComponents();
         UpdateGlobalHUDBarrierProgress();
     }
@@ -246,6 +250,19 @@ public sealed class BarrierController : MonoBehaviour
             yield return null;
         }
 
+        if (!IsZoneLoaderReady())
+        {
+            ShowMessage("Zone boundary mode could not start because map data is not ready.");
+            _enterZoneModeCoroutine = null;
+            yield break;
+        }
+
+        if (!InitializePlacementState())
+        {
+            _enterZoneModeCoroutine = null;
+            yield break;
+        }
+
         BuildZoneIndex();
         UpdateGlobalHUDBarrierProgress();
 
@@ -322,6 +339,15 @@ public sealed class BarrierController : MonoBehaviour
             return;
 
         if (zoneTiles == null || zoneTiles.Count == 0)
+            return;
+
+        if (!IsZoneLoaderReady())
+        {
+            ShowMessage("Barrier placement rejected: map data is not ready.");
+            return;
+        }
+
+        if (!InitializePlacementState())
             return;
 
         if (_placementState.HasCommittedZone(geoid))
@@ -407,6 +433,7 @@ public sealed class BarrierController : MonoBehaviour
         {
             ShowMessage($"All available barriers have been placed: {BarriersPlaced}/{ActualMaxZoneBarriers}");
             AllZoneBarriersPlaced?.Invoke();
+            OnAllZoneBarriersPlaced?.Invoke();
             ExitZoneBoundaryPlacementMode();
         }
     }
@@ -534,9 +561,24 @@ public sealed class BarrierController : MonoBehaviour
         if (tileMapData == null)
             return false;
 
-        bool initialized = _placementState.InitializeLegacyGrid(
-            tileMapData.GridWidth,
-            tileMapData.GridHeight);
+        int requiredWidth = tileMapData.GridWidth;
+        int requiredHeight = tileMapData.GridHeight;
+        if (_placementState.TryGetLegacyGridDimensions(out int gridWidth, out int gridHeight) &&
+            gridWidth == requiredWidth && gridHeight == requiredHeight)
+        {
+            return true;
+        }
+
+        // A loaded map is fixed for the session. Only an empty startup grid may resize.
+        if (BarriersPlaced > 0)
+        {
+            Debug.LogError($"[BarrierController] Barrier grid mismatch: existing={gridWidth}x{gridHeight}, " +
+                           $"required={requiredWidth}x{requiredHeight}, committed={BarriersPlaced}. " +
+                           "Map dimensions cannot change after barrier placement. Placement blocked; existing barriers preserved.");
+            return false;
+        }
+
+        bool initialized = _placementState.InitializeLegacyGrid(requiredWidth, requiredHeight);
 
         if (initialized && debugLogs)
         {

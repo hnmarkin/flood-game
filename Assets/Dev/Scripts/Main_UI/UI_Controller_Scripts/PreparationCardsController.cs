@@ -40,7 +40,7 @@ public class PreparationCardsController : MonoBehaviour
     [Header("References")]
     [SerializeField] private UIDocument cardsUIDocument;
     [SerializeField] private TextAsset cardsJsonFile;
-    [SerializeField] private FloodDefenseBoxStamp floodDefenseBoxStamp;
+    [SerializeField] private BarrierController barrierController;
 
     [Header("Card Availability")]
     [SerializeField] private bool defaultCardEnabled = true;
@@ -153,8 +153,8 @@ public class PreparationCardsController : MonoBehaviour
         if (cardsUIDocument == null)
             cardsUIDocument = GetComponent<UIDocument>();
 
-        if (floodDefenseBoxStamp == null)
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (barrierController == null)
+            barrierController = FindFirstObjectByType<BarrierController>();
     }
 
     private IEnumerator BindUIWhenReady()
@@ -405,16 +405,16 @@ public class PreparationCardsController : MonoBehaviour
 
     private void TriggerPlaceBarriersFromSandbagCard()
     {
-        if (floodDefenseBoxStamp == null)
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (barrierController == null)
+            barrierController = FindFirstObjectByType<BarrierController>();
 
-        if (floodDefenseBoxStamp == null)
+        if (barrierController == null)
         {
-            Debug.LogWarning("[PreparationCardsController] Sandbag card clicked, but FloodDefenseBoxStamp is not assigned.");
+            Debug.LogWarning("[PreparationCardsController] Sandbag card clicked, but BarrierController is not assigned.");
             return;
         }
 
-        floodDefenseBoxStamp.EnablePlaceBarrierMode();
+        barrierController.EnablePlaceBarrierMode();
 
         if (debugLogs)
             Debug.Log("[PreparationCardsController] Sandbag card triggered Place Barriers mode.");

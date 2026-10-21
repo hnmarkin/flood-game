@@ -92,7 +92,7 @@ public struct ShelterTileSnapshot
 
 public sealed class ShelterCandidateContext
 {
-    public FloodDefenseBoxStamp FloodDefense;
+    public ZoneController ZoneController;
     public JsonMapLoader JsonMapLoader;
     public TileMapData TileMapData;
     public Tilemap TerrainTilemap;
@@ -110,13 +110,13 @@ public sealed class ShelterCandidateContext
             if (TerrainTilemap != null)
                 return TerrainTilemap;
 
-            return FloodDefense != null ? FloodDefense.TerrainTilemap : null;
+            return ZoneController != null ? ZoneController.TerrainTilemap : null;
         }
     }
 
     public bool IsMapReady()
     {
-        if (FloodDefense == null || JsonMapLoader == null || TileMapData == null)
+        if (ZoneController == null || JsonMapLoader == null || TileMapData == null)
             return false;
 
         if (JsonMapLoader.payload == null)
@@ -131,6 +131,6 @@ public sealed class ShelterCandidateContext
         if (TileMapData.N <= 0)
             return false;
 
-        return FloodDefense.EnsureZoneIndexReadyForExternalUse();
+        return ZoneController.EnsureZoneIndexReadyForExternalUse();
     }
 }

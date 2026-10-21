@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using FloodGame.UI.Navigation;
+using NavigationUIManager = FloodGame.UI.Navigation.UIManager;
 
 public class ActionsPanelController : MonoBehaviour
 {
@@ -13,11 +15,12 @@ public class ActionsPanelController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private UIDocument actionsUIDocument;
-    [SerializeField] private FloodDefenseBoxStamp floodDefenseBoxStamp;
+    [SerializeField] private BarrierController barrierController;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
     [SerializeField] private CommunicationTowerController communicationTowerController;
     [SerializeField] private PreparationCardsController preparationCardsController;
+    [SerializeField] private NavigationUIManager uiManager;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = true;
@@ -37,6 +40,9 @@ public class ActionsPanelController : MonoBehaviour
     private bool _isSubscribedToEvacuationPreview;
     private bool _isSubscribedToCommunicationMode;
     private bool _isSubscribedToCardsUI;
+    private NavigationUIManager _subscribedUIManager;
+    private VisualElement _panelRoot;
+    private bool _isEnabled;
 
     private void Awake()
     {
@@ -45,6 +51,7 @@ public class ActionsPanelController : MonoBehaviour
 
     private void OnEnable()
     {
+        _isEnabled = true;
         ResolveReferences();
         TryBindButtons();
 
@@ -57,6 +64,7 @@ public class ActionsPanelController : MonoBehaviour
 
     private void OnDisable()
     {
+        _isEnabled = false;
         if (_bindRoutine != null)
         {
             StopCoroutine(_bindRoutine);
@@ -67,35 +75,62 @@ public class ActionsPanelController : MonoBehaviour
         UnbindButtons();
     }
 
+    // UIManager injects only this panel's cloned subtree, not the shared root.
+    public void SetPanelRoot(VisualElement panelRoot, NavigationUIManager manager)
+    {
+        if (!ReferenceEquals(_panelRoot, panelRoot))
+            UnbindButtons();
+
+        _panelRoot = panelRoot;
+        uiManager = manager;
+        if (!_isEnabled)
+            return;
+
+        SubscribeToExternalState();
+        TryBindButtons();
+        RefreshButtonStates();
+    }
+
+    public void ReleasePanelRoot(VisualElement panelRoot)
+    {
+        if (!ReferenceEquals(_panelRoot, panelRoot))
+            return;
+
+        UnbindButtons();
+        UnsubscribeFromNavigationState();
+        _panelRoot = null;
+        uiManager = null;
+    }
+
     public void EnterPlaceBarriersMode()
     {
-        if (floodDefenseBoxStamp == null)
+        if (barrierController == null)
         {
-            Debug.LogWarning("[ActionsPanelController] FloodDefenseBoxStamp is not assigned.");
+            Debug.LogWarning("[ActionsPanelController] BarrierController is not assigned.");
             return;
         }
 
-        floodDefenseBoxStamp.EnablePlaceBarrierMode();
+        barrierController.EnablePlaceBarrierMode();
 
         if (debugLogs)
-            Debug.Log("[ActionsPanelController] Requested Place Barriers mode from FloodDefenseBoxStamp.");
+            Debug.Log("[ActionsPanelController] Requested Place Barriers mode from BarrierController.");
     }
 
     public void TogglePlaceBarriersMode()
     {
-        if (floodDefenseBoxStamp == null)
+        if (barrierController == null)
         {
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
+            barrierController = FindFirstObjectByType<BarrierController>();
             SubscribeToExternalState();
         }
 
-        if (floodDefenseBoxStamp == null)
+        if (barrierController == null)
         {
-            Debug.LogWarning("[ActionsPanelController] FloodDefenseBoxStamp is not assigned.");
+            Debug.LogWarning("[ActionsPanelController] BarrierController is not assigned.");
             return;
         }
 
-        floodDefenseBoxStamp.ToggleBuildModeFromUI();
+        barrierController.ToggleBuildModeFromUI();
         RefreshButtonStates();
 
         if (debugLogs)
@@ -168,6 +203,18 @@ public class ActionsPanelController : MonoBehaviour
 
     public void TogglePreparationCardsUI()
     {
+        // Keep an unmigrated scene working until a configured manager injects
+        // the shared Actions root. Once assigned, navigation has one owner.
+        if (uiManager != null)
+        {
+            SubscribeToExternalState();
+            if (!uiManager.TogglePanel(UIPanelId.PreparationCards) && !uiManager.IsInitialized)
+                Debug.LogWarning("[ActionsPanelController] UIManager is not ready. Check the shared root and template assignments.");
+
+            RefreshButtonStates();
+            return;
+        }
+
         if (preparationCardsController == null)
         {
             preparationCardsController = FindFirstObjectByType<PreparationCardsController>();
@@ -192,8 +239,8 @@ public class ActionsPanelController : MonoBehaviour
         if (actionsUIDocument == null)
             actionsUIDocument = GetComponent<UIDocument>();
 
-        if (floodDefenseBoxStamp == null)
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (barrierController == null)
+            barrierController = FindFirstObjectByType<BarrierController>();
 
         if (shelterController == null)
             shelterController = FindFirstObjectByType<ShelterController>();
@@ -258,10 +305,7 @@ public class ActionsPanelController : MonoBehaviour
 
     private void TryBindButtons()
     {
-        if (actionsUIDocument == null)
-            return;
-
-        VisualElement root = actionsUIDocument.rootVisualElement;
+        VisualElement root = _panelRoot ?? actionsUIDocument?.rootVisualElement?.Q<VisualElement>("actions_root");
 
         if (root == null)
             return;
@@ -388,9 +432,9 @@ public class ActionsPanelController : MonoBehaviour
 
     private void SubscribeToExternalState()
     {
-        if (!_isSubscribedToBarrierMode && floodDefenseBoxStamp != null)
+        if (!_isSubscribedToBarrierMode && barrierController != null)
         {
-            floodDefenseBoxStamp.ZoneBoundaryModeChanged += OnZoneBoundaryModeChanged;
+            barrierController.ZoneBoundaryModeChanged += OnZoneBoundaryModeChanged;
             _isSubscribedToBarrierMode = true;
         }
 
@@ -407,7 +451,34 @@ public class ActionsPanelController : MonoBehaviour
             _isSubscribedToEvacuationPreview = true;
         }
 
-        if (!_isSubscribedToCardsUI && preparationCardsController != null)
+        SubscribeToNavigationState();
+    }
+
+    private void SubscribeToNavigationState()
+    {
+        if (!_isEnabled)
+            return;
+
+        if (_subscribedUIManager != uiManager)
+        {
+            if (_subscribedUIManager != null)
+                _subscribedUIManager.PanelVisibilityChanged -= OnPanelVisibilityChanged;
+            _subscribedUIManager = null;
+        }
+
+        if (uiManager != null)
+        {
+            if (_isSubscribedToCardsUI && preparationCardsController != null)
+                preparationCardsController.CardsUIVisibilityChanged -= OnCardsUIVisibilityChanged;
+            _isSubscribedToCardsUI = false;
+
+            if (_subscribedUIManager == null)
+            {
+                uiManager.PanelVisibilityChanged += OnPanelVisibilityChanged;
+                _subscribedUIManager = uiManager;
+            }
+        }
+        else if (!_isSubscribedToCardsUI && preparationCardsController != null)
         {
             preparationCardsController.CardsUIVisibilityChanged += OnCardsUIVisibilityChanged;
             _isSubscribedToCardsUI = true;
@@ -416,9 +487,9 @@ public class ActionsPanelController : MonoBehaviour
 
     private void UnsubscribeFromExternalState()
     {
-        if (_isSubscribedToBarrierMode && floodDefenseBoxStamp != null)
+        if (_isSubscribedToBarrierMode && barrierController != null)
         {
-            floodDefenseBoxStamp.ZoneBoundaryModeChanged -= OnZoneBoundaryModeChanged;
+            barrierController.ZoneBoundaryModeChanged -= OnZoneBoundaryModeChanged;
             _isSubscribedToBarrierMode = false;
         }
 
@@ -435,6 +506,15 @@ public class ActionsPanelController : MonoBehaviour
             _isSubscribedToEvacuationPreview = false;
         }
 
+        UnsubscribeFromNavigationState();
+    }
+
+    private void UnsubscribeFromNavigationState()
+    {
+        if (_subscribedUIManager != null)
+            _subscribedUIManager.PanelVisibilityChanged -= OnPanelVisibilityChanged;
+        _subscribedUIManager = null;
+
         if (_isSubscribedToCardsUI && preparationCardsController != null)
         {
             preparationCardsController.CardsUIVisibilityChanged -= OnCardsUIVisibilityChanged;
@@ -450,6 +530,12 @@ public class ActionsPanelController : MonoBehaviour
     private void OnCardsUIVisibilityChanged(bool isVisible)
     {
         SetButtonActive(_preparationCardsButton, isVisible);
+    }
+
+    private void OnPanelVisibilityChanged(UIPanelId panelId, bool isVisible)
+    {
+        if (panelId == UIPanelId.PreparationCards)
+            SetButtonActive(_preparationCardsButton, isVisible);
     }
 
     private void OnCommunicationModeChanged(bool isActive)
@@ -469,12 +555,14 @@ public class ActionsPanelController : MonoBehaviour
     {
         SetButtonActive(
             _placeBarrierButton,
-            floodDefenseBoxStamp != null && floodDefenseBoxStamp.IsZoneBoundaryModeActive
+            barrierController != null && barrierController.IsZoneBoundaryModeActive
         );
 
         SetButtonActive(
             _preparationCardsButton,
-            preparationCardsController != null && preparationCardsController.IsCardsUIVisible
+            uiManager != null
+                ? uiManager.GetPanelVisibility(UIPanelId.PreparationCards)
+                : preparationCardsController != null && preparationCardsController.IsCardsUIVisible
         );
 
         SetButtonActive(

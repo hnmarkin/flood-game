@@ -17,7 +17,7 @@ public class AdvisorPanelController : MonoBehaviour
     [SerializeField] private ZoneBaselineRiskController baselineRiskController;
     [SerializeField] private UIDocument advisorUIDocument;
     [SerializeField] private HighRiskManager highRiskManager;
-    [SerializeField] private FloodDefenseBoxStamp floodDefense;
+    [SerializeField] private BarrierController barrierController;
     [SerializeField] private WaterSimulator waterSimulator;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
@@ -49,7 +49,7 @@ public class AdvisorPanelController : MonoBehaviour
     private Coroutine _bindRoutine;
 
     private bool _uiBound;
-    private bool _subscribedToFloodDefense;
+    private bool _subscribedToBarrierController;
     private bool _subscribedToWaterSimulator;
     private bool _subscribedToShelterController;
     private bool _subscribedToEvacuationController;
@@ -233,8 +233,8 @@ public class AdvisorPanelController : MonoBehaviour
         if (highRiskManager == null)
             highRiskManager = FindFirstObjectByType<HighRiskManager>();
 
-        if (floodDefense == null)
-            floodDefense = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (barrierController == null)
+            barrierController = FindFirstObjectByType<BarrierController>();
 
         if (waterSimulator == null)
             waterSimulator = FindFirstObjectByType<WaterSimulator>();
@@ -256,10 +256,10 @@ public class AdvisorPanelController : MonoBehaviour
 
         ResolveReferences();
 
-        if (floodDefense != null && !_subscribedToFloodDefense)
+        if (barrierController != null && !_subscribedToBarrierController)
         {
-            floodDefense.ZoneBarrierPlaced += OnZoneBarrierPlaced;
-            _subscribedToFloodDefense = true;
+            barrierController.ZoneBarrierPlaced += OnZoneBarrierPlaced;
+            _subscribedToBarrierController = true;
         }
 
         if (waterSimulator != null && !_subscribedToWaterSimulator)
@@ -297,10 +297,10 @@ public class AdvisorPanelController : MonoBehaviour
 
     private void UnsubscribeFromGameplayEvents()
     {
-        if (floodDefense != null && _subscribedToFloodDefense)
+        if (barrierController != null && _subscribedToBarrierController)
         {
-            floodDefense.ZoneBarrierPlaced -= OnZoneBarrierPlaced;
-            _subscribedToFloodDefense = false;
+            barrierController.ZoneBarrierPlaced -= OnZoneBarrierPlaced;
+            _subscribedToBarrierController = false;
         }
 
         if (waterSimulator != null && _subscribedToWaterSimulator)

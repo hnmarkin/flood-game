@@ -10,7 +10,8 @@ public class FloodImpactOverlayManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private FloodImpactController floodImpactController;
-    [SerializeField] private ZoneThinOutlineByHover zoneOutlineController;
+    [SerializeField] private ZoneController zoneController;
+    // Retained for existing Inspector assignments; outlines use ZoneController.
     [SerializeField] private UIDocument actionsUIDocument;
     [SerializeField] private HighRiskManager highRiskManager;
     [SerializeField] private GameObject labelTemplatePrefab;
@@ -47,8 +48,7 @@ public class FloodImpactOverlayManager : MonoBehaviour
         if (floodImpactController == null)
             floodImpactController = FindFirstObjectByType<FloodImpactController>();
 
-        if (zoneOutlineController == null)
-            zoneOutlineController = FindFirstObjectByType<ZoneThinOutlineByHover>();
+        ResolveZoneController();
 
         if (actionsUIDocument == null)
             actionsUIDocument = GetComponent<UIDocument>();
@@ -58,6 +58,40 @@ public class FloodImpactOverlayManager : MonoBehaviour
 
         if (labelParent == null)
             labelParent = transform;
+    }
+
+    private void ResolveZoneController()
+    {
+        if (zoneController != null)
+            return;
+
+        if (floodImpactController != null)
+            zoneController = floodImpactController.GetComponent<ZoneController>();
+
+        if (zoneController == null)
+            zoneController = GetComponent<ZoneController>();
+
+        if (zoneController != null)
+            return;
+
+        // Resolve once during initialization; do not bind to an additive scene's map.
+        foreach (ZoneController candidate in FindObjectsByType<ZoneController>(FindObjectsSortMode.None))
+        {
+            if (candidate.gameObject.scene != gameObject.scene)
+                continue;
+
+            if (zoneController != null)
+            {
+                zoneController = null;
+                Debug.LogWarning("[FloodImpactOverlayManager] Multiple ZoneControllers found in this scene. Assign ZoneController explicitly; live flood outlines will be skipped, but labels and overlay behavior remain available.", this);
+                return;
+            }
+
+            zoneController = candidate;
+        }
+
+        if (zoneController == null)
+            Debug.LogWarning("[FloodImpactOverlayManager] ZoneController could not be resolved during initialization. Live flood outlines will be skipped, but labels and overlay behavior remain available.", this);
     }
 
     private void OnEnable()
@@ -125,8 +159,8 @@ public class FloodImpactOverlayManager : MonoBehaviour
         ClearLiveFloodLabels();
         _isOverlayVisible = false;
 
-        if (zoneOutlineController != null)
-            zoneOutlineController.ClearLiveFloodRiskOutlines();
+        if (zoneController != null)
+            zoneController.ClearOutlines(ZoneOutlineChannel.LiveFloodRisk);
     }
 
     private IEnumerator BindButtonWhenReady()
@@ -231,7 +265,12 @@ public class FloodImpactOverlayManager : MonoBehaviour
             }
         }
 
-        zoneOutlineController.ShowLiveFloodRiskOutlines(outlineRequests);
+        if (zoneController != null &&
+            !zoneController.SetZoneOutlines(ZoneOutlineChannel.LiveFloodRisk, outlineRequests))
+        {
+            Debug.LogWarning("[FloodImpactOverlayManager] Live flood outlines could not be shown because ZoneController's renderer or zone map is not ready. Labels and overlay behavior remain available.", this);
+        }
+
         _isOverlayVisible = outlineRequests.Count > 0;
 
         if (debugLogs)
@@ -356,12 +395,6 @@ public class FloodImpactOverlayManager : MonoBehaviour
         if (floodImpactController == null)
         {
             Debug.LogError("[FloodImpactOverlayManager] FloodImpactController is not assigned.");
-            isValid = false;
-        }
-
-        if (zoneOutlineController == null)
-        {
-            Debug.LogError("[FloodImpactOverlayManager] ZoneThinOutlineByHover is not assigned.");
             isValid = false;
         }
 

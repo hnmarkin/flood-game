@@ -61,11 +61,11 @@ public class ZoneBaselineRiskController : MonoBehaviour
     }
 
     [Header("References")]
-    [SerializeField] private FloodDefenseBoxStamp floodDefense;
     [SerializeField] private JsonMapLoader jsonMapLoader;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap terrainTilemap;
-    [SerializeField] private ZoneThinOutlineByHover zoneOutlineHighlighter;
+    [SerializeField] private ZoneController zoneController;
+    // Retained for existing Inspector assignments; outlines use ZoneController.
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
 
@@ -114,6 +114,7 @@ public class ZoneBaselineRiskController : MonoBehaviour
     private bool _loggedMissingWaterWarning;
     private bool _loggedMissingElevationWarning;
     private bool _isSubscribedToShelterController;
+    private bool _loggedOutlineRequestFailure;
 
     public bool HasCalculatedBaselineRisk => _hasCalculatedRisk;
     public event Action BaselineRiskCalculated;
@@ -121,20 +122,47 @@ public class ZoneBaselineRiskController : MonoBehaviour
 
     private void Awake()
     {
-        if (floodDefense == null)
-            floodDefense = FindFirstObjectByType<FloodDefenseBoxStamp>();
-
         if (jsonMapLoader == null)
             jsonMapLoader = FindFirstObjectByType<JsonMapLoader>();
 
-        if (zoneOutlineHighlighter == null)
-            zoneOutlineHighlighter = FindFirstObjectByType<ZoneThinOutlineByHover>();
+        ResolveZoneController();
 
         if (shelterController == null)
             shelterController = FindFirstObjectByType<ShelterController>();
 
         if (evacuationController == null)
             evacuationController = FindFirstObjectByType<EvacuationController>();
+    }
+
+    private void ResolveZoneController()
+    {
+        if (zoneController != null)
+            return;
+
+        if (zoneController == null)
+            zoneController = GetComponent<ZoneController>();
+
+        if (zoneController != null)
+            return;
+
+        // Resolve once during initialization; do not bind to an additive scene's map.
+        foreach (ZoneController candidate in FindObjectsByType<ZoneController>(FindObjectsSortMode.None))
+        {
+            if (candidate.gameObject.scene != gameObject.scene || !candidate.isActiveAndEnabled)
+                continue;
+
+            if (zoneController != null)
+            {
+                zoneController = null;
+                Debug.LogWarning("[ZoneBaselineRiskController] Multiple active ZoneControllers found in this scene. Assign ZoneController explicitly; baseline risk calculation and outlines require it.", this);
+                return;
+            }
+
+            zoneController = candidate;
+        }
+
+        if (zoneController == null)
+            Debug.LogWarning("[ZoneBaselineRiskController] ZoneController could not be resolved during initialization. Baseline risk calculation and outlines require it.", this);
     }
 
     private void OnEnable()
@@ -198,11 +226,8 @@ public class ZoneBaselineRiskController : MonoBehaviour
 
     public void HighlightHighRiskZones()
     {
-        if (zoneOutlineHighlighter == null)
-        {
-            Debug.LogWarning("[ZoneBaselineRiskController] Cannot highlight high-risk zones because ZoneThinOutlineByHover is not assigned.");
+        if (zoneController == null)
             return;
-        }
 
         List<ZoneBaselineRiskData> highRiskZones = GetHighRiskZones();
         int limit = Mathf.Min(maxHighlightedZones, highRiskZones.Count);
@@ -218,7 +243,12 @@ public class ZoneBaselineRiskController : MonoBehaviour
             outlineRequests.Add(new ZoneRiskOutlineRequest(riskData.geoid, GetRiskColorForLevel(riskData.riskLevel)));
         }
 
-        zoneOutlineHighlighter.ShowRiskOutlines(outlineRequests);
+        bool outlineRequestAccepted = zoneController.SetZoneOutlines(ZoneOutlineChannel.BaselineRisk, outlineRequests);
+
+        if (!outlineRequestAccepted && !_loggedOutlineRequestFailure)
+            Debug.LogWarning("[ZoneBaselineRiskController] Baseline outlines could not be shown because ZoneController's renderer or zone map is not ready. Risk calculations and events remain available.", this);
+
+        _loggedOutlineRequestFailure = !outlineRequestAccepted;
 
         if (debugLogs)
             Debug.Log($"[ZoneBaselineRiskController] Highlighted {outlineRequests.Count} high-risk zones.");
@@ -226,8 +256,8 @@ public class ZoneBaselineRiskController : MonoBehaviour
 
     public void ClearRiskHighlights()
     {
-        if (zoneOutlineHighlighter != null)
-            zoneOutlineHighlighter.ClearPersistentZoneOutlines();
+        if (zoneController != null)
+            zoneController.ClearOutlines(ZoneOutlineChannel.BaselineRisk);
     }
 
     public List<ZoneBaselineRiskData> GetHighRiskZones()
@@ -352,7 +382,7 @@ public class ZoneBaselineRiskController : MonoBehaviour
         if (!ValidateReferences())
             return false;
 
-        if (!floodDefense.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) || zoneTiles == null || zoneTiles.Count == 0)
+        if (!zoneController.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) || zoneTiles == null || zoneTiles.Count == 0)
             return false;
 
         return TryGetZoneCenterWorld(zoneTiles, out centerWorld);
@@ -493,7 +523,7 @@ public class ZoneBaselineRiskController : MonoBehaviour
             return false;
         }
 
-        IReadOnlyDictionary<string, HashSet<Vector2Int>> zoneLookup = floodDefense.GetAllZoneTiles();
+        IReadOnlyDictionary<string, HashSet<Vector2Int>> zoneLookup = zoneController.GetAllZoneTiles();
 
         if (zoneLookup == null || zoneLookup.Count == 0)
         {
@@ -609,9 +639,9 @@ public class ZoneBaselineRiskController : MonoBehaviour
     {
         bool isValid = true;
 
-        if (floodDefense == null)
+        if (zoneController == null)
         {
-            Debug.LogError("[ZoneBaselineRiskController] floodDefense is not assigned.");
+            Debug.LogError("[ZoneBaselineRiskController] zoneController is not assigned.");
             isValid = false;
         }
 
@@ -627,8 +657,8 @@ public class ZoneBaselineRiskController : MonoBehaviour
             isValid = false;
         }
 
-        if (terrainTilemap == null && floodDefense != null)
-            terrainTilemap = floodDefense.TerrainTilemap;
+        if (terrainTilemap == null && zoneController != null)
+            terrainTilemap = zoneController.TerrainTilemap;
 
         if (terrainTilemap == null)
         {
@@ -656,15 +686,15 @@ public class ZoneBaselineRiskController : MonoBehaviour
         if (tileMapData.N <= 0)
             return false;
 
-        return floodDefense.EnsureZoneIndexReadyForExternalUse();
+        return zoneController.EnsureZoneIndexReadyForExternalUse();
     }
 
     private bool HasRequiredReferences()
     {
-        if (terrainTilemap == null && floodDefense != null)
-            terrainTilemap = floodDefense.TerrainTilemap;
+        if (terrainTilemap == null && zoneController != null)
+            terrainTilemap = zoneController.TerrainTilemap;
 
-        return floodDefense != null &&
+        return zoneController != null &&
                jsonMapLoader != null &&
                tileMapData != null &&
                terrainTilemap != null;
@@ -832,10 +862,10 @@ public class ZoneBaselineRiskController : MonoBehaviour
     {
         rc = default;
 
-        if (floodDefense == null || terrainTilemap == null || jsonMapLoader == null || jsonMapLoader.cellToRC == null)
+        if (zoneController == null || terrainTilemap == null || jsonMapLoader == null || jsonMapLoader.cellToRC == null)
             return false;
 
-        Vector3Int cell = floodDefense.NormalizedTileToCell(normalizedTile);
+        Vector3Int cell = zoneController.NormalizedTileToCell(normalizedTile);
         return jsonMapLoader.cellToRC.TryGetValue(cell, out rc);
     }
 
@@ -856,7 +886,7 @@ public class ZoneBaselineRiskController : MonoBehaviour
     {
         centerWorld = Vector3.zero;
 
-        if (zoneTiles == null || zoneTiles.Count == 0 || floodDefense == null || terrainTilemap == null)
+        if (zoneTiles == null || zoneTiles.Count == 0 || zoneController == null || terrainTilemap == null)
             return false;
 
         Vector3 sum = Vector3.zero;
@@ -864,7 +894,7 @@ public class ZoneBaselineRiskController : MonoBehaviour
 
         foreach (Vector2Int tile in zoneTiles)
         {
-            Vector3Int cell = floodDefense.NormalizedTileToCell(tile);
+            Vector3Int cell = zoneController.NormalizedTileToCell(tile);
             sum += terrainTilemap.GetCellCenterWorld(cell);
             sampleCount++;
         }

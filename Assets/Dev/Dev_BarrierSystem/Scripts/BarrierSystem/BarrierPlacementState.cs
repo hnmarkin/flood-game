@@ -16,6 +16,13 @@ public sealed class BarrierPlacementState
     public int CommittedZoneCount => _committedZones.Count;
     public bool HasLegacyGrid => _blockedX != null && _blockedY != null;
 
+    public bool TryGetLegacyGridDimensions(out int gridWidth, out int gridHeight)
+    {
+        gridWidth = HasLegacyGrid ? _blockedX.GetLength(0) : 0;
+        gridHeight = HasLegacyGrid ? _blockedX.GetLength(1) : 0;
+        return HasLegacyGrid;
+    }
+
     public bool InitializeLegacyGrid(int gridWidth, int gridHeight)
     {
         if (gridWidth <= 0 || gridHeight <= 0)

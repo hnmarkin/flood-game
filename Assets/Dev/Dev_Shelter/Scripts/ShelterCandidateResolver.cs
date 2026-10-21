@@ -188,7 +188,7 @@ public sealed class ShelterCandidateResolver
 
     private bool TryBuildZoneContexts(List<ZoneContext> enabledZones, List<ZoneContext> disabledServableZones)
     {
-        IReadOnlyDictionary<string, HashSet<Vector2Int>> allZones = _context.FloodDefense.GetAllZoneTiles();
+        IReadOnlyDictionary<string, HashSet<Vector2Int>> allZones = _context.ZoneController.GetAllZoneTiles();
 
         if (allZones == null || allZones.Count == 0)
             return false;
@@ -538,7 +538,7 @@ public sealed class ShelterCandidateResolver
             return result;
         }
 
-        Vector3Int cell = _context.FloodDefense.NormalizedTileToCell(bestTile.Value);
+        Vector3Int cell = _context.ZoneController.NormalizedTileToCell(bestTile.Value);
         result.tileCell = cell;
         result.worldPosition = _context.PlacementTilemap != null
             ? _context.PlacementTilemap.GetCellCenterWorld(cell)
@@ -749,7 +749,7 @@ public sealed class ShelterCandidateResolver
 
         worldCenter = Vector3.zero;
 
-        if (zoneTiles == null || zoneTiles.Count == 0 || _context.FloodDefense == null || _context.PlacementTilemap == null)
+        if (zoneTiles == null || zoneTiles.Count == 0 || _context.ZoneController == null || _context.PlacementTilemap == null)
             return false;
 
         Vector3 sum = Vector3.zero;
@@ -757,7 +757,7 @@ public sealed class ShelterCandidateResolver
 
         foreach (Vector2Int tile in zoneTiles)
         {
-            Vector3Int cell = _context.FloodDefense.NormalizedTileToCell(tile);
+            Vector3Int cell = _context.ZoneController.NormalizedTileToCell(tile);
             sum += _context.PlacementTilemap.GetCellCenterWorld(cell);
             sampleCount++;
         }
@@ -773,10 +773,10 @@ public sealed class ShelterCandidateResolver
     {
         rc = default;
 
-        if (_context.FloodDefense == null || _context.JsonMapLoader == null || _context.JsonMapLoader.cellToRC == null)
+        if (_context.ZoneController == null || _context.JsonMapLoader == null || _context.JsonMapLoader.cellToRC == null)
             return false;
 
-        Vector3Int cell = _context.FloodDefense.NormalizedTileToCell(normalizedTile);
+        Vector3Int cell = _context.ZoneController.NormalizedTileToCell(normalizedTile);
         return _context.JsonMapLoader.cellToRC.TryGetValue(cell, out rc);
     }
 

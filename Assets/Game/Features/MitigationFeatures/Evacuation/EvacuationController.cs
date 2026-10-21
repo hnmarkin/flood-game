@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 Inspector references required by EvacuationController:
 - Baseline Risk Controller: optional helper for existing risk systems; route anchors are calculated from zone tiles.
 - Shelter Controller: public interface to the Shelter System; supplies active placed shelters, associated zone GEOIDs, and shelter placement state.
-- Flood Defense Box Stamp: supplies GEOID-to-tile lookup and normalized-tile to Tilemap-cell conversion.
+- Zone Controller: supplies GEOID-to-tile lookup and normalized-tile/Tilemap-cell conversion.
 - Tile Map Data: supplies tile categories, water depth, and map bounds for simple route traversal.
 - Route Tilemap: supplies the Unity Tilemap cells sent to EvacuationRouteVisualizer.
 - Route Visualizer: draws already-calculated route path cells as tile-border outlines.
@@ -69,7 +69,7 @@ public class EvacuationController : MonoBehaviour
     [Header("References")]
     [SerializeField] private ZoneBaselineRiskController baselineRiskController;
     [SerializeField] private ShelterController shelterController;
-    [SerializeField] private FloodDefenseBoxStamp floodDefenseBoxStamp;
+    [SerializeField] private ZoneController zoneController;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap routeTilemap;
     [SerializeField] private EvacuationRouteVisualizer routeVisualizer;
@@ -109,6 +109,7 @@ public class EvacuationController : MonoBehaviour
     private string confirmedRouteId;
     private bool _isSubscribedToShelters;
     private bool _isSubscribedToShelterPlacement;
+    private bool _hasAttemptedZoneControllerResolution;
 
     public bool IsPreviewModeActive => previewModeActive;
     public SimpleEvacuationRoute CurrentRoute => _availableRoutes.Count > 0 ? _availableRoutes[0] : null;
@@ -907,11 +908,14 @@ public class EvacuationController : MonoBehaviour
         if (shelterController == null)
             shelterController = FindFirstObjectByType<ShelterController>();
 
-        if (floodDefenseBoxStamp == null)
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (zoneController == null && !_hasAttemptedZoneControllerResolution)
+        {
+            _hasAttemptedZoneControllerResolution = true;
+            zoneController = FindFirstObjectByType<ZoneController>();
+        }
 
-        if (routeTilemap == null && floodDefenseBoxStamp != null)
-            routeTilemap = floodDefenseBoxStamp.TerrainTilemap;
+        if (routeTilemap == null && zoneController != null)
+            routeTilemap = zoneController.TerrainTilemap;
 
         if (routeVisualizer == null)
             routeVisualizer = GetComponent<EvacuationRouteVisualizer>();
@@ -1107,9 +1111,9 @@ public class EvacuationController : MonoBehaviour
             isValid = false;
         }
 
-        if (floodDefenseBoxStamp == null)
+        if (zoneController == null)
         {
-            Debug.LogWarning("[EvacuationController] FloodDefenseBoxStamp is not assigned.");
+            Debug.LogWarning("[EvacuationController] ZoneController is not assigned.");
             isValid = false;
         }
 
@@ -1254,10 +1258,10 @@ public class EvacuationController : MonoBehaviour
     {
         geoid = NormalizeGeoid(geoid);
 
-        if (string.IsNullOrEmpty(geoid) || floodDefenseBoxStamp == null)
+        if (string.IsNullOrEmpty(geoid) || zoneController == null)
             return false;
 
-        return floodDefenseBoxStamp.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) &&
+        return zoneController.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) &&
                zoneTiles != null &&
                zoneTiles.Contains(shelterTile);
     }
@@ -1401,7 +1405,7 @@ public class EvacuationController : MonoBehaviour
     {
         anchor = default;
 
-        if (!floodDefenseBoxStamp.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) || zoneTiles == null || zoneTiles.Count == 0)
+        if (!zoneController.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles) || zoneTiles == null || zoneTiles.Count == 0)
             return false;
 
         Vector2 center = CalculateZoneCenter(zoneTiles);
@@ -1654,15 +1658,16 @@ public class EvacuationController : MonoBehaviour
 
     private Vector3Int NormalizedTileToCell(Vector2Int normalizedTile)
     {
-        return floodDefenseBoxStamp != null
-            ? floodDefenseBoxStamp.NormalizedTileToCell(normalizedTile)
+        return zoneController != null
+            ? zoneController.NormalizedTileToCell(normalizedTile)
             : new Vector3Int(normalizedTile.x, normalizedTile.y, 0);
     }
 
     private bool TryCellToNormalizedTile(Vector3Int cell, out Vector2Int normalizedTile)
     {
-        Vector2Int origin = floodDefenseBoxStamp != null ? floodDefenseBoxStamp.TileOrigin : Vector2Int.zero;
-        normalizedTile = new Vector2Int(cell.x - origin.x, cell.y - origin.y);
+        normalizedTile = zoneController != null
+            ? zoneController.CellToNormalizedTile(cell)
+            : new Vector2Int(cell.x, cell.y);
         return IsWithinMap(normalizedTile);
     }
 

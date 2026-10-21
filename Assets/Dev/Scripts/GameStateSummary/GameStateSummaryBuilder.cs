@@ -198,7 +198,7 @@ public class GameStateSummaryBuilder : MonoBehaviour
 
         if (!_subscribedToBarrierEvents)
         {
-            FloodDefenseBoxStamp.OnAllZoneBarriersPlaced += OnAllZoneBarriersPlaced;
+            BarrierController.OnAllZoneBarriersPlaced += OnAllZoneBarriersPlaced;
             _subscribedToBarrierEvents = true;
         }
 
@@ -252,7 +252,7 @@ public class GameStateSummaryBuilder : MonoBehaviour
 
         if (_subscribedToBarrierEvents)
         {
-            FloodDefenseBoxStamp.OnAllZoneBarriersPlaced -= OnAllZoneBarriersPlaced;
+            BarrierController.OnAllZoneBarriersPlaced -= OnAllZoneBarriersPlaced;
             _subscribedToBarrierEvents = false;
         }
     }

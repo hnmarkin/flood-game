@@ -1,9 +1,9 @@
 /*
 Required Inspector references:
 - TileMapData: map tile/category data used to choose valid communication tower tiles.
-- FloodDefenseBoxStamp: provides zone GEOID tile groups and normalized-tile to Tilemap-cell conversion.
-- Communication Tilemap: the Tilemap used to convert tower cells to world-space centers. Falls back to FloodDefenseBoxStamp.TerrainTilemap.
-- ZoneThinOutlineByHover: optional; highlights a hovered tower's associated zone cluster.
+- Communication Tilemap: the Tilemap used to convert tower cells to world-space centers. Falls back to ZoneController.TerrainTilemap.
+- ZoneController: supplies zone data, coordinate conversion and associated-zone outlines; otherwise resolved once in Awake.
+- ZoneThinOutlineByHover: retained only for legacy Inspector serialization.
 - ShelterManager: optional; avoids active placed shelter tiles. Old System now... not in use
 - ShelterCandidateController: optional; avoids valid shelter candidate tiles when available. Old system not in use
 - Main Camera: optional; used for mouse-to-tile hover/click lookup. Falls back to Camera.main.
@@ -68,9 +68,9 @@ public class CommunicationTowerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private TileMapData tileMapData;
-    [SerializeField] private FloodDefenseBoxStamp floodDefenseBoxStamp;
     [SerializeField] private Tilemap communicationTilemap;
-    [SerializeField] private ZoneThinOutlineByHover zoneVisualController;
+    [SerializeField] private ZoneController zoneController;
+    // Retained for existing Inspector assignments; outlines use ZoneController.
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private MapHoverTooltipController mapHoverTooltip;
@@ -110,6 +110,7 @@ public class CommunicationTowerController : MonoBehaviour
     private bool _hasGeneratedTowers;
     private bool _loggedMissingSpriteWarning;
     private bool _loggedActionButtonConnected;
+    private bool _loggedOutlineRequestFailure;
     private Coroutine _generateWhenReadyRoutine;
 
     public bool IsCommunicationModeActive => _isCommunicationModeActive;
@@ -122,6 +123,7 @@ public class CommunicationTowerController : MonoBehaviour
     private void Awake()
     {
         ResolveReferences();
+        ResolveZoneController();
     }
 
     private void Start()
@@ -325,7 +327,7 @@ public class CommunicationTowerController : MonoBehaviour
             return;
         }
 
-        IReadOnlyDictionary<string, HashSet<Vector2Int>> allZoneTiles = floodDefenseBoxStamp.GetAllZoneTiles();
+        IReadOnlyDictionary<string, HashSet<Vector2Int>> allZoneTiles = zoneController.GetAllZoneTiles();
 
         if (allZoneTiles == null || allZoneTiles.Count == 0)
         {
@@ -360,7 +362,7 @@ public class CommunicationTowerController : MonoBehaviour
                 continue;
             }
 
-            Vector3Int tileCell = floodDefenseBoxStamp.NormalizedTileToCell(normalizedTowerTile);
+            Vector3Int tileCell = zoneController.NormalizedTileToCell(normalizedTowerTile);
             Vector3 worldPosition = communicationTilemap.GetCellCenterWorld(tileCell);
 
             CommunicationTowerData tower = new()
@@ -391,24 +393,15 @@ public class CommunicationTowerController : MonoBehaviour
 
     private void ResolveReferences()
     {
-        if (floodDefenseBoxStamp == null)
-            floodDefenseBoxStamp = FindFirstObjectByType<FloodDefenseBoxStamp>();
-
-        if (tileMapData == null && floodDefenseBoxStamp != null)
-            tileMapData = floodDefenseBoxStamp.MapData;
-
         if (tileMapData == null)
             tileMapData = FindTileMapDataAsset();
-
-        if (zoneVisualController == null)
-            zoneVisualController = FindFirstObjectByType<ZoneThinOutlineByHover>();
 
         if (shelterController == null)
             shelterController = FindFirstObjectByType<ShelterController>();
 
 
-        if (communicationTilemap == null && floodDefenseBoxStamp != null)
-            communicationTilemap = floodDefenseBoxStamp.TerrainTilemap;
+        if (communicationTilemap == null && zoneController != null)
+            communicationTilemap = zoneController.TerrainTilemap;
 
         if (mainCamera == null)
             mainCamera = Camera.main;
@@ -437,6 +430,37 @@ public class CommunicationTowerController : MonoBehaviour
             root.transform.SetParent(transform, false);
             towerVisualRoot = root.transform;
         }
+    }
+
+    private void ResolveZoneController()
+    {
+        if (zoneController != null)
+            return;
+
+        if (zoneController == null)
+            zoneController = GetComponent<ZoneController>();
+
+        if (zoneController != null)
+            return;
+
+        // Resolve once during initialization; do not bind to an additive scene's map.
+        foreach (ZoneController candidate in FindObjectsByType<ZoneController>(FindObjectsSortMode.None))
+        {
+            if (candidate.gameObject.scene != gameObject.scene || !candidate.isActiveAndEnabled)
+                continue;
+
+            if (zoneController != null)
+            {
+                zoneController = null;
+                Debug.LogWarning("[CommunicationTowerController] Multiple active ZoneControllers found in this scene. Assign ZoneController explicitly; tower generation and communication outlines require it.", this);
+                return;
+            }
+
+            zoneController = candidate;
+        }
+
+        if (zoneController == null)
+            Debug.LogWarning("[CommunicationTowerController] ZoneController could not be resolved during initialization. Tower generation and communication outlines require it.", this);
     }
 
     private void EnsureTooltipConfigured()
@@ -503,10 +527,10 @@ public class CommunicationTowerController : MonoBehaviour
             isValid = false;
         }
 
-        if (floodDefenseBoxStamp == null)
+        if (zoneController == null)
         {
             if (logWarnings)
-                Debug.LogWarning("[CommunicationTowerController] FloodDefenseBoxStamp is not assigned.");
+                Debug.LogWarning("[CommunicationTowerController] ZoneController is not assigned.");
 
             isValid = false;
         }
@@ -743,7 +767,7 @@ public class CommunicationTowerController : MonoBehaviour
         if (!TryGetTileSnapshot(tile, out TileSnapshot snapshot) || snapshot.isWater)
             return false;
 
-        Vector3Int cell = floodDefenseBoxStamp.NormalizedTileToCell(tile);
+        Vector3Int cell = zoneController.NormalizedTileToCell(tile);
 
         if (occupiedTowerCells != null && occupiedTowerCells.Contains(cell))
             return false;
@@ -1023,7 +1047,7 @@ public class CommunicationTowerController : MonoBehaviour
 
     private void ShowAssociatedZoneHighlight(CommunicationTowerData tower)
     {
-        if (tower == null || zoneVisualController == null)
+        if (tower == null || zoneController == null)
             return;
 
         List<ZoneRiskOutlineRequest> requests = new();
@@ -1036,7 +1060,12 @@ public class CommunicationTowerController : MonoBehaviour
                 requests.Add(new ZoneRiskOutlineRequest(geoid, associatedZoneHoverColor));
         }
 
-        zoneVisualController.ShowCommunicationZoneOutlines(requests);
+        bool outlineRequestAccepted = zoneController.SetZoneOutlines(ZoneOutlineChannel.CommunicationZones, requests);
+
+        if (!outlineRequestAccepted && !_loggedOutlineRequestFailure)
+            Debug.LogWarning("[CommunicationTowerController] Communication outlines could not be shown because ZoneController's renderer or zone map is not ready. Tower gameplay and tooltips remain available.", this);
+
+        _loggedOutlineRequestFailure = !outlineRequestAccepted;
     }
 
     private void ClearHoveredTower()
@@ -1048,8 +1077,8 @@ public class CommunicationTowerController : MonoBehaviour
             UpdateTowerVisual(previousTower);
         }
 
-        if (zoneVisualController != null)
-            zoneVisualController.ClearCommunicationZoneOutlines();
+        if (zoneController != null)
+            zoneController.ClearOutlines(ZoneOutlineChannel.CommunicationZones);
 
         HideTowerTooltip();
     }

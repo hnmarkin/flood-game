@@ -13,7 +13,8 @@ public class HighRiskManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private ZoneBaselineRiskController baselineRiskController;
-    [SerializeField] private ZoneThinOutlineByHover zoneOutlineController;
+    [SerializeField] private ZoneController zoneController;
+    // Retained for existing Inspector assignments; outlines use ZoneController.
     [SerializeField] private UIDocument actionsUIDocument;
     [SerializeField] private GameObject riskWarningMarkerPrefab;
     [SerializeField] private Transform markerParent;
@@ -52,8 +53,7 @@ public class HighRiskManager : MonoBehaviour
         if (baselineRiskController == null)
             baselineRiskController = FindFirstObjectByType<ZoneBaselineRiskController>();
 
-        if (zoneOutlineController == null)
-            zoneOutlineController = FindFirstObjectByType<ZoneThinOutlineByHover>();
+        ResolveZoneController();
 
         if (actionsUIDocument == null)
             actionsUIDocument = GetComponent<UIDocument>();
@@ -63,6 +63,40 @@ public class HighRiskManager : MonoBehaviour
 
         if (liveFloodOverlayManager == null)
             liveFloodOverlayManager = FindFirstObjectByType<FloodImpactOverlayManager>();
+    }
+
+    private void ResolveZoneController()
+    {
+        if (zoneController != null)
+            return;
+
+        if (baselineRiskController != null)
+            zoneController = baselineRiskController.GetComponent<ZoneController>();
+
+        if (zoneController == null)
+            zoneController = GetComponent<ZoneController>();
+
+        if (zoneController != null)
+            return;
+
+        // Resolve once during initialization; do not bind to an additive scene's map.
+        foreach (ZoneController candidate in FindObjectsByType<ZoneController>(FindObjectsSortMode.None))
+        {
+            if (candidate.gameObject.scene != gameObject.scene)
+                continue;
+
+            if (zoneController != null)
+            {
+                zoneController = null;
+                Debug.LogWarning("[HighRiskManager] Multiple ZoneControllers found in this scene. Assign ZoneController explicitly; baseline outlines will be skipped, but labels and markers remain available.", this);
+                return;
+            }
+
+            zoneController = candidate;
+        }
+
+        if (zoneController == null)
+            Debug.LogWarning("[HighRiskManager] ZoneController could not be resolved during initialization. Baseline outlines will be skipped, but labels and markers remain available.", this);
     }
 
     private void OnEnable()
@@ -164,8 +198,8 @@ public class HighRiskManager : MonoBehaviour
         _spawnedLabels.Clear();
         _isShowingRiskZones = false;
 
-        if (zoneOutlineController != null)
-            zoneOutlineController.ClearBaselineRiskOutlines();
+        if (zoneController != null)
+            zoneController.ClearOutlines(ZoneOutlineChannel.BaselineRisk);
     }
 
     private IEnumerator BindInspectButtonWhenReady()
@@ -248,7 +282,11 @@ public class HighRiskManager : MonoBehaviour
             return;
         }
 
-        zoneOutlineController.ShowBaselineRiskOutlines(outlineRequests);
+        if (zoneController != null &&
+            !zoneController.SetZoneOutlines(ZoneOutlineChannel.BaselineRisk, outlineRequests))
+        {
+            Debug.LogWarning("[HighRiskManager] Baseline outlines could not be shown because ZoneController's renderer or zone map is not ready. Labels and markers remain available.", this);
+        }
     }
 
     private void SpawnRiskLabels(IReadOnlyList<ZoneBaselineRiskData> riskResults)
@@ -450,12 +488,6 @@ public class HighRiskManager : MonoBehaviour
         if (baselineRiskController == null)
         {
             Debug.LogError("[HighRiskManager] ZoneBaselineRiskController is not assigned.");
-            isValid = false;
-        }
-
-        if (zoneOutlineController == null)
-        {
-            Debug.LogError("[HighRiskManager] ZoneThinOutlineByHover is not assigned.");
             isValid = false;
         }
 

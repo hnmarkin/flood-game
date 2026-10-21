@@ -10,7 +10,8 @@ using UnityEngine.Tilemaps;
 public class ShelterController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private FloodDefenseBoxStamp floodDefense;
+    [SerializeField] private BarrierController barrierController;
+    [SerializeField] private ZoneController zoneController;
     [SerializeField] private JsonMapLoader jsonMapLoader;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private Tilemap terrainTilemap;
@@ -48,6 +49,7 @@ public class ShelterController : MonoBehaviour
 
     private ShelterPlacement _placement;
     private bool _hasCachedCandidates;
+    private bool _hasAttemptedZoneControllerResolution;
     private bool _isShowingCandidates;
     private bool _isShelterPlacementModeActive;
     private bool _placementModeShowedCandidateHighlights;
@@ -212,8 +214,8 @@ public class ShelterController : MonoBehaviour
             return;
         }
 
-        if (floodDefense != null && floodDefense.IsZoneBoundaryModeActive)
-            floodDefense.ExitBuildModeFromUI();
+        if (barrierController != null && barrierController.IsZoneBoundaryModeActive)
+            barrierController.ExitBuildModeFromUI();
 
         _candidateHighlightsWereShowingBeforePlacement = _isShowingCandidates;
         _placementModeShowedCandidateHighlights =
@@ -603,9 +605,9 @@ public class ShelterController : MonoBehaviour
 
     private int GetFallbackZonePopulation(string geoid)
     {
-        if (floodDefense == null ||
+        if (zoneController == null ||
             tileMapData == null ||
-            !floodDefense.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles))
+            !zoneController.TryGetZoneTiles(geoid, out HashSet<Vector2Int> zoneTiles))
         {
             return 0;
         }
@@ -665,7 +667,7 @@ public class ShelterController : MonoBehaviour
     {
         return new ShelterCandidateContext
         {
-            FloodDefense = floodDefense,
+            ZoneController = zoneController,
             JsonMapLoader = jsonMapLoader,
             TileMapData = tileMapData,
             TerrainTilemap = terrainTilemap,
@@ -686,8 +688,14 @@ public class ShelterController : MonoBehaviour
 
     private void ResolveReferences()
     {
-        if (floodDefense == null)
-            floodDefense = FindFirstObjectByType<FloodDefenseBoxStamp>();
+        if (barrierController == null)
+            barrierController = FindFirstObjectByType<BarrierController>();
+
+        if (zoneController == null && !_hasAttemptedZoneControllerResolution)
+        {
+            _hasAttemptedZoneControllerResolution = true;
+            zoneController = FindFirstObjectByType<ZoneController>();
+        }
 
         if (jsonMapLoader == null)
             jsonMapLoader = FindFirstObjectByType<JsonMapLoader>();
@@ -695,8 +703,8 @@ public class ShelterController : MonoBehaviour
         if (zoneBaselineRiskController == null)
             zoneBaselineRiskController = FindFirstObjectByType<ZoneBaselineRiskController>();
 
-        if (terrainTilemap == null && floodDefense != null)
-            terrainTilemap = floodDefense.TerrainTilemap;
+        if (terrainTilemap == null && zoneController != null)
+            terrainTilemap = zoneController.TerrainTilemap;
 
         if (targetTilemap == null)
             targetTilemap = terrainTilemap;
@@ -719,9 +727,15 @@ public class ShelterController : MonoBehaviour
 
         bool isValid = true;
 
-        if (floodDefense == null)
+        if (barrierController == null)
         {
-            Debug.LogError("[ShelterController] FloodDefenseBoxStamp is not assigned.");
+            Debug.LogError("[ShelterController] BarrierController is not assigned.");
+            isValid = false;
+        }
+
+        if (zoneController == null)
+        {
+            Debug.LogError("[ShelterController] ZoneController is not assigned.");
             isValid = false;
         }
 
@@ -769,7 +783,7 @@ public class ShelterController : MonoBehaviour
         if (terrainTilemap != null)
             return terrainTilemap;
 
-        return floodDefense != null ? floodDefense.TerrainTilemap : null;
+        return zoneController != null ? zoneController.TerrainTilemap : null;
     }
 
     private void EnsureDefaultShelterTypes()

@@ -17,7 +17,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
     [SerializeField] private UIDocument resourceBarDocument;
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private WaterSimulator waterSimulator;
-    [SerializeField] private ShelterManager shelterManager;
+    [SerializeField] private ShelterController shelterController;
     [SerializeField] private CommunicationTowerController communicationTowerController;
     [SerializeField] private EvacuationController evacuationController;
 
@@ -73,7 +73,8 @@ public class ResourceBarRuntimeController : MonoBehaviour
     private float _displayedStormPercent;
     private float _lastMitigationActionRealtime = -999f;
     private string _lastMitigationActionName;
-    private bool _subscribedToShelters;
+    private ShelterController _subscribedShelterController;
+    private bool _shelterControllerLookupAttempted;
     private bool _subscribedToCommunication;
     private bool _subscribedToEvacuation;
 
@@ -141,6 +142,12 @@ public class ResourceBarRuntimeController : MonoBehaviour
             Instance = null;
     }
 
+    private void Update()
+    {
+        // Reconcile assigned/destroyed instances without repeating scene discovery.
+        RefreshShelterSubscription();
+    }
+
     private void OnValidate()
     {
         maxTurns = Mathf.Max(1, maxTurns);
@@ -157,6 +164,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
     public void RefreshNow()
     {
         ResolveReferences();
+        RefreshShelterSubscription();
         BindUI();
 
         if (autoCalculateTotalPopulationFromTileMapData)
@@ -275,8 +283,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
         if (waterSimulator == null)
             waterSimulator = FindFirstObjectByType<WaterSimulator>();
 
-        if (shelterManager == null)
-            shelterManager = FindFirstObjectByType<ShelterManager>();
+        ResolveShelterController();
 
         if (communicationTowerController == null)
             communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
@@ -286,6 +293,44 @@ public class ResourceBarRuntimeController : MonoBehaviour
 
         if (tileMapData == null)
             tileMapData = FindTileMapDataAsset();
+    }
+
+    private void ResolveShelterController()
+    {
+        if (shelterController != null || _shelterControllerLookupAttempted)
+            return;
+
+        _shelterControllerLookupAttempted = true;
+
+        ShelterController localController = GetComponent<ShelterController>();
+        if (localController != null && localController.isActiveAndEnabled)
+        {
+            shelterController = localController;
+            return;
+        }
+
+        if (!gameObject.scene.IsValid() || !gameObject.scene.isLoaded)
+            return;
+
+        ShelterController match = null;
+        foreach (GameObject root in gameObject.scene.GetRootGameObjects())
+        {
+            foreach (ShelterController candidate in root.GetComponentsInChildren<ShelterController>())
+            {
+                if (!candidate.isActiveAndEnabled)
+                    continue;
+
+                if (match != null)
+                {
+                    WarnOnce("shelter-controller", "[ResourceBarRuntimeController] Multiple active ShelterControllers exist in this scene. Assign shelterController explicitly; shelter placement turns are disconnected.");
+                    return;
+                }
+
+                match = candidate;
+            }
+        }
+
+        shelterController = match;
     }
 
     private void BindUI()
@@ -552,14 +597,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
 
     private void SubscribeToGameplayEvents()
     {
-        if (!_subscribedToShelters && shelterManager != null)
-        {
-            shelterManager.OnShelterPlaced += OnShelterPlaced;
-            _subscribedToShelters = true;
-
-            if (debugLogs)
-                Debug.Log("[ResourceBarRuntimeController] Hooked ShelterManager.OnShelterPlaced.");
-        }
+        RefreshShelterSubscription();
 
         if (!_subscribedToCommunication && communicationTowerController != null)
         {
@@ -583,8 +621,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
 
     private void UnsubscribeFromGameplayEvents()
     {
-        if (_subscribedToShelters && shelterManager != null)
-            shelterManager.OnShelterPlaced -= OnShelterPlaced;
+        UnsubscribeFromShelterEvents();
 
         if (_subscribedToCommunication && communicationTowerController != null)
         {
@@ -595,9 +632,43 @@ public class ResourceBarRuntimeController : MonoBehaviour
         if (_subscribedToEvacuation && evacuationController != null)
             evacuationController.OnEvacuationRouteSelected -= OnEvacuationRouteSelected;
 
-        _subscribedToShelters = false;
         _subscribedToCommunication = false;
         _subscribedToEvacuation = false;
+    }
+
+    private void RefreshShelterSubscription()
+    {
+        ShelterController controller = isActiveAndEnabled && shelterController != null
+            ? shelterController
+            : null;
+
+        if (controller == null && isActiveAndEnabled)
+        {
+            WarnOnce("shelter-controller", "[ResourceBarRuntimeController] No ShelterController is assigned or uniquely resolved in this scene. Assign shelterController explicitly; shelter placement turns are disconnected.");
+        }
+
+        if (ReferenceEquals(_subscribedShelterController, controller))
+            return;
+
+        UnsubscribeFromShelterEvents();
+
+        if (controller == null)
+            return;
+
+        controller.OnShelterPlaced += OnShelterPlaced;
+        _subscribedShelterController = controller;
+
+        if (debugLogs)
+            Debug.Log("[ResourceBarRuntimeController] Hooked ShelterController.OnShelterPlaced.");
+    }
+
+    private void UnsubscribeFromShelterEvents()
+    {
+        // C# event cleanup also applies to Unity objects whose native instance was destroyed.
+        if (!ReferenceEquals(_subscribedShelterController, null))
+            _subscribedShelterController.OnShelterPlaced -= OnShelterPlaced;
+
+        _subscribedShelterController = null;
     }
 
     private void OnShelterPlaced(PlacedShelterData shelter)
