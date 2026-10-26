@@ -10,85 +10,103 @@
       "description": "Intensive inspection, inlet clearing, channel/debris removal, and urgent repairs to restore baseline capacity before storm season."
     },
     {
-      "id": "sandbag",
-      "title": "Sandbag & Temporary Barrier Stockpile",
-      "type": "Operations (Temporary Defense)",
-      "money": "1-3",
-      "action_points": "Medium",
-      "effects": "External Water Load ↓↓ (Temporary)",
-      "description": "Pre-position sandbags and temporary barriers to divert floodwaters, recognizing labor intensity and potential interior drainage challenges."
-    },
-    {
-      "id": "Early_Warning_Risk_Communication",
-      "title": "Early Warning & Risk Communication",
-      "type": "Operations (Public Communication)",
-      "money": "1-3",
-      "action_points": "Low-Medium",
-      "effects": "Event Pacing ↓↓↓",
-      "description": "Implement integrated alert systems, multilingual communication, and coordinated public messaging to accelerate protective action."
-    },
-    {
-      "id": "pmp_stns_bkup_pwr",
+      "id": "pump_stations_backup_power",
       "title": "Pump Stations + Backup Power",
-      "type": "Program (Structural/Continuity)",
-      "money": "5",
+      "type": "Project (Structural/Continuity)",
+      "money": "4-5",
       "action_points": "High",
-      "effects": "Drainage Efficiency ↑↑↑",
+      "effects": "Enables Pump Placement Menu",
       "description": "Construct or upgrade pump stations with redundancy and backup power systems to maintain drainage during extreme rainfall and grid outages."
     },
     {
       "id": "detention_underground_storage",
       "title": "Detention / Underground Storage",
-      "type": "Program (Structural/Storage)",
-      "money": "5",
+      "type": "Project (Structural/Storage)",
+      "money": "4-5",
       "action_points": "High",
-      "effects": "Drainage Efficiency ↑↑↑; External Water Load ↓↓; Event Pacing ↓↓",
+      "effects": "Drainage Efficiency ↑↑↑ | External Water Load ↓↓ | Event Pacing ↓↓",
       "description": "Construct detention basins, underground tanks, or storage tunnels to absorb and delay peak runoff during prolonged rainfall events."
     },
     {
       "id": "levee_floodwall_construction",
       "title": "Levee / Floodwall Construction",
-      "type": "Program (Structural/Barrier)",
-      "money": "5",
+      "type": "Project (Structural/Barrier)",
+      "money": "4-5",
       "action_points": "High",
-      "effects": "Base Infrastructure Resilience ↑↑↑; External Water Load ↓↓↓",
+      "effects": "Enabled Levee Placement Menu",
       "description": "Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk."
     },
     {
-      "id": "critical_facility",
+      "id": "critical_facility_utility_hardening",
       "title": "Critical Facility Utility Hardening",
-      "type": "Program (Structural/Critical Infrastructure)",
-      "money": "5",
+      "type": "Project (Structural/Critical Infrastructure)",
+      "money": "4-5",
       "action_points": "Medium–High",
-      "effects": "Base Infrastructure Resilience ↑↑↑; Event Pacing ↓",
+      "effects": "Base Infrastructure Resilience ↑↑↑ | Event Pacing ↓",
       "description": "Elevate and floodproof electrical and mechanical systems at hospitals, water plants, and other essential facilities to prevent cascading failures."
     },
     {
-      "id": "Green_Streets_Urban_Trees",
+      "id": "green_streets_and_urban_trees",
       "title": "Green Streets & Urban Trees",
       "type": "Project (Nature-Based/Distributed GI)",
       "money": "3",
-      "action_points": "High",
-      "effects": "Drainage Efficiency ↑↑; External Water Load ↓",
-      "description": "Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk."
+      "action_points": "Medium",
+      "effects": "Drainage Efficiency ↑↑ | External Water Load ↓",
+      "description": "Install bioswales, rain gardens, permeable corridors, and expanded tree canopy to reduce runoff and strain on stormwater systems."
     },
     {
-      "id": "Higher_Flood_Resistant_Building_Code_Upgrade",
+      "id": "higher_flood_resistant_building_code_upgrade",
       "title": "Higher Flood-Resistant Building Code Upgrade",
-      "type": "Policy (Codes/Standards))",
+      "type": "Policy (Codes/Standards)",
       "money": "1-3",
-      "action_points": "High",
-      "effects": "Base Infrastructure Resilience ↑↑↑; Wind Stress ↓",
+      "action_points": "Medium",
+      "effects": "Base Infrastructure Resilience ↑↑↑ | Wind Stress ↓",
       "description": "Adopt and enforce modern flood-resistant construction standards, including elevation requirements and strengthened structural provisions."
     },
     {
-      "id": "EOP_Annex_Evacuation_Shelter_Ops",
+      "id": "early_warning_and_risk_communication",
+      "title": "Early Warning & Risk Communication",
+      "type": "Operations (Public Communication)",
+      "money": "1-3",
+      "action_points": "Low–Medium",
+      "effects": "Communication ↑↑↑",
+      "description": "Implement integrated alert systems, multilingual communication, and coordinated public messaging to accelerate protective action."
+    },
+    {
+      "id": "eop_annex_evacuation_shelter_ops",
       "title": "EOP Annex: Evacuation + Shelter Ops",
       "type": "Operations (Planning)",
       "money": "1-3",
       "action_points": "Medium",
-      "effects": "Event Pacing ↓↓; Base Infrastructure Resilience ↑",
+      "effects": "Communication ↑ | Evacuation Speed ↑↑ | Shelter Capacity ↑",
       "description": "Develop and exercise evacuation routes, shelter agreements, and continuity planning to reduce casualties and cascading disruptions."
+    },
+    {
+      "id": "sandbag_and_temporary_barrier_stockpile",
+      "title": "Sandbag & Temporary Barrier Stockpile",
+      "type": "Operations (Temporary Defense)",
+      "money": "1-3",
+      "action_points": "Medium",
+      "effects": "External Water Load ↓↓ (Temporary)",
+      "description": "Pre-position sandbags and temporary barriers to divert floodwaters."
+    },
+    {
+      "id": "municipal_tax_increase",
+      "title": "Municipal Tax Increase",
+      "type": "Policy (Revenue/Finance)",
+      "money": "+++",
+      "action_points": "Low",
+      "effects": "Money: ↑↑↑ | Outrage ↑ (stochastic; scales with repetition)",
+      "description": "Raise municipal taxes to increase available funding for resilience and infrastructure investments; repeated increases raise Outrage risk and can trigger political pushback."
+    },
+    {
+      "id": "flood_defense_department_expansion",
+      "title": "Flood Defense Department Expansion",
+      "type": "Program (Capacity/Operations)",
+      "money": "3",
+      "action_points": "Medium",
+      "effects": "Action Point Generation ↑ | Project Efficiency ↑ | Outrage ↑ (placement-weighted; stochastic)",
+      "description": "Expand the flood defense department by hiring staff, improving logistics, and increasing operational capacity; placement determines which constituency bears the opinion cost and Outrage risk."
     }
   ]
 }

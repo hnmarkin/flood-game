@@ -1,0 +1,22 @@
+#communication_tooltip_root {
+    position: absolute;
+    display: none;
+    background-color: rgba(4, 10, 22, 0.92);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-color: rgba(155, 220, 190, 0.9);
+    border-right-color: rgba(155, 220, 190, 0.9);
+    border-bottom-color: rgba(155, 220, 190, 0.9);
+    border-left-color: rgba(155, 220, 190, 0.9);
+    padding-top: 5px;
+    padding-right: 6px;
+    padding-bottom: 5px;
+    padding-left: 6px;
+}
+
+#communication_tooltip_root Label {
+    color: rgb(255, 255, 255);
+    white-space: normal;
+}

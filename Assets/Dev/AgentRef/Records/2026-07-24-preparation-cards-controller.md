@@ -1,0 +1,1 @@
+Added `PreparationCardsController` for JSON-driven cards, card toggles, clicks, Sandbag-to-barrier activation, and Actions panel wiring. Updated the prep-card UXML/USS for a full-screen scrollable two-column panel with hidden scrollbar chrome and wrapping card text.

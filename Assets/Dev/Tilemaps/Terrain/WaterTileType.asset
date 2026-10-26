@@ -15,16 +15,19 @@ MonoBehaviour:
   tileName: 
   tileBases:
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: 4c61c22322ff4476db2b74dc43f98d19, type: 3}
+    sprite: {fileID: 21300000, guid: 1c92b67df6246406e9790560ab7feb5c, type: 3}
     min: 0
     max: 0
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: 7f63f8b6adc304dc89ef5160bdf7e563, type: 3}
+    sprite: {fileID: 21300000, guid: 24f9e9a0fdebf40f5a9221013eb9ed8f, type: 3}
     min: 1
     max: 2
   - tileBase: {fileID: 11400000, guid: fce4f662a5d5f47f3a27383acc5907fe, type: 2}
-    sprite: {fileID: 21300000, guid: 217dbb08fa47647b9ae4ef6333188b7e, type: 3}
+    sprite: {fileID: 21300000, guid: c413eba3e42894ebcb34d8b20c31ca99, type: 3}
     min: 3
     max: 1000
   soilCapacity: 0
   isWater: 1
+  isAnimated: 0
+  animationFrames: []
+  animationSpeed: 6

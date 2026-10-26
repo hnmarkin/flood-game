@@ -1,0 +1,13 @@
+.game-button {
+    scale: 1 1;
+    background-color: rgb(48, 45, 160);
+}
+
+.game-button:hover {
+    scale: 1.1 1.1;
+    background-color: rgb(30, 28, 110);
+}
+
+.game-button:active {
+    scale: 0.98 0.98;
+}

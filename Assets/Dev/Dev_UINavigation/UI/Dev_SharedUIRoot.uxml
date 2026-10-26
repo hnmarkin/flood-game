@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="Dev_SharedUIRoot.uss" />
+    <ui:VisualElement name="UINavigationRoot" class="ui-navigation-root" picking-mode="Ignore">
+        <ui:VisualElement name="MainLayer" class="ui-navigation-layer" picking-mode="Ignore" />
+        <ui:VisualElement name="PopupLayer" class="ui-navigation-layer" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>

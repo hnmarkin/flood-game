@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b2cd47c03ea3d49bd2c98e815952f9, type: 3}
   m_Name: RoadDynamicTile
   m_EditorClassIdentifier: 
-  fallbackSprite: {fileID: 21300000, guid: 27186d87821374936bbc5ab921894c73, type: 3}
+  fallbackSprite: {fileID: 21300000, guid: f09555c1c077746128a7212121c80265, type: 3}
   fallbackColor: {r: 1, g: 1, b: 1, a: 1}

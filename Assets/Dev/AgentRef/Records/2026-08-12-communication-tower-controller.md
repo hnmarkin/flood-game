@@ -1,0 +1,1 @@
+Added a bare-minimum CommunicationTowerController that groups zones into simple tower candidates, stores Unreached/Pending/Warned statuses, spawns optional tower sprites on valid non-water tiles, highlights hovered tower zones on a dedicated outline layer, and activates towers on click while Communication mode is enabled. Wired and relabeled ActionsPanel action_Button6.
