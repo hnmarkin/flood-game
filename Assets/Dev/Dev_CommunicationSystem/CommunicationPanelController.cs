@@ -49,7 +49,7 @@ public class CommunicationPanelController : MonoBehaviour
     [Header("References")]
     [SerializeField] private UIDocument communicationUIDocument;
     [SerializeField] private VisualTreeAsset communicationPanelTemplate;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
     [SerializeField] private ZoneBaselineRiskController zoneBaselineRiskController;
@@ -826,7 +826,7 @@ public class CommunicationPanelController : MonoBehaviour
             communicationUIDocument = GetComponent<UIDocument>();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         if (shelterController == null)
             shelterController = FindFirstObjectByType<ShelterController>();

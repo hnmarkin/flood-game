@@ -44,7 +44,7 @@ public class MapHoverTooltipController : MonoBehaviour
     [SerializeField] private UIDocument tooltipUIDocument;
     [SerializeField] private VisualTreeAsset evacRouteTooltipUxml;
     [SerializeField] private VisualTreeAsset communicationTowerTooltipUxml;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
 
     [Header("Tooltip Settings")]
     [SerializeField] private Vector2 tooltipOffset = new(18f, 18f);
@@ -112,7 +112,7 @@ public class MapHoverTooltipController : MonoBehaviour
         EnsureTooltipRoots();
     }
 
-    public void SetCommunicationTowerController(CommunicationTowerController controller)
+    public void SetCommunicationTowerController(CommunicationController controller)
     {
         communicationTowerController = controller;
     }
@@ -333,7 +333,7 @@ public class MapHoverTooltipController : MonoBehaviour
             tooltipUIDocument = ResolveTooltipUIDocument();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         ResolveTooltipAssets();
     }
@@ -518,7 +518,7 @@ public class MapHoverTooltipController : MonoBehaviour
         }
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         for (int i = 0; i < zoneCount; i++)
         {

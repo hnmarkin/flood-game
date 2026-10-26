@@ -18,7 +18,7 @@ public class ActionsPanelController : MonoBehaviour
     [SerializeField] private BarrierController barrierController;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
     [SerializeField] private PreparationCardsController preparationCardsController;
     [SerializeField] private NavigationUIManager uiManager;
 
@@ -180,7 +180,7 @@ public class ActionsPanelController : MonoBehaviour
     {
         if (communicationTowerController == null)
         {
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
             if (communicationTowerController == null)
                 communicationTowerController = CreateRuntimeCommunicationTowerController();
@@ -249,7 +249,7 @@ public class ActionsPanelController : MonoBehaviour
             evacuationController = FindFirstObjectByType<EvacuationController>();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         if (communicationTowerController == null)
             communicationTowerController = CreateRuntimeCommunicationTowerController();
@@ -258,10 +258,10 @@ public class ActionsPanelController : MonoBehaviour
             preparationCardsController = FindFirstObjectByType<PreparationCardsController>();
     }
 
-    private CommunicationTowerController CreateRuntimeCommunicationTowerController()
+    private CommunicationController CreateRuntimeCommunicationTowerController()
     {
         GameObject controllerObject = new GameObject("CommunicationTowerController");
-        CommunicationTowerController controller = controllerObject.AddComponent<CommunicationTowerController>();
+        CommunicationController controller = controllerObject.AddComponent<CommunicationController>();
 
         if (debugLogs)
             Debug.Log("[ActionsPanelController] Created runtime CommunicationTowerController because none was present in the scene.");

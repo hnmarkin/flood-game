@@ -21,7 +21,7 @@ public class AdvisorPanelController : MonoBehaviour
     [SerializeField] private WaterSimulator waterSimulator;
     [SerializeField] private ShelterController shelterController;
     [SerializeField] private EvacuationController evacuationController;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
 
     [Header("Popup Timing")]
     [SerializeField] private float popupDelay = 0.2f;
@@ -246,7 +246,7 @@ public class AdvisorPanelController : MonoBehaviour
             evacuationController = FindFirstObjectByType<EvacuationController>();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
     }
 
     private void SubscribeToGameplayEvents()

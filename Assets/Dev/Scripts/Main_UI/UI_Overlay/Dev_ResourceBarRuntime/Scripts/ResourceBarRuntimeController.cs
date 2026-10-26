@@ -18,7 +18,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
     [SerializeField] private TileMapData tileMapData;
     [SerializeField] private WaterSimulator waterSimulator;
     [SerializeField] private ShelterController shelterController;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
     [SerializeField] private EvacuationController evacuationController;
 
     [Header("UI Element Names")]
@@ -286,7 +286,7 @@ public class ResourceBarRuntimeController : MonoBehaviour
         ResolveShelterController();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         if (evacuationController == null)
             evacuationController = FindFirstObjectByType<EvacuationController>();

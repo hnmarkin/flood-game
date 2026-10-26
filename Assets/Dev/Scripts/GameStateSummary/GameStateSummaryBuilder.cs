@@ -10,7 +10,7 @@ public class GameStateSummaryBuilder : MonoBehaviour
     [SerializeField] private ZoneBaselineRiskController zoneBaselineRiskController;
     [SerializeField] private FloodImpactController floodImpactController;
     [SerializeField] private EvacuationController evacuationController;
-    [SerializeField] private CommunicationTowerController communicationTowerController;
+    [SerializeField] private CommunicationController communicationTowerController;
 
     [Header("Optional Event Sources")]
     [SerializeField] private HighRiskManager highRiskManager;
@@ -143,7 +143,7 @@ public class GameStateSummaryBuilder : MonoBehaviour
             evacuationController = FindFirstObjectByType<EvacuationController>();
 
         if (communicationTowerController == null)
-            communicationTowerController = FindFirstObjectByType<CommunicationTowerController>();
+            communicationTowerController = FindFirstObjectByType<CommunicationController>();
 
         if (highRiskManager == null)
             highRiskManager = FindFirstObjectByType<HighRiskManager>();
@@ -570,7 +570,7 @@ public class GameStateSummaryBuilder : MonoBehaviour
         LogMissingControllerWarning(nameof(ZoneBaselineRiskController), zoneBaselineRiskController != null);
         LogMissingControllerWarning(nameof(FloodImpactController), floodImpactController != null);
         LogMissingControllerWarning(nameof(EvacuationController), evacuationController != null);
-        LogMissingControllerWarning(nameof(CommunicationTowerController), communicationTowerController != null);
+        LogMissingControllerWarning(nameof(CommunicationController), communicationTowerController != null);
     }
 
     private void LogMissingControllerWarning(string controllerName, bool isAssigned)
