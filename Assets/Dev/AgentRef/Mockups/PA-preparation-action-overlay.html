@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preparation Actions — UI Prototype</title>
+  <!--
+    UI PROTOTYPE — Three variants of the Preparation Actions overlay,
+    switchable with ?variant=A, ?variant=B, or ?variant=C.
+    Variant A mirrors the supplied reference image. The background is shared
+    project art at ../Background_Graphic.png.
+  -->
+  <style>
+    :root {
+      --ink: #eef8ff;
+      --muted: #93c5e9;
+      --cyan: #49dcff;
+      --cyan-strong: #11bfff;
+      --navy-950: #061827;
+      --navy-900: #08243c;
+      --navy-850: #0b3152;
+      --navy-800: #10456d;
+      --line: rgba(123, 205, 244, .55);
+      --res: #15c984;
+      --corp: #1d8cf0;
+      --public: #a650ff;
+      --gold: #ffda76;
+      --danger: #ff4d5b;
+      --soft-shadow: 0 18px 46px rgba(0, 13, 27, .55);
+      --font: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-width: 980px; min-height: 680px; height: 100%; margin: 0; }
+    body { overflow: hidden; color: var(--ink); background: #0e5e70 url("../Background_Graphic.png") center / cover; font-family: var(--font); }
+    button { font: inherit; }
+
+    .map-wash { position: fixed; inset: 0; background: linear-gradient(90deg, rgba(1, 31, 51, .62), rgba(1, 31, 51, .16) 38%, rgba(1, 31, 51, .31)), linear-gradient(0deg, rgba(0, 41, 58, .44), transparent 40%); pointer-events: none; }
+    .hud { position: fixed; z-index: 2; top: 10px; left: 18px; right: 18px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand, .hud-chip, .phase-chip { border: 1px solid rgba(116, 215, 255, .42); background: linear-gradient(135deg, rgba(6, 41, 68, .96), rgba(9, 73, 112, .9)); box-shadow: 0 7px 18px rgba(0, 22, 40, .35); }
+    .brand { min-width: 375px; padding: 10px 20px 10px 14px; border-radius: 8px 8px 20px 8px; display: flex; align-items: center; gap: 14px; }
+    .brand-mark, .panel-mark { width: 50px; height: 50px; flex: 0 0 auto; color: var(--cyan); }
+    .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 2px; }
+    .brand-tagline { margin-top: 2px; color: #9bd8ff; font-size: 12px; letter-spacing: .7px; }
+    .hud-right { display: flex; align-items: stretch; gap: 8px; }
+    .hud-chip, .phase-chip { min-height: 54px; padding: 8px 14px; border-radius: 8px; display: flex; align-items: center; gap: 9px; }
+    .hud-chip { min-width: 130px; justify-content: center; }
+    .hud-icon { color: var(--cyan); font-size: 22px; line-height: 1; }
+    .hud-value { font-size: 16px; font-weight: 700; white-space: nowrap; }
+    .hud-label { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+    .phase-chip { min-width: 200px; justify-content: center; background: linear-gradient(135deg, rgba(16, 75, 111, .97), rgba(10, 47, 80, .97)); }
+    .phase-icon { font-size: 25px; }
+    .phase-title { font-size: 14px; font-weight: 800; }
+    .phase-subtitle { color: var(--muted); font-size: 11px; margin-top: 3px; }
+
+    .screen { position: relative; z-index: 1; width: min(1290px, calc(100vw - 110px)); height: min(796px, calc(100vh - 128px)); min-height: 570px; margin: 92px auto 36px; border: 1px solid rgba(202, 239, 255, .8); border-radius: 13px; background: linear-gradient(135deg, rgba(4, 38, 67, .96), rgba(5, 24, 43, .97)); box-shadow: var(--soft-shadow), 0 0 0 5px rgba(2, 32, 54, .45); overflow: hidden; }
+    .screen::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(125deg, rgba(22, 133, 194, .17), transparent 35%); }
+    .panel-header { position: relative; min-height: 96px; padding: 17px 18px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(113, 214, 255, .33); background: linear-gradient(90deg, rgba(9, 72, 116, .83), rgba(7, 48, 83, .76)); }
+    .panel-mark { width: 55px; height: 55px; }
+    .panel-heading { min-width: 0; }
+    .panel-heading h1 { margin: 0; font-size: 29px; letter-spacing: .3px; }
+    .panel-heading p { margin: 4px 0 0; color: #b6ddf8; font-size: 14px; }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 15px; }
+    .help-button, .close-button { color: var(--ink); border: 1px solid rgba(95, 211, 255, .62); background: rgba(3, 32, 57, .72); cursor: pointer; }
+    .help-button { min-height: 42px; padding: 0 16px; border-radius: 6px; display: flex; align-items: center; gap: 9px; font-size: 13px; }
+    .help-button:hover, .close-button:hover { border-color: var(--cyan); background: rgba(19, 102, 153, .7); }
+    .help-icon { color: var(--cyan); font-weight: 800; font-size: 18px; }
+    .close-button { width: 42px; height: 42px; border: 0; background: transparent; font-size: 31px; line-height: 1; }
+    .panel-body { position: relative; height: calc(100% - 163px); padding: 16px 16px 15px; }
+
+    .reference-layout { height: 100%; display: grid; grid-template-columns: minmax(0, 1.92fr) minmax(300px, .9fr); gap: 13px; }
+    .card-area { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(215px, 1fr); gap: 13px; overflow: auto; padding: 1px 2px 2px 1px; }
+    .card { position: relative; min-width: 0; border: 1px solid rgba(113, 204, 248, .75); border-radius: 7px; color: var(--ink); background: linear-gradient(145deg, rgba(12, 59, 94, .96), rgba(6, 37, 63, .98)); text-align: left; cursor: pointer; overflow: hidden; transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease; }
+    .card:hover { transform: translateY(-2px); border-color: var(--cyan); }
+    .card.selected { border: 2px solid var(--cyan); box-shadow: 0 0 17px rgba(23, 204, 255, .43), inset 0 0 24px rgba(16, 167, 219, .1); }
+    .card.locked { cursor: not-allowed; opacity: .53; filter: saturate(.55); }
+    .card.locked:hover { transform: none; border-color: rgba(113, 204, 248, .75); }
+    .card-top { min-height: 74px; padding: 11px 12px 9px; display: flex; gap: 11px; align-items: center; border-bottom: 1px solid rgba(112, 201, 243, .34); }
+    .card-symbol { width: 46px; color: #67ddff; font-size: 34px; line-height: 1; text-align: center; }
+    .card-title { margin: 0; font-size: 16px; line-height: 1.15; }
+    .card-type { margin-top: 4px; color: #8fc4e6; font-size: 11px; }
+    .card-turns { margin-left: auto; align-self: flex-start; padding: 4px 6px; border-radius: 3px; color: #d0efff; background: rgba(87, 183, 232, .13); font-size: 10px; white-space: nowrap; }
+    .faction-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; padding: 11px 12px 9px; }
+    .faction { min-width: 0; padding: 7px 5px 6px; border-radius: 4px; text-align: center; font-size: 12px; font-weight: 800; }
+    .faction small { display: block; margin-top: 3px; font-size: 9px; font-weight: 400; opacity: .86; }
+    .faction.res { border: 1px solid rgba(21, 201, 132, .7); color: #c3ffe7; background: rgba(3, 136, 99, .37); }
+    .faction.corp { border: 1px solid rgba(29, 140, 240, .7); color: #c8e7ff; background: rgba(12, 91, 182, .42); }
+    .faction.public { border: 1px solid rgba(166, 80, 255, .7); color: #ead7ff; background: rgba(116, 31, 191, .4); }
+    .card-effect { margin: 0 12px; min-height: 35px; padding: 8px 0; border-top: 1px solid rgba(112, 201, 243, .26); border-bottom: 1px solid rgba(112, 201, 243, .26); color: #b9e3ff; font-size: 12px; }
+    .card-effect strong { color: var(--cyan); margin-right: 6px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 11px; }
+    .cost { color: #f5fbff; font-size: 14px; font-weight: 800; }
+    .cost.money { color: #bcffd9; }
+    .cost.ap { color: #d2ecff; }
+    .locked-strip { position: absolute; right: 0; bottom: 0; left: 0; padding: 7px 10px; color: #ffb6ba; background: rgba(111, 13, 35, .82); font-size: 11px; }
+
+    .details { min-width: 0; min-height: 0; border: 1px solid rgba(113, 204, 248, .73); border-radius: 7px; background: linear-gradient(165deg, rgba(8, 57, 91, .9), rgba(5, 31, 54, .96)); overflow: auto; }
+    .details-head { padding: 16px 17px 13px; border-bottom: 1px solid rgba(113, 204, 248, .35); }
+    .details-kicker { color: var(--cyan); font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .details h2 { margin: 7px 0 5px; font-size: 22px; line-height: 1.12; }
+    .details-type { color: #9fcbea; font-size: 12px; }
+    .detail-section { padding: 13px 17px; border-bottom: 1px solid rgba(113, 204, 248, .27); }
+    .detail-section h3 { margin: 0 0 7px; color: var(--cyan); font-size: 12px; letter-spacing: .8px; text-transform: uppercase; }
+    .detail-section p { margin: 0; color: #d8edfb; font-size: 13px; line-height: 1.42; }
+    .effect-list { margin: 0; padding: 0; list-style: none; }
+    .effect-list li { padding: 4px 0; color: #d8edfb; font-size: 13px; }
+    .effect-list li::before { content: "↑"; display: inline-block; width: 24px; color: var(--cyan); font-size: 20px; font-weight: 800; vertical-align: -2px; }
+    .prerequisite { display: inline-flex; align-items: center; gap: 6px; color: #c8e6f6; font-size: 13px; }
+    .prerequisite::before { content: "∅"; display: grid; width: 19px; height: 19px; place-items: center; border: 2px solid #9ed7f6; border-radius: 50%; color: #9ed7f6; font-size: 12px; }
+
+    .panel-footer { position: absolute; right: 0; bottom: 0; left: 0; height: 67px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(113, 214, 255, .4); background: rgba(6, 30, 51, .92); }
+    .footer-tools { display: flex; align-items: center; gap: 9px; }
+    .tool-button { min-height: 40px; padding: 0 13px; border: 1px solid rgba(107, 199, 243, .42); border-radius: 5px; color: #c4e8fb; background: rgba(12, 67, 105, .63); cursor: pointer; font-size: 12px; }
+    .tool-button:hover { border-color: var(--cyan); color: white; }
+    .selection-summary { min-width: 0; color: #a4cae5; font-size: 11px; text-align: right; }
+    .selection-summary strong { display: block; max-width: 320px; overflow: hidden; color: white; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+    .confirm-button { min-height: 43px; min-width: 205px; padding: 0 19px; border: 1px solid #62deff; border-radius: 5px; color: #fff; background: linear-gradient(135deg, #158ee1, #0962b5); box-shadow: inset 0 -3px 0 rgba(0, 30, 78, .34); cursor: pointer; font-size: 13px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; }
+    .confirm-button:hover { filter: brightness(1.15); }
+    .confirm-button:disabled { cursor: not-allowed; opacity: .42; filter: grayscale(.7); }
+    .toast { position: fixed; z-index: 20; left: 50%; bottom: 75px; transform: translate(-50%, 20px); padding: 11px 16px; border: 1px solid rgba(92, 222, 255, .56); border-radius: 5px; color: white; background: rgba(4, 38, 64, .95); box-shadow: var(--soft-shadow); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; font-size: 13px; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .reopen { position: fixed; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; min-height: 48px; padding: 0 21px; border: 1px solid var(--cyan); border-radius: 5px; color: white; background: #0b5688; box-shadow: var(--soft-shadow); cursor: pointer; font-weight: 800; }
+    .reopen.visible { display: block; }
+    body.closed .screen { display: none; }
+
+    .briefing-layout { height: 100%; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 14px; }
+    .briefing-rail { padding: 15px; border: 1px solid var(--line); border-radius: 7px; background: rgba(8, 58, 92, .63); }
+    .briefing-rail h2 { margin: 0 0 16px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .rail-stat { padding: 13px 0; border-top: 1px solid rgba(140, 218, 249, .24); }
+    .rail-stat span { display: block; color: var(--muted); font-size: 11px; }
+    .rail-stat strong { display: block; margin-top: 4px; color: white; font-size: 22px; }
+    .rail-stat strong.cyan { color: var(--cyan); }
+    .rail-note { margin-top: 25px; padding: 10px; border-left: 3px solid var(--gold); color: #d8edfb; background: rgba(255, 218, 118, .09); font-size: 11px; line-height: 1.4; }
+    .briefing-main { min-width: 0; display: grid; grid-template-rows: auto 1fr; gap: 11px; }
+    .briefing-hero { padding: 12px 15px; border: 1px solid rgba(101, 208, 252, .52); border-radius: 7px; background: linear-gradient(90deg, rgba(12, 85, 130, .7), rgba(8, 47, 78, .78)); }
+    .briefing-hero strong { color: var(--cyan); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+    .briefing-hero p { margin: 5px 0 0; color: #d2ecfb; font-size: 13px; }
+    .briefing-list { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; overflow: auto; }
+    .brief-card { min-width: 0; padding: 13px 14px; border: 1px solid rgba(109, 203, 244, .48); border-radius: 6px; color: var(--ink); background: rgba(9, 53, 85, .8); cursor: pointer; text-align: left; }
+    .brief-card:hover, .brief-card.selected { border-color: var(--cyan); box-shadow: 0 0 13px rgba(21, 203, 252, .19); }
+    .brief-card.locked { opacity: .46; cursor: not-allowed; }
+    .brief-card.locked:hover { border-color: rgba(109, 203, 244, .48); box-shadow: none; }
+    .brief-card-head { display: flex; align-items: flex-start; gap: 9px; }
+    .brief-symbol { color: var(--cyan); font-size: 25px; }
+    .brief-card h3 { margin: 0; font-size: 14px; line-height: 1.15; }
+    .brief-card small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .brief-card p { min-height: 35px; margin: 13px 0 11px; color: #bddff3; font-size: 11px; line-height: 1.35; }
+    .brief-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 9px; border-top: 1px solid rgba(114, 205, 243, .25); color: #d8edfb; font-size: 11px; }
+    .brief-meta b { color: #c1ffdc; }
+
+    .command-layout { height: 100%; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(275px, .75fr); gap: 14px; }
+    .command-list { min-width: 0; overflow: auto; border: 1px solid var(--line); border-radius: 7px; background: rgba(5, 37, 62, .75); }
+    .command-list-head, .command-row { display: grid; grid-template-columns: 34px minmax(180px, 1.7fr) 105px 86px 86px; gap: 10px; align-items: center; }
+    .command-list-head { min-height: 42px; padding: 0 13px; border-bottom: 1px solid rgba(108, 205, 245, .34); color: var(--cyan); font-size: 10px; letter-spacing: .7px; text-transform: uppercase; }
+    .command-row { min-height: 68px; padding: 8px 13px; border: 0; border-bottom: 1px solid rgba(108, 205, 245, .18); color: #d9effc; text-align: left; background: transparent; cursor: pointer; }
+    .command-row:hover, .command-row.selected { background: rgba(31, 148, 207, .18); }
+    .command-row.locked { cursor: not-allowed; opacity: .42; }
+    .command-row.locked:hover { background: transparent; }
+    .command-icon { color: var(--cyan); font-size: 21px; }
+    .command-name { font-size: 12px; font-weight: 800; }
+    .command-name small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; font-weight: 400; }
+    .command-cell { color: #b8d9ed; font-size: 11px; }
+    .command-cell.money { color: #baffd5; }
+    .command-cell.ap { color: #d0ecff; }
+    .command-detail { min-width: 0; border: 1px solid var(--line); border-radius: 7px; background: rgba(8, 57, 91, .84); overflow: auto; }
+    .command-detail .details-head { background: rgba(12, 93, 137, .24); }
+    .command-detail .detail-section { padding-left: 15px; padding-right: 15px; }
+    .command-action { margin: 15px; width: calc(100% - 30px); }
+
+    .variant-switcher { position: fixed; z-index: 25; left: 50%; bottom: 15px; transform: translateX(-50%); display: flex; align-items: center; gap: 11px; padding: 7px 10px; border: 1px solid rgba(126, 224, 255, .75); border-radius: 999px; color: #e9f8ff; background: rgba(4, 30, 49, .94); box-shadow: 0 8px 24px rgba(0, 15, 25, .48); }
+    .variant-switcher button { width: 27px; height: 27px; border: 0; border-radius: 50%; color: white; background: rgba(27, 125, 173, .55); cursor: pointer; }
+    .variant-switcher button:hover { background: var(--cyan-strong); }
+    .variant-label { min-width: 178px; text-align: center; font-size: 11px; }
+    .variant-label b { color: var(--cyan); }
+
+    @media (max-width: 1160px) {
+      .screen { width: calc(100vw - 34px); margin-top: 82px; }
+      .brand { min-width: 285px; }
+      .brand-tagline { display: none; }
+      .hud-chip { min-width: 92px; padding: 8px; }
+      .hud-label { display: none; }
+      .reference-layout { grid-template-columns: minmax(0, 1.7fr) minmax(270px, .8fr); }
+      .card-title { font-size: 14px; }
+    }
+    @media (max-height: 760px) {
+      .screen { margin-top: 76px; height: calc(100vh - 103px); }
+      .hud { top: 7px; }
+      .panel-header { min-height: 82px; padding-top: 12px; padding-bottom: 12px; }
+      .panel-body { height: calc(100% - 149px); }
+      .card-top { min-height: 64px; padding-top: 8px; padding-bottom: 7px; }
+      .card-effect { min-height: 28px; padding-top: 5px; padding-bottom: 5px; }
+      .card-footer { padding-top: 7px; padding-bottom: 7px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="map-wash"></div>
+  <header class="hud" aria-label="Persistent game header">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="4" d="M32 3 57 11v20c0 15-10 25-25 30C17 56 7 46 7 31V11z"/><path fill="currentColor" d="M18 28 32 17l14 11v3h-4v14H22V31h-4zm10 13h3V29h-3zm6 0h3V29h-3z"/></svg>
+      <div><div class="brand-name">RIVERTON</div><div class="brand-tagline">Prepare <span>•</span> Protect <span>•</span> Recover</div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-chip"><span class="hud-icon">♟</span><div><span class="hud-value">432,000</span><span class="hud-label">Population</span></div></div>
+      <div class="hud-chip"><span class="hud-icon">$</span><div><span id="hud-money" class="hud-value">$2.4M</span><span class="hud-label">Available funds</span></div></div>
+      <div class="hud-chip"><span class="hud-icon">⚙</span><div><span class="hud-value">03, Year 2</span><span class="hud-label">Current date</span></div></div>
+      <div class="phase-chip"><span class="phase-icon">☁</span><div><div class="phase-title">Preparation Phase</div><div class="phase-subtitle">Storm in 5 days</div></div></div>
+    </div>
+  </header>
+
+  <main id="screen" class="screen" aria-label="Preparation Actions UI prototype"></main>
+  <button id="reopen" class="reopen" type="button">Open Preparation Actions</button>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <nav class="variant-switcher" aria-label="Prototype variants"><button type="button" data-direction="-1" aria-label="Previous variant">‹</button><span id="variant-label" class="variant-label"></span><button type="button" data-direction="1" aria-label="Next variant">›</button></nav>
+
+  <script>
+    const actions = [
+      { id: "drainage", icon: "▥", title: "Drainage Maintenance Blitz", type: "Program (Structural / O&M)", description: "Intensive inspection, inlet clearing, channel debris removal, and urgent repairs to restore baseline drainage capacity before storm season.", effect: "Drainage Efficiency ++", res: "+1", corp: "0", pub: "+1", money: "$200", ap: "1 AP", turns: "1 day", failure: "N/A", locked: false },
+      { id: "pumps", icon: "◒", title: "Pump Stations + Backup Power", type: "Project (Structural / Continuity)", description: "Construct or upgrade pump stations with redundancy and backup power systems to maintain drainage during extreme rainfall and grid outages.", effect: "Enables Pump Placement Menu", res: "0", corp: "+2", pub: "+1", money: "$400", ap: "2 AP", turns: "2 days", failure: "Pump failure chance", locked: false },
+      { id: "storage", icon: "◓", title: "Detention / Underground Storage", type: "Project (Structural / Storage)", description: "Construct detention basins, underground tanks, or storage tunnels to absorb and delay peak runoff during prolonged rainfall events.", effect: "Peak Flow Reduction ++", res: "+2", corp: "+1", pub: "+2", money: "$600", ap: "2 AP", turns: "4 days", failure: "Effects reduced", locked: false },
+      { id: "levee", icon: "▤", title: "Levee / Floodwall Construction", type: "Project (Structural / Barrier)", description: "Build structural perimeter protections to reduce surge and overbank flooding risk, acknowledging residual overtopping or failure risk.", effect: "Major Flood Risk Reduction", res: "+3", corp: "+1", pub: "+1", money: "$800", ap: "3 AP", turns: "4 days", failure: "Requires Watershed Assessment", locked: true },
+      { id: "hardening", icon: "▦", title: "Critical Facility Hardening", type: "Project (Structural / Critical Infrastructure)", description: "Elevate and floodproof electrical and mechanical systems at hospitals, water plants, and other essential facilities.", effect: "Infrastructure Resilience +++", res: "+1", corp: "+1", pub: "+1", money: "$750", ap: "3 AP", turns: "3 days", failure: "Card failure", locked: false },
+      { id: "warning", icon: "◉", title: "Early Warning & Risk Communication", type: "Operations (Public Communication)", description: "Implement integrated alert systems, multilingual communication, and coordinated public messaging to accelerate protective action.", effect: "Communication Level +++", res: "+1", corp: "+1", pub: "+1", money: "$250", ap: "1 AP", turns: "3 days", failure: "N/A", locked: false }
+    ];
+
+    const variantNames = { A: "Reference overlay", B: "Briefing wall", C: "Command list" };
+    const variantKeys = ["A", "B", "C"];
+    const queryVariant = new URLSearchParams(location.search).get("variant");
+    const state = { variant: variantNames[queryVariant] ? queryVariant : "A", selectedId: "drainage", enacted: [], money: 2400000, closed: false };
+
+    function icon(name) { return { res: "⌂", corp: "▦", pub: "♜" }[name] || ""; }
+    function selectedAction() { return actions.find(function(action) { return action.id === state.selectedId; }) || actions[0]; }
+    function escapeHtml(value) { return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function factionMarkup(action) {
+      return ['<span class="faction res">' + icon("res") + " " + action.res + '<small>Residential</small></span>', '<span class="faction corp">' + icon("corp") + " " + action.corp + '<small>Corporate</small></span>', '<span class="faction public">' + icon("pub") + " " + action.pub + '<small>Public</small></span>'].join("");
+    }
+    function referenceCard(action) {
+      const selected = action.id === state.selectedId ? " selected" : "";
+      const locked = action.locked ? " locked" : "";
+      return '<button type="button" class="card' + selected + locked + '" data-action-id="' + action.id + '"' + (action.locked ? " disabled" : "") + '><div class="card-top"><div class="card-symbol">' + action.icon + '</div><div><h3 class="card-title">' + escapeHtml(action.title) + '</h3><div class="card-type">' + escapeHtml(action.type) + '</div></div><span class="card-turns">' + action.turns + '</span></div><div class="faction-row">' + factionMarkup(action) + '</div><div class="card-effect"><strong>Effect</strong>' + escapeHtml(action.effect) + '</div><div class="card-footer"><span class="cost money">◆ ' + action.money + '</span><span class="cost ap">⚙ ' + action.ap + '</span></div>' + (action.locked ? '<div class="locked-strip">🔒 Requires Watershed Assessment</div>' : "") + '</button>';
+    }
+    function detailsMarkup(action, includeButton) {
+      return '<aside class="details' + (includeButton ? " command-detail" : "") + '"><div class="details-head"><div class="details-kicker">Selected action</div><h2>' + escapeHtml(action.title) + '</h2><div class="details-type">' + escapeHtml(action.type) + '</div></div><section class="detail-section"><h3>Description</h3><p>' + escapeHtml(action.description) + '</p></section><section class="detail-section"><h3>Effects</h3><ul class="effect-list"><li>' + escapeHtml(action.effect) + '</li></ul></section><section class="detail-section"><h3>Prerequisites</h3><div class="prerequisite">' + (action.locked ? "Watershed Assessment" : "None") + '</div></section><section class="detail-section"><h3>Comms failure</h3><p>' + escapeHtml(action.failure) + '</p></section>' + (includeButton ? '<button id="detail-confirm" class="confirm-button command-action" type="button"' + (action.locked ? " disabled" : "") + '>▶ Confirm selection</button>' : "") + '</aside>';
+    }
+    function referenceVariant() {
+      const action = selectedAction();
+      return '<div class="panel-header"><svg class="panel-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="4" d="M32 3 57 11v20c0 15-10 25-25 30C17 56 7 46 7 31V11z"/><path fill="currentColor" d="M18 28 32 17l14 11v3h-4v14H22V31h-4zm10 13h3V29h-3zm6 0h3V29h-3z"/></svg><div class="panel-heading"><h1>PREPARATION ACTIONS</h1><p>Select a mitigation program before the storm arrives.</p></div><div class="header-actions"><button class="help-button" type="button" data-help><span class="help-icon">ⓘ</span> Preparation Actions</button><button class="close-button" type="button" data-close aria-label="Close">×</button></div></div><div class="panel-body"><div class="reference-layout"><section class="card-area" aria-label="Available actions">' + actions.map(referenceCard).join("") + '</section>' + detailsMarkup(action, false) + '</div></div><footer class="panel-footer"><div class="footer-tools"><button class="tool-button" type="button" data-help>⚙</button><button class="tool-button" type="button" data-list>☷ &nbsp; View full action list</button></div><div class="selection-summary"><strong>' + escapeHtml(action.title) + '</strong>Cost ' + action.money + " &nbsp;•&nbsp; " + action.ap + '</div><button class="confirm-button" type="button" data-confirm' + (action.locked ? " disabled" : "") + '>▶ &nbsp; Confirm selection</button></footer>';
+    }
+    function briefingVariant() {
+      return '<div class="panel-header"><div class="panel-heading"><div class="details-kicker">Preparation brief / 03</div><h1>Choose your citywide response</h1><p>Five days remain before the storm window closes.</p></div><div class="header-actions"><button class="close-button" type="button" data-close aria-label="Close">×</button></div></div><div class="panel-body"><div class="briefing-layout"><aside class="briefing-rail"><h2>Storm readiness</h2><div class="rail-stat"><span>Available budget</span><strong id="rail-money">$2.4M</strong></div><div class="rail-stat"><span>Action points</span><strong class="cyan">4 / 6</strong></div><div class="rail-stat"><span>Forecast risk</span><strong>Moderate</strong></div><div class="rail-note">Planning tip<br><br>Prioritize capacity improvements before committing to a structural barrier.</div></aside><section class="briefing-main"><div class="briefing-hero"><strong>Recommended sequence</strong><p>Restore existing drainage first, then invest in pumps or storage as funds allow.</p></div><div class="briefing-list">' + actions.map(function(action) {
+        const selected = action.id === state.selectedId ? " selected" : "";
+        const locked = action.locked ? " locked" : "";
+        return '<button type="button" class="brief-card' + selected + locked + '" data-action-id="' + action.id + '"' + (action.locked ? " disabled" : "") + '><div class="brief-card-head"><span class="brief-symbol">' + action.icon + '</span><div><h3>' + escapeHtml(action.title) + '</h3><small>' + escapeHtml(action.type) + '</small></div></div><p>' + escapeHtml(action.description) + '</p><div class="brief-meta"><span><b>' + action.money + '</b> · ' + action.ap + '</span><span>' + (action.locked ? "LOCKED" : action.effect) + '</span></div></button>';
+      }).join("") + '</div></section></div></div><footer class="panel-footer"><div class="footer-tools"><button class="tool-button" type="button" data-help>ⓘ &nbsp; How actions work</button></div><div class="selection-summary"><strong>' + escapeHtml(selectedAction().title) + '</strong>Selected for review</div><button class="confirm-button" type="button" data-confirm' + (selectedAction().locked ? " disabled" : "") + '>▶ &nbsp; Enact response</button></footer>';
+    }
+    function commandRow(action) {
+      const selected = action.id === state.selectedId ? " selected" : "";
+      const locked = action.locked ? " locked" : "";
+      return '<button type="button" class="command-row' + selected + locked + '" data-action-id="' + action.id + '"' + (action.locked ? " disabled" : "") + '><span class="command-icon">' + action.icon + '</span><span class="command-name">' + escapeHtml(action.title) + '<small>' + escapeHtml(action.type) + '</small></span><span class="command-cell">' + escapeHtml(action.effect) + '</span><span class="command-cell money">' + action.money + '</span><span class="command-cell ap">' + action.ap + '</span></button>';
+    }
+    function commandVariant() {
+      const action = selectedAction();
+      return '<div class="panel-header"><div class="panel-heading"><h1>ACTION CATALOG</h1><p>Compare mitigation programs by impact, cost, and readiness.</p></div><div class="header-actions"><button class="help-button" type="button" data-help><span class="help-icon">ⓘ</span> Legend</button><button class="close-button" type="button" data-close aria-label="Close">×</button></div></div><div class="panel-body"><div class="command-layout"><section class="command-list" aria-label="Action catalog"><div class="command-list-head"><span></span><span>Program</span><span>Primary effect</span><span>Cost</span><span>AP</span></div>' + actions.map(commandRow).join("") + '</section>' + detailsMarkup(action, true) + '</div></div>';
+    }
+
+    function setVariant(variant, replaceUrl) {
+      state.variant = variantNames[variant] ? variant : "A";
+      if (replaceUrl) history.replaceState(null, "", "?variant=" + state.variant);
+      document.getElementById("variant-label").innerHTML = "<b>" + state.variant + "</b> &nbsp; " + variantNames[state.variant];
+      document.getElementById("screen").innerHTML = state.variant === "A" ? referenceVariant() : state.variant === "B" ? briefingVariant() : commandVariant();
+      bindScreen();
+    }
+    function bindScreen() {
+      document.querySelectorAll("[data-action-id]").forEach(function(element) { element.addEventListener("click", function() { state.selectedId = element.getAttribute("data-action-id"); setVariant(state.variant, false); }); });
+      document.querySelectorAll("[data-close]").forEach(function(element) { element.addEventListener("click", closeScreen); });
+      document.querySelectorAll("[data-confirm], #detail-confirm").forEach(function(element) { element.addEventListener("click", enact); });
+      document.querySelectorAll("[data-help]").forEach(function(element) { element.addEventListener("click", function() { showToast("Select an available action to inspect its tradeoffs."); }); });
+      document.querySelectorAll("[data-list]").forEach(function(element) { element.addEventListener("click", function() { setVariant("C", true); }); });
+    }
+    function enact() {
+      const action = selectedAction();
+      if (action.locked || state.enacted.indexOf(action.id) !== -1) return;
+      state.enacted.push(action.id);
+      state.money -= Number(action.money.replace(/[^0-9]/g, "")) * 1000;
+      document.getElementById("hud-money").textContent = "$" + (state.money / 1000000).toFixed(2) + "M";
+      showToast(action.title + " enacted — " + action.effect);
+      setVariant(state.variant, false);
+    }
+    function closeScreen() { state.closed = true; document.body.classList.add("closed"); document.getElementById("reopen").classList.add("visible"); showToast("Preparation Actions closed. The map remains visible."); }
+    function openScreen() { state.closed = false; document.body.classList.remove("closed"); document.getElementById("reopen").classList.remove("visible"); }
+    let toastTimer;
+    function showToast(message) { const toast = document.getElementById("toast"); toast.textContent = message; toast.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(function() { toast.classList.remove("show"); }, 2600); }
+
+    document.querySelectorAll(".variant-switcher button").forEach(function(button) { button.addEventListener("click", function() { const direction = Number(button.getAttribute("data-direction")); const nextIndex = (variantKeys.indexOf(state.variant) + direction + variantKeys.length) % variantKeys.length; setVariant(variantKeys[nextIndex], true); }); });
+    document.addEventListener("keydown", function(event) {
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement && document.activeElement.isContentEditable) return;
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const nextIndex = (variantKeys.indexOf(state.variant) + direction + variantKeys.length) % variantKeys.length;
+      setVariant(variantKeys[nextIndex], true);
+    });
+    document.getElementById("reopen").addEventListener("click", openScreen);
+    setVariant(state.variant, false);
+  </script>
+</body>
+</html>
